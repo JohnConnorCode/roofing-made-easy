@@ -528,6 +528,8 @@ export type JobType =
   | 'inspection'
   | 'maintenance'
   | 'gutter'
+  | 'commercial'
+  | 'solar_installation'
   | 'other'
 
 export type RoofMaterial =

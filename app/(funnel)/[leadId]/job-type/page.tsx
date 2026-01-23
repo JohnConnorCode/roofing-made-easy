@@ -12,6 +12,8 @@ import {
   Search,
   Settings,
   Droplets,
+  Building2,
+  Sun,
   HelpCircle,
 } from 'lucide-react'
 import { useState } from 'react'
@@ -28,6 +30,18 @@ const JOB_TYPES: { value: JobType; title: string; description: string; icon: Rea
     title: 'Roof Repair',
     description: 'Fix specific issues or damaged areas',
     icon: <Wrench className="h-6 w-6" />,
+  },
+  {
+    value: 'commercial',
+    title: 'Commercial Roofing',
+    description: 'Business, warehouse, or multi-unit buildings',
+    icon: <Building2 className="h-6 w-6" />,
+  },
+  {
+    value: 'solar_installation',
+    title: 'Solar Panel Installation',
+    description: 'Install solar panels on your roof',
+    icon: <Sun className="h-6 w-6" />,
   },
   {
     value: 'inspection',
