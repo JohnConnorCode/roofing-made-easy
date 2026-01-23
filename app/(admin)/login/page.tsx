@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Loader2, Eye, EyeOff } from 'lucide-react'
+import { Loader2, Eye, EyeOff, Hammer } from 'lucide-react'
 
 function LoginForm() {
   const router = useRouter()
@@ -34,7 +34,6 @@ function LoginForm() {
       })
 
       if (authError) {
-        // User-friendly error messages
         if (authError.message.includes('Invalid login credentials')) {
           setError('Invalid email or password. Please try again.')
         } else if (authError.message.includes('Email not confirmed')) {
@@ -72,7 +71,7 @@ function LoginForm() {
       <Input
         label="Email"
         type="email"
-        placeholder="admin@example.com"
+        placeholder="admin@company.com"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
@@ -92,7 +91,7 @@ function LoginForm() {
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-9 text-gray-500 hover:text-gray-700"
+          className="absolute right-3 top-9 text-slate-500 hover:text-slate-700"
           aria-label={showPassword ? 'Hide password' : 'Show password'}
         >
           {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -115,17 +114,28 @@ function LoginForm() {
 function LoginFormFallback() {
   return (
     <div className="flex justify-center py-8">
-      <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+      <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
     </div>
   )
 }
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-800 p-4">
+      {/* Logo/Branding */}
+      <div className="mb-8 flex items-center gap-3">
+        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-amber-600">
+          <Hammer className="h-7 w-7 text-white" />
+        </div>
+        <div>
+          <h1 className="text-xl font-bold text-white">Summit Roofing</h1>
+          <p className="text-sm text-slate-400">Admin Portal</p>
+        </div>
+      </div>
+
+      <Card className="w-full max-w-md border-0 shadow-xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Admin Login</CardTitle>
+          <CardTitle className="text-xl text-slate-900">Sign in to your account</CardTitle>
         </CardHeader>
         <CardContent>
           <Suspense fallback={<LoginFormFallback />}>
@@ -133,6 +143,13 @@ export default function LoginPage() {
           </Suspense>
         </CardContent>
       </Card>
+
+      <p className="mt-8 text-center text-sm text-slate-400">
+        Having trouble?{' '}
+        <a href="mailto:support@summitroofing.com" className="text-amber-500 hover:underline">
+          Contact support
+        </a>
+      </p>
     </div>
   )
 }

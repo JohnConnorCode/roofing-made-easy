@@ -11,6 +11,7 @@ import {
   LogOut,
   Menu,
   X,
+  Hammer,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -59,13 +60,18 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-stone-50">
       {/* Mobile header */}
-      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-white px-4 md:hidden">
-        <h1 className="text-lg font-bold">Roofing Admin</h1>
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-slate-800 px-4 md:hidden">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded bg-amber-600">
+            <Hammer className="h-5 w-5 text-white" />
+          </div>
+          <h1 className="text-lg font-bold text-white">Summit Admin</h1>
+        </div>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2"
+          className="p-2 text-white"
         >
           {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
@@ -83,8 +89,8 @@ export default function AdminLayout({
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-4 py-3 text-lg',
                   pathname.startsWith(item.href)
-                    ? 'bg-blue-50 text-blue-600'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'bg-amber-50 text-amber-700'
+                    : 'text-slate-600 hover:bg-slate-50'
                 )}
               >
                 <item.icon className="h-5 w-5" />
@@ -104,10 +110,13 @@ export default function AdminLayout({
 
       <div className="flex">
         {/* Desktop sidebar */}
-        <aside className="hidden w-64 shrink-0 border-r bg-white md:block">
+        <aside className="hidden w-64 shrink-0 border-r bg-slate-800 md:block">
           <div className="sticky top-0 flex h-screen flex-col">
-            <div className="flex h-16 items-center border-b px-6">
-              <h1 className="text-xl font-bold">Roofing Admin</h1>
+            <div className="flex h-16 items-center gap-3 border-b border-slate-700 px-6">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-600">
+                <Hammer className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-lg font-bold text-white">Summit Admin</h1>
             </div>
 
             <nav className="flex-1 p-4">
@@ -119,8 +128,8 @@ export default function AdminLayout({
                       className={cn(
                         'flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors',
                         pathname.startsWith(item.href)
-                          ? 'bg-blue-50 text-blue-600'
-                          : 'text-gray-600 hover:bg-gray-50'
+                          ? 'bg-amber-600 text-white'
+                          : 'text-slate-300 hover:bg-slate-700 hover:text-white'
                       )}
                     >
                       <item.icon className="h-5 w-5" />
@@ -131,10 +140,10 @@ export default function AdminLayout({
               </ul>
             </nav>
 
-            <div className="border-t p-4">
+            <div className="border-t border-slate-700 p-4">
               <Button
                 variant="ghost"
-                className="w-full justify-start text-red-600 hover:bg-red-50 hover:text-red-700"
+                className="w-full justify-start text-slate-300 hover:bg-slate-700 hover:text-white"
                 onClick={handleLogout}
                 leftIcon={<LogOut className="h-5 w-5" />}
               >

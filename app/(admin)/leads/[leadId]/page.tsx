@@ -159,8 +159,8 @@ export default function LeadDetailPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-        <span className="ml-2 text-gray-500">Loading lead details...</span>
+        <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+        <span className="ml-2 text-slate-500">Loading lead details...</span>
       </div>
     )
   }
@@ -169,7 +169,7 @@ export default function LeadDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <AlertTriangle className="h-12 w-12 text-amber-500" />
-        <p className="mt-4 text-lg font-medium text-gray-900">
+        <p className="mt-4 text-lg font-medium text-slate-900">
           {error || "This lead doesn't exist or may have been archived."}
         </p>
         <div className="mt-4 flex gap-3">
@@ -204,10 +204,10 @@ export default function LeadDetailPage() {
             Back
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-slate-900">
               {contact?.first_name} {contact?.last_name}
             </h1>
-            <p className="text-gray-500">
+            <p className="text-slate-500">
               Lead created {formatDate(lead.created_at)}
             </p>
           </div>
@@ -234,23 +234,23 @@ export default function LeadDetailPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm text-gray-500">Name</p>
+              <p className="text-sm text-slate-500">Name</p>
               <p className="font-medium">
                 {contact?.first_name} {contact?.last_name}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Email</p>
+              <p className="text-sm text-slate-500">Email</p>
               <p className="font-medium">{contact?.email || 'N/A'}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Phone</p>
+              <p className="text-sm text-slate-500">Phone</p>
               <p className="font-medium">
                 {contact?.phone ? formatPhone(contact.phone) : 'N/A'}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Preferred Contact</p>
+              <p className="text-sm text-slate-500">Preferred Contact</p>
               <p className="font-medium capitalize">
                 {contact?.preferred_contact_method || 'N/A'}
               </p>
@@ -268,12 +268,12 @@ export default function LeadDetailPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm text-gray-500">Address</p>
+              <p className="text-sm text-slate-500">Address</p>
               <p className="font-medium">
                 {property?.street_address || 'N/A'}
               </p>
               {property?.city && (
-                <p className="text-gray-600">
+                <p className="text-slate-600">
                   {property.city}, {property.state} {property.zip_code}
                 </p>
               )}
@@ -292,19 +292,19 @@ export default function LeadDetailPage() {
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500">Job Type</p>
+                <p className="text-sm text-slate-500">Job Type</p>
                 <p className="font-medium capitalize">
                   {intake?.job_type?.replace('_', ' ') || 'N/A'}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Material</p>
+                <p className="text-sm text-slate-500">Material</p>
                 <p className="font-medium capitalize">
                   {intake?.roof_material?.replace('_', ' ') || 'N/A'}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Size</p>
+                <p className="text-sm text-slate-500">Size</p>
                 <p className="font-medium">
                   {intake?.roof_size_sqft
                     ? `${intake.roof_size_sqft.toLocaleString()} sq ft`
@@ -312,11 +312,11 @@ export default function LeadDetailPage() {
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Stories</p>
+                <p className="text-sm text-slate-500">Stories</p>
                 <p className="font-medium">{intake?.stories || 'N/A'}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Pitch</p>
+                <p className="text-sm text-slate-500">Pitch</p>
                 <p className="font-medium capitalize">
                   {intake?.roof_pitch?.replace('_', ' ') || 'N/A'}
                 </p>
@@ -346,7 +346,7 @@ export default function LeadDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500">No issues reported</p>
+              <p className="text-slate-500">No issues reported</p>
             )}
           </CardContent>
         </Card>
@@ -361,13 +361,13 @@ export default function LeadDetailPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm text-gray-500">Urgency</p>
+              <p className="text-sm text-slate-500">Urgency</p>
               <p className="font-medium capitalize">
                 {intake?.timeline_urgency?.replace('_', ' ') || 'N/A'}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Insurance Claim</p>
+              <p className="text-sm text-slate-500">Insurance Claim</p>
               <p className="font-medium">
                 {intake?.has_insurance_claim ? 'Yes' : 'No'}
               </p>
@@ -388,28 +388,28 @@ export default function LeadDetailPage() {
               <div className="space-y-4">
                 <div className="flex items-end justify-between">
                   <div>
-                    <p className="text-sm text-gray-500">Range</p>
+                    <p className="text-sm text-slate-500">Range</p>
                     <p className="text-lg font-medium">
                       {formatCurrency(estimate.price_low)} -{' '}
                       {formatCurrency(estimate.price_high)}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-500">Most Likely</p>
-                    <p className="text-2xl font-bold text-blue-600">
+                    <p className="text-sm text-slate-500">Most Likely</p>
+                    <p className="text-2xl font-bold text-amber-600">
                       {formatCurrency(estimate.price_likely)}
                     </p>
                   </div>
                 </div>
                 {estimate.ai_explanation && (
                   <div>
-                    <p className="text-sm text-gray-500">AI Summary</p>
-                    <p className="text-sm text-gray-700">{estimate.ai_explanation}</p>
+                    <p className="text-sm text-slate-500">AI Summary</p>
+                    <p className="text-sm text-slate-700">{estimate.ai_explanation}</p>
                   </div>
                 )}
               </div>
             ) : (
-              <p className="text-gray-500">No estimate generated</p>
+              <p className="text-slate-500">No estimate generated</p>
             )}
           </CardContent>
         </Card>
@@ -433,7 +433,7 @@ export default function LeadDetailPage() {
                       href={photoUrl || '#'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group relative aspect-square overflow-hidden rounded-lg bg-gray-100"
+                      className="group relative aspect-square overflow-hidden rounded-lg bg-slate-100"
                     >
                       {photoUrl ? (
                         <>
@@ -445,7 +445,7 @@ export default function LeadDetailPage() {
                           <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
                         </>
                       ) : (
-                        <div className="flex h-full items-center justify-center text-gray-400">
+                        <div className="flex h-full items-center justify-center text-slate-400">
                           <ImageIcon className="h-8 w-8" />
                         </div>
                       )}
@@ -460,9 +460,9 @@ export default function LeadDetailPage() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-8 text-center">
-                <ImageIcon className="h-10 w-10 text-gray-300" />
-                <p className="mt-3 text-gray-600">No photos uploaded</p>
-                <p className="text-sm text-gray-400">Photos from the customer will appear here.</p>
+                <ImageIcon className="h-10 w-10 text-slate-300" />
+                <p className="mt-3 text-slate-600">No photos uploaded</p>
+                <p className="text-sm text-slate-400">Photos from the customer will appear here.</p>
               </div>
             )}
           </CardContent>

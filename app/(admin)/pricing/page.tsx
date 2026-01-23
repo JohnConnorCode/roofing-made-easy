@@ -95,15 +95,15 @@ export default function PricingPage() {
   const categories = [...new Set(rules.map((r) => r.rule_category))]
 
   if (isLoading) {
-    return <div className="text-gray-500">Loading pricing rules...</div>
+    return <div className="text-slate-500">Loading pricing rules...</div>
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Pricing Rules</h1>
-          <p className="text-gray-500">Configure base rates, multipliers, and fees</p>
+          <h1 className="text-2xl font-bold text-slate-900">Pricing Rules</h1>
+          <p className="text-slate-500">Configure base rates, multipliers, and fees</p>
         </div>
 
         {hasChanges && (
@@ -138,7 +138,7 @@ export default function PricingPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b text-left text-sm text-gray-500">
+                  <tr className="border-b text-left text-sm text-slate-500">
                     <th className="pb-3 pr-4">Name</th>
                     <th className="pb-3 pr-4">Base Rate</th>
                     <th className="pb-3 pr-4">Multiplier</th>
@@ -155,7 +155,7 @@ export default function PricingPage() {
                           <div>
                             <p className="font-medium">{rule.display_name}</p>
                             {rule.description && (
-                              <p className="text-sm text-gray-500">
+                              <p className="text-sm text-slate-500">
                                 {rule.description}
                               </p>
                             )}
@@ -177,7 +177,7 @@ export default function PricingPage() {
                               step="0.01"
                             />
                           ) : (
-                            <span className="text-gray-400">-</span>
+                            <span className="text-slate-400">-</span>
                           )}
                         </td>
                         <td className="py-3 pr-4">
@@ -218,7 +218,7 @@ export default function PricingPage() {
                             onChange={(e) =>
                               handleRuleChange(rule.id, 'is_active', e.target.checked)
                             }
-                            className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            className="h-5 w-5 rounded border-slate-300 text-amber-600 focus:ring-amber-500"
                           />
                         </td>
                       </tr>

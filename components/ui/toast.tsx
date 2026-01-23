@@ -28,16 +28,10 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined)
 
 const AUTO_DISMISS_MS = 5000
 
-/**
- * Generate unique ID for toasts
- */
 function generateId(): string {
   return `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 }
 
-/**
- * Toast Provider component - wrap your app with this
- */
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([])
 
@@ -52,7 +46,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
       setToasts((prev) => [...prev, newToast])
 
-      // Auto-dismiss after 5 seconds
       setTimeout(() => {
         dismissToast(id)
       }, AUTO_DISMISS_MS)
@@ -68,9 +61,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   )
 }
 
-/**
- * Hook to use toast notifications
- */
 export function useToast() {
   const context = useContext(ToastContext)
   if (context === undefined) {
@@ -79,9 +69,6 @@ export function useToast() {
   return context
 }
 
-/**
- * Toast Container - renders all active toasts
- */
 function ToastContainer({
   toasts,
   onDismiss,
@@ -104,9 +91,6 @@ function ToastContainer({
   )
 }
 
-/**
- * Individual Toast component
- */
 function ToastItem({
   toast,
   onDismiss,
@@ -117,13 +101,13 @@ function ToastItem({
   const variantStyles = {
     success: 'bg-green-50 border-green-200 text-green-800',
     error: 'bg-red-50 border-red-200 text-red-800',
-    info: 'bg-blue-50 border-blue-200 text-blue-800',
+    info: 'bg-slate-50 border-slate-200 text-slate-800',
   }
 
   const iconMap = {
     success: <CheckCircle className="h-5 w-5 text-green-600" />,
     error: <AlertCircle className="h-5 w-5 text-red-600" />,
-    info: <Info className="h-5 w-5 text-blue-600" />,
+    info: <Info className="h-5 w-5 text-slate-600" />,
   }
 
   return (
@@ -148,12 +132,8 @@ function ToastItem({
   )
 }
 
-/**
- * Convenience functions for showing specific toast types
- */
 export const toast = {
   success: (message: string) => {
-    // This will be bound to context in useToast
     console.warn('toast.success called outside ToastProvider - use useToast hook instead')
   },
   error: (message: string) => {

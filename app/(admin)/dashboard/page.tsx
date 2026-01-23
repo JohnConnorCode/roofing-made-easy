@@ -50,7 +50,7 @@ export default function DashboardPage() {
           totalLeads: data.total || leads.length,
           newLeads: leads.filter((l) => l.status === 'new').length,
           estimatesGenerated: leads.filter((l) => l.status === 'estimate_generated').length,
-          totalEstimateValue: 0, // Would need separate query
+          totalEstimateValue: 0,
         })
       }
     } catch (err) {
@@ -70,33 +70,33 @@ export default function DashboardPage() {
       title: 'Total Leads',
       value: stats.totalLeads,
       icon: Users,
-      color: 'bg-blue-500',
+      color: 'bg-slate-700',
     },
     {
       title: 'New Leads',
       value: stats.newLeads,
       icon: Clock,
-      color: 'bg-amber-500',
+      color: 'bg-amber-600',
     },
     {
       title: 'Estimates Generated',
       value: stats.estimatesGenerated,
       icon: CheckCircle,
-      color: 'bg-green-500',
+      color: 'bg-green-600',
     },
     {
       title: 'Est. Pipeline Value',
       value: formatCurrency(stats.totalEstimateValue),
       icon: DollarSign,
-      color: 'bg-purple-500',
+      color: 'bg-slate-800',
     },
   ]
 
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-500">Today's pipeline at a glance</p>
+        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+        <p className="text-slate-500">Today's pipeline at a glance</p>
       </div>
 
       {/* Stats grid */}
@@ -108,8 +108,8 @@ export default function DashboardPage() {
                 <stat.icon className="h-6 w-6 text-white" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">{stat.title}</p>
-                <p className="text-2xl font-bold">
+                <p className="text-sm text-slate-500">{stat.title}</p>
+                <p className="text-2xl font-bold text-slate-900">
                   {isLoading ? '...' : stat.value}
                 </p>
               </div>
@@ -121,10 +121,10 @@ export default function DashboardPage() {
       {/* Recent leads */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Recent Leads (Last 10)</CardTitle>
+          <CardTitle className="text-slate-900">Recent Leads (Last 10)</CardTitle>
           <Link
             href="/leads"
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-amber-600 hover:underline"
           >
             View all
           </Link>
@@ -132,13 +132,13 @@ export default function DashboardPage() {
         <CardContent>
           {isLoading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="h-6 w-6 animate-spin text-blue-600" />
-              <span className="ml-2 text-gray-500">Loading leads...</span>
+              <Loader2 className="h-6 w-6 animate-spin text-amber-600" />
+              <span className="ml-2 text-slate-500">Loading leads...</span>
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-8">
               <AlertTriangle className="h-10 w-10 text-amber-500" />
-              <p className="mt-3 text-gray-600">{error}</p>
+              <p className="mt-3 text-slate-600">{error}</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -151,15 +151,15 @@ export default function DashboardPage() {
             </div>
           ) : recentLeads.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8">
-              <Inbox className="h-10 w-10 text-gray-300" />
-              <p className="mt-3 text-gray-600">No leads yet</p>
-              <p className="text-sm text-gray-400">New submissions will appear here automatically.</p>
+              <Inbox className="h-10 w-10 text-slate-300" />
+              <p className="mt-3 text-slate-600">No leads yet</p>
+              <p className="text-sm text-slate-400">New submissions will appear here automatically.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b text-left text-sm text-gray-500">
+                  <tr className="border-b text-left text-sm text-slate-500">
                     <th className="pb-3 pr-4">Name</th>
                     <th className="pb-3 pr-4">Location</th>
                     <th className="pb-3 pr-4">Status</th>
@@ -171,18 +171,18 @@ export default function DashboardPage() {
                     const contact = lead.contacts?.[0]
                     const property = lead.properties?.[0]
                     return (
-                      <tr key={lead.id} className="border-b last:border-0 hover:bg-gray-50 transition-colors">
+                      <tr key={lead.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
                         <td className="py-3 pr-4">
                           <Link
                             href={`/leads/${lead.id}`}
-                            className="font-medium text-blue-600 hover:underline"
+                            className="font-medium text-amber-600 hover:underline"
                           >
                             {contact?.first_name && contact?.last_name
                               ? `${contact.first_name} ${contact.last_name}`
                               : contact?.email || 'Unknown'}
                           </Link>
                         </td>
-                        <td className="py-3 pr-4 text-gray-600">
+                        <td className="py-3 pr-4 text-slate-600">
                           {property?.city && property?.state
                             ? `${property.city}, ${property.state}`
                             : 'N/A'}
@@ -190,7 +190,7 @@ export default function DashboardPage() {
                         <td className="py-3 pr-4">
                           <StatusBadge status={lead.status} />
                         </td>
-                        <td className="py-3 text-gray-600">
+                        <td className="py-3 text-slate-600">
                           {formatDate(lead.created_at)}
                         </td>
                       </tr>
@@ -208,20 +208,20 @@ export default function DashboardPage() {
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    new: 'bg-blue-100 text-blue-800',
-    intake_started: 'bg-amber-100 text-amber-800',
-    intake_complete: 'bg-purple-100 text-purple-800',
+    new: 'bg-amber-100 text-amber-800',
+    intake_started: 'bg-slate-100 text-slate-800',
+    intake_complete: 'bg-slate-200 text-slate-800',
     estimate_generated: 'bg-green-100 text-green-800',
-    consultation_scheduled: 'bg-cyan-100 text-cyan-800',
-    quote_sent: 'bg-indigo-100 text-indigo-800',
-    won: 'bg-emerald-100 text-emerald-800',
-    lost: 'bg-gray-100 text-gray-800',
-    archived: 'bg-gray-100 text-gray-500',
+    consultation_scheduled: 'bg-amber-100 text-amber-800',
+    quote_sent: 'bg-slate-700 text-white',
+    won: 'bg-green-600 text-white',
+    lost: 'bg-slate-100 text-slate-600',
+    archived: 'bg-slate-100 text-slate-500',
   }
 
   return (
     <span
-      className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${styles[status] || 'bg-gray-100'}`}
+      className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${styles[status] || 'bg-slate-100'}`}
     >
       {status.replace('_', ' ')}
     </span>

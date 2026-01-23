@@ -8,50 +8,50 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-stone-50">
       <div className="mx-auto max-w-3xl px-4 py-16">
-        <h1 className="mb-8 text-3xl font-bold text-gray-900">
+        <h1 className="mb-8 text-3xl font-bold text-slate-900">
           Terms of Service
         </h1>
 
-        <div className="prose prose-gray max-w-none space-y-6">
-          <p className="text-lg text-gray-600">
+        <div className="prose prose-slate max-w-none space-y-6">
+          <p className="text-lg text-slate-600">
             Effective Date: January 1, 2025
           </p>
 
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             Please read these Terms of Service carefully before using our roofing estimate
             calculator service. By accessing or using our service, you agree to be bound by
             these terms.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             1. Acceptance of Terms
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             By accessing and using this website and our roofing estimate calculator service,
             you accept and agree to be bound by these Terms of Service and our Privacy Policy.
             If you do not agree to these terms, please do not use our service.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             2. Description of Service
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             Our service provides automated roofing cost estimates based on information you provide
             about your property and project requirements. The service is designed to give you a
             general idea of potential costs before engaging with roofing contractors.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             3. Estimate Disclaimer
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             <strong>Important:</strong> All estimates provided through this service are for
             informational purposes only and do not constitute a binding quote, bid, or contract.
             You acknowledge and agree that:
           </p>
-          <ul className="list-disc space-y-2 pl-6 text-gray-700">
+          <ul className="list-disc space-y-2 pl-6 text-slate-700">
             <li>Estimates are based solely on the information you provide and may not reflect actual costs.</li>
             <li>Final pricing will be determined only after an on-site inspection by a licensed roofing contractor.</li>
             <li>Actual costs may vary significantly based on factors not visible in photos or disclosed during the estimate process.</li>
@@ -59,112 +59,112 @@ export default function TermsPage() {
             <li>We make no guarantees regarding the accuracy of any estimate provided.</li>
           </ul>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             4. User Responsibilities
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             When using our service, you agree to:
           </p>
-          <ul className="list-disc space-y-2 pl-6 text-gray-700">
+          <ul className="list-disc space-y-2 pl-6 text-slate-700">
             <li>Provide accurate and truthful information about your property and roofing needs.</li>
             <li>Only submit information and photos for properties you own or have authorization to request estimates for.</li>
             <li>Not use the service for any unlawful purpose or in violation of any applicable laws.</li>
             <li>Not attempt to interfere with the proper functioning of the service.</li>
           </ul>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             5. Intellectual Property
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             All content, features, and functionality of this service, including but not limited to
             text, graphics, logos, and software, are owned by us or our licensors and are protected
             by intellectual property laws. You may not reproduce, distribute, or create derivative
             works without our express written permission.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             6. Photos and Content You Submit
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             By uploading photos or other content to our service, you grant us a non-exclusive,
             royalty-free license to use, store, and process that content for the purpose of
             providing our services. You represent that you have the right to submit any content
             you upload and that it does not infringe on any third-party rights.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             7. Third-Party Contractors
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             We may connect you with third-party roofing contractors. We do not employ, endorse,
             or guarantee the work of any contractor. Any agreement you enter into with a contractor
             is solely between you and that contractor. We are not responsible for the quality,
             safety, or legality of any work performed by third-party contractors.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             8. Limitation of Liability
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             To the maximum extent permitted by law, we shall not be liable for any indirect,
             incidental, special, consequential, or punitive damages arising out of or related
             to your use of our service. Our total liability shall not exceed the amount you
             paid to use our service (if any) in the 12 months preceding the claim.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             9. Disclaimer of Warranties
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             Our service is provided &quot;as is&quot; and &quot;as available&quot; without any
             warranties of any kind, either express or implied, including but not limited to
             warranties of merchantability, fitness for a particular purpose, or non-infringement.
             We do not warrant that the service will be uninterrupted, error-free, or secure.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             10. Indemnification
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             You agree to indemnify and hold us harmless from any claims, damages, losses, or
             expenses (including reasonable attorney&apos;s fees) arising from your use of the
             service, your violation of these terms, or your violation of any rights of a third party.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             11. Modifications to Terms
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             We reserve the right to modify these Terms of Service at any time. We will notify
             users of material changes by posting the updated terms on this page with a new
             effective date. Your continued use of the service after changes are posted
             constitutes acceptance of the modified terms.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             12. Termination
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             We may terminate or suspend your access to our service at any time, without prior
             notice or liability, for any reason, including if you breach these Terms of Service.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             13. Governing Law
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             These Terms of Service shall be governed by and construed in accordance with the
             laws of the state in which our company is registered, without regard to its conflict
             of law provisions.
           </p>
 
-          <h2 className="mt-8 text-xl font-semibold text-gray-900">
+          <h2 className="mt-8 text-xl font-semibold text-slate-900">
             14. Contact Information
           </h2>
-          <p className="text-gray-700">
+          <p className="text-slate-700">
             If you have any questions about these Terms of Service, please contact us:
           </p>
-          <ul className="list-none space-y-1 pl-0 text-gray-700">
+          <ul className="list-none space-y-1 pl-0 text-slate-700">
             <li>By phone: Contact us using the number provided on our website</li>
             <li>By using the contact form on our website</li>
           </ul>
@@ -173,7 +173,7 @@ export default function TermsPage() {
         <div className="mt-12">
           <Link
             href="/"
-            className="text-blue-600 hover:text-blue-800 hover:underline"
+            className="text-amber-600 hover:text-amber-700 hover:underline"
           >
             &larr; Back to Home
           </Link>
