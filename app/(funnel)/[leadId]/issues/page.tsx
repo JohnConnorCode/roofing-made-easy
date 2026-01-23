@@ -92,6 +92,7 @@ export default function IssuesPage() {
   const router = useRouter()
   const params = useParams()
   const leadId = params.leadId as string
+  const isDemoMode = leadId.startsWith('demo-')
 
   const {
     issues,
@@ -106,17 +107,24 @@ export default function IssuesPage() {
   const handleNext = async () => {
     setIsLoading(true)
     try {
-      await fetch(`/api/leads/${leadId}/intake`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          intake: {
-            issues: issues,
-            issues_description: issuesDescription || null,
-          },
-          current_step: 5,
-        }),
-      })
+      // Try API save (non-blocking)
+      if (!isDemoMode) {
+        try {
+          await fetch(`/api/leads/${leadId}/intake`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              intake: {
+                issues: issues,
+                issues_description: issuesDescription || null,
+              },
+              current_step: 5,
+            }),
+          })
+        } catch (apiError) {
+          console.log('API save failed, continuing with local data')
+        }
+      }
 
       setCurrentStep(5)
       router.push(`/${leadId}/photos`)

@@ -59,6 +59,7 @@ export default function JobTypePage() {
   const router = useRouter()
   const params = useParams()
   const leadId = params.leadId as string
+  const isDemoMode = leadId.startsWith('demo-')
 
   const {
     jobType,
@@ -81,17 +82,24 @@ export default function JobTypePage() {
 
     setIsLoading(true)
     try {
-      await fetch(`/api/leads/${leadId}/intake`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          intake: {
-            job_type: jobType,
-            job_description: jobDescription || null,
-          },
-          current_step: 3,
-        }),
-      })
+      // Try API save (non-blocking)
+      if (!isDemoMode) {
+        try {
+          await fetch(`/api/leads/${leadId}/intake`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              intake: {
+                job_type: jobType,
+                job_description: jobDescription || null,
+              },
+              current_step: 3,
+            }),
+          })
+        } catch (apiError) {
+          console.log('API save failed, continuing with local data')
+        }
+      }
 
       setCurrentStep(3)
       router.push(`/${leadId}/roof-details`)

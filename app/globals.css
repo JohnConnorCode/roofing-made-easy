@@ -2,8 +2,44 @@
 
 @theme inline {
   --font-sans: var(--font-inter);
+
+  /* Professional Roofing Color Palette */
+  --color-slate-950: #0c1425;
+  --color-roof-navy: #1a2e4a;
+  --color-roof-blue: #2d4a6f;
+  --color-roof-accent: #d97706;
+  --color-roof-accent-light: #f59e0b;
+  --color-roof-success: #059669;
+  --color-cream: #faf9f7;
+  --color-warm-gray: #f5f4f2;
 }
 
 body {
   font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* Professional gradient backgrounds */
+.bg-roof-gradient {
+  background: linear-gradient(135deg, var(--color-roof-navy) 0%, var(--color-slate-950) 100%);
+}
+
+.bg-roof-gradient-light {
+  background: linear-gradient(180deg, var(--color-warm-gray) 0%, #ffffff 100%);
+}
+
+/* Industrial texture overlay (subtle) */
+.bg-texture {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Print styles for estimate PDF */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
 }

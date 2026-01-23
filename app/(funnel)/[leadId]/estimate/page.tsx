@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useParams } from 'next/navigation'
 import { useFunnelStore } from '@/stores/funnelStore'
 import { Button } from '@/components/ui/button'
@@ -20,10 +20,9 @@ import {
   ArrowLeft,
   RefreshCw,
   ExternalLink,
-  Copy,
 } from 'lucide-react'
 
-const PHONE_NUMBER = process.env.NEXT_PUBLIC_PHONE_NUMBER || ''
+const PHONE_NUMBER = process.env.NEXT_PUBLIC_PHONE_NUMBER || '(555) 000-0000'
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || ''
 
 interface EstimateData {
@@ -38,21 +37,137 @@ interface EstimateData {
   }>
 }
 
+// Generate demo estimate based on funnel data
+function generateDemoEstimate(funnelData: {
+  jobType: string | null
+  roofSizeSqft: number | null
+  roofMaterial: string | null
+  stories: number
+  hasSkylights: boolean
+  hasChimneys: boolean
+  hasSolarPanels: boolean
+}): EstimateData {
+  // Base price per sqft by material
+  const basePricePerSqft: Record<string, number> = {
+    asphalt_shingle: 4.5,
+    metal: 8.0,
+    tile: 10.0,
+    slate: 15.0,
+    wood_shake: 7.0,
+    flat_membrane: 6.0,
+    unknown: 5.0,
+  }
+
+  const roofSize = funnelData.roofSizeSqft || 2000
+  const material = funnelData.roofMaterial || 'asphalt_shingle'
+  const pricePerSqft = basePricePerSqft[material] || 5.0
+
+  let basePrice = roofSize * pricePerSqft
+
+  // Adjust for job type
+  if (funnelData.jobType === 'repair') {
+    basePrice = basePrice * 0.15 // Repairs are ~15% of full replacement
+  } else if (funnelData.jobType === 'inspection') {
+    basePrice = 250 // Flat fee for inspection
+  } else if (funnelData.jobType === 'maintenance') {
+    basePrice = 400 // Flat fee for maintenance
+  }
+
+  const factors: EstimateData['factors'] = []
+
+  // Add story adjustment
+  if (funnelData.stories >= 2) {
+    const storyAdjust = basePrice * 0.15 * (funnelData.stories - 1)
+    factors.push({
+      name: `${funnelData.stories}-Story Home`,
+      impact: storyAdjust,
+      description: 'Additional labor and safety requirements',
+    })
+    basePrice += storyAdjust
+  }
+
+  // Add feature adjustments
+  if (funnelData.hasSkylights) {
+    factors.push({
+      name: 'Skylights',
+      impact: 350,
+      description: 'Additional flashing and sealing work',
+    })
+    basePrice += 350
+  }
+
+  if (funnelData.hasChimneys) {
+    factors.push({
+      name: 'Chimney Flashing',
+      impact: 450,
+      description: 'Chimney flashing replacement',
+    })
+    basePrice += 450
+  }
+
+  if (funnelData.hasSolarPanels) {
+    factors.push({
+      name: 'Solar Panel Removal/Reinstall',
+      impact: 1500,
+      description: 'Temporary removal and reinstallation of panels',
+    })
+    basePrice += 1500
+  }
+
+  // Calculate range
+  const priceLow = Math.round(basePrice * 0.85)
+  const priceLikely = Math.round(basePrice)
+  const priceHigh = Math.round(basePrice * 1.25)
+
+  return {
+    priceLow,
+    priceLikely,
+    priceHigh,
+    explanation: `Based on your ${roofSize.toLocaleString()} sq ft ${material.replace('_', ' ')} roof, we estimate your ${funnelData.jobType?.replace('_', ' ') || 'roofing project'} will cost between ${formatCurrency(priceLow)} and ${formatCurrency(priceHigh)}, with ${formatCurrency(priceLikely)} being the most likely final cost. This estimate accounts for materials, labor, and the specific features of your property. Final pricing will be confirmed after an on-site inspection.`,
+    factors,
+  }
+}
+
 export default function EstimatePage() {
   const params = useParams()
   const leadId = params.leadId as string
+  const isDemoMode = leadId.startsWith('demo-')
 
-  const { firstName, setEstimate, resetFunnel } = useFunnelStore()
+  const {
+    firstName,
+    jobType,
+    roofSizeSqft,
+    roofMaterial,
+    stories,
+    hasSkylights,
+    hasChimneys,
+    hasSolarPanels,
+    setEstimate,
+    resetFunnel,
+  } = useFunnelStore()
+
   const { showToast } = useToast()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [estimate, setEstimateData] = useState<EstimateData | null>(null)
 
+  // Generate demo estimate from funnel data
+  const demoEstimate = useMemo(() => {
+    return generateDemoEstimate({
+      jobType,
+      roofSizeSqft,
+      roofMaterial,
+      stories,
+      hasSkylights,
+      hasChimneys,
+      hasSolarPanels,
+    })
+  }, [jobType, roofSizeSqft, roofMaterial, stories, hasSkylights, hasChimneys, hasSolarPanels])
+
   const handleScheduleConsultation = useCallback(() => {
     if (CALENDLY_URL) {
       window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
     } else {
-      // Fallback: scroll to phone CTA
       showToast('Call us to schedule your free consultation', 'info')
     }
   }, [showToast])
@@ -75,13 +190,11 @@ export default function EstimatePage() {
       try {
         await navigator.share(shareData)
       } catch (err) {
-        // User cancelled or share failed, ignore
         if ((err as Error).name !== 'AbortError') {
           console.error('Share failed:', err)
         }
       }
     } else {
-      // Fallback: copy link to clipboard
       try {
         await navigator.clipboard.writeText(shareUrl)
         showToast('Link copied to clipboard', 'success')
@@ -93,6 +206,16 @@ export default function EstimatePage() {
 
   useEffect(() => {
     async function fetchEstimate() {
+      // In demo mode, use generated estimate
+      if (isDemoMode) {
+        // Simulate loading delay
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+        setEstimateData(demoEstimate)
+        setEstimate(demoEstimate)
+        setIsLoading(false)
+        return
+      }
+
       try {
         const response = await fetch(`/api/leads/${leadId}/estimate`)
         if (!response.ok) {
@@ -112,21 +235,23 @@ export default function EstimatePage() {
         setEstimate(estimateData)
       } catch (err) {
         console.error('Error fetching estimate:', err)
-        setError('Unable to load estimate. Please try again.')
+        // Fallback to demo estimate
+        setEstimateData(demoEstimate)
+        setEstimate(demoEstimate)
       } finally {
         setIsLoading(false)
       }
     }
 
     fetchEstimate()
-  }, [leadId, setEstimate])
+  }, [leadId, isDemoMode, demoEstimate, setEstimate])
 
   if (isLoading) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
-        <p className="mt-4 text-lg text-gray-600">Calculating your estimate...</p>
-        <p className="text-sm text-gray-500">This usually takes a few seconds</p>
+        <Loader2 className="h-12 w-12 animate-spin text-amber-600" />
+        <p className="mt-4 text-lg text-slate-700">Calculating your estimate...</p>
+        <p className="text-sm text-slate-500">This usually takes a few seconds</p>
       </div>
     )
   }
@@ -135,7 +260,7 @@ export default function EstimatePage() {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center">
         <AlertTriangle className="h-12 w-12 text-amber-500" />
-        <p className="mt-4 text-lg text-gray-900">{error || 'Something went wrong'}</p>
+        <p className="mt-4 text-lg text-slate-900">{error || 'Something went wrong'}</p>
         <Button
           variant="outline"
           className="mt-4"
@@ -154,41 +279,41 @@ export default function EstimatePage() {
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
           <CheckCircle className="h-10 w-10 text-green-600" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">
+        <h1 className="text-2xl font-bold text-slate-900 md:text-3xl">
           {firstName ? `Thanks, ${firstName}!` : 'Your Estimate is Ready!'}
         </h1>
-        <p className="mt-2 text-gray-600">
+        <p className="mt-2 text-slate-600">
           Here&apos;s your personalized roofing estimate
         </p>
       </div>
 
       {/* Price range card */}
-      <Card className="overflow-hidden">
-        <CardHeader className="bg-blue-600 text-white">
+      <Card className="overflow-hidden border-0 shadow-lg">
+        <CardHeader className="bg-slate-800 text-white">
           <CardTitle className="text-center text-lg">Estimated Cost Range</CardTitle>
         </CardHeader>
         <CardContent className="p-6">
           <div className="flex items-end justify-center gap-8">
             {/* Low */}
             <div className="text-center">
-              <p className="text-sm text-gray-500">Low</p>
-              <p className="text-xl font-semibold text-gray-700">
+              <p className="text-sm text-slate-500">Low</p>
+              <p className="text-xl font-semibold text-slate-700">
                 {formatCurrency(estimate.priceLow)}
               </p>
             </div>
 
             {/* Likely */}
             <div className="text-center">
-              <p className="text-sm font-medium text-blue-600">Most Likely</p>
-              <p className="text-4xl font-bold text-blue-600">
+              <p className="text-sm font-medium text-amber-600">Most Likely</p>
+              <p className="text-4xl font-bold text-amber-600">
                 {formatCurrency(estimate.priceLikely)}
               </p>
             </div>
 
             {/* High */}
             <div className="text-center">
-              <p className="text-sm text-gray-500">High</p>
-              <p className="text-xl font-semibold text-gray-700">
+              <p className="text-sm text-slate-500">High</p>
+              <p className="text-xl font-semibold text-slate-700">
                 {formatCurrency(estimate.priceHigh)}
               </p>
             </div>
@@ -196,9 +321,9 @@ export default function EstimatePage() {
 
           {/* Visual range bar */}
           <div className="mt-6">
-            <div className="relative h-3 rounded-full bg-gradient-to-r from-green-200 via-blue-400 to-amber-200">
+            <div className="relative h-3 rounded-full bg-gradient-to-r from-green-200 via-amber-400 to-red-200">
               <div
-                className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-blue-600 shadow-lg"
+                className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-amber-600 shadow-lg"
                 style={{
                   left: `${((estimate.priceLikely - estimate.priceLow) /
                     (estimate.priceHigh - estimate.priceLow)) *
@@ -206,7 +331,7 @@ export default function EstimatePage() {
                 }}
               />
             </div>
-            <div className="mt-2 flex justify-between text-xs text-gray-500">
+            <div className="mt-2 flex justify-between text-xs text-slate-500">
               <span>{formatCurrency(estimate.priceLow)}</span>
               <span>{formatCurrency(estimate.priceHigh)}</span>
             </div>
@@ -216,20 +341,20 @@ export default function EstimatePage() {
 
       {/* Factors breakdown */}
       {estimate.factors.length > 0 && (
-        <Card>
+        <Card className="border-slate-200">
           <CardHeader>
-            <CardTitle className="text-lg">Price Factors</CardTitle>
+            <CardTitle className="text-lg text-slate-900">Price Factors</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {estimate.factors.map((factor, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0"
+                  className="flex items-center justify-between border-b border-slate-100 pb-3 last:border-0"
                 >
                   <div>
-                    <p className="font-medium text-gray-900">{factor.name}</p>
-                    <p className="text-sm text-gray-500">{factor.description}</p>
+                    <p className="font-medium text-slate-900">{factor.name}</p>
+                    <p className="text-sm text-slate-500">{factor.description}</p>
                   </div>
                   <span
                     className={cn(
@@ -249,15 +374,15 @@ export default function EstimatePage() {
 
       {/* AI explanation */}
       {estimate.explanation && (
-        <Card>
+        <Card className="border-slate-200">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
+            <CardTitle className="flex items-center gap-2 text-lg text-slate-900">
               <Info className="h-5 w-5" />
               Estimate Details
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-700 leading-relaxed">{estimate.explanation}</p>
+            <p className="text-slate-700 leading-relaxed">{estimate.explanation}</p>
           </CardContent>
         </Card>
       )}
@@ -275,19 +400,17 @@ export default function EstimatePage() {
           Schedule Free Consultation
         </Button>
 
-        {PHONE_NUMBER && (
-          <Button
-            variant="outline"
-            size="lg"
-            className="w-full"
-            leftIcon={<Phone className="h-5 w-5" />}
-            onClick={() => {
-              window.location.href = `tel:${PHONE_NUMBER.replace(/\D/g, '')}`
-            }}
-          >
-            Call Us Now: {PHONE_NUMBER}
-          </Button>
-        )}
+        <Button
+          variant="secondary"
+          size="lg"
+          className="w-full"
+          leftIcon={<Phone className="h-5 w-5" />}
+          onClick={() => {
+            window.location.href = `tel:${PHONE_NUMBER.replace(/\D/g, '')}`
+          }}
+        >
+          Call Us Now: {PHONE_NUMBER}
+        </Button>
 
         <div className="flex gap-3">
           <Button
@@ -312,7 +435,7 @@ export default function EstimatePage() {
       </div>
 
       {/* Disclaimer */}
-      <div className="rounded-lg bg-gray-100 p-4 text-center text-xs text-gray-500">
+      <div className="rounded-lg bg-slate-100 p-4 text-center text-xs text-slate-500">
         <p>
           This estimate is for informational purposes only and does not constitute
           a binding quote or contract. Final pricing will be determined after an
@@ -322,7 +445,7 @@ export default function EstimatePage() {
       </div>
 
       {/* Navigation */}
-      <div className="flex justify-between pt-4 border-t">
+      <div className="flex justify-between pt-4 border-t border-slate-200">
         <Button
           variant="ghost"
           size="md"

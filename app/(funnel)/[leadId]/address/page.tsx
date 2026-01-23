@@ -65,8 +65,9 @@ export default function AddressPage() {
   const router = useRouter()
   const params = useParams()
   const leadId = params.leadId as string
+  const isDemoMode = leadId.startsWith('demo-')
 
-  const { address, setAddress, setCurrentStep } = useFunnelStore()
+  const { address, setAddress, setCurrentStep, setLeadId } = useFunnelStore()
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const formRef = useRef<HTMLDivElement>(null)
@@ -129,20 +130,30 @@ export default function AddressPage() {
         formattedAddress: `${formData.streetAddress}, ${formData.city}, ${formData.state} ${formData.zipCode}`,
       })
 
-      // Save to API
-      await fetch(`/api/leads/${leadId}/intake`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          property: {
-            street_address: formData.streetAddress,
-            city: formData.city,
-            state: formData.state,
-            zip_code: formData.zipCode,
-          },
-          current_step: 2,
-        }),
-      })
+      // Store lead ID in funnel store
+      setLeadId(leadId)
+
+      // Try to save to API (non-blocking in demo mode)
+      if (!isDemoMode) {
+        try {
+          await fetch(`/api/leads/${leadId}/intake`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              property: {
+                street_address: formData.streetAddress,
+                city: formData.city,
+                state: formData.state,
+                zip_code: formData.zipCode,
+              },
+              current_step: 2,
+            }),
+          })
+        } catch (apiError) {
+          // API error is non-blocking - data is saved in local store
+          console.log('API save failed, continuing with local data')
+        }
+      }
 
       setCurrentStep(2)
       router.push(`/${leadId}/job-type`)
@@ -162,7 +173,7 @@ export default function AddressPage() {
   return (
     <StepContainer
       title="Where is the property located?"
-      description="We'll use this to check if we service your area and provide accurate pricing."
+      description="We'll use this to provide accurate local pricing for your area."
       onNext={handleNext}
       isNextDisabled={!isValid}
       isLoading={isLoading}

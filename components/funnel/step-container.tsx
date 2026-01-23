@@ -35,9 +35,9 @@ export function StepContainer({
     <div className={cn('flex flex-col', className)}>
       {/* Header */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">{title}</h2>
+        <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">{title}</h2>
         {description && (
-          <p className="mt-2 text-gray-600">{description}</p>
+          <p className="mt-2 text-slate-600">{description}</p>
         )}
       </div>
 

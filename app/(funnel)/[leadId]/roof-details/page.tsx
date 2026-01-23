@@ -39,6 +39,7 @@ export default function RoofDetailsPage() {
   const router = useRouter()
   const params = useParams()
   const leadId = params.leadId as string
+  const isDemoMode = leadId.startsWith('demo-')
 
   const {
     roofMaterial,
@@ -60,23 +61,30 @@ export default function RoofDetailsPage() {
 
     setIsLoading(true)
     try {
-      await fetch(`/api/leads/${leadId}/intake`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          intake: {
-            roof_material: roofMaterial,
-            roof_age_years: roofAgeYears,
-            roof_size_sqft: roofSizeSqft,
-            stories,
-            roof_pitch: roofPitch,
-            has_skylights: hasSkylights,
-            has_chimneys: hasChimneys,
-            has_solar_panels: hasSolarPanels,
-          },
-          current_step: 4,
-        }),
-      })
+      // Try API save (non-blocking)
+      if (!isDemoMode) {
+        try {
+          await fetch(`/api/leads/${leadId}/intake`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              intake: {
+                roof_material: roofMaterial,
+                roof_age_years: roofAgeYears,
+                roof_size_sqft: roofSizeSqft,
+                stories,
+                roof_pitch: roofPitch,
+                has_skylights: hasSkylights,
+                has_chimneys: hasChimneys,
+                has_solar_panels: hasSolarPanels,
+              },
+              current_step: 4,
+            }),
+          })
+        } catch (apiError) {
+          console.log('API save failed, continuing with local data')
+        }
+      }
 
       setCurrentStep(4)
       router.push(`/${leadId}/issues`)
@@ -103,7 +111,7 @@ export default function RoofDetailsPage() {
       <div className="space-y-8">
         {/* Roof Material */}
         <div>
-          <h3 className="mb-3 text-lg font-medium">What type of roof do you have?</h3>
+          <h3 className="mb-3 text-lg font-medium text-slate-900">What type of roof do you have?</h3>
           <div className="grid gap-3 md:grid-cols-2">
             {ROOF_MATERIALS.map((material) => (
               <OptionCard
@@ -161,7 +169,7 @@ export default function RoofDetailsPage() {
 
         {/* Features */}
         <div>
-          <h3 className="mb-3 text-lg font-medium">Does your roof have any of these?</h3>
+          <h3 className="mb-3 text-lg font-medium text-slate-900">Does your roof have any of these?</h3>
           <div className="space-y-3">
             <Checkbox
               label="Skylights"

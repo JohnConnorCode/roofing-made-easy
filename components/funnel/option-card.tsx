@@ -26,7 +26,9 @@ export function OptionCard({
       variant={selected ? 'selected' : 'selectable'}
       className={cn(
         'relative min-h-[80px] cursor-pointer p-4 md:min-h-[100px] md:p-6',
-        'touch-manipulation', // Better touch handling
+        'touch-manipulation',
+        selected && 'border-amber-500 bg-amber-50 ring-2 ring-amber-500/20',
+        !selected && 'hover:border-amber-300',
         className
       )}
       onClick={onClick}
@@ -43,7 +45,7 @@ export function OptionCard({
     >
       {/* Selection indicator */}
       {selected && (
-        <div className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600">
+        <div className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-amber-600">
           <Check className="h-4 w-4 text-white" />
         </div>
       )}
@@ -53,7 +55,7 @@ export function OptionCard({
           <div
             className={cn(
               'flex h-12 w-12 items-center justify-center rounded-lg',
-              selected ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'
+              selected ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'
             )}
           >
             {icon}
@@ -64,13 +66,13 @@ export function OptionCard({
           <h3
             className={cn(
               'font-semibold',
-              selected ? 'text-blue-900' : 'text-gray-900'
+              selected ? 'text-amber-900' : 'text-slate-900'
             )}
           >
             {title}
           </h3>
           {description && (
-            <p className="mt-1 text-sm text-gray-500">{description}</p>
+            <p className="mt-1 text-sm text-slate-500">{description}</p>
           )}
         </div>
       </div>

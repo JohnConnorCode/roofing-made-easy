@@ -10,10 +10,10 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', ...props }, ref) => {
     const variants = {
-      default: 'bg-white border border-gray-200',
+      default: 'bg-white border border-slate-200',
       selectable:
-        'bg-white border-2 border-gray-200 cursor-pointer hover:border-blue-400 hover:shadow-md transition-all',
-      selected: 'bg-blue-50 border-2 border-blue-500 shadow-md',
+        'bg-white border-2 border-slate-200 cursor-pointer hover:border-amber-400 hover:shadow-md transition-all',
+      selected: 'bg-amber-50 border-2 border-amber-500 shadow-md',
     }
 
     return (
@@ -62,7 +62,7 @@ const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionPr
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('text-sm text-gray-500', className)}
+      className={cn('text-sm text-slate-500', className)}
       {...props}
     />
   )

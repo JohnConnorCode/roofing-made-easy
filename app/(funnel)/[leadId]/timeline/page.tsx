@@ -65,6 +65,7 @@ export default function TimelinePage() {
   const router = useRouter()
   const params = useParams()
   const leadId = params.leadId as string
+  const isDemoMode = leadId.startsWith('demo-')
 
   const {
     timelineUrgency,
@@ -82,19 +83,26 @@ export default function TimelinePage() {
 
     setIsLoading(true)
     try {
-      await fetch(`/api/leads/${leadId}/intake`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          intake: {
-            timeline_urgency: timelineUrgency,
-            has_insurance_claim: hasInsuranceClaim,
-            insurance_company: insuranceCompany || null,
-            claim_number: claimNumber || null,
-          },
-          current_step: 7,
-        }),
-      })
+      // Try API save (non-blocking)
+      if (!isDemoMode) {
+        try {
+          await fetch(`/api/leads/${leadId}/intake`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              intake: {
+                timeline_urgency: timelineUrgency,
+                has_insurance_claim: hasInsuranceClaim,
+                insurance_company: insuranceCompany || null,
+                claim_number: claimNumber || null,
+              },
+              current_step: 7,
+            }),
+          })
+        } catch (apiError) {
+          console.log('API save failed, continuing with local data')
+        }
+      }
 
       setCurrentStep(7)
       router.push(`/${leadId}/contact`)
@@ -134,7 +142,7 @@ export default function TimelinePage() {
         </div>
 
         {/* Insurance claim section */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6">
+        <div className="rounded-lg border border-slate-200 bg-white p-6">
           <Checkbox
             label="This is related to an insurance claim"
             description="Check this if you've filed or plan to file an insurance claim"

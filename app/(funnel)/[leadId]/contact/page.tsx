@@ -18,6 +18,7 @@ export default function ContactPage() {
   const router = useRouter()
   const params = useParams()
   const leadId = params.leadId as string
+  const isDemoMode = leadId.startsWith('demo-')
 
   const {
     firstName,
@@ -82,28 +83,35 @@ export default function ContactPage() {
 
     setIsLoading(true)
     try {
-      await fetch(`/api/leads/${leadId}/intake`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contact: {
-            first_name: firstName,
-            last_name: lastName,
-            email,
-            phone,
-            preferred_contact_method: preferredContactMethod,
-            consent_marketing: consentMarketing,
-            consent_sms: consentSms,
-            consent_terms: consentTerms,
-          },
-          current_step: 8,
-        }),
-      })
+      // Try API save (non-blocking)
+      if (!isDemoMode) {
+        try {
+          await fetch(`/api/leads/${leadId}/intake`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contact: {
+                first_name: firstName,
+                last_name: lastName,
+                email,
+                phone,
+                preferred_contact_method: preferredContactMethod,
+                consent_marketing: consentMarketing,
+                consent_sms: consentSms,
+                consent_terms: consentTerms,
+              },
+              current_step: 8,
+            }),
+          })
 
-      // Generate estimate
-      await fetch(`/api/leads/${leadId}/estimate`, {
-        method: 'POST',
-      })
+          // Generate estimate via API
+          await fetch(`/api/leads/${leadId}/estimate`, {
+            method: 'POST',
+          })
+        } catch (apiError) {
+          console.log('API save failed, continuing with local data')
+        }
+      }
 
       setCurrentStep(8)
       router.push(`/${leadId}/estimate`)
@@ -214,16 +222,16 @@ export default function ContactPage() {
         />
 
         {/* Consent checkboxes */}
-        <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50 p-4" data-error={!!errors.consentTerms}>
+        <div className="space-y-4 rounded-lg border border-slate-200 bg-slate-50 p-4" data-error={!!errors.consentTerms}>
           <Checkbox
             label={
               <span>
                 I agree to the{' '}
-                <a href="/terms" target="_blank" className="text-blue-600 hover:underline">
+                <a href="/terms" target="_blank" className="text-amber-600 hover:underline">
                   Terms of Service
                 </a>{' '}
                 and{' '}
-                <a href="/privacy" target="_blank" className="text-blue-600 hover:underline">
+                <a href="/privacy" target="_blank" className="text-amber-600 hover:underline">
                   Privacy Policy
                 </a>
               </span>
