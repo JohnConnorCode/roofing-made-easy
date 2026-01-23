@@ -128,7 +128,7 @@ export default function LoginPage() {
           <Hammer className="h-7 w-7 text-white" />
         </div>
         <div>
-          <h1 className="text-xl font-bold text-white">Summit Roofing</h1>
+          <h1 className="text-xl font-bold text-white">Farrell Roofing</h1>
           <p className="text-sm text-slate-400">Admin Portal</p>
         </div>
       </div>

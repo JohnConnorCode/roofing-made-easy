@@ -7,14 +7,16 @@ import {
   Loader2,
   Shield,
   Clock,
+  Zap,
+  Brain,
+  TrendingUp,
+  Database,
+  BarChart3,
   CheckCircle,
-  Phone,
-  Star,
-  Award,
-  BadgeCheck,
-  Hammer,
-  FileText,
-  Users
+  ArrowRight,
+  LineChart,
+  Target,
+  Lock
 } from 'lucide-react'
 
 // Generate a demo lead ID for when the API isn't available
@@ -42,305 +44,279 @@ export default function HomePage() {
         const data = await response.json()
         router.push(`/${data.lead.id}/address`)
       } else {
-        // Fallback to demo mode if API fails
         const demoId = generateDemoLeadId()
         router.push(`/${demoId}/address`)
       }
     } catch (error) {
-      // Fallback to demo mode on any error
       console.log('Using demo mode')
       const demoId = generateDemoLeadId()
       router.push(`/${demoId}/address`)
     }
   }
 
-  const PHONE_NUMBER = process.env.NEXT_PUBLIC_PHONE_NUMBER || '(555) 000-0000'
-
   return (
-    <div className="min-h-screen bg-stone-50">
-      {/* Top Bar */}
-      <div className="bg-slate-900 text-white">
-        <div className="mx-auto max-w-6xl px-4 py-2 flex items-center justify-between text-sm">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5">
-              <BadgeCheck className="h-4 w-4 text-amber-500" />
-              Licensed & Insured
-            </span>
-            <span className="hidden sm:flex items-center gap-1.5">
-              <Award className="h-4 w-4 text-amber-500" />
-              A+ BBB Rating
-            </span>
-          </div>
-          <a href={`tel:${PHONE_NUMBER.replace(/\D/g, '')}`} className="flex items-center gap-1.5 hover:text-amber-400 transition-colors">
-            <Phone className="h-4 w-4" />
-            <span className="font-medium">{PHONE_NUMBER}</span>
-          </a>
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-slate-950">
       {/* Header */}
-      <header className="bg-slate-800 text-white">
-        <div className="mx-auto max-w-6xl px-4 py-6">
+      <header className="border-b border-slate-800">
+        <div className="mx-auto max-w-6xl px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-amber-600">
-                <Hammer className="h-7 w-7 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-600">
+                <Brain className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold tracking-tight">Summit Roofing</h1>
-                <p className="text-sm text-slate-400">Professional Roofing Services</p>
+                <h1 className="text-lg font-bold text-white tracking-tight">RoofEstimate AI</h1>
+                <p className="text-xs text-slate-500">by Farrell Roofing</p>
               </div>
             </div>
-            <div className="hidden md:flex items-center gap-4 text-sm">
-              <span className="text-slate-300">Serving homeowners since 2008</span>
-            </div>
+            <a
+              href="/login"
+              className="text-sm text-slate-400 hover:text-white transition-colors"
+            >
+              Contractor Portal
+            </a>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-slate-800 to-slate-700 text-white">
-        <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full bg-amber-600/20 border border-amber-600/30 px-4 py-1.5 text-sm text-amber-400 mb-6">
-                <Clock className="h-4 w-4" />
-                Free estimates in under 2 minutes
-              </div>
-              <h2 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
-                Get Your Roofing Estimate
-                <span className="text-amber-500"> Today</span>
-              </h2>
-              <p className="mt-6 text-lg text-slate-300 leading-relaxed">
-                No salespeople. No pressure. Just honest pricing from a local roofing company
-                you can trust. Tell us about your roof and get an instant estimate.
-              </p>
+      <div className="relative overflow-hidden">
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 via-transparent to-transparent" />
 
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <Button
-                  variant="primary"
-                  size="xl"
-                  onClick={handleGetStarted}
-                  disabled={isCreating}
-                  className="text-lg"
-                >
-                  {isCreating ? (
-                    <>
-                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                      Loading...
-                    </>
-                  ) : (
-                    <>
-                      Get My Free Estimate
-                    </>
-                  )}
-                </Button>
-                <a
-                  href={`tel:${PHONE_NUMBER.replace(/\D/g, '')}`}
-                  className="inline-flex items-center justify-center gap-2 h-16 px-6 text-lg font-medium text-white border-2 border-white/30 rounded-lg hover:bg-white/10 transition-colors"
-                >
-                  <Phone className="h-5 w-5" />
-                  Call Now
-                </a>
-              </div>
-
-              <p className="mt-4 text-sm text-slate-400">
-                No credit card required. Takes less than 2 minutes.
-              </p>
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-32">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-2 rounded-full bg-amber-500/10 border border-amber-500/20 px-4 py-2 text-sm text-amber-400 mb-8">
+              <Zap className="h-4 w-4" />
+              AI-Powered • Data-Driven • Unbiased
             </div>
 
-            {/* Stats/Trust Box */}
-            <div className="bg-white/10 backdrop-blur rounded-2xl p-8 border border-white/10">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="text-center p-4">
-                  <div className="text-4xl font-bold text-amber-500">500+</div>
-                  <div className="text-sm text-slate-300 mt-1">Roofs Completed</div>
-                </div>
-                <div className="text-center p-4">
-                  <div className="text-4xl font-bold text-amber-500">15+</div>
-                  <div className="text-sm text-slate-300 mt-1">Years Experience</div>
-                </div>
-                <div className="text-center p-4">
-                  <div className="flex justify-center gap-0.5 text-amber-500">
-                    <Star className="h-5 w-5 fill-current" />
-                    <Star className="h-5 w-5 fill-current" />
-                    <Star className="h-5 w-5 fill-current" />
-                    <Star className="h-5 w-5 fill-current" />
-                    <Star className="h-5 w-5 fill-current" />
-                  </div>
-                  <div className="text-sm text-slate-300 mt-1">4.9 Star Rating</div>
-                </div>
-                <div className="text-center p-4">
-                  <div className="text-4xl font-bold text-amber-500">100%</div>
-                  <div className="text-sm text-slate-300 mt-1">Satisfaction</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Trust Badges */}
-      <div className="bg-white border-b">
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
-            <div className="flex items-center gap-3 text-slate-700">
-              <Shield className="h-10 w-10 text-slate-400" />
-              <div>
-                <div className="font-semibold">Fully Insured</div>
-                <div className="text-sm text-slate-500">$2M Liability Coverage</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 text-slate-700">
-              <BadgeCheck className="h-10 w-10 text-slate-400" />
-              <div>
-                <div className="font-semibold">Licensed Contractor</div>
-                <div className="text-sm text-slate-500">State License #RC-123456</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 text-slate-700">
-              <Award className="h-10 w-10 text-slate-400" />
-              <div>
-                <div className="font-semibold">BBB Accredited</div>
-                <div className="text-sm text-slate-500">A+ Rating Since 2010</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* How it works */}
-      <div className="py-16 md:py-24 bg-stone-50">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-              How It Works
+            <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
+              Get an Accurate Roofing Estimate
+              <span className="text-amber-500"> in Minutes</span>
             </h2>
-            <p className="mt-4 text-lg text-slate-600">
-              Get your estimate in three simple steps
+
+            <p className="mt-6 text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto">
+              Our AI analyzes <span className="text-white font-medium">thousands of data points</span> and
+              real-time market trends to give you an unbiased estimate—no contractors, no pressure,
+              just honest numbers.
+            </p>
+
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                variant="primary"
+                size="xl"
+                onClick={handleGetStarted}
+                disabled={isCreating}
+                className="text-lg group"
+              >
+                {isCreating ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    Get Your Free Estimate
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
+              </Button>
+            </div>
+
+            <p className="mt-4 text-sm text-slate-500">
+              Free forever • No account required • Results in under 2 minutes
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Data Stats */}
+      <div className="border-y border-slate-800 bg-slate-900/50">
+        <div className="mx-auto max-w-6xl px-4 py-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-amber-500">50K+</div>
+              <div className="text-sm text-slate-400 mt-1">Estimates Generated</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-amber-500">1M+</div>
+              <div className="text-sm text-slate-400 mt-1">Data Points Analyzed</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-amber-500">±8%</div>
+              <div className="text-sm text-slate-400 mt-1">Average Accuracy</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-amber-500">2 min</div>
+              <div className="text-sm text-slate-400 mt-1">Average Time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* How AI Works */}
+      <div className="py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-white md:text-4xl">
+              How Our AI Creates Your Estimate
+            </h2>
+            <p className="mt-4 text-lg text-slate-400">
+              Transparent, data-driven pricing you can trust
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-100">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-600 text-2xl font-bold text-white mb-6">
-                1
+            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500 mb-6">
+                <Database className="h-7 w-7" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                Tell Us About Your Roof
+              <h3 className="text-xl font-bold text-white mb-3">
+                Analyzes Your Property
               </h3>
-              <p className="text-slate-600 leading-relaxed">
-                Answer a few quick questions about your property, roof type, and what work you need done.
+              <p className="text-slate-400 leading-relaxed">
+                We gather details about your roof size, material, pitch, and condition to understand exactly what you need.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-100">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-600 text-2xl font-bold text-white mb-6">
-                2
+            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500 mb-6">
+                <TrendingUp className="h-7 w-7" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                Upload Photos (Optional)
+              <h3 className="text-xl font-bold text-white mb-3">
+                Checks Market Data
               </h3>
-              <p className="text-slate-600 leading-relaxed">
-                Share photos of your roof for a more accurate assessment. We'll review them carefully.
+              <p className="text-slate-400 leading-relaxed">
+                Our AI cross-references current material costs, labor rates in your area, and seasonal pricing trends.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-100">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-600 text-2xl font-bold text-white mb-6">
-                3
+            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500 mb-6">
+                <BarChart3 className="h-7 w-7" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
-                Get Your Estimate
+              <h3 className="text-xl font-bold text-white mb-3">
+                Generates Your Range
               </h3>
-              <p className="text-slate-600 leading-relaxed">
-                Receive a detailed price range instantly. No waiting, no pushy sales calls.
+              <p className="text-slate-400 leading-relaxed">
+                You get a realistic price range based on actual market data—not a sales pitch or lowball quote.
               </p>
             </div>
-          </div>
-
-          <div className="mt-12 text-center">
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={handleGetStarted}
-              disabled={isCreating}
-            >
-              {isCreating ? 'Loading...' : 'Start My Free Estimate'}
-            </Button>
           </div>
         </div>
       </div>
 
-      {/* Services */}
-      <div className="py-16 md:py-24 bg-white">
+      {/* Why Trust Our Estimates */}
+      <div className="py-20 md:py-28 bg-slate-900/50">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-              Our Roofing Services
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-white md:text-4xl">
+                Why Trust Our Estimates?
+              </h2>
+              <p className="mt-4 text-lg text-slate-400">
+                We built this tool because getting honest roofing prices shouldn't require
+                five sales calls and three in-home visits.
+              </p>
+
+              <div className="mt-8 space-y-6">
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/10">
+                      <Target className="h-5 w-5 text-green-500" />
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white">No Hidden Agenda</h4>
+                    <p className="text-slate-400 text-sm mt-1">
+                      We're not trying to sell you a roof. Our estimates are based purely on data,
+                      not commission structures.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
+                      <LineChart className="h-5 w-5 text-blue-500" />
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white">Real Market Prices</h4>
+                    <p className="text-slate-400 text-sm mt-1">
+                      Our AI tracks actual project costs, material prices, and labor rates
+                      updated regularly across different regions.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10">
+                      <Lock className="h-5 w-5 text-purple-500" />
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white">Your Data Stays Private</h4>
+                    <p className="text-slate-400 text-sm mt-1">
+                      We don't sell your information to contractors. Get your estimate
+                      without the spam calls.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800">
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 text-amber-500 mb-4">
+                  <Brain className="h-6 w-6" />
+                  <span className="font-semibold">AI Confidence Score</span>
+                </div>
+                <div className="text-6xl font-bold text-white mb-2">92%</div>
+                <p className="text-slate-400 text-sm">
+                  Average accuracy when compared to final contractor quotes
+                </p>
+              </div>
+
+              <div className="mt-8 pt-8 border-t border-slate-800">
+                <div className="grid grid-cols-2 gap-4 text-center">
+                  <div>
+                    <div className="text-2xl font-bold text-white">$0</div>
+                    <div className="text-xs text-slate-500">Cost to you</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-white">0</div>
+                    <div className="text-xs text-slate-500">Sales calls</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* What You Get */}
+      <div className="py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-white md:text-4xl">
+              What You'll Get
             </h2>
-            <p className="mt-4 text-lg text-slate-600">
-              Quality workmanship for every type of roofing project
-            </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { title: 'Complete Replacement', desc: 'Full tear-off and new roof installation' },
-              { title: 'Roof Repairs', desc: 'Fix leaks, damage, and wear' },
-              { title: 'Storm Damage', desc: 'Insurance claim assistance included' },
-              { title: 'Inspections', desc: 'Comprehensive roof assessments' },
-            ].map((service) => (
-              <div key={service.title} className="bg-stone-50 rounded-lg p-6 border border-slate-100">
-                <CheckCircle className="h-8 w-8 text-amber-600 mb-4" />
-                <h3 className="font-bold text-slate-900 mb-2">{service.title}</h3>
-                <p className="text-sm text-slate-600">{service.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Testimonials */}
-      <div className="py-16 md:py-24 bg-slate-800 text-white">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold md:text-4xl">
-              What Our Customers Say
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "They replaced our entire roof in two days. Professional crew, fair price, and the new roof looks amazing. Highly recommend.",
-                name: "Michael R.",
-                location: "Denver, CO"
-              },
-              {
-                quote: "After the hail storm, they handled everything with our insurance company. Made a stressful situation easy. Great communication throughout.",
-                name: "Sarah T.",
-                location: "Austin, TX"
-              },
-              {
-                quote: "Got quotes from 5 different companies. These guys were honest about what I actually needed and saved me thousands. Truly trustworthy.",
-                name: "James P.",
-                location: "Phoenix, AZ"
-              },
-            ].map((testimonial, i) => (
-              <div key={i} className="bg-white/10 rounded-xl p-6 backdrop-blur border border-white/10">
-                <div className="flex gap-1 text-amber-500 mb-4">
-                  {[...Array(5)].map((_, j) => (
-                    <Star key={j} className="h-5 w-5 fill-current" />
-                  ))}
-                </div>
-                <p className="text-slate-200 leading-relaxed mb-6">
-                  "{testimonial.quote}"
-                </p>
-                <div>
-                  <div className="font-semibold">{testimonial.name}</div>
-                  <div className="text-sm text-slate-400">{testimonial.location}</div>
-                </div>
+              { icon: BarChart3, title: 'Price Range', desc: 'Low, likely, and high estimates' },
+              { icon: TrendingUp, title: 'Market Context', desc: 'How your area affects pricing' },
+              { icon: CheckCircle, title: 'Scope Breakdown', desc: 'What the job actually involves' },
+              { icon: Brain, title: 'AI Insights', desc: 'Factors that impact your cost' },
+            ].map((item) => (
+              <div key={item.title} className="bg-slate-900 rounded-xl p-6 border border-slate-800 text-center">
+                <item.icon className="h-8 w-8 text-amber-500 mx-auto mb-4" />
+                <h3 className="font-bold text-white mb-2">{item.title}</h3>
+                <p className="text-sm text-slate-400">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -348,15 +324,15 @@ export default function HomePage() {
       </div>
 
       {/* CTA Section */}
-      <div className="py-16 md:py-24 bg-amber-600">
+      <div className="py-20 md:py-28 bg-gradient-to-b from-amber-600 to-amber-700">
         <div className="mx-auto max-w-4xl px-4 text-center">
           <h2 className="text-3xl font-bold text-white md:text-4xl">
-            Ready to Get Started?
+            Ready to See What Your Roof Really Costs?
           </h2>
           <p className="mt-4 text-lg text-amber-100">
-            Get your free estimate in under 2 minutes. No obligation, no pressure.
+            Get your AI-powered estimate in under 2 minutes. Free, unbiased, no strings attached.
           </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-8">
             <Button
               variant="secondary"
               size="xl"
@@ -364,56 +340,47 @@ export default function HomePage() {
               disabled={isCreating}
               className="text-lg"
             >
-              {isCreating ? 'Loading...' : 'Get My Free Estimate'}
+              {isCreating ? 'Loading...' : 'Start My Free Estimate'}
             </Button>
-            <a
-              href={`tel:${PHONE_NUMBER.replace(/\D/g, '')}`}
-              className="inline-flex items-center justify-center gap-2 h-16 px-8 text-lg font-semibold text-amber-600 bg-white rounded-lg hover:bg-amber-50 transition-colors"
-            >
-              <Phone className="h-5 w-5" />
-              {PHONE_NUMBER}
-            </a>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-12">
+      <footer className="bg-slate-950 border-t border-slate-800 py-12">
         <div className="mx-auto max-w-6xl px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-600">
-                  <Hammer className="h-6 w-6 text-white" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-600">
+                  <Brain className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-lg font-bold">Summit Roofing</span>
+                <div>
+                  <span className="text-lg font-bold text-white">RoofEstimate AI</span>
+                  <p className="text-xs text-slate-500">by Farrell Roofing</p>
+                </div>
               </div>
               <p className="text-slate-400 text-sm leading-relaxed max-w-md">
-                Professional roofing services for residential and commercial properties.
-                Licensed, insured, and committed to quality workmanship since 2008.
+                AI-powered roofing estimates using real market data. Get unbiased pricing
+                information without the sales pressure.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <h4 className="font-semibold text-white mb-4">Legal</h4>
               <div className="space-y-2 text-sm text-slate-400">
                 <a href="/terms" className="block hover:text-white transition-colors">Terms of Service</a>
                 <a href="/privacy" className="block hover:text-white transition-colors">Privacy Policy</a>
-                <a href="/login" className="block hover:text-white transition-colors">Contractor Login</a>
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Contact</h4>
+              <h4 className="font-semibold text-white mb-4">For Contractors</h4>
               <div className="space-y-2 text-sm text-slate-400">
-                <a href={`tel:${PHONE_NUMBER.replace(/\D/g, '')}`} className="block hover:text-white transition-colors">
-                  {PHONE_NUMBER}
-                </a>
-                <p>Mon-Fri: 7am - 6pm</p>
-                <p>Sat: 8am - 2pm</p>
+                <a href="/login" className="block hover:text-white transition-colors">Contractor Portal</a>
               </div>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
-            <p>&copy; {new Date().getFullYear()} Summit Roofing. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Farrell Roofing. All rights reserved.</p>
           </div>
         </div>
       </footer>

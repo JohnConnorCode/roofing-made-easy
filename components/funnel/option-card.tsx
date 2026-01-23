@@ -22,13 +22,13 @@ export function OptionCard({
   className,
 }: OptionCardProps) {
   return (
-    <Card
-      variant={selected ? 'selected' : 'selectable'}
+    <div
       className={cn(
-        'relative min-h-[80px] cursor-pointer p-4 md:min-h-[100px] md:p-6',
-        'touch-manipulation',
-        selected && 'border-amber-500 bg-amber-50 ring-2 ring-amber-500/20',
-        !selected && 'hover:border-amber-300',
+        'relative min-h-[80px] cursor-pointer rounded-xl border-2 p-4 md:min-h-[100px] md:p-6',
+        'touch-manipulation transition-all',
+        selected
+          ? 'border-amber-500 bg-amber-500/10'
+          : 'border-slate-700 bg-slate-900 hover:border-amber-500/50 hover:bg-slate-800',
         className
       )}
       onClick={onClick}
@@ -45,7 +45,7 @@ export function OptionCard({
     >
       {/* Selection indicator */}
       {selected && (
-        <div className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-amber-600">
+        <div className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-amber-500">
           <Check className="h-4 w-4 text-white" />
         </div>
       )}
@@ -55,7 +55,7 @@ export function OptionCard({
           <div
             className={cn(
               'flex h-12 w-12 items-center justify-center rounded-lg',
-              selected ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'
+              selected ? 'bg-amber-500/20 text-amber-500' : 'bg-slate-800 text-slate-400'
             )}
           >
             {icon}
@@ -66,16 +66,16 @@ export function OptionCard({
           <h3
             className={cn(
               'font-semibold',
-              selected ? 'text-amber-900' : 'text-slate-900'
+              selected ? 'text-amber-500' : 'text-white'
             )}
           >
             {title}
           </h3>
           {description && (
-            <p className="mt-1 text-sm text-slate-500">{description}</p>
+            <p className="mt-1 text-sm text-slate-400">{description}</p>
           )}
         </div>
       </div>
-    </Card>
+    </div>
   )
 }

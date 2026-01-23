@@ -116,7 +116,7 @@ export default function AdminLayout({
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-600">
                 <Hammer className="h-5 w-5 text-white" />
               </div>
-              <h1 className="text-lg font-bold text-white">Summit Admin</h1>
+              <h1 className="text-lg font-bold text-white">Farrell Admin</h1>
             </div>
 
             <nav className="flex-1 p-4">
