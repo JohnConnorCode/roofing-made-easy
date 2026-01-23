@@ -1,0 +1,473 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import NextImage from 'next/image'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Select } from '@/components/ui/select'
+import { useToast } from '@/components/ui/toast'
+import { formatCurrency, formatDate, formatPhone } from '@/lib/utils'
+import {
+  ArrowLeft,
+  User,
+  MapPin,
+  Home,
+  AlertTriangle,
+  Clock,
+  DollarSign,
+  ImageIcon,
+  RefreshCw,
+  Loader2,
+} from 'lucide-react'
+
+// Construct public URL for Supabase storage
+const getPhotoUrl = (storagePath: string) => {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!supabaseUrl || !storagePath) return null
+  return `${supabaseUrl}/storage/v1/object/public/photos/${storagePath}`
+}
+
+interface LeadDetail {
+  id: string
+  status: string
+  current_step: number
+  created_at: string
+  completed_at: string | null
+  contacts: Array<{
+    first_name: string
+    last_name: string
+    email: string
+    phone: string
+    preferred_contact_method: string
+  }>
+  properties: Array<{
+    street_address: string
+    city: string
+    state: string
+    zip_code: string
+  }>
+  intakes: Array<{
+    job_type: string
+    roof_material: string
+    roof_size_sqft: number
+    stories: number
+    roof_pitch: string
+    issues: string[]
+    timeline_urgency: string
+    has_insurance_claim: boolean
+  }>
+  uploads: Array<{
+    id: string
+    storage_path: string
+    original_filename: string
+    ai_analyzed: boolean
+    ai_detected_issues: string[]
+  }>
+  estimates: Array<{
+    id: string
+    price_low: number
+    price_likely: number
+    price_high: number
+    ai_explanation: string
+    created_at: string
+  }>
+}
+
+const STATUS_OPTIONS = [
+  { value: 'new', label: 'New' },
+  { value: 'intake_started', label: 'Intake Started' },
+  { value: 'intake_complete', label: 'Intake Complete' },
+  { value: 'estimate_generated', label: 'Estimate Generated' },
+  { value: 'consultation_scheduled', label: 'Consultation Scheduled' },
+  { value: 'quote_sent', label: 'Quote Sent' },
+  { value: 'won', label: 'Won' },
+  { value: 'lost', label: 'Lost' },
+  { value: 'archived', label: 'Archived' },
+]
+
+export default function LeadDetailPage() {
+  const params = useParams()
+  const router = useRouter()
+  const leadId = params.leadId as string
+  const { showToast } = useToast()
+
+  const [lead, setLead] = useState<LeadDetail | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [isSaving, setIsSaving] = useState(false)
+
+  const fetchLead = async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const response = await fetch(`/api/leads/${leadId}`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch lead')
+      }
+      const data = await response.json()
+      if (data.lead) {
+        setLead(data.lead)
+      } else {
+        setError('Lead not found')
+      }
+    } catch (err) {
+      console.error('Error fetching lead:', err)
+      setError('Unable to load lead. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchLead()
+  }, [leadId])
+
+  const handleStatusChange = async (newStatus: string) => {
+    if (!lead) return
+
+    // Confirm destructive status changes
+    const destructiveStatuses = ['lost', 'archived']
+    if (destructiveStatuses.includes(newStatus)) {
+      const confirmed = window.confirm(
+        `Are you sure you want to mark this lead as "${newStatus}"? This action can be undone by changing the status again.`
+      )
+      if (!confirmed) return
+    }
+
+    setIsSaving(true)
+    try {
+      const response = await fetch(`/api/leads/${leadId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      })
+      if (!response.ok) {
+        throw new Error('Failed to update status')
+      }
+      setLead({ ...lead, status: newStatus })
+      showToast(`Status updated to "${newStatus.replace('_', ' ')}"`, 'success')
+    } catch (err) {
+      console.error('Error updating status:', err)
+      showToast('Failed to update status. Please try again.', 'error')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <span className="ml-2 text-gray-500">Loading lead details...</span>
+      </div>
+    )
+  }
+
+  if (error || !lead) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12">
+        <AlertTriangle className="h-12 w-12 text-amber-500" />
+        <p className="mt-4 text-lg font-medium text-gray-900">
+          {error || "This lead doesn't exist or may have been archived."}
+        </p>
+        <div className="mt-4 flex gap-3">
+          <Button variant="outline" onClick={fetchLead} leftIcon={<RefreshCw className="h-4 w-4" />}>
+            Try Again
+          </Button>
+          <Button variant="primary" onClick={() => router.push('/leads')}>
+            Return to Leads
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  const contact = lead.contacts?.[0]
+  const property = lead.properties?.[0]
+  const intake = lead.intakes?.[0]
+  // Find the most recent non-superseded estimate, or fall back to the first estimate
+  const estimate = lead.estimates?.find((e) => e && !(e as any).is_superseded) || lead.estimates?.[0]
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.back()}
+            leftIcon={<ArrowLeft className="h-4 w-4" />}
+          >
+            Back
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {contact?.first_name} {contact?.last_name}
+            </h1>
+            <p className="text-gray-500">
+              Lead created {formatDate(lead.created_at)}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <Select
+            options={STATUS_OPTIONS}
+            value={lead.status}
+            onChange={handleStatusChange}
+            disabled={isSaving}
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Contact Info */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <User className="h-5 w-5" />
+              Contact Information
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div>
+              <p className="text-sm text-gray-500">Name</p>
+              <p className="font-medium">
+                {contact?.first_name} {contact?.last_name}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Email</p>
+              <p className="font-medium">{contact?.email || 'N/A'}</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Phone</p>
+              <p className="font-medium">
+                {contact?.phone ? formatPhone(contact.phone) : 'N/A'}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Preferred Contact</p>
+              <p className="font-medium capitalize">
+                {contact?.preferred_contact_method || 'N/A'}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Property Info */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="h-5 w-5" />
+              Property
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div>
+              <p className="text-sm text-gray-500">Address</p>
+              <p className="font-medium">
+                {property?.street_address || 'N/A'}
+              </p>
+              {property?.city && (
+                <p className="text-gray-600">
+                  {property.city}, {property.state} {property.zip_code}
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Roof Details */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Home className="h-5 w-5" />
+              Roof Details
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-gray-500">Job Type</p>
+                <p className="font-medium capitalize">
+                  {intake?.job_type?.replace('_', ' ') || 'N/A'}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Material</p>
+                <p className="font-medium capitalize">
+                  {intake?.roof_material?.replace('_', ' ') || 'N/A'}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Size</p>
+                <p className="font-medium">
+                  {intake?.roof_size_sqft
+                    ? `${intake.roof_size_sqft.toLocaleString()} sq ft`
+                    : 'N/A'}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Stories</p>
+                <p className="font-medium">{intake?.stories || 'N/A'}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Pitch</p>
+                <p className="font-medium capitalize">
+                  {intake?.roof_pitch?.replace('_', ' ') || 'N/A'}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Issues */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5" />
+              Reported Issues
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {intake?.issues && intake.issues.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {intake.issues.map((issue, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full bg-amber-100 px-3 py-1 text-sm text-amber-800"
+                  >
+                    {String(issue).replace('_', ' ')}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">No issues reported</p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Timeline */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="h-5 w-5" />
+              Timeline
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div>
+              <p className="text-sm text-gray-500">Urgency</p>
+              <p className="font-medium capitalize">
+                {intake?.timeline_urgency?.replace('_', ' ') || 'N/A'}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500">Insurance Claim</p>
+              <p className="font-medium">
+                {intake?.has_insurance_claim ? 'Yes' : 'No'}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Estimate */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <DollarSign className="h-5 w-5" />
+              Estimate
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {estimate ? (
+              <div className="space-y-4">
+                <div className="flex items-end justify-between">
+                  <div>
+                    <p className="text-sm text-gray-500">Range</p>
+                    <p className="text-lg font-medium">
+                      {formatCurrency(estimate.price_low)} -{' '}
+                      {formatCurrency(estimate.price_high)}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-500">Most Likely</p>
+                    <p className="text-2xl font-bold text-blue-600">
+                      {formatCurrency(estimate.price_likely)}
+                    </p>
+                  </div>
+                </div>
+                {estimate.ai_explanation && (
+                  <div>
+                    <p className="text-sm text-gray-500">AI Summary</p>
+                    <p className="text-sm text-gray-700">{estimate.ai_explanation}</p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <p className="text-gray-500">No estimate generated</p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Photos */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ImageIcon className="h-5 w-5" />
+              Photos ({lead.uploads?.length || 0})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {lead.uploads && lead.uploads.length > 0 ? (
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                {lead.uploads.map((upload) => {
+                  const photoUrl = getPhotoUrl(upload.storage_path)
+                  return (
+                    <a
+                      key={upload.id}
+                      href={photoUrl || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative aspect-square overflow-hidden rounded-lg bg-gray-100"
+                    >
+                      {photoUrl ? (
+                        <>
+                          <img
+                            src={photoUrl}
+                            alt={upload.original_filename || 'Roof photo'}
+                            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
+                        </>
+                      ) : (
+                        <div className="flex h-full items-center justify-center text-gray-400">
+                          <ImageIcon className="h-8 w-8" />
+                        </div>
+                      )}
+                      {upload.ai_analyzed && upload.ai_detected_issues?.length > 0 && (
+                        <div className="absolute bottom-2 left-2 rounded bg-amber-500 px-2 py-1 text-xs font-medium text-white">
+                          {upload.ai_detected_issues.length} issue{upload.ai_detected_issues.length > 1 ? 's' : ''} detected
+                        </div>
+                      )}
+                    </a>
+                  )
+                })}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <ImageIcon className="h-10 w-10 text-gray-300" />
+                <p className="mt-3 text-gray-600">No photos uploaded</p>
+                <p className="text-sm text-gray-400">Photos from the customer will appear here.</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
