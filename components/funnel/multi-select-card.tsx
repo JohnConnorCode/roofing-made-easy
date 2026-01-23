@@ -27,10 +27,10 @@ export function MultiSelectCard({
       className={cn(
         'relative flex w-full items-start gap-3 rounded-xl border-2 p-4 text-left transition-all duration-200',
         'min-h-[64px] touch-manipulation',
-        'focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:ring-offset-2',
+        'focus:outline-none focus:ring-2 focus:ring-[#c9a25c]/30 focus:ring-offset-2 focus:ring-offset-[#0c0f14]',
         selected
-          ? 'border-amber-500 bg-amber-50 shadow-sm'
-          : 'border-slate-200 bg-white hover:border-amber-300 hover:shadow-sm',
+          ? 'border-[#c9a25c] bg-[#1a1f2e] shadow-lg glow-gold'
+          : 'border-slate-700 bg-[#161a23] hover:border-[#9a7432] hover:bg-[#1a1f2e]',
         className
       )}
       aria-pressed={selected}
@@ -40,10 +40,10 @@ export function MultiSelectCard({
       <div
         className={cn(
           'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-all duration-200',
-          selected ? 'border-amber-500 bg-amber-500 scale-110' : 'border-slate-300 bg-white'
+          selected ? 'border-[#c9a25c] bg-[#c9a25c] scale-110' : 'border-slate-600 bg-[#1a1f2e]'
         )}
       >
-        {selected && <Check className="h-3 w-3 text-white animate-scale-in" />}
+        {selected && <Check className="h-3 w-3 text-[#0c0f14] animate-scale-in" />}
       </div>
 
       {/* Content */}
@@ -52,7 +52,7 @@ export function MultiSelectCard({
           <div
             className={cn(
               'flex h-8 w-8 items-center justify-center rounded-lg transition-colors',
-              selected ? 'text-amber-600' : 'text-slate-500'
+              selected ? 'text-[#c9a25c]' : 'text-slate-400'
             )}
           >
             {icon}
@@ -62,13 +62,13 @@ export function MultiSelectCard({
           <span
             className={cn(
               'font-medium transition-colors',
-              selected ? 'text-amber-700' : 'text-slate-900'
+              selected ? 'text-[#c9a25c]' : 'text-slate-100'
             )}
           >
             {title}
           </span>
           {description && (
-            <p className="text-sm text-slate-500">{description}</p>
+            <p className="text-sm text-slate-400">{description}</p>
           )}
         </div>
       </div>

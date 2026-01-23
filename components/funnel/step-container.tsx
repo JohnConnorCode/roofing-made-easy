@@ -35,9 +35,9 @@ export function StepContainer({
     <div className={cn('flex flex-col animate-fade-in', className)}>
       {/* Header */}
       <div className="mb-8 animate-slide-up">
-        <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">{title}</h2>
+        <h2 className="text-2xl font-bold text-slate-100 md:text-3xl">{title}</h2>
         {description && (
-          <p className="mt-2 text-slate-600">{description}</p>
+          <p className="mt-2 text-slate-400">{description}</p>
         )}
       </div>
 
@@ -54,7 +54,7 @@ export function StepContainer({
             size="lg"
             onClick={onBack}
             leftIcon={<ArrowLeft className="h-5 w-5" />}
-            className="btn-press"
+            className="btn-press border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-slate-100"
           >
             {backLabel}
           </Button>
@@ -70,7 +70,7 @@ export function StepContainer({
             disabled={isNextDisabled}
             isLoading={isLoading}
             rightIcon={!isLoading ? <ArrowRight className="h-5 w-5" /> : undefined}
-            className="min-w-[160px] btn-press shadow-lg shadow-amber-500/20"
+            className="min-w-[160px] btn-press shadow-lg glow-gold bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
           >
             {nextLabel}
           </Button>

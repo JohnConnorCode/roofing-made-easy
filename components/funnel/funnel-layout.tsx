@@ -14,23 +14,23 @@ export function FunnelLayout({ children, className }: FunnelLayoutProps) {
   const currentStep = useCurrentStep()
 
   return (
-    <div className="min-h-screen bg-gradient-warm">
+    <div className="min-h-screen bg-gradient-dark">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+      <header className="sticky top-0 z-50 bg-[#0c0f14]/95 backdrop-blur-md border-b border-slate-800">
         <div className="mx-auto max-w-3xl px-4 py-4">
           <div className="mb-4 flex items-center justify-between">
             <a href="/" className="flex items-center gap-3 animate-slide-up">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 shadow-md shadow-amber-500/20">
-                <Home className="h-5 w-5 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-md glow-gold">
+                <Home className="h-5 w-5 text-[#0c0f14]" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-slate-800">
+                <h1 className="text-lg font-bold text-slate-100">
                   RoofEstimate
                 </h1>
                 <p className="text-xs text-slate-500">by Farrell Roofing</p>
               </div>
             </a>
-            <div className="text-xs text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">
+            <div className="text-xs text-slate-500 bg-[#1a1f2e] border border-slate-700 px-3 py-1.5 rounded-full">
               Free • No account needed
             </div>
           </div>
@@ -44,22 +44,22 @@ export function FunnelLayout({ children, className }: FunnelLayoutProps) {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-6">
+      <footer className="border-t border-slate-800 bg-[#0c0f14] py-6">
         <div className="mx-auto max-w-3xl px-4">
           <div className="flex items-center justify-center gap-2 text-sm text-slate-500 mb-4">
-            <Shield className="h-4 w-4 text-slate-400" />
+            <Shield className="h-4 w-4 text-slate-600" />
             <span>Your data stays private. We never sell your information.</span>
           </div>
           <div className="flex justify-center gap-6 text-sm">
             <a
               href="/terms"
-              className="text-slate-500 hover:text-slate-700 transition-colors"
+              className="text-slate-500 hover:text-[#c9a25c] transition-colors"
             >
               Terms of Service
             </a>
             <a
               href="/privacy"
-              className="text-slate-500 hover:text-slate-700 transition-colors"
+              className="text-slate-500 hover:text-[#c9a25c] transition-colors"
             >
               Privacy Policy
             </a>

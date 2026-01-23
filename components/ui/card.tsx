@@ -10,10 +10,10 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', ...props }, ref) => {
     const variants = {
-      default: 'bg-white border border-slate-200',
+      default: 'bg-[#1a1f2e] border border-slate-700',
       selectable:
-        'bg-white border-2 border-slate-200 cursor-pointer hover:border-amber-400 hover:shadow-md transition-all',
-      selected: 'bg-amber-50 border-2 border-amber-500 shadow-md',
+        'bg-[#1a1f2e] border-2 border-slate-700 cursor-pointer hover:border-[#9a7432] hover:shadow-lg transition-all',
+      selected: 'bg-[#1a1f2e] border-2 border-[#c9a25c] shadow-lg glow-gold',
     }
 
     return (
@@ -48,7 +48,7 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, CardTitleProps>(
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn('text-xl font-semibold leading-none tracking-tight', className)}
+      className={cn('text-xl font-semibold leading-none tracking-tight text-slate-100', className)}
       {...props}
     />
   )
@@ -62,7 +62,7 @@ const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionPr
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('text-sm text-slate-500', className)}
+      className={cn('text-sm text-slate-400', className)}
       {...props}
     />
   )

@@ -27,8 +27,8 @@ export function OptionCard({
         'touch-manipulation transition-all duration-200',
         'card-hover',
         selected
-          ? 'border-amber-500 bg-amber-50 shadow-md shadow-amber-500/10'
-          : 'border-slate-200 bg-white hover:border-amber-300 hover:shadow-md',
+          ? 'border-[#c9a25c] bg-[#1a1f2e] shadow-lg glow-gold'
+          : 'border-slate-700 bg-[#161a23] hover:border-[#9a7432] hover:bg-[#1a1f2e]',
         className
       )}
       onClick={onClick}
@@ -45,8 +45,8 @@ export function OptionCard({
     >
       {/* Selection indicator */}
       {selected && (
-        <div className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-amber-500 shadow-sm animate-scale-in">
-          <Check className="h-4 w-4 text-white" />
+        <div className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-[#c9a25c] shadow-sm animate-scale-in">
+          <Check className="h-4 w-4 text-[#0c0f14]" />
         </div>
       )}
 
@@ -55,7 +55,7 @@ export function OptionCard({
           <div
             className={cn(
               'flex h-12 w-12 items-center justify-center rounded-xl transition-colors',
-              selected ? 'bg-amber-500 text-white' : 'bg-slate-100 text-slate-600'
+              selected ? 'bg-gradient-to-br from-[#c9a25c] to-[#9a7432] text-[#0c0f14]' : 'bg-slate-800 text-slate-400'
             )}
           >
             {icon}
@@ -66,13 +66,13 @@ export function OptionCard({
           <h3
             className={cn(
               'font-semibold transition-colors',
-              selected ? 'text-amber-700' : 'text-slate-900'
+              selected ? 'text-[#c9a25c]' : 'text-slate-100'
             )}
           >
             {title}
           </h3>
           {description && (
-            <p className="mt-1 text-sm text-slate-500">{description}</p>
+            <p className="mt-1 text-sm text-slate-400">{description}</p>
           )}
         </div>
       </div>
