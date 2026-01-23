@@ -11,7 +11,7 @@ import {
   LogOut,
   Menu,
   X,
-  Hammer,
+  Home,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -65,7 +65,7 @@ export default function AdminLayout({
       <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-slate-800 px-4 md:hidden">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded bg-amber-600">
-            <Hammer className="h-5 w-5 text-white" />
+            <Home className="h-5 w-5 text-white" />
           </div>
           <h1 className="text-lg font-bold text-white">Summit Admin</h1>
         </div>
@@ -114,7 +114,7 @@ export default function AdminLayout({
           <div className="sticky top-0 flex h-screen flex-col">
             <div className="flex h-16 items-center gap-3 border-b border-slate-700 px-6">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-600">
-                <Hammer className="h-5 w-5 text-white" />
+                <Home className="h-5 w-5 text-white" />
               </div>
               <h1 className="text-lg font-bold text-white">Farrell Admin</h1>
             </div>

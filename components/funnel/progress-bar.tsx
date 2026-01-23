@@ -27,16 +27,16 @@ export function ProgressBar({ currentStep, totalSteps = 8 }: ProgressBarProps) {
       {/* Mobile: Simple progress bar */}
       <div className="md:hidden">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-slate-300">
+          <span className="text-sm font-medium text-slate-700">
             Step {currentStep} of {totalSteps}
           </span>
-          <span className="text-sm text-slate-400">
+          <span className="text-sm text-slate-500">
             {STEPS[currentStep - 1]?.label}
           </span>
         </div>
-        <div className="h-2 w-full rounded-full bg-slate-700">
+        <div className="h-2 w-full rounded-full bg-slate-200">
           <div
-            className="h-2 rounded-full bg-amber-500 transition-all duration-300"
+            className="h-2 rounded-full bg-amber-500 transition-all duration-500 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -55,8 +55,8 @@ export function ProgressBar({ currentStep, totalSteps = 8 }: ProgressBarProps) {
                 {index > 0 && (
                   <div
                     className={cn(
-                      'absolute right-1/2 top-4 -mr-px h-0.5 w-full -translate-y-1/2',
-                      isCompleted ? 'bg-amber-500' : 'bg-slate-600'
+                      'absolute right-1/2 top-4 -mr-px h-0.5 w-full -translate-y-1/2 transition-colors duration-300',
+                      isCompleted ? 'bg-amber-500' : 'bg-slate-200'
                     )}
                     style={{ width: 'calc(100% + 2rem)', right: '50%', transform: 'translateX(-50%)' }}
                   />
@@ -65,10 +65,10 @@ export function ProgressBar({ currentStep, totalSteps = 8 }: ProgressBarProps) {
                 {/* Step circle */}
                 <div
                   className={cn(
-                    'relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 transition-colors',
-                    isCompleted && 'border-amber-500 bg-amber-500',
-                    isCurrent && 'border-amber-500 bg-slate-800',
-                    !isCompleted && !isCurrent && 'border-slate-600 bg-slate-800'
+                    'relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 transition-all duration-300',
+                    isCompleted && 'border-amber-500 bg-amber-500 scale-100',
+                    isCurrent && 'border-amber-500 bg-white scale-110 shadow-md',
+                    !isCompleted && !isCurrent && 'border-slate-300 bg-white'
                   )}
                 >
                   {isCompleted ? (
@@ -76,8 +76,8 @@ export function ProgressBar({ currentStep, totalSteps = 8 }: ProgressBarProps) {
                   ) : (
                     <span
                       className={cn(
-                        'text-sm font-medium',
-                        isCurrent ? 'text-amber-500' : 'text-slate-500'
+                        'text-sm font-medium transition-colors',
+                        isCurrent ? 'text-amber-600' : 'text-slate-400'
                       )}
                     >
                       {step.number}
@@ -88,8 +88,8 @@ export function ProgressBar({ currentStep, totalSteps = 8 }: ProgressBarProps) {
                 {/* Step label */}
                 <span
                   className={cn(
-                    'mt-2 text-xs font-medium',
-                    isCurrent ? 'text-amber-500' : isCompleted ? 'text-white' : 'text-slate-500'
+                    'mt-2 text-xs font-medium transition-colors',
+                    isCurrent ? 'text-amber-600' : isCompleted ? 'text-slate-700' : 'text-slate-400'
                   )}
                 >
                   {step.label}

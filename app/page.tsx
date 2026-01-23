@@ -5,21 +5,18 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import {
   Loader2,
+  Home,
   Shield,
   Clock,
-  Zap,
-  Brain,
-  TrendingUp,
-  Database,
-  BarChart3,
   CheckCircle,
   ArrowRight,
-  LineChart,
-  Target,
-  Lock
+  DollarSign,
+  Users,
+  TrendingUp,
+  Star,
+  MapPin
 } from 'lucide-react'
 
-// Generate a demo lead ID for when the API isn't available
 function generateDemoLeadId(): string {
   return 'demo-' + Math.random().toString(36).substring(2, 15)
 }
@@ -55,314 +52,328 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-gradient-warm animate-fade-in">
       {/* Header */}
-      <header className="border-b border-slate-800">
+      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="mx-auto max-w-6xl px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-600">
-                <Brain className="h-6 w-6 text-white" />
+            <div className="flex items-center gap-3 animate-slide-up">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-500 shadow-lg shadow-amber-500/20 animate-float">
+                <Home className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-white tracking-tight">RoofEstimate AI</h1>
+                <h1 className="text-lg font-bold text-slate-800 tracking-tight">RoofEstimate</h1>
                 <p className="text-xs text-slate-500">by Farrell Roofing</p>
               </div>
             </div>
             <a
               href="/login"
-              className="text-sm text-slate-400 hover:text-white transition-colors"
+              className="text-sm text-slate-500 hover:text-slate-800 transition-colors"
             >
-              Contractor Portal
+              Contractor Login
             </a>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 via-transparent to-transparent" />
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-amber-50/50 to-transparent" />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-32">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 rounded-full bg-amber-500/10 border border-amber-500/20 px-4 py-2 text-sm text-amber-400 mb-8">
-              <Zap className="h-4 w-4" />
-              AI-Powered • Data-Driven • Unbiased
+        <div className="relative mx-auto max-w-6xl px-4 py-16 md:py-24">
+          <div className="max-w-3xl mx-auto text-center">
+            <div
+              className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-2 text-sm text-amber-700 mb-6 animate-slide-up"
+              style={{ animationDelay: '0.1s' }}
+            >
+              <Clock className="h-4 w-4" />
+              Get your estimate in under 2 minutes
             </div>
 
-            <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
-              Get an Accurate Roofing Estimate
-              <span className="text-amber-500"> in Minutes</span>
+            <h2
+              className="text-4xl font-bold tracking-tight text-slate-900 md:text-5xl lg:text-6xl animate-slide-up"
+              style={{ animationDelay: '0.2s' }}
+            >
+              Find Out What Your
+              <span className="text-amber-600"> Roof Really Costs</span>
             </h2>
 
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed max-w-2xl mx-auto">
-              Our AI analyzes <span className="text-white font-medium">thousands of data points</span> and
-              real-time market trends to give you an unbiased estimate—no contractors, no pressure,
-              just honest numbers.
+            <p
+              className="mt-6 text-xl text-slate-600 leading-relaxed animate-slide-up"
+              style={{ animationDelay: '0.3s' }}
+            >
+              No contractors knocking on your door. No pressure. Just an honest,
+              data-driven estimate based on your home and local market prices.
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <div
+              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-slide-up"
+              style={{ animationDelay: '0.4s' }}
+            >
               <Button
                 variant="primary"
                 size="xl"
                 onClick={handleGetStarted}
                 disabled={isCreating}
-                className="text-lg group"
+                className="text-lg btn-press shadow-lg shadow-amber-500/20"
               >
                 {isCreating ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Loading...
+                    Starting...
                   </>
                 ) : (
                   <>
-                    Get Your Free Estimate
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    Get My Free Estimate
+                    <ArrowRight className="ml-2 h-5 w-5" />
                   </>
                 )}
               </Button>
             </div>
 
-            <p className="mt-4 text-sm text-slate-500">
-              Free forever • No account required • Results in under 2 minutes
+            <p
+              className="mt-4 text-sm text-slate-500 animate-slide-up"
+              style={{ animationDelay: '0.5s' }}
+            >
+              Free forever • No account needed • No spam calls
             </p>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Data Stats */}
-      <div className="border-y border-slate-800 bg-slate-900/50">
-        <div className="mx-auto max-w-6xl px-4 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      {/* Trust Bar */}
+      <section className="border-y border-slate-200 bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 stagger-children">
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-amber-500">50K+</div>
-              <div className="text-sm text-slate-400 mt-1">Estimates Generated</div>
+              <div className="text-3xl font-bold text-slate-800">50,000+</div>
+              <div className="text-sm text-slate-500 mt-1">Homeowners Helped</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-amber-500">1M+</div>
-              <div className="text-sm text-slate-400 mt-1">Data Points Analyzed</div>
+              <div className="text-3xl font-bold text-slate-800">92%</div>
+              <div className="text-sm text-slate-500 mt-1">Estimate Accuracy</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-amber-500">±8%</div>
-              <div className="text-sm text-slate-400 mt-1">Average Accuracy</div>
+              <div className="text-3xl font-bold text-slate-800">2 min</div>
+              <div className="text-sm text-slate-500 mt-1">Average Time</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-amber-500">2 min</div>
-              <div className="text-sm text-slate-400 mt-1">Average Time</div>
+              <div className="flex justify-center gap-0.5 text-amber-500">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-current" />
+                ))}
+              </div>
+              <div className="text-sm text-slate-500 mt-1">4.9 Rating</div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* How AI Works */}
-      <div className="py-20 md:py-28">
+      {/* How It Works */}
+      <section className="py-16 md:py-24 bg-white">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white md:text-4xl">
-              How Our AI Creates Your Estimate
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
+              How It Works
             </h2>
-            <p className="mt-4 text-lg text-slate-400">
-              Transparent, data-driven pricing you can trust
+            <p className="mt-4 text-lg text-slate-600">
+              Three simple steps to your estimate
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500 mb-6">
-                <Database className="h-7 w-7" />
+          <div className="grid md:grid-cols-3 gap-8 stagger-children">
+            <div className="text-center card-hover bg-slate-50 rounded-2xl p-8">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500 text-white mx-auto mb-6 shadow-lg shadow-amber-500/20">
+                <MapPin className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">
-                Analyzes Your Property
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                1. Tell Us About Your Home
               </h3>
-              <p className="text-slate-400 leading-relaxed">
-                We gather details about your roof size, material, pitch, and condition to understand exactly what you need.
+              <p className="text-slate-600">
+                Enter your address and answer a few quick questions about your roof's size, material, and condition.
               </p>
             </div>
 
-            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500 mb-6">
-                <TrendingUp className="h-7 w-7" />
+            <div className="text-center card-hover bg-slate-50 rounded-2xl p-8">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500 text-white mx-auto mb-6 shadow-lg shadow-amber-500/20">
+                <TrendingUp className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">
-                Checks Market Data
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                2. We Analyze the Data
               </h3>
-              <p className="text-slate-400 leading-relaxed">
-                Our AI cross-references current material costs, labor rates in your area, and seasonal pricing trends.
+              <p className="text-slate-600">
+                Our system checks current material costs, labor rates in your area, and thousands of similar projects.
               </p>
             </div>
 
-            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500 mb-6">
-                <BarChart3 className="h-7 w-7" />
+            <div className="text-center card-hover bg-slate-50 rounded-2xl p-8">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500 text-white mx-auto mb-6 shadow-lg shadow-amber-500/20">
+                <DollarSign className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">
-                Generates Your Range
+              <h3 className="text-xl font-bold text-slate-900 mb-3">
+                3. Get Your Estimate
               </h3>
-              <p className="text-slate-400 leading-relaxed">
-                You get a realistic price range based on actual market data—not a sales pitch or lowball quote.
+              <p className="text-slate-600">
+                Receive a detailed price range instantly. No waiting for callbacks, no sales pressure.
               </p>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Why Trust Our Estimates */}
-      <div className="py-20 md:py-28 bg-slate-900/50">
+          <div className="mt-12 text-center">
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={handleGetStarted}
+              disabled={isCreating}
+              className="btn-press"
+            >
+              {isCreating ? 'Starting...' : 'Start My Estimate'}
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Trust Us */}
+      <section className="py-16 md:py-24 bg-slate-50">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-white md:text-4xl">
-                Why Trust Our Estimates?
+              <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
+                Why Homeowners Trust Our Estimates
               </h2>
-              <p className="mt-4 text-lg text-slate-400">
-                We built this tool because getting honest roofing prices shouldn't require
-                five sales calls and three in-home visits.
+              <p className="mt-4 text-lg text-slate-600">
+                We built this because getting a roofing estimate shouldn't mean dealing
+                with pushy salespeople or waiting days for a callback.
               </p>
 
               <div className="mt-8 space-y-6">
                 <div className="flex gap-4">
                   <div className="flex-shrink-0">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/10">
-                      <Target className="h-5 w-5 text-green-500" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100">
+                      <CheckCircle className="h-6 w-6 text-green-600" />
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white">No Hidden Agenda</h4>
-                    <p className="text-slate-400 text-sm mt-1">
-                      We're not trying to sell you a roof. Our estimates are based purely on data,
-                      not commission structures.
+                    <h4 className="font-semibold text-slate-900">No Hidden Agenda</h4>
+                    <p className="text-slate-600 mt-1">
+                      We're not trying to sell you anything. Our estimates are based on real market data, not sales quotas.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex gap-4">
                   <div className="flex-shrink-0">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
-                      <LineChart className="h-5 w-5 text-blue-500" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100">
+                      <Shield className="h-6 w-6 text-blue-600" />
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white">Real Market Prices</h4>
-                    <p className="text-slate-400 text-sm mt-1">
-                      Our AI tracks actual project costs, material prices, and labor rates
-                      updated regularly across different regions.
+                    <h4 className="font-semibold text-slate-900">Your Privacy Protected</h4>
+                    <p className="text-slate-600 mt-1">
+                      We never sell your information to contractors. No spam calls, no surprise visitors.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex gap-4">
                   <div className="flex-shrink-0">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10">
-                      <Lock className="h-5 w-5 text-purple-500" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-100">
+                      <Users className="h-6 w-6 text-amber-600" />
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white">Your Data Stays Private</h4>
-                    <p className="text-slate-400 text-sm mt-1">
-                      We don't sell your information to contractors. Get your estimate
-                      without the spam calls.
+                    <h4 className="font-semibold text-slate-900">Built by Roofers</h4>
+                    <p className="text-slate-600 mt-1">
+                      Created by Farrell Roofing with 20+ years of industry experience. We know what things actually cost.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-800">
-              <div className="text-center">
-                <div className="inline-flex items-center gap-2 text-amber-500 mb-4">
-                  <Brain className="h-6 w-6" />
-                  <span className="font-semibold">AI Confidence Score</span>
+            <div className="bg-white rounded-2xl p-8 shadow-xl border border-slate-200">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center gap-2 text-amber-600 font-semibold">
+                  <Home className="h-5 w-5" />
+                  Sample Estimate
                 </div>
-                <div className="text-6xl font-bold text-white mb-2">92%</div>
-                <p className="text-slate-400 text-sm">
-                  Average accuracy when compared to final contractor quotes
-                </p>
               </div>
 
-              <div className="mt-8 pt-8 border-t border-slate-800">
-                <div className="grid grid-cols-2 gap-4 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-white">$0</div>
-                    <div className="text-xs text-slate-500">Cost to you</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-white">0</div>
-                    <div className="text-xs text-slate-500">Sales calls</div>
-                  </div>
+              <div className="space-y-4">
+                <div className="flex justify-between py-3 border-b border-slate-100">
+                  <span className="text-slate-600">Roof Size</span>
+                  <span className="font-medium text-slate-900">2,200 sq ft</span>
+                </div>
+                <div className="flex justify-between py-3 border-b border-slate-100">
+                  <span className="text-slate-600">Material</span>
+                  <span className="font-medium text-slate-900">Architectural Shingles</span>
+                </div>
+                <div className="flex justify-between py-3 border-b border-slate-100">
+                  <span className="text-slate-600">Job Type</span>
+                  <span className="font-medium text-slate-900">Full Replacement</span>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-slate-200">
+                <div className="text-center">
+                  <div className="text-sm text-slate-500 mb-1">Estimated Cost</div>
+                  <div className="text-4xl font-bold text-slate-900">$12,400 - $15,800</div>
+                  <div className="text-sm text-slate-500 mt-2">Based on your area's market rates</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* What You Get */}
-      <div className="py-20 md:py-28">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white md:text-4xl">
-              What You'll Get
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: BarChart3, title: 'Price Range', desc: 'Low, likely, and high estimates' },
-              { icon: TrendingUp, title: 'Market Context', desc: 'How your area affects pricing' },
-              { icon: CheckCircle, title: 'Scope Breakdown', desc: 'What the job actually involves' },
-              { icon: Brain, title: 'AI Insights', desc: 'Factors that impact your cost' },
-            ].map((item) => (
-              <div key={item.title} className="bg-slate-900 rounded-xl p-6 border border-slate-800 text-center">
-                <item.icon className="h-8 w-8 text-amber-500 mx-auto mb-4" />
-                <h3 className="font-bold text-white mb-2">{item.title}</h3>
-                <p className="text-sm text-slate-400">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      </section>
 
       {/* CTA Section */}
-      <div className="py-20 md:py-28 bg-gradient-to-b from-amber-600 to-amber-700">
+      <section className="py-16 md:py-24 bg-slate-800">
         <div className="mx-auto max-w-4xl px-4 text-center">
+          <div className="flex justify-center mb-6">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500 shadow-lg shadow-amber-500/30 animate-float">
+              <Home className="h-8 w-8 text-white" />
+            </div>
+          </div>
           <h2 className="text-3xl font-bold text-white md:text-4xl">
-            Ready to See What Your Roof Really Costs?
+            Ready to Find Out What Your Roof Costs?
           </h2>
-          <p className="mt-4 text-lg text-amber-100">
-            Get your AI-powered estimate in under 2 minutes. Free, unbiased, no strings attached.
+          <p className="mt-4 text-lg text-slate-300">
+            Join 50,000+ homeowners who've gotten their free estimate.
           </p>
           <div className="mt-8">
             <Button
-              variant="secondary"
+              variant="primary"
               size="xl"
               onClick={handleGetStarted}
               disabled={isCreating}
-              className="text-lg"
+              className="text-lg btn-press shadow-lg shadow-amber-500/30"
             >
-              {isCreating ? 'Loading...' : 'Start My Free Estimate'}
+              {isCreating ? 'Starting...' : 'Get My Free Estimate'}
             </Button>
           </div>
+          <p className="mt-4 text-sm text-slate-400">
+            Takes less than 2 minutes • Completely free
+          </p>
         </div>
-      </div>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-800 py-12">
+      <footer className="bg-slate-900 py-12">
         <div className="mx-auto max-w-6xl px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-600">
-                  <Brain className="h-6 w-6 text-white" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500">
+                  <Home className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <span className="text-lg font-bold text-white">RoofEstimate AI</span>
+                  <span className="text-lg font-bold text-white">RoofEstimate</span>
                   <p className="text-xs text-slate-500">by Farrell Roofing</p>
                 </div>
               </div>
               <p className="text-slate-400 text-sm leading-relaxed max-w-md">
-                AI-powered roofing estimates using real market data. Get unbiased pricing
-                information without the sales pressure.
+                Helping homeowners get honest, accurate roofing estimates without the hassle.
+                Built with 20+ years of roofing industry experience.
               </p>
             </div>
             <div>

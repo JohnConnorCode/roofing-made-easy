@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Loader2, Eye, EyeOff, Hammer } from 'lucide-react'
+import { Loader2, Eye, EyeOff, Home } from 'lucide-react'
 
 function LoginForm() {
   const router = useRouter()
@@ -125,7 +125,7 @@ export default function LoginPage() {
       {/* Logo/Branding */}
       <div className="mb-8 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-amber-600">
-          <Hammer className="h-7 w-7 text-white" />
+          <Home className="h-7 w-7 text-white" />
         </div>
         <div>
           <h1 className="text-xl font-bold text-white">Farrell Roofing</h1>
