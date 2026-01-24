@@ -122,14 +122,14 @@ export default function IssuesPage() {
             }),
           })
         } catch (apiError) {
-          console.log('API save failed, continuing with local data')
+          // API save failed, continue with local data
         }
       }
 
       setCurrentStep(5)
       router.push(`/${leadId}/photos`)
     } catch (error) {
-      console.error('Error saving issues:', error)
+      // Error handling - continue with navigation
     } finally {
       setIsLoading(false)
     }

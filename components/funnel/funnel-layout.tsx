@@ -15,11 +15,19 @@ export function FunnelLayout({ children, className }: FunnelLayoutProps) {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
+      {/* Skip link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-4 focus:left-4 focus:bg-[#c9a25c] focus:text-[#0c0f14] focus:px-4 focus:py-2 focus:rounded-lg focus:font-medium"
+      >
+        Skip to main content
+      </a>
+
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#0c0f14]/95 backdrop-blur-md border-b border-slate-800">
         <div className="mx-auto max-w-3xl px-4 py-4">
           <div className="mb-4 flex items-center justify-between">
-            <a href="/" className="flex items-center gap-3 animate-slide-up">
+            <a href="/" className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-md glow-gold">
                 <Home className="h-5 w-5 text-[#0c0f14]" />
               </div>
@@ -39,7 +47,11 @@ export function FunnelLayout({ children, className }: FunnelLayoutProps) {
       </header>
 
       {/* Main content */}
-      <main className={cn('mx-auto max-w-3xl px-4 py-8 page-transition', className)}>
+      <main
+        id="main-content"
+        className={cn('mx-auto max-w-3xl px-4 py-8 page-transition', className)}
+        role="main"
+      >
         {children}
       </main>
 

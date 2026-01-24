@@ -48,7 +48,6 @@ function LoginForm() {
       router.refresh()
     } catch (err) {
       setError('An unexpected error occurred. Please try again.')
-      console.error(err)
     } finally {
       setIsLoading(false)
     }
@@ -57,13 +56,13 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {sessionExpired && (
-        <div className="rounded-lg bg-amber-50 p-3 text-sm text-amber-700">
+        <div role="alert" className="rounded-lg bg-amber-50 p-3 text-sm text-amber-700">
           Your session has expired. Please sign in again.
         </div>
       )}
 
       {error && (
-        <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
+        <div role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
           {error}
         </div>
       )}
@@ -146,7 +145,7 @@ export default function LoginPage() {
 
       <p className="mt-8 text-center text-sm text-slate-400">
         Having trouble?{' '}
-        <a href="mailto:support@summitroofing.com" className="text-amber-500 hover:underline">
+        <a href="mailto:support@farrellroofing.com" className="text-amber-500 hover:underline">
           Contact support
         </a>
       </p>

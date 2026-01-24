@@ -151,14 +151,13 @@ export default function AddressPage() {
           })
         } catch (apiError) {
           // API error is non-blocking - data is saved in local store
-          console.log('API save failed, continuing with local data')
         }
       }
 
       setCurrentStep(2)
       router.push(`/${leadId}/job-type`)
     } catch (error) {
-      console.error('Error saving address:', error)
+      // Error handling - continue with navigation
     } finally {
       setIsLoading(false)
     }

@@ -67,7 +67,7 @@ export default function AdminLayout({
           <div className="flex h-8 w-8 items-center justify-center rounded bg-amber-600">
             <Home className="h-5 w-5 text-white" />
           </div>
-          <h1 className="text-lg font-bold text-white">Summit Admin</h1>
+          <h1 className="text-lg font-bold text-white">Farrell Admin</h1>
         </div>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

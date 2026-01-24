@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useMemo } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useFunnelStore } from '@/stores/funnelStore'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -130,6 +130,7 @@ function generateDemoEstimate(funnelData: {
 
 export default function EstimatePage() {
   const params = useParams()
+  const router = useRouter()
   const leadId = params.leadId as string
   const isDemoMode = leadId.startsWith('demo-')
 
@@ -190,9 +191,7 @@ export default function EstimatePage() {
       try {
         await navigator.share(shareData)
       } catch (err) {
-        if ((err as Error).name !== 'AbortError') {
-          console.error('Share failed:', err)
-        }
+        // User cancelled share or share failed - silent handling
       }
     } else {
       try {
@@ -234,8 +233,7 @@ export default function EstimatePage() {
         setEstimateData(estimateData)
         setEstimate(estimateData)
       } catch (err) {
-        console.error('Error fetching estimate:', err)
-        // Fallback to demo estimate
+        // Fallback to demo estimate on error
         setEstimateData(demoEstimate)
         setEstimate(demoEstimate)
       } finally {
@@ -264,7 +262,7 @@ export default function EstimatePage() {
         <Button
           variant="outline"
           className="mt-4 border-slate-600 text-slate-300 hover:bg-slate-800"
-          onClick={() => window.location.reload()}
+          onClick={() => router.refresh()}
         >
           Try Again
         </Button>
@@ -451,7 +449,7 @@ export default function EstimatePage() {
           size="md"
           className="text-slate-400 hover:text-slate-100 hover:bg-slate-800"
           leftIcon={<ArrowLeft className="h-4 w-4" />}
-          onClick={() => window.history.back()}
+          onClick={() => router.back()}
         >
           Back
         </Button>

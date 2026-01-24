@@ -100,14 +100,14 @@ export default function TimelinePage() {
             }),
           })
         } catch (apiError) {
-          console.log('API save failed, continuing with local data')
+          // API error is non-blocking - data is saved in local store
         }
       }
 
       setCurrentStep(7)
       router.push(`/${leadId}/contact`)
     } catch (error) {
-      console.error('Error saving timeline:', error)
+      // Error handling - continue with navigation
     } finally {
       setIsLoading(false)
     }

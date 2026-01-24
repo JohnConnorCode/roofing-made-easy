@@ -19,8 +19,14 @@ import {
   DollarSign,
   ImageIcon,
   RefreshCw,
-  Loader2,
+  TrendingUp,
 } from 'lucide-react'
+import { SkeletonLeadDetail } from '@/components/ui/skeleton'
+import { useConfirmDialog } from '@/components/ui/confirm-dialog'
+import { calculateLeadScore, getScoreTierDisplay, type LeadScoreInput } from '@/lib/leads/scoring'
+import { LeadNotes } from '@/components/admin/lead-notes'
+import { FollowUpReminder } from '@/components/admin/follow-up-reminder'
+import { QuoteGenerator } from '@/components/admin/quote-generator'
 
 // Construct public URL for Supabase storage
 const getPhotoUrl = (storagePath: string) => {
@@ -92,6 +98,7 @@ export default function LeadDetailPage() {
   const router = useRouter()
   const leadId = params.leadId as string
   const { showToast } = useToast()
+  const { confirm } = useConfirmDialog()
 
   const [lead, setLead] = useState<LeadDetail | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -113,7 +120,6 @@ export default function LeadDetailPage() {
         setError('Lead not found')
       }
     } catch (err) {
-      console.error('Error fetching lead:', err)
       setError('Unable to load lead. Please try again.')
     } finally {
       setIsLoading(false)
@@ -130,9 +136,13 @@ export default function LeadDetailPage() {
     // Confirm destructive status changes
     const destructiveStatuses = ['lost', 'archived']
     if (destructiveStatuses.includes(newStatus)) {
-      const confirmed = window.confirm(
-        `Are you sure you want to mark this lead as "${newStatus}"? This action can be undone by changing the status again.`
-      )
+      const confirmed = await confirm({
+        title: `Mark Lead as ${newStatus.charAt(0).toUpperCase() + newStatus.slice(1)}?`,
+        message: `Are you sure you want to mark this lead as "${newStatus}"? This action can be undone by changing the status again.`,
+        confirmLabel: `Mark as ${newStatus}`,
+        cancelLabel: 'Cancel',
+        variant: newStatus === 'lost' ? 'danger' : 'warning',
+      })
       if (!confirmed) return
     }
 
@@ -149,7 +159,6 @@ export default function LeadDetailPage() {
       setLead({ ...lead, status: newStatus })
       showToast(`Status updated to "${newStatus.replace('_', ' ')}"`, 'success')
     } catch (err) {
-      console.error('Error updating status:', err)
       showToast('Failed to update status. Please try again.', 'error')
     } finally {
       setIsSaving(false)
@@ -157,12 +166,7 @@ export default function LeadDetailPage() {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
-        <span className="ml-2 text-slate-500">Loading lead details...</span>
-      </div>
-    )
+    return <SkeletonLeadDetail />
   }
 
   if (error || !lead) {
@@ -190,6 +194,17 @@ export default function LeadDetailPage() {
   // Find the most recent non-superseded estimate, or fall back to the first estimate
   const estimate = lead.estimates?.find((e) => e && !(e as any).is_superseded) || lead.estimates?.[0]
 
+  // Calculate lead score
+  const scoreInput: LeadScoreInput = {
+    jobType: intake?.job_type,
+    timelineUrgency: intake?.timeline_urgency,
+    photosCount: lead.uploads?.length || 0,
+    hasInsuranceClaim: intake?.has_insurance_claim,
+    roofSizeSqft: intake?.roof_size_sqft,
+  }
+  const leadScore = calculateLeadScore(scoreInput)
+  const scoreTier = getScoreTierDisplay(leadScore.tier)
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -214,6 +229,14 @@ export default function LeadDetailPage() {
         </div>
 
         <div className="flex items-center gap-4">
+          <div
+            className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium ${scoreTier.className}`}
+            title={`Lead Score: ${leadScore.score}/100`}
+          >
+            <TrendingUp className="h-4 w-4" />
+            {scoreTier.emoji && <span>{scoreTier.emoji}</span>}
+            {scoreTier.label} ({leadScore.score})
+          </div>
           <Select
             options={STATUS_OPTIONS}
             value={lead.status}
@@ -467,6 +490,43 @@ export default function LeadDetailPage() {
             )}
           </CardContent>
         </Card>
+
+        {/* Follow-Up Reminder */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Follow-Up</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <FollowUpReminder
+              leadId={lead.id}
+              leadName={`${contact?.first_name || ''} ${contact?.last_name || ''}`.trim() || 'Lead'}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Notes & Activity */}
+        <Card className="lg:col-span-2">
+          <CardContent className="pt-6">
+            <LeadNotes leadId={lead.id} />
+          </CardContent>
+        </Card>
+
+        {/* Quote Generator */}
+        {estimate && (
+          <Card className="lg:col-span-2">
+            <CardContent className="pt-6">
+              <QuoteGenerator
+                leadData={{
+                  id: lead.id,
+                  contact: contact,
+                  property: property,
+                  intake: intake,
+                  estimate: estimate,
+                }}
+              />
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   )

@@ -111,14 +111,14 @@ export default function JobTypePage() {
             }),
           })
         } catch (apiError) {
-          console.log('API save failed, continuing with local data')
+          // API error is non-blocking - data is saved in local store
         }
       }
 
       setCurrentStep(3)
       router.push(`/${leadId}/roof-details`)
     } catch (error) {
-      console.error('Error saving job type:', error)
+      // Error handling - continue with navigation
     } finally {
       setIsLoading(false)
     }

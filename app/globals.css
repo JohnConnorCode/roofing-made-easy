@@ -114,20 +114,25 @@ body {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
+/* Elements with slide-up start hidden and animate in */
 .animate-slide-up {
-  animation: slideUp 0.6s ease-out forwards;
+  opacity: 0;
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-slide-in-right {
-  animation: slideInRight 0.5s ease-out forwards;
+  opacity: 0;
+  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-slide-in-left {
-  animation: slideInLeft 0.5s ease-out forwards;
+  opacity: 0;
+  animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.4s ease-out forwards;
+  opacity: 0;
+  animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-logo-pulse {
@@ -138,24 +143,36 @@ body {
   animation: float 3s ease-in-out infinite;
 }
 
-/* Staggered children */
+/* Animation delay utilities for sequential animations */
+.delay-0 { animation-delay: 0ms; }
+.delay-75 { animation-delay: 75ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+
+/* Staggered children - faster, smoother timing */
 .stagger-children > * {
   opacity: 0;
-  animation: staggerFadeIn 0.5s ease-out forwards;
+  animation: staggerFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
-.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
-.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
-.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
-.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
-.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
-.stagger-children > *:nth-child(7) { animation-delay: 0.7s; }
-.stagger-children > *:nth-child(8) { animation-delay: 0.8s; }
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
 
 /* Page transition wrapper */
 .page-transition {
-  animation: slideUp 0.4s ease-out;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Card hover lift effect */
@@ -196,15 +213,117 @@ body {
   box-shadow: 0 0 20px rgba(181, 137, 58, 0.3);
 }
 
-/* Print styles for estimate PDF */
+/* Print styles for estimate PDF and quote generator */
 @media print {
-  .no-print {
+  .no-print,
+  .print\\:hidden {
     display: none !important;
   }
 
   body {
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Hide admin layout elements */
+  aside,
+  [class*="sidebar"],
+  header:not(#printable-quote header),
+  nav:not(#printable-quote nav) {
+    display: none !important;
+  }
+
+  /* Make printable quote full width */
+  #printable-quote {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 2rem;
+    background: white !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Reset dark theme for print */
+  .bg-gradient-dark,
+  .bg-\\[\\#0c0f14\\],
+  .bg-\\[\\#161a23\\],
+  .bg-\\[\\#1a1f2e\\] {
+    background: white !important;
+  }
+
+  /* Text colors for print */
+  .text-slate-100,
+  .text-slate-200,
+  .text-slate-300 {
+    color: #1e293b !important;
+  }
+
+  .text-slate-400,
+  .text-slate-500 {
+    color: #64748b !important;
+  }
+
+  .text-\\[\\#c9a25c\\],
+  .text-amber-600 {
+    color: #92400e !important;
+  }
+
+  /* Card styling for print */
+  [class*="Card"],
+  .rounded-lg,
+  .rounded-xl {
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Hide interactive elements outside printable area */
+  button:not(#printable-quote button),
+  a:not(#printable-quote a):not(.print-visible) {
+    display: none !important;
+  }
+
+  /* Estimate page specific styles */
+  .estimate-content {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Price display for print */
+  .text-4xl {
+    font-size: 2rem !important;
+    color: #1e293b !important;
+  }
+
+  /* Page breaks */
+  .page-break-before {
+    page-break-before: always;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid;
+  }
+
+  /* Quote specific */
+  #printable-quote table {
+    width: 100%;
+  }
+
+  #printable-quote th,
+  #printable-quote td {
+    padding: 0.75rem 0;
   }
 }
 

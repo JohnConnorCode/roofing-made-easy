@@ -82,14 +82,14 @@ export default function RoofDetailsPage() {
             }),
           })
         } catch (apiError) {
-          console.log('API save failed, continuing with local data')
+          // API error is non-blocking - data is saved in local store
         }
       }
 
       setCurrentStep(4)
       router.push(`/${leadId}/issues`)
     } catch (error) {
-      console.error('Error saving roof details:', error)
+      // Error handling - continue with navigation
     } finally {
       setIsLoading(false)
     }

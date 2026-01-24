@@ -109,14 +109,14 @@ export default function ContactPage() {
             method: 'POST',
           })
         } catch (apiError) {
-          console.log('API save failed, continuing with local data')
+          // API save failed, continue with local data
         }
       }
 
       setCurrentStep(8)
       router.push(`/${leadId}/estimate`)
     } catch (error) {
-      console.error('Error saving contact:', error)
+      // Error handling - continue with navigation
     } finally {
       setIsLoading(false)
     }

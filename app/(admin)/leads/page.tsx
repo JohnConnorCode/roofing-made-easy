@@ -7,7 +7,9 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { formatDate, formatPhone } from '@/lib/utils'
-import { Search, ChevronLeft, ChevronRight, AlertTriangle, RefreshCw, Loader2, Inbox } from 'lucide-react'
+import { Search, ChevronLeft, ChevronRight, AlertTriangle, RefreshCw, Inbox } from 'lucide-react'
+import { SkeletonLeadsTable } from '@/components/ui/skeleton'
+import { calculateLeadScore, getScoreTierDisplay, type LeadScoreInput } from '@/lib/leads/scoring'
 
 interface Lead {
   id: string
@@ -16,6 +18,13 @@ interface Lead {
   current_step: number
   contacts: { first_name: string; last_name: string; email: string; phone: string }[]
   properties: { city: string; state: string; street_address: string }[]
+  intakes?: {
+    job_type?: string
+    timeline_urgency?: string
+    has_insurance_claim?: boolean
+    roof_size_sqft?: number
+  }[]
+  uploads?: { id: string }[]
 }
 
 const STATUS_OPTIONS = [
@@ -63,7 +72,6 @@ export default function LeadsPage() {
         setTotal(data.total || data.leads.length)
       }
     } catch (err) {
-      console.error('Error fetching leads:', err)
       setError('Unable to load leads. Please try again.')
     } finally {
       setIsLoading(false)
@@ -129,10 +137,7 @@ export default function LeadsPage() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <Loader2 className="h-6 w-6 animate-spin text-amber-600" />
-              <span className="ml-2 text-slate-500">Loading leads...</span>
-            </div>
+            <SkeletonLeadsTable />
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-8">
               <AlertTriangle className="h-10 w-10 text-amber-500" />
@@ -165,6 +170,7 @@ export default function LeadsPage() {
                       <th className="pb-3 pr-4">Contact</th>
                       <th className="pb-3 pr-4">Location</th>
                       <th className="pb-3 pr-4">Status</th>
+                      <th className="pb-3 pr-4">Score</th>
                       <th className="pb-3 pr-4">Step</th>
                       <th className="pb-3">Date</th>
                     </tr>
@@ -173,6 +179,16 @@ export default function LeadsPage() {
                     {filteredLeads.map((lead) => {
                       const contact = lead.contacts?.[0]
                       const property = lead.properties?.[0]
+                      const intake = lead.intakes?.[0]
+                      const scoreInput: LeadScoreInput = {
+                        jobType: intake?.job_type,
+                        timelineUrgency: intake?.timeline_urgency,
+                        photosCount: lead.uploads?.length || 0,
+                        hasInsuranceClaim: intake?.has_insurance_claim,
+                        roofSizeSqft: intake?.roof_size_sqft,
+                      }
+                      const leadScore = calculateLeadScore(scoreInput)
+                      const scoreTier = getScoreTierDisplay(leadScore.tier)
                       return (
                         <tr key={lead.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
                           <td className="py-3 pr-4">
@@ -200,6 +216,15 @@ export default function LeadsPage() {
                           </td>
                           <td className="py-3 pr-4">
                             <StatusBadge status={lead.status} />
+                          </td>
+                          <td className="py-3 pr-4">
+                            <span
+                              className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ${scoreTier.className}`}
+                              title={`Score: ${leadScore.score}`}
+                            >
+                              {scoreTier.emoji && <span>{scoreTier.emoji}</span>}
+                              {scoreTier.label}
+                            </span>
                           </td>
                           <td className="py-3 pr-4 text-slate-600">
                             {lead.current_step}/8

@@ -14,8 +14,13 @@ import {
   Users,
   TrendingUp,
   Star,
-  MapPin
+  MapPin,
+  HelpCircle
 } from 'lucide-react'
+import { FAQAccordion, DEFAULT_FAQ_ITEMS } from '@/components/faq/faq-accordion'
+import { ServiceSchema, FAQSchema } from '@/components/seo/json-ld'
+import { getFeaturedTestimonials } from '@/lib/data/testimonials'
+import { Quote } from 'lucide-react'
 
 function generateDemoLeadId(): string {
   return 'demo-' + Math.random().toString(36).substring(2, 15)
@@ -45,20 +50,24 @@ export default function HomePage() {
         router.push(`/${demoId}/address`)
       }
     } catch (error) {
-      console.log('Using demo mode')
+      // Fall back to demo mode on error
       const demoId = generateDemoLeadId()
       router.push(`/${demoId}/address`)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-dark animate-fade-in">
+    <div className="min-h-screen bg-gradient-dark">
+      {/* Schema.org structured data */}
+      <ServiceSchema />
+      <FAQSchema items={DEFAULT_FAQ_ITEMS} />
+
       {/* Header */}
       <header className="border-b border-slate-800 bg-[#0c0f14]/90 backdrop-blur-md sticky top-0 z-50">
         <div className="mx-auto max-w-6xl px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 animate-slide-up">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg glow-gold animate-float">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg glow-gold">
                 <Home className="h-6 w-6 text-[#0c0f14]" />
               </div>
               <div>
@@ -82,34 +91,22 @@ export default function HomePage() {
 
         <div className="relative mx-auto max-w-6xl px-4 py-16 md:py-24">
           <div className="max-w-3xl mx-auto text-center">
-            <div
-              className="inline-flex items-center gap-2 rounded-full bg-[#1a1f2e] border border-slate-700 px-4 py-2 text-sm text-[#c9a25c] mb-6 animate-slide-up"
-              style={{ animationDelay: '0.1s' }}
-            >
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f2e] border border-slate-700 px-4 py-2 text-sm text-[#c9a25c] mb-6 animate-slide-up delay-100">
               <Clock className="h-4 w-4" />
               Get your estimate in under 2 minutes
             </div>
 
-            <h2
-              className="text-4xl font-bold tracking-tight text-slate-100 md:text-5xl lg:text-6xl animate-slide-up"
-              style={{ animationDelay: '0.2s' }}
-            >
+            <h2 className="text-4xl font-bold tracking-tight text-slate-100 md:text-5xl lg:text-6xl animate-slide-up delay-200">
               Find Out What Your
               <span className="text-[#c9a25c]"> Roof Really Costs</span>
             </h2>
 
-            <p
-              className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up"
-              style={{ animationDelay: '0.3s' }}
-            >
+            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-300">
               No contractors knocking on your door. No pressure. Just an honest,
               data-driven estimate based on your home and local market prices.
             </p>
 
-            <div
-              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-slide-up"
-              style={{ animationDelay: '0.4s' }}
-            >
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-slide-up delay-400">
               <Button
                 variant="primary"
                 size="xl"
@@ -131,10 +128,7 @@ export default function HomePage() {
               </Button>
             </div>
 
-            <p
-              className="mt-4 text-sm text-slate-500 animate-slide-up"
-              style={{ animationDelay: '0.5s' }}
-            >
+            <p className="mt-4 text-sm text-slate-500 animate-slide-up delay-500">
               Free forever • No account needed • No spam calls
             </p>
           </div>
@@ -326,6 +320,62 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-16 md:py-24 bg-[#161a23]">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+              What Homeowners Say
+            </h2>
+            <p className="mt-4 text-lg text-slate-400">
+              Join thousands of satisfied customers
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 stagger-children">
+            {getFeaturedTestimonials(3).map((testimonial) => (
+              <div
+                key={testimonial.id}
+                className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 card-hover"
+              >
+                <Quote className="h-8 w-8 text-[#c9a25c]/50 mb-4" />
+                <p className="text-slate-300 mb-4 leading-relaxed">
+                  "{testimonial.text}"
+                </p>
+                <div className="flex items-center gap-1 mb-3">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-[#c9a25c] text-[#c9a25c]" />
+                  ))}
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-100">{testimonial.name}</p>
+                  <p className="text-sm text-slate-500">{testimonial.location}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 md:py-24 bg-[#0c0f14]">
+        <div className="mx-auto max-w-3xl px-4">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-[#1a1f2e] border border-slate-700 mb-6">
+              <HelpCircle className="h-7 w-7 text-[#c9a25c]" />
+            </div>
+            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+              Frequently Asked Questions
+            </h2>
+            <p className="mt-4 text-lg text-slate-400">
+              Everything you need to know about getting your estimate
+            </p>
+          </div>
+
+          <FAQAccordion items={DEFAULT_FAQ_ITEMS} />
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-[#161a23] border-y border-slate-800">
         <div className="mx-auto max-w-4xl px-4 text-center">
@@ -360,7 +410,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-[#0c0f14] py-12">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-5 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432]">
@@ -377,15 +427,28 @@ export default function HomePage() {
               </p>
             </div>
             <div>
+              <h4 className="font-semibold text-slate-100 mb-4">Services</h4>
+              <div className="space-y-2 text-sm text-slate-500">
+                <a href="/services" className="block hover:text-[#c9a25c] transition-colors">All Services</a>
+                <a href="/portfolio" className="block hover:text-[#c9a25c] transition-colors">Our Work</a>
+                <a href="/service-areas" className="block hover:text-[#c9a25c] transition-colors">Service Areas</a>
+                <a href="/financing" className="block hover:text-[#c9a25c] transition-colors">Financing</a>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-semibold text-slate-100 mb-4">Company</h4>
+              <div className="space-y-2 text-sm text-slate-500">
+                <a href="/about" className="block hover:text-[#c9a25c] transition-colors">About Us</a>
+                <a href="/blog" className="block hover:text-[#c9a25c] transition-colors">Resources</a>
+                <a href="/contact" className="block hover:text-[#c9a25c] transition-colors">Contact</a>
+                <a href="/referral" className="block hover:text-[#c9a25c] transition-colors">Referral Program</a>
+              </div>
+            </div>
+            <div>
               <h4 className="font-semibold text-slate-100 mb-4">Legal</h4>
               <div className="space-y-2 text-sm text-slate-500">
                 <a href="/terms" className="block hover:text-[#c9a25c] transition-colors">Terms of Service</a>
                 <a href="/privacy" className="block hover:text-[#c9a25c] transition-colors">Privacy Policy</a>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold text-slate-100 mb-4">For Contractors</h4>
-              <div className="space-y-2 text-sm text-slate-500">
                 <a href="/login" className="block hover:text-[#c9a25c] transition-colors">Contractor Portal</a>
               </div>
             </div>

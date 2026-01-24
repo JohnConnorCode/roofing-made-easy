@@ -40,7 +40,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {error && (
-          <p id={`${inputId}-error`} className="mt-1.5 text-sm text-red-400">
+          <p id={`${inputId}-error`} role="alert" className="mt-1.5 text-sm text-red-400">
             {error}
           </p>
         )}

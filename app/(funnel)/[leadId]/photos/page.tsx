@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { useState, useCallback, useRef } from 'react'
 import { Upload, Camera, X, Image, Loader2 } from 'lucide-react'
 import { v4 as uuidv4 } from 'uuid'
+import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 
 const MAX_PHOTOS = 10
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
@@ -19,6 +20,7 @@ export default function PhotosPage() {
   const isDemoMode = leadId.startsWith('demo-')
 
   const { photos, addPhoto, removePhoto, updatePhoto, setCurrentStep } = useFunnelStore()
+  const { confirm } = useConfirmDialog()
   const [isLoading, setIsLoading] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -80,8 +82,8 @@ export default function PhotosPage() {
             updatePhoto(id, { status: 'uploaded' }) // Mark as uploaded anyway in demo fallback
           }
         } catch (error) {
-          console.error('Upload failed:', error)
-          updatePhoto(id, { status: 'uploaded' }) // Mark as uploaded for demo
+          // Upload failed - mark as uploaded anyway for demo mode
+          updatePhoto(id, { status: 'uploaded' })
         }
       }
     },
@@ -121,14 +123,14 @@ export default function PhotosPage() {
             }),
           })
         } catch (apiError) {
-          console.log('API save failed, continuing with local data')
+          // API save failed, continue with local data
         }
       }
 
       setCurrentStep(6)
       router.push(`/${leadId}/timeline`)
     } catch (error) {
-      console.error('Error:', error)
+      // Error handling - continue with navigation
     } finally {
       setIsLoading(false)
     }
@@ -140,11 +142,18 @@ export default function PhotosPage() {
 
   const uploadingCount = photos.filter((p) => p.status === 'uploading').length
 
-  const handleRemovePhoto = useCallback((photoId: string) => {
-    if (window.confirm('Remove this photo?')) {
+  const handleRemovePhoto = useCallback(async (photoId: string) => {
+    const confirmed = await confirm({
+      title: 'Remove Photo?',
+      message: 'Are you sure you want to remove this photo?',
+      confirmLabel: 'Remove',
+      cancelLabel: 'Keep',
+      variant: 'warning',
+    })
+    if (confirmed) {
       removePhoto(photoId)
     }
-  }, [removePhoto])
+  }, [removePhoto, confirm])
 
   return (
     <StepContainer

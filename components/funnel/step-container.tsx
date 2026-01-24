@@ -32,7 +32,7 @@ export function StepContainer({
   className,
 }: StepContainerProps) {
   return (
-    <div className={cn('flex flex-col animate-fade-in', className)}>
+    <div className={cn('flex flex-col', className)}>
       {/* Header */}
       <div className="mb-8 animate-slide-up">
         <h2 className="text-2xl font-bold text-slate-100 md:text-3xl">{title}</h2>
@@ -42,12 +42,12 @@ export function StepContainer({
       </div>
 
       {/* Content */}
-      <div className="flex-1 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+      <div className="flex-1 animate-slide-up delay-100">
         {children}
       </div>
 
       {/* Navigation */}
-      <div className="mt-8 flex items-center justify-between gap-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+      <div className="mt-8 flex items-center justify-between gap-4 animate-slide-up delay-200">
         {showBack && onBack ? (
           <Button
             variant="outline"

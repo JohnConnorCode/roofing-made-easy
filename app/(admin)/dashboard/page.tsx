@@ -4,7 +4,9 @@ import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { formatCurrency, formatDate } from '@/lib/utils'
-import { Users, DollarSign, Clock, CheckCircle, AlertTriangle, RefreshCw, Loader2, Inbox } from 'lucide-react'
+import { Users, DollarSign, Clock, CheckCircle, AlertTriangle, RefreshCw, Inbox, Loader2, BarChart3 } from 'lucide-react'
+import { SkeletonDashboard } from '@/components/ui/skeleton'
+import { SimpleAnalytics } from '@/components/admin/simple-analytics'
 import Link from 'next/link'
 
 interface DashboardStats {
@@ -30,31 +32,42 @@ export default function DashboardPage() {
     totalEstimateValue: 0,
   })
   const [recentLeads, setRecentLeads] = useState<RecentLead[]>([])
+  const [allLeads, setAllLeads] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showAnalytics, setShowAnalytics] = useState(false)
 
   const fetchDashboardData = useCallback(async () => {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch('/api/leads?limit=10')
-      if (!response.ok) {
+      // Fetch recent leads for display
+      const recentResponse = await fetch('/api/leads?limit=10')
+      // Fetch all leads for analytics
+      const allResponse = await fetch('/api/leads?limit=100')
+
+      if (!recentResponse.ok || !allResponse.ok) {
         throw new Error('Failed to fetch dashboard data')
       }
-      const data = await response.json()
 
-      if (data.leads) {
-        const leads = data.leads as RecentLead[]
+      const recentData = await recentResponse.json()
+      const allData = await allResponse.json()
+
+      if (recentData.leads) {
+        const leads = recentData.leads as RecentLead[]
         setRecentLeads(leads)
         setStats({
-          totalLeads: data.total || leads.length,
+          totalLeads: recentData.total || leads.length,
           newLeads: leads.filter((l) => l.status === 'new').length,
           estimatesGenerated: leads.filter((l) => l.status === 'estimate_generated').length,
           totalEstimateValue: 0,
         })
       }
+
+      if (allData.leads) {
+        setAllLeads(allData.leads)
+      }
     } catch (err) {
-      console.error('Error fetching dashboard data:', err)
       setError('Unable to load dashboard data. Please try again.')
     } finally {
       setIsLoading(false)
@@ -92,12 +105,48 @@ export default function DashboardPage() {
     },
   ]
 
+  if (isLoading) {
+    return <SkeletonDashboard />
+  }
+
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
-        <p className="text-slate-500">Today's pipeline at a glance</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+          <p className="text-slate-500">
+            {showAnalytics ? 'Performance analytics' : "Today's pipeline at a glance"}
+          </p>
+        </div>
+        <div className="flex gap-2 bg-slate-100 p-1 rounded-lg">
+          <button
+            onClick={() => setShowAnalytics(false)}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              !showAnalytics
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            Overview
+          </button>
+          <button
+            onClick={() => setShowAnalytics(true)}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
+              showAnalytics
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            <BarChart3 className="h-4 w-4" />
+            Analytics
+          </button>
+        </div>
       </div>
+
+      {showAnalytics ? (
+        <SimpleAnalytics leads={allLeads} />
+      ) : (
+        <>
 
       {/* Stats grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -202,6 +251,8 @@ export default function DashboardPage() {
           )}
         </CardContent>
       </Card>
+      </>
+      )}
     </div>
   )
 }

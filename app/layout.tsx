@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { LocalBusinessSchema } from "@/components/seo/json-ld";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -46,6 +47,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <LocalBusinessSchema />
+      </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <Providers>{children}</Providers>
       </body>
