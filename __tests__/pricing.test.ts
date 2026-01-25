@@ -21,7 +21,7 @@ describe('Pricing Engine', () => {
           roof_size_sqft: 2000,
           roof_material: 'asphalt_shingle',
           stories: 1,
-          roof_pitch: 'moderate',
+          roof_pitch: 'medium',
           timeline_urgency: 'within_month',
           has_skylights: false,
           has_chimneys: false,

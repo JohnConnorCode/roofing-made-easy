@@ -1,0 +1,35 @@
+{
+  "name": "Farrell Roofing",
+  "short_name": "Farrell Roofing",
+  "description": "Trusted roofing contractor serving Tupelo and Northeast Mississippi. Free estimates available.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0f14",
+  "theme_color": "#c9a25c",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["business", "home services"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Get Free Estimate",
+      "short_name": "Estimate",
+      "description": "Start your free roofing estimate",
+      "url": "/"
+    },
+    {
+      "name": "Contact Us",
+      "short_name": "Contact",
+      "description": "Get in touch with our team",
+      "url": "/contact"
+    }
+  ]
+}

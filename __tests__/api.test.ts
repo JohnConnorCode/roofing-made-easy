@@ -22,9 +22,10 @@ describe('Mock Supabase Client', () => {
 
       expect(error).toBeNull()
       expect(data).toBeDefined()
-      expect(data.id).toBeDefined()
-      expect(data.source).toBe('web_funnel')
-      expect(data.status).toBe('new')
+      const lead = data as { id: string; source: string; status: string }
+      expect(lead.id).toBeDefined()
+      expect(lead.source).toBe('web_funnel')
+      expect(lead.status).toBe('new')
     })
 
     it('should select leads with filters', async () => {
@@ -38,8 +39,9 @@ describe('Mock Supabase Client', () => {
         .eq('status', 'contacted')
 
       expect(error).toBeNull()
-      expect(data).toHaveLength(1)
-      expect(data[0].status).toBe('contacted')
+      const leads = data as Array<{ status: string }>
+      expect(leads).toHaveLength(1)
+      expect(leads[0].status).toBe('contacted')
     })
 
     it('should update a lead', async () => {
@@ -53,7 +55,8 @@ describe('Mock Supabase Client', () => {
         .single()
 
       expect(error).toBeNull()
-      expect(data.status).toBe('qualified')
+      const updated = data as { status: string }
+      expect(updated.status).toBe('qualified')
     })
 
     it('should order results', async () => {
@@ -67,7 +70,8 @@ describe('Mock Supabase Client', () => {
         .select('*')
         .order('created_at', { ascending: false })
 
-      expect(data[0].source).toBe('second')
+      const leads = data as Array<{ source: string }>
+      expect(leads[0].source).toBe('second')
     })
 
     it('should handle range/pagination', async () => {
@@ -101,7 +105,8 @@ describe('Mock Supabase Client', () => {
         .single()
 
       expect(error).toBeNull()
-      expect(data.first_name).toBe('John')
+      const contact = data as { first_name: string }
+      expect(contact.first_name).toBe('John')
     })
   })
 
@@ -110,7 +115,8 @@ describe('Mock Supabase Client', () => {
       const { data, error } = await mockSupabase.from('pricing_rules').select('*')
 
       expect(error).toBeNull()
-      expect(data.length).toBeGreaterThan(0)
+      const rules = data as Array<{ rule_category: string }>
+      expect(rules.length).toBeGreaterThan(0)
     })
 
     it('should filter by category', async () => {
@@ -119,7 +125,8 @@ describe('Mock Supabase Client', () => {
         .select('*')
         .eq('rule_category', 'material')
 
-      expect(data.every((r: { rule_category: string }) => r.rule_category === 'material')).toBe(true)
+      const rules = data as Array<{ rule_category: string }>
+      expect(rules.every((r) => r.rule_category === 'material')).toBe(true)
     })
 
     it('should create a new rule', async () => {
@@ -136,7 +143,8 @@ describe('Mock Supabase Client', () => {
         .single()
 
       expect(error).toBeNull()
-      expect(data.rule_key).toBe('custom_test')
+      const rule = data as { rule_key: string }
+      expect(rule.rule_key).toBe('custom_test')
     })
   })
 

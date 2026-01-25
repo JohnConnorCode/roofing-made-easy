@@ -3,7 +3,17 @@
  *
  * These components add structured data to pages for better SEO
  * and rich snippets in search results.
+ *
+ * IMPORTANT: These schemas include production guards to prevent
+ * fake/placeholder data from being rendered in search results.
  */
+
+import {
+  BUSINESS_CONFIG,
+  hasRealContactInfo,
+  hasVerifiedReviews,
+  getSocialLinks,
+} from '@/lib/config/business'
 
 interface LocalBusinessSchemaProps {
   name?: string
@@ -15,36 +25,102 @@ interface LocalBusinessSchemaProps {
 /**
  * LocalBusiness schema for the company
  * Add this to the root layout
+ *
+ * NOTE: Returns null in production if real contact info is not configured.
+ * This prevents Google penalties for fabricated structured data.
  */
 export function LocalBusinessSchema({
-  name = 'RoofEstimate by Farrell Roofing',
-  description = 'Free instant roofing estimates. Get accurate pricing for roof repair, replacement, and inspection without the sales pressure.',
-  url = 'https://roofestimate.com',
+  name = BUSINESS_CONFIG.name,
+  description = 'Trusted roofing contractor serving Tupelo and Northeast Mississippi. Professional roof repair, replacement, and storm damage restoration with free estimates.',
+  url = 'https://farrellroofing.com',
   priceRange = '$$',
 }: LocalBusinessSchemaProps) {
-  const schema = {
+  // SAFETY: Don't render LocalBusiness schema with fake contact info in production
+  if (process.env.NODE_ENV === 'production' && !hasRealContactInfo()) {
+    return null
+  }
+
+  const socialLinks = getSocialLinks()
+
+  // Build the schema object
+  const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': 'RoofingContractor',
     name,
     description,
-    '@id': url,
+    '@id': `${url}/#organization`,
     url,
     priceRange,
-    image: `${url}/og-image.png`,
+    image: `${url}/images/farrell-roofing-logo.png`,
+    logo: `${url}/images/farrell-roofing-logo.png`,
+    telephone: BUSINESS_CONFIG.phone.raw,
     address: {
       '@type': 'PostalAddress',
-      addressCountry: 'US',
+      streetAddress: BUSINESS_CONFIG.address.street,
+      addressLocality: BUSINESS_CONFIG.address.city,
+      addressRegion: BUSINESS_CONFIG.address.stateCode,
+      postalCode: BUSINESS_CONFIG.address.zip,
+      addressCountry: BUSINESS_CONFIG.address.countryCode,
     },
-    areaServed: {
-      '@type': 'Country',
-      name: 'United States',
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: BUSINESS_CONFIG.coordinates.lat,
+      longitude: BUSINESS_CONFIG.coordinates.lng,
     },
-    serviceType: [
-      'Roofing Estimate',
-      'Roof Repair',
-      'Roof Replacement',
-      'Roof Inspection',
+    areaServed: [
+      {
+        '@type': 'State',
+        name: 'Mississippi',
+        containsPlace: [
+          { '@type': 'City', name: 'Tupelo' },
+          { '@type': 'City', name: 'Oxford' },
+          { '@type': 'City', name: 'Starkville' },
+          { '@type': 'City', name: 'Columbus' },
+          { '@type': 'City', name: 'Corinth' },
+          { '@type': 'City', name: 'New Albany' },
+          { '@type': 'City', name: 'Pontotoc' },
+          { '@type': 'City', name: 'Booneville' },
+        ],
+      },
     ],
+    serviceType: [
+      'Roof Replacement',
+      'Roof Repair',
+      'Storm Damage Repair',
+      'Roof Inspection',
+      'Gutter Installation',
+      'Emergency Roof Repair',
+    ],
+    openingHoursSpecification: [
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: BUSINESS_CONFIG.hours.weekdays.open,
+        closes: BUSINESS_CONFIG.hours.weekdays.close,
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'Saturday',
+        opens: BUSINESS_CONFIG.hours.saturday.open,
+        closes: BUSINESS_CONFIG.hours.saturday.close,
+      },
+    ],
+  }
+
+  // SAFETY: Only include aggregateRating if we have verified reviews
+  if (hasVerifiedReviews()) {
+    schema.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: String(BUSINESS_CONFIG.reviews.googleRating),
+      reviewCount: String(BUSINESS_CONFIG.reviews.googleReviewCount),
+      bestRating: '5',
+      worstRating: '1',
+    }
+  }
+
+  // Only include social links if we have real ones configured
+  if (socialLinks.length > 0) {
+    schema.sameAs = socialLinks
   }
 
   return (
@@ -66,10 +142,10 @@ interface ServiceSchemaProps {
  * Service schema for the roofing estimate service
  */
 export function ServiceSchema({
-  name = 'Free Roofing Estimate Calculator',
-  description = 'Get an instant, accurate roofing estimate in under 2 minutes. No contractors calling, no pressure. Just honest pricing for your roof repair or replacement.',
-  provider = 'Farrell Roofing',
-  url = 'https://roofestimate.com',
+  name = 'Free Roofing Estimate',
+  description = 'Get an instant, accurate roofing estimate for your Northeast Mississippi home. No contractors calling, no pressure. Just honest pricing for roof repair or replacement.',
+  provider = BUSINESS_CONFIG.name,
+  url = 'https://farrellroofing.com',
 }: ServiceSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
@@ -77,20 +153,26 @@ export function ServiceSchema({
     name,
     description,
     provider: {
-      '@type': 'LocalBusiness',
+      '@type': 'RoofingContractor',
       name: provider,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: BUSINESS_CONFIG.address.city,
+        addressRegion: BUSINESS_CONFIG.address.stateCode,
+        addressCountry: BUSINESS_CONFIG.address.countryCode,
+      },
     },
     serviceType: 'Roofing Estimate',
     areaServed: {
-      '@type': 'Country',
-      name: 'United States',
+      '@type': 'State',
+      name: BUSINESS_CONFIG.address.state,
     },
     url,
     offers: {
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'USD',
-      description: 'Free instant roofing estimate',
+      description: 'Free roofing estimate',
     },
   }
 
@@ -155,8 +237,8 @@ export function WebPageSchema({ name, description, url }: WebPageSchemaProps) {
     url,
     isPartOf: {
       '@type': 'WebSite',
-      name: 'RoofEstimate',
-      url: 'https://roofestimate.com',
+      name: BUSINESS_CONFIG.name,
+      url: 'https://farrellroofing.com',
     },
   }
 

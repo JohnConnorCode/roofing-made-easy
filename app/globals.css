@@ -215,8 +215,9 @@ body {
 
 /* Print styles for estimate PDF and quote generator */
 @media print {
+  /* Hide elements marked for no-print */
   .no-print,
-  .print\\:hidden {
+  .print-hidden {
     display: none !important;
   }
 
@@ -229,7 +230,6 @@ body {
 
   /* Hide admin layout elements */
   aside,
-  [class*="sidebar"],
   header:not(#printable-quote header),
   nav:not(#printable-quote nav) {
     display: none !important;
@@ -251,11 +251,14 @@ body {
     box-shadow: none !important;
   }
 
-  /* Reset dark theme for print */
+  /* Reset dark theme for print - use attribute selectors for arbitrary colors */
   .bg-gradient-dark,
-  .bg-\\[\\#0c0f14\\],
-  .bg-\\[\\#161a23\\],
-  .bg-\\[\\#1a1f2e\\] {
+  .bg-ink,
+  .bg-ink-light,
+  .bg-slate-deep,
+  [class*="bg-[#0c0f14]"],
+  [class*="bg-[#161a23]"],
+  [class*="bg-[#1a1f2e]"] {
     background: white !important;
   }
 
@@ -271,13 +274,15 @@ body {
     color: #64748b !important;
   }
 
-  .text-\\[\\#c9a25c\\],
-  .text-amber-600 {
+  /* Gold text for print */
+  .text-gold,
+  .text-gold-light,
+  .text-amber-600,
+  [class*="text-[#c9a25c]"] {
     color: #92400e !important;
   }
 
   /* Card styling for print */
-  [class*="Card"],
   .rounded-lg,
   .rounded-xl {
     border: 1px solid #e2e8f0 !important;

@@ -1,18 +1,39 @@
-'use client'
-
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { serviceRegions, getAllServiceAreas } from '@/lib/data/service-areas'
+import { getAllCities, getAllCounties, getCitiesByPriority } from '@/lib/data/ms-locations'
 import {
   Home,
   MapPin,
   ArrowRight,
   Phone,
   CheckCircle,
+  Star,
+  Shield,
 } from 'lucide-react'
 
+export const metadata: Metadata = {
+  title: 'Service Areas | Farrell Roofing | Northeast Mississippi',
+  description: 'Farrell Roofing serves Tupelo, Oxford, Starkville, Columbus, and 20+ cities across Northeast Mississippi. View our complete service area coverage.',
+  keywords: [
+    'Mississippi roofing',
+    'Tupelo roofer',
+    'Northeast Mississippi roofing',
+    'Lee County roofing',
+    'Oxford roofing',
+    'Starkville roofing',
+  ],
+  openGraph: {
+    title: 'Service Areas | Farrell Roofing',
+    description: 'Serving 20+ cities across Northeast Mississippi with quality roofing services.',
+    type: 'website',
+  },
+}
+
 export default function ServiceAreasPage() {
-  const allAreas = getAllServiceAreas()
+  const allCities = getAllCities()
+  const allCounties = getAllCounties()
+  const highPriorityCities = getCitiesByPriority('high')
 
   return (
     <div className="min-h-screen bg-gradient-dark">
@@ -25,8 +46,8 @@ export default function ServiceAreasPage() {
                 <Home className="h-6 w-6 text-[#0c0f14]" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-slate-100">RoofEstimate</h1>
-                <p className="text-xs text-slate-500">by Farrell Roofing</p>
+                <h1 className="text-lg font-bold text-slate-100">Farrell Roofing</h1>
+                <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
               </div>
             </Link>
             <nav className="hidden md:flex items-center gap-6">
@@ -47,11 +68,27 @@ export default function ServiceAreasPage() {
               <MapPin className="h-8 w-8 text-[#c9a25c]" />
             </div>
             <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              Areas We Serve
+              Northeast Mississippi Service Areas
             </h1>
             <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              Proudly serving the Greater Austin area and surrounding communities with quality roofing services.
+              Proudly serving Tupelo and {allCities.length - 1}+ communities across Northeast Mississippi with quality roofing services.
             </p>
+
+            {/* Trust Badges */}
+            <div className="flex flex-wrap justify-center gap-6 mt-8">
+              <div className="flex items-center gap-2 text-slate-300">
+                <Star className="w-5 h-5 text-[#c9a25c] fill-[#c9a25c]" />
+                <span>4.9 Rating</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-300">
+                <Shield className="w-5 h-5 text-[#c9a25c]" />
+                <span>Licensed & Insured</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-300">
+                <MapPin className="w-5 h-5 text-[#c9a25c]" />
+                <span>{allCounties.length} Counties</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -62,55 +99,159 @@ export default function ServiceAreasPage() {
           <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-8 text-center">
             <div className="max-w-md mx-auto">
               <MapPin className="h-12 w-12 text-[#c9a25c] mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-slate-100 mb-2">Central Texas Coverage</h3>
+              <h3 className="text-xl font-semibold text-slate-100 mb-2">Northeast Mississippi Coverage</h3>
               <p className="text-slate-400">
-                We serve a 50-mile radius around Austin, covering {allAreas.length}+ cities and communities.
+                Based in Tupelo, we serve a wide radius across {allCounties.length} counties and {allCities.length}+ cities throughout Northeast Mississippi.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Service Regions */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      {/* Primary Market - Tupelo Metro */}
+      <section className="py-16 md:py-20 bg-[#161a23]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="space-y-12">
-            {serviceRegions.map((region, regionIndex) => (
-              <div key={region.name}>
-                <h2 className="text-2xl font-bold text-slate-100 mb-2">{region.name}</h2>
-                <p className="text-slate-400 mb-6">{region.description}</p>
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-slate-100 mb-2">Primary Service Area - Tupelo Metro</h2>
+            <p className="text-slate-400">Our home base and surrounding Lee County communities.</p>
+          </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {region.areas.map((area) => (
-                    <div
-                      key={area.id}
-                      className={`flex items-center gap-2 p-3 rounded-lg border ${
-                        area.isMainArea
-                          ? 'bg-[#c9a25c]/10 border-[#c9a25c]/30'
-                          : 'bg-[#1a1f2e] border-slate-700'
-                      }`}
-                    >
-                      <CheckCircle className={`h-4 w-4 ${area.isMainArea ? 'text-[#c9a25c]' : 'text-[#3d7a5a]'}`} />
-                      <span className="text-slate-200">{area.name}</span>
-                      {area.isMainArea && (
-                        <span className="text-xs bg-[#c9a25c] text-[#0c0f14] px-2 py-0.5 rounded-full ml-auto">
-                          HQ
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {allCities
+              .filter(city => city.county === 'Lee')
+              .map((city) => (
+                <Link
+                  key={city.slug}
+                  href={`/${city.slug}-roofing`}
+                  className={`group flex items-center justify-between p-4 rounded-lg border transition-all ${
+                    city.isHQ
+                      ? 'bg-[#c9a25c]/10 border-[#c9a25c]/30 hover:border-[#c9a25c]'
+                      : 'bg-[#1a1f2e] border-slate-700 hover:border-[#c9a25c]/50'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className={`h-4 w-4 ${city.isHQ ? 'text-[#c9a25c]' : 'text-[#3d7a5a]'}`} />
+                    <span className="text-slate-200 group-hover:text-white">{city.name}</span>
+                  </div>
+                  {city.isHQ && (
+                    <span className="text-xs bg-[#c9a25c] text-[#0c0f14] px-2 py-0.5 rounded-full font-semibold">
+                      HQ
+                    </span>
+                  )}
+                </Link>
+              ))}
+          </div>
+
+          {/* Lee County Link */}
+          <div className="mt-6 text-center">
+            <Link
+              href="/lee-county-roofing"
+              className="inline-flex items-center gap-2 text-[#c9a25c] hover:text-[#c9a25c]/80 transition-colors"
+            >
+              View all Lee County services
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Secondary Markets */}
+      <section className="py-16 md:py-20 bg-[#0c0f14]">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-slate-100 mb-2">Extended Service Area</h2>
+            <p className="text-slate-400">Cities within 30-45 minutes of Tupelo.</p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {allCities
+              .filter(city => city.county !== 'Lee' && ['high', 'medium'].includes(city.priority))
+              .sort((a, b) => (a.priority === 'high' ? -1 : 1) - (b.priority === 'high' ? -1 : 1))
+              .map((city) => (
+                <Link
+                  key={city.slug}
+                  href={`/${city.slug}-roofing`}
+                  className="group flex items-center justify-between p-4 rounded-lg border bg-[#1a1f2e] border-slate-700 hover:border-[#c9a25c]/50 transition-all"
+                >
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className={`h-4 w-4 ${city.priority === 'high' ? 'text-[#c9a25c]' : 'text-[#3d7a5a]'}`} />
+                    <span className="text-slate-200 group-hover:text-white">{city.name}</span>
+                  </div>
+                  <span className="text-xs text-slate-500">{city.county}</span>
+                </Link>
+              ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Counties */}
+      <section className="py-16 md:py-20 bg-[#161a23]">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-slate-100 mb-2">Counties We Serve</h2>
+            <p className="text-slate-400">Full coverage across {allCounties.length} Mississippi counties.</p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {allCounties.map((county) => (
+              <Link
+                key={county.slug}
+                href={`/${county.slug}-roofing`}
+                className="group flex flex-col p-4 rounded-lg border bg-[#1a1f2e] border-slate-700 hover:border-[#c9a25c]/50 transition-all"
+              >
+                <span className="text-slate-200 group-hover:text-white font-medium">{county.name}</span>
+                <span className="text-xs text-slate-500 mt-1">{county.cities.length} cities</span>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
+      {/* College Towns Highlight */}
+      <section className="py-16 md:py-20 bg-[#0c0f14]">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="bg-gradient-to-r from-[#c9a25c]/10 to-transparent border border-[#c9a25c]/20 rounded-2xl p-8 md:p-12">
+            <div className="max-w-3xl">
+              <h2 className="text-2xl font-bold text-slate-100 mb-4">
+                Serving Mississippi&apos;s College Towns
+              </h2>
+              <p className="text-slate-400 mb-8">
+                We proudly extend our service area to Oxford (Ole Miss) and Starkville (Mississippi State), providing premium roofing services to homeowners and investors in these vibrant university communities.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/oxford-roofing"
+                  className="inline-flex items-center gap-2 bg-[#1a1f2e] border border-slate-700 hover:border-[#c9a25c] px-6 py-3 rounded-lg text-slate-200 hover:text-white transition-all"
+                >
+                  <MapPin className="w-4 h-4 text-[#c9a25c]" />
+                  Oxford (Ole Miss)
+                </Link>
+                <Link
+                  href="/starkville-roofing"
+                  className="inline-flex items-center gap-2 bg-[#1a1f2e] border border-slate-700 hover:border-[#c9a25c] px-6 py-3 rounded-lg text-slate-200 hover:text-white transition-all"
+                >
+                  <MapPin className="w-4 h-4 text-[#c9a25c]" />
+                  Starkville (MS State)
+                </Link>
+                <Link
+                  href="/columbus-roofing"
+                  className="inline-flex items-center gap-2 bg-[#1a1f2e] border border-slate-700 hover:border-[#c9a25c] px-6 py-3 rounded-lg text-slate-200 hover:text-white transition-all"
+                >
+                  <MapPin className="w-4 h-4 text-[#c9a25c]" />
+                  Columbus
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Not in area? */}
-      <section className="py-16 md:py-24 bg-[#0c0f14]">
+      <section className="py-16 md:py-24 bg-[#161a23]">
         <div className="mx-auto max-w-4xl px-4 text-center">
           <h2 className="text-2xl font-bold text-slate-100 mb-4">
-            Don't See Your City?
+            Don&apos;t See Your City?
           </h2>
           <p className="text-slate-400 mb-8">
             We may still be able to help. Contact us to see if we can service your area, or if we can recommend a trusted contractor near you.
@@ -141,9 +282,30 @@ export default function ServiceAreasPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#0c0f14] py-8 border-t border-slate-800">
-        <div className="mx-auto max-w-6xl px-4 text-center text-sm text-slate-500">
-          <p>&copy; {new Date().getFullYear()} Farrell Roofing. All rights reserved.</p>
+      <footer className="bg-[#0c0f14] py-12 border-t border-slate-800">
+        <div className="mx-auto max-w-6xl px-4">
+          {/* Quick Links to Cities */}
+          <div className="mb-8">
+            <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">
+              Popular Service Areas
+            </h3>
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
+              {highPriorityCities.slice(0, 10).map(city => (
+                <Link
+                  key={city.slug}
+                  href={`/${city.slug}-roofing`}
+                  className="text-sm text-slate-500 hover:text-[#c9a25c] transition-colors"
+                >
+                  {city.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-center text-sm text-slate-500">
+            <p>&copy; {new Date().getFullYear()} Farrell Roofing. All rights reserved.</p>
+            <p className="mt-2">Headquartered in Tupelo, Mississippi</p>
+          </div>
         </div>
       </footer>
     </div>
