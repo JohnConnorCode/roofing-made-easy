@@ -325,3 +325,73 @@ export function FooterLocationLinks() {
     </div>
   )
 }
+
+// Comparison Page Link for City Pages
+interface ComparisonLinkProps {
+  city: MSCity
+  variant?: 'inline' | 'card'
+}
+
+export function ComparisonPageLink({ city, variant = 'inline' }: ComparisonLinkProps) {
+  const href = `/best-roofers-in-${city.slug}-${city.stateCode.toLowerCase()}`
+
+  if (variant === 'card') {
+    return (
+      <Link
+        href={href}
+        className="block p-4 bg-gradient-to-r from-gold/10 to-gold/5 border border-gold/20 hover:border-gold/40 rounded-xl transition-all"
+      >
+        <p className="text-sm text-gray-400 mb-1">Compare Local Contractors</p>
+        <p className="text-white font-medium">
+          Best Roofing Companies in {city.name} →
+        </p>
+      </Link>
+    )
+  }
+
+  return (
+    <Link
+      href={href}
+      className="text-sm text-gold hover:text-gold-light transition-colors"
+    >
+      Compare roofers in {city.name} →
+    </Link>
+  )
+}
+
+// Nearby Comparison Pages - Link to comparison pages for nearby cities
+interface NearbyComparisonLinksProps {
+  currentCity: MSCity
+  maxLinks?: number
+}
+
+export function NearbyComparisonLinks({ currentCity, maxLinks = 6 }: NearbyComparisonLinksProps) {
+  const allCities = getAllCities()
+
+  // Get nearby cities
+  const nearbyCities = currentCity.nearbyCities
+    .map(slug => allCities.find(c => c.slug === slug))
+    .filter((c): c is MSCity => c !== undefined)
+    .slice(0, maxLinks)
+
+  if (nearbyCities.length === 0) return null
+
+  return (
+    <div>
+      <h4 className="text-sm font-semibold text-gold mb-3">
+        Compare Roofers in Nearby Cities
+      </h4>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+        {nearbyCities.map(city => (
+          <Link
+            key={city.slug}
+            href={`/best-roofers-in-${city.slug}-${city.stateCode.toLowerCase()}`}
+            className="text-sm p-2 bg-slate-deep/50 border border-gold/10 hover:border-gold/30 rounded-lg text-gray-300 hover:text-white text-center transition-all"
+          >
+            {city.name}
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+}

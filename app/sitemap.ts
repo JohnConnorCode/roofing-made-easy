@@ -133,6 +133,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
 
+  // Comparison pages - "Best Roofers in [City]" (high priority for local SEO)
+  const comparisonPages: MetadataRoute.Sitemap = cities.map(city => ({
+    url: `${baseUrl}/best-roofers-in-${city.slug}-${city.stateCode.toLowerCase()}`,
+    lastModified: currentDate,
+    changeFrequency: 'monthly' as const,
+    priority: city.isHQ ? 0.9 : city.priority === 'high' ? 0.85 : 0.75,
+  }))
+
   return [
     ...staticPages,
     ...cityPages,
@@ -140,6 +148,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...servicePages,
     ...blogPages,
     ...serviceCityPages,
+    ...comparisonPages,
   ]
 }
 

@@ -29,6 +29,12 @@ interface ServiceMetaParams extends BaseMetaParams {
   city?: MSCity
 }
 
+interface ComparisonMetaParams {
+  city: MSCity
+  path: string
+  image?: string
+}
+
 // Generate base metadata with all recommended fields
 export function generateBaseMeta({
   title,
@@ -171,6 +177,61 @@ export function generateCountyMeta({ county, title, description, path, image }: 
     other: {
       'geo.region': 'US-MS',
       'geo.placename': county.name,
+    },
+  }
+}
+
+// Generate comparison page metadata for "Best Roofers in [City]" pages
+export function generateComparisonMeta({ city, path, image }: ComparisonMetaParams): Metadata {
+  const currentYear = new Date().getFullYear()
+  const title = `Best Roofing Companies in ${city.name}, ${city.stateCode} (${currentYear} Guide)`
+  const description = `Looking for trusted roofers in ${city.name}? Compare the top roofing companies in ${city.county} County, read expert recommendations, and get a free estimate.`
+
+  const baseMeta = generateBaseMeta({
+    title,
+    description,
+    path,
+    image: image || `/images/locations/${city.slug}-roofing.jpg`
+  })
+
+  const keywords = [
+    // Primary comparison keywords
+    `best roofers ${city.name}`,
+    `best roofing companies ${city.name}`,
+    `top roofers ${city.name} ${city.stateCode}`,
+    `roofing companies ${city.name} Mississippi`,
+    `best roofing contractor ${city.name}`,
+
+    // Local variations
+    `${city.name} roofing companies`,
+    `roofers near ${city.name}`,
+    `roofing contractors ${city.county} County`,
+
+    // Intent keywords
+    `compare roofers ${city.name}`,
+    `find roofer ${city.name}`,
+    `roofing quotes ${city.name}`,
+    `roofing estimates ${city.name}`,
+
+    // Long-tail
+    `who is the best roofer in ${city.name}`,
+    `top rated roofers ${city.name} ${city.stateCode}`,
+    `recommended roofing company ${city.name}`,
+  ]
+
+  return {
+    ...baseMeta,
+    keywords,
+    other: {
+      'geo.region': 'US-MS',
+      'geo.placename': city.name,
+      'geo.position': `${city.coordinates.lat};${city.coordinates.lng}`,
+      'ICBM': `${city.coordinates.lat}, ${city.coordinates.lng}`,
+      'business:contact_data:locality': city.name,
+      'business:contact_data:region': 'MS',
+      'business:contact_data:country_name': 'United States',
+      'article:published_time': `${currentYear}-01-01`,
+      'article:modified_time': new Date().toISOString().split('T')[0],
     },
   }
 }
