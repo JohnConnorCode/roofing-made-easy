@@ -170,6 +170,11 @@ body {
 .stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
 .stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
 
+/* Hidden state for scroll-triggered stagger */
+.stagger-children-hidden > * {
+  opacity: 0;
+}
+
 /* Page transition wrapper */
 .page-transition {
   animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);

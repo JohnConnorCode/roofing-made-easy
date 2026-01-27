@@ -15,10 +15,12 @@ import {
   Send,
   CheckCircle,
 } from 'lucide-react'
+import { SiteFooter } from '@/components/layout/site-footer'
+import { BUSINESS_CONFIG, getFullAddress, getPhoneDisplay } from '@/lib/config/business'
 
-const PHONE_NUMBER = process.env.NEXT_PUBLIC_PHONE_NUMBER || '(512) 555-0123'
-const EMAIL = 'info@farrellroofing.com'
-const ADDRESS = '1234 Rooftop Lane, Austin, TX 78701'
+const PHONE_NUMBER = getPhoneDisplay()
+const EMAIL = BUSINESS_CONFIG.email.primary
+const ADDRESS = getFullAddress()
 
 export default function ContactPage() {
   const { showToast } = useToast()
@@ -59,8 +61,8 @@ export default function ContactPage() {
                 <Home className="h-6 w-6 text-[#0c0f14]" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-slate-100">RoofEstimate</h1>
-                <p className="text-xs text-slate-500">by Farrell Roofing</p>
+                <h1 className="text-lg font-bold text-slate-100">Farrell Roofing</h1>
+                <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
               </div>
             </Link>
             <nav className="hidden md:flex items-center gap-6">
@@ -255,12 +257,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#0c0f14] py-8 border-t border-slate-800">
-        <div className="mx-auto max-w-6xl px-4 text-center text-sm text-slate-500">
-          <p>&copy; {new Date().getFullYear()} Farrell Roofing. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

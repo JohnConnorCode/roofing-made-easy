@@ -1,6 +1,5 @@
-'use client'
-
-import { useParams } from 'next/navigation'
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/data/blog'
@@ -13,27 +12,47 @@ import {
   Calendar,
   Tag,
 } from 'lucide-react'
+import { SiteFooter } from '@/components/layout/site-footer'
 
-export default function BlogPostPage() {
-  const params = useParams()
-  const slug = params.slug as string
+interface BlogPostPageProps {
+  params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const post = getBlogPostBySlug(slug)
+
+  if (!post) {
+    return { title: 'Article Not Found' }
+  }
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      publishedTime: post.publishedAt,
+      authors: [post.author],
+      tags: post.tags,
+    },
+  }
+}
+
+export async function generateStaticParams() {
+  const posts = getAllBlogPosts()
+  return posts.map((post) => ({ slug: post.slug }))
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params
   const post = getBlogPostBySlug(slug)
   const allPosts = getAllBlogPosts()
   const relatedPosts = allPosts.filter((p) => p.slug !== slug).slice(0, 3)
 
   if (!post) {
-    return (
-      <div className="min-h-screen bg-gradient-dark flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-slate-100 mb-4">Article Not Found</h1>
-          <Link href="/blog">
-            <Button variant="outline" className="border-slate-600 text-slate-300">
-              View All Articles
-            </Button>
-          </Link>
-        </div>
-      </div>
-    )
+    notFound()
   }
 
   return (
@@ -47,8 +66,8 @@ export default function BlogPostPage() {
                 <Home className="h-6 w-6 text-[#0c0f14]" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-slate-100">RoofEstimate</h1>
-                <p className="text-xs text-slate-500">by Farrell Roofing</p>
+                <h1 className="text-lg font-bold text-slate-100">Farrell Roofing</h1>
+                <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
               </div>
             </Link>
             <nav className="hidden md:flex items-center gap-6">
@@ -117,16 +136,16 @@ export default function BlogPostPage() {
               {post.content.split('\n').map((paragraph, index) => {
                 if (paragraph.startsWith('# ')) {
                   return (
-                    <h1 key={index} className="text-3xl font-bold text-slate-100 mt-8 mb-4">
+                    <h2 key={index} className="text-3xl font-bold text-slate-100 mt-8 mb-4">
                       {paragraph.replace('# ', '')}
-                    </h1>
+                    </h2>
                   )
                 }
                 if (paragraph.startsWith('## ')) {
                   return (
-                    <h2 key={index} className="text-2xl font-bold text-slate-100 mt-8 mb-4">
+                    <h3 key={index} className="text-2xl font-bold text-slate-100 mt-8 mb-4">
                       {paragraph.replace('## ', '')}
-                    </h2>
+                    </h3>
                   )
                 }
                 if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
@@ -220,12 +239,7 @@ export default function BlogPostPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#0c0f14] py-8 border-t border-slate-800">
-        <div className="mx-auto max-w-6xl px-4 text-center text-sm text-slate-500">
-          <p>&copy; {new Date().getFullYear()} Farrell Roofing. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

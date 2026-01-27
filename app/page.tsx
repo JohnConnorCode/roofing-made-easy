@@ -21,6 +21,7 @@ import { FAQAccordion, DEFAULT_FAQ_ITEMS } from '@/components/faq/faq-accordion'
 import { ServiceSchema, FAQSchema } from '@/components/seo/json-ld'
 import { getFeaturedTestimonials } from '@/lib/data/testimonials'
 import { Quote } from 'lucide-react'
+import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
 
 function generateDemoLeadId(): string {
   return 'demo-' + Math.random().toString(36).substring(2, 15)
@@ -71,8 +72,8 @@ export default function HomePage() {
                 <Home className="h-6 w-6 text-[#0c0f14]" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-slate-100 tracking-tight">RoofEstimate</h1>
-                <p className="text-xs text-slate-500">by Farrell Roofing</p>
+                <h1 className="text-lg font-bold text-slate-100 tracking-tight">Farrell Roofing</h1>
+                <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
               </div>
             </div>
             <a
@@ -138,7 +139,7 @@ export default function HomePage() {
       {/* Trust Bar */}
       <section className="border-y border-slate-800 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 stagger-children">
+          <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-3xl font-bold text-slate-100">50,000+</div>
               <div className="text-sm text-slate-500 mt-1">Homeowners Helped</div>
@@ -159,23 +160,23 @@ export default function HomePage() {
               </div>
               <div className="text-sm text-slate-500 mt-1">4.9 Rating</div>
             </div>
-          </div>
+          </ScrollStagger>
         </div>
       </section>
 
       {/* How It Works */}
       <section className="py-16 md:py-24 bg-[#161a23]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center mb-12">
+          <ScrollAnimate className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
               How It Works
             </h2>
             <p className="mt-4 text-lg text-slate-400">
               Three simple steps to your estimate
             </p>
-          </div>
+          </ScrollAnimate>
 
-          <div className="grid md:grid-cols-3 gap-8 stagger-children">
+          <ScrollStagger className="grid md:grid-cols-3 gap-8">
             <div className="text-center card-hover bg-[#1a1f2e] border border-slate-800 rounded-2xl p-8">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] mx-auto mb-6 shadow-lg glow-gold">
                 <MapPin className="h-8 w-8 text-[#0c0f14]" />
@@ -211,7 +212,7 @@ export default function HomePage() {
                 Receive a detailed price range instantly. No waiting for callbacks, no sales pressure.
               </p>
             </div>
-          </div>
+          </ScrollStagger>
 
           <div className="mt-12 text-center">
             <Button
@@ -278,7 +279,7 @@ export default function HomePage() {
                   <div>
                     <h4 className="font-semibold text-slate-100">Built by Roofers</h4>
                     <p className="text-slate-400 mt-1">
-                      Created by Farrell Roofing with 20+ years of industry experience. We know what things actually cost.
+                      Created Tupelo, Mississippi with 20+ years of industry experience. We know what things actually cost.
                     </p>
                   </div>
                 </div>
@@ -323,16 +324,16 @@ export default function HomePage() {
       {/* Testimonials Section */}
       <section className="py-16 md:py-24 bg-[#161a23]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center mb-12">
+          <ScrollAnimate className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
               What Homeowners Say
             </h2>
             <p className="mt-4 text-lg text-slate-400">
               Join thousands of satisfied customers
             </p>
-          </div>
+          </ScrollAnimate>
 
-          <div className="grid md:grid-cols-3 gap-6 stagger-children">
+          <ScrollStagger className="grid md:grid-cols-3 gap-6">
             {getFeaturedTestimonials(3).map((testimonial) => (
               <div
                 key={testimonial.id}
@@ -353,14 +354,14 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
-          </div>
+          </ScrollStagger>
         </div>
       </section>
 
       {/* FAQ Section */}
       <section className="py-16 md:py-24 bg-[#0c0f14]">
         <div className="mx-auto max-w-3xl px-4">
-          <div className="text-center mb-12">
+          <ScrollAnimate className="text-center mb-12">
             <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-[#1a1f2e] border border-slate-700 mb-6">
               <HelpCircle className="h-7 w-7 text-[#c9a25c]" />
             </div>
@@ -370,40 +371,44 @@ export default function HomePage() {
             <p className="mt-4 text-lg text-slate-400">
               Everything you need to know about getting your estimate
             </p>
-          </div>
+          </ScrollAnimate>
 
-          <FAQAccordion items={DEFAULT_FAQ_ITEMS} />
+          <ScrollAnimate delay={100}>
+            <FAQAccordion items={DEFAULT_FAQ_ITEMS} />
+          </ScrollAnimate>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-[#161a23] border-y border-slate-800">
         <div className="mx-auto max-w-4xl px-4 text-center">
-          <div className="flex justify-center mb-6">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg glow-gold animate-float">
-              <Home className="h-8 w-8 text-[#0c0f14]" />
+          <ScrollAnimate>
+            <div className="flex justify-center mb-6">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg glow-gold animate-float">
+                <Home className="h-8 w-8 text-[#0c0f14]" />
+              </div>
             </div>
-          </div>
-          <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
-            Ready to Find Out What Your Roof Costs?
-          </h2>
-          <p className="mt-4 text-lg text-slate-400">
-            Join 50,000+ homeowners who've gotten their free estimate.
-          </p>
-          <div className="mt-8">
-            <Button
-              variant="primary"
-              size="xl"
-              onClick={handleGetStarted}
-              disabled={isCreating}
-              className="text-lg btn-press shadow-lg glow-gold bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
-            >
-              {isCreating ? 'Starting...' : 'Get My Free Estimate'}
-            </Button>
-          </div>
-          <p className="mt-4 text-sm text-slate-500">
-            Takes less than 2 minutes • Completely free
-          </p>
+            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+              Ready to Find Out What Your Roof Costs?
+            </h2>
+            <p className="mt-4 text-lg text-slate-400">
+              Join 50,000+ homeowners who've gotten their free estimate.
+            </p>
+            <div className="mt-8">
+              <Button
+                variant="primary"
+                size="xl"
+                onClick={handleGetStarted}
+                disabled={isCreating}
+                className="text-lg btn-press shadow-lg glow-gold bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+              >
+                {isCreating ? 'Starting...' : 'Get My Free Estimate'}
+              </Button>
+            </div>
+            <p className="mt-4 text-sm text-slate-500">
+              Takes less than 2 minutes • Completely free
+            </p>
+          </ScrollAnimate>
         </div>
       </section>
 
@@ -417,8 +422,8 @@ export default function HomePage() {
                   <Home className="h-5 w-5 text-[#0c0f14]" />
                 </div>
                 <div>
-                  <span className="text-lg font-bold text-slate-100">RoofEstimate</span>
-                  <p className="text-xs text-slate-500">by Farrell Roofing</p>
+                  <span className="text-lg font-bold text-slate-100">Farrell Roofing</span>
+                  <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
                 </div>
               </div>
               <p className="text-slate-500 text-sm leading-relaxed max-w-md">

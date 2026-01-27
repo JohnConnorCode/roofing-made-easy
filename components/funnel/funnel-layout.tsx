@@ -33,9 +33,9 @@ export function FunnelLayout({ children, className }: FunnelLayoutProps) {
               </div>
               <div>
                 <h1 className="text-lg font-bold text-slate-100">
-                  RoofEstimate
+                  Farrell Roofing
                 </h1>
-                <p className="text-xs text-slate-500">by Farrell Roofing</p>
+                <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
               </div>
             </a>
             <div className="text-xs text-slate-500 bg-[#1a1f2e] border border-slate-700 px-3 py-1.5 rounded-full">

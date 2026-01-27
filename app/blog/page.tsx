@@ -1,5 +1,4 @@
-'use client'
-
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { getAllBlogPosts, getCategories } from '@/lib/data/blog'
@@ -10,6 +9,16 @@ import {
   Tag,
   BookOpen,
 } from 'lucide-react'
+import { SiteFooter } from '@/components/layout/site-footer'
+
+export const metadata: Metadata = {
+  title: 'Roofing Resources & Blog | Tips & Guides',
+  description: 'Expert roofing advice, tips, and guides for Mississippi homeowners. Learn about roof maintenance, storm damage, materials, and more.',
+  openGraph: {
+    title: 'Roofing Resources | Farrell Roofing',
+    description: 'Expert roofing tips and guides for Northeast Mississippi homeowners.',
+  },
+}
 
 export default function BlogPage() {
   const posts = getAllBlogPosts()
@@ -26,8 +35,8 @@ export default function BlogPage() {
                 <Home className="h-6 w-6 text-[#0c0f14]" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-slate-100">RoofEstimate</h1>
-                <p className="text-xs text-slate-500">by Farrell Roofing</p>
+                <h1 className="text-lg font-bold text-slate-100">Farrell Roofing</h1>
+                <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
               </div>
             </Link>
             <nav className="hidden md:flex items-center gap-6">
@@ -142,12 +151,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#0c0f14] py-8 border-t border-slate-800">
-        <div className="mx-auto max-w-6xl px-4 text-center text-sm text-slate-500">
-          <p>&copy; {new Date().getFullYear()} Farrell Roofing. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

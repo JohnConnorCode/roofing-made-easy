@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { getAllCities, getAllCounties, getCitiesByPriority } from '@/lib/data/ms-locations'
+import { getAllCities, getAllCounties } from '@/lib/data/ms-locations'
 import {
   Home,
   MapPin,
@@ -11,6 +11,7 @@ import {
   Star,
   Shield,
 } from 'lucide-react'
+import { SiteFooter } from '@/components/layout/site-footer'
 
 export const metadata: Metadata = {
   title: 'Service Areas | Farrell Roofing | Northeast Mississippi',
@@ -33,7 +34,6 @@ export const metadata: Metadata = {
 export default function ServiceAreasPage() {
   const allCities = getAllCities()
   const allCounties = getAllCounties()
-  const highPriorityCities = getCitiesByPriority('high')
 
   return (
     <div className="min-h-screen bg-gradient-dark">
@@ -281,33 +281,7 @@ export default function ServiceAreasPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#0c0f14] py-12 border-t border-slate-800">
-        <div className="mx-auto max-w-6xl px-4">
-          {/* Quick Links to Cities */}
-          <div className="mb-8">
-            <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">
-              Popular Service Areas
-            </h3>
-            <div className="flex flex-wrap gap-x-6 gap-y-2">
-              {highPriorityCities.slice(0, 10).map(city => (
-                <Link
-                  key={city.slug}
-                  href={`/${city.slug}-roofing`}
-                  className="text-sm text-slate-500 hover:text-[#c9a25c] transition-colors"
-                >
-                  {city.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="text-center text-sm text-slate-500">
-            <p>&copy; {new Date().getFullYear()} Farrell Roofing. All rights reserved.</p>
-            <p className="mt-2">Headquartered in Tupelo, Mississippi</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
