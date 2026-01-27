@@ -4,7 +4,6 @@
 import { MSCity } from '@/lib/data/ms-locations'
 import { BUSINESS_CONFIG, getPhoneDisplay, getFullAddress } from '@/lib/config/business'
 import {
-  Star,
   Shield,
   Award,
   Phone,
@@ -67,17 +66,15 @@ export function FeaturedCompanyCard({ city }: FeaturedCompanyCardProps) {
               {BUSINESS_CONFIG.tagline}
             </p>
 
-            {/* Rating */}
+            {/* Credentials */}
             <div className="flex items-center gap-4 flex-wrap">
-              <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-gold fill-gold" />
-                ))}
-                <span className="text-white font-medium ml-2">4.9</span>
-              </div>
               <div className="flex items-center gap-2 text-gray-400">
                 <Shield className="w-4 h-4 text-gold" />
                 <span className="text-sm">Licensed & Insured</span>
+              </div>
+              <div className="flex items-center gap-2 text-gray-400">
+                <Clock className="w-4 h-4 text-gold" />
+                <span className="text-sm">Since {BUSINESS_CONFIG.foundedYear}</span>
               </div>
             </div>
           </div>

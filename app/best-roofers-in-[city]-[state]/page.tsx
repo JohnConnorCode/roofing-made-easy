@@ -12,7 +12,6 @@ import {
   getNearbyCities,
   MSCity
 } from '@/lib/data/ms-locations'
-import { getCompetitorsForCity } from '@/lib/data/ms-competitors'
 import {
   ComparisonHero,
   FeaturedCompanyCard,
@@ -86,7 +85,6 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
     notFound()
   }
 
-  const competitors = getCompetitorsForCity(citySlug)
   const faqs = generateComparisonFaqs(city)
   const nearbyCities = getNearbyCities(citySlug)
 
@@ -101,7 +99,7 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
       <SiteHeader />
 
       {/* Schema Markup */}
-      <ComparisonSchemaBundle city={city} competitors={competitors} faqs={faqs} />
+      <ComparisonSchemaBundle city={city} faqs={faqs} />
       <FeaturedCompanySchema city={city} />
 
       {/* Breadcrumbs - reusing location component */}
@@ -131,8 +129,8 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
       {/* Local Stats - reusing location component */}
       <LocalStats city={city} />
 
-      {/* Competitors */}
-      <CompetitorListing city={city} competitors={competitors} />
+      {/* Contractor Types - Educational Content */}
+      <CompetitorListing city={city} />
 
       {/* How to Choose */}
       <HowToChooseSection city={city} />
@@ -157,32 +155,56 @@ export default async function ComparisonPage({ params }: ComparisonPageProps) {
   )
 }
 
-// Editorial intro (150-200 words localized)
+// Editorial intro using unique city content
 function EditorialIntro({ city }: { city: MSCity }) {
   const currentYear = new Date().getFullYear()
 
   return (
     <div className="prose prose-invert max-w-none">
+      {/* Unique city intro from location data */}
       <p className="text-gray-300 leading-relaxed text-lg">
-        Finding a reliable roofing contractor in {city.name}, Mississippi can be challenging.
-        With numerous companies competing for your business, it's important to evaluate your
-        options carefully before making a decision that will protect your home for decades.
+        {city.localContent.intro}
       </p>
 
-      <p className="text-gray-400 leading-relaxed">
-        This {currentYear} guide compares the top roofing companies serving {city.name} and
-        {' '}{city.county} County. We've evaluated local contractors based on licensing,
-        insurance coverage, customer reviews, warranty offerings, and responsiveness. Whether
-        you need a complete roof replacement, emergency storm damage repair, or routine
-        maintenance, the contractors listed here serve {city.name} homeowners with
-        professionalism and quality workmanship.
-      </p>
+      {/* Local weather challenges */}
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold text-white mb-3">
+          Weather Challenges in {city.name}
+        </h3>
+        <p className="text-gray-400 leading-relaxed mb-4">
+          {city.name} homeowners face specific roofing challenges due to local weather patterns.
+          When selecting a roofing contractor, ensure they have experience with:
+        </p>
+        <ul className="space-y-2">
+          {city.localContent.weatherChallenges.map((challenge, index) => (
+            <li key={index} className="text-gray-400 flex items-start gap-2">
+              <span className="text-gold mt-1">•</span>
+              {challenge}
+            </li>
+          ))}
+        </ul>
+      </div>
 
-      <p className="text-gray-400 leading-relaxed">
-        Given {city.name}'s climate—including {city.localContent.weatherChallenges[0]?.toLowerCase() || 'seasonal severe weather'} and
-        high humidity—your roof faces significant challenges. Choosing a contractor who understands
-        local conditions is essential for long-term protection. The average roof in {city.name} costs
-        {' '}{city.stats.avgReplacementCost} to replace, making it one of your largest home investments.
+      {/* Local context */}
+      {city.localContent.neighborhoods.length > 0 && (
+        <div className="mt-6">
+          <h3 className="text-lg font-semibold text-white mb-3">
+            Neighborhoods We Serve in {city.name}
+          </h3>
+          <p className="text-gray-400 leading-relaxed">
+            Quality roofing services are available throughout {city.name}, including{' '}
+            {city.localContent.neighborhoods.slice(0, 5).join(', ')}
+            {city.localContent.neighborhoods.length > 5 && ', and more'}.
+            The average roof replacement in {city.name} costs {city.stats.avgReplacementCost}, with
+            roofs typically lasting {city.stats.avgRoofAge} in our local climate.
+          </p>
+        </div>
+      )}
+
+      {/* Guide context */}
+      <p className="text-gray-400 leading-relaxed mt-6">
+        This {currentYear} guide helps {city.name} homeowners compare local roofing contractors
+        based on licensing, insurance, service offerings, and reputation in {city.county} County.
       </p>
     </div>
   )

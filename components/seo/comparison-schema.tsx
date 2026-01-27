@@ -6,7 +6,6 @@
  */
 
 import { MSCity } from '@/lib/data/ms-locations'
-import { CompetitorCompany } from '@/lib/data/ms-competitors'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 import { ItemListSchema } from './itemlist-schema'
 
@@ -17,7 +16,6 @@ interface ComparisonFAQ {
 
 interface ComparisonSchemaProps {
   city: MSCity
-  competitors: CompetitorCompany[]
   faqs: ComparisonFAQ[]
   baseUrl?: string
 }
@@ -28,7 +26,6 @@ interface ComparisonSchemaProps {
  */
 export function ComparisonSchemaBundle({
   city,
-  competitors,
   faqs,
   baseUrl = 'https://farrellroofing.com'
 }: ComparisonSchemaProps) {
@@ -36,11 +33,11 @@ export function ComparisonSchemaBundle({
 
   return (
     <>
-      {/* ItemList Schema for the company rankings */}
+      {/* ItemList Schema for contractor guide */}
       <ItemListSchema
         cityName={city.name}
+        citySlug={city.slug}
         stateCode={city.stateCode}
-        competitors={competitors}
         baseUrl={baseUrl}
       />
 

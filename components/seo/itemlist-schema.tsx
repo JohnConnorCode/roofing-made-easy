@@ -1,53 +1,61 @@
 /**
  * ItemList Schema Component
  *
- * Generates Schema.org ItemList structured data for competitor/company listings.
- * Enables rich snippets in search results for "best roofers" type queries.
+ * Generates Schema.org ItemList structured data for contractor type listings.
+ * Lists types of contractors (educational content) rather than fake company names.
  */
 
-import { CompetitorCompany } from '@/lib/data/ms-competitors'
+import { ContractorType, getContractorTypesForCity } from '@/lib/data/ms-competitors'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
 interface ItemListSchemaProps {
   cityName: string
+  citySlug: string
   stateCode: string
-  competitors: CompetitorCompany[]
   baseUrl?: string
 }
 
 /**
  * ItemList Schema for comparison pages
- * Lists Farrell Roofing as position 1, then competitors in order
+ * Lists contractor types as educational content (not fake company names)
  */
 export function ItemListSchema({
   cityName,
+  citySlug,
   stateCode,
-  competitors,
   baseUrl = 'https://farrellroofing.com'
 }: ItemListSchemaProps) {
+  const contractorTypes = getContractorTypesForCity(citySlug)
+
   const listItems = [
-    // Farrell Roofing is always #1 (Featured/Our Top Pick)
+    // Featured company (real)
     {
       '@type': 'ListItem',
       position: 1,
-      name: BUSINESS_CONFIG.name,
-      description: `Northeast Mississippi's trusted roofing contractor serving ${cityName} and surrounding areas.`,
-      url: `${baseUrl}/${cityName.toLowerCase().replace(/\s+/g, '-')}-roofing`
+      item: {
+        '@type': 'RoofingContractor',
+        name: BUSINESS_CONFIG.name,
+        description: `Northeast Mississippi's trusted roofing contractor serving ${cityName} and surrounding areas.`,
+        url: `${baseUrl}/${citySlug}-roofing`
+      }
     },
-    // Add competitors
-    ...competitors.map((competitor, index) => ({
+    // Contractor types as educational content
+    ...contractorTypes.map((type, index) => ({
       '@type': 'ListItem',
       position: index + 2,
-      name: competitor.name,
-      description: competitor.description.substring(0, 160) // Truncate for schema
+      item: {
+        '@type': 'HowToTip',
+        name: type.type,
+        text: type.description
+      }
     }))
   ]
 
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: `Best Roofing Companies in ${cityName}, ${stateCode}`,
-    description: `A curated list of top-rated roofing contractors serving ${cityName}, Mississippi. Compare services, coverage areas, and get free estimates.`,
+    name: `Roofing Contractor Guide for ${cityName}, ${stateCode}`,
+    description: `A guide to finding quality roofing contractors in ${cityName}, Mississippi. Learn about different contractor types and what to look for.`,
     numberOfItems: listItems.length,
     itemListElement: listItems
   }
@@ -60,44 +68,17 @@ export function ItemListSchema({
   )
 }
 
-interface RankedCompanyListSchemaProps {
+// Legacy interface for backward compatibility
+interface LegacyItemListSchemaProps {
   cityName: string
   stateCode: string
-  items: Array<{
+  competitors: Array<{
+    id: string
     name: string
-    position: number
-    description?: string
-    url?: string
+    description: string
+    services: string[]
+    yearsInBusiness?: number
+    serviceArea: string
   }>
-}
-
-/**
- * Generic ranked list schema for any company listing
- */
-export function RankedCompanyListSchema({
-  cityName,
-  stateCode,
-  items
-}: RankedCompanyListSchemaProps) {
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: `Top Roofing Companies in ${cityName}, ${stateCode}`,
-    itemListOrder: 'https://schema.org/ItemListOrderDescending',
-    numberOfItems: items.length,
-    itemListElement: items.map(item => ({
-      '@type': 'ListItem',
-      position: item.position,
-      name: item.name,
-      ...(item.description && { description: item.description }),
-      ...(item.url && { url: item.url })
-    }))
-  }
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
-  )
+  baseUrl?: string
 }
