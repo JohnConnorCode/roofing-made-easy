@@ -90,7 +90,7 @@ export default function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1632759145353-7b8a8a0b1b8f?q=80&w=2070"
+            src="/images/hero-roof.jpg"
             alt="Professional roofing work"
             fill
             className="object-cover"
