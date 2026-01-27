@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
+import { Logo } from '@/components/ui/logo'
 import {
   Loader2,
-  Home,
   Shield,
   Clock,
   CheckCircle,
@@ -15,12 +16,13 @@ import {
   TrendingUp,
   Star,
   MapPin,
-  HelpCircle
+  HelpCircle,
+  Home,
+  Quote,
 } from 'lucide-react'
 import { FAQAccordion, DEFAULT_FAQ_ITEMS } from '@/components/faq/faq-accordion'
 import { ServiceSchema, FAQSchema } from '@/components/seo/json-ld'
 import { getFeaturedTestimonials } from '@/lib/data/testimonials'
-import { Quote } from 'lucide-react'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
 
 function generateDemoLeadId(): string {
@@ -67,15 +69,12 @@ export default function HomePage() {
       <header className="border-b border-slate-800 bg-[#0c0f14]/90 backdrop-blur-md sticky top-0 z-50">
         <div className="mx-auto max-w-6xl px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg glow-gold">
-                <Home className="h-6 w-6 text-[#0c0f14]" />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-slate-100 tracking-tight">Farrell Roofing</h1>
-                <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
-              </div>
-            </div>
+            <Logo size="md" />
+            <nav className="hidden md:flex items-center gap-6">
+              <a href="/about" className="text-sm text-slate-400 hover:text-[#c9a25c] transition-colors">About</a>
+              <a href="/services" className="text-sm text-slate-400 hover:text-[#c9a25c] transition-colors">Services</a>
+              <a href="/contact" className="text-sm text-slate-400 hover:text-[#c9a25c] transition-colors">Contact</a>
+            </nav>
             <a
               href="/login"
               className="text-sm text-slate-500 hover:text-[#c9a25c] transition-colors"
@@ -87,8 +86,20 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-texture-dark" />
+      <section className="relative overflow-hidden min-h-[600px] flex items-center">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1632759145353-7b8a8a0b1b8f?q=80&w=2070"
+            alt="Professional roofing work"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/90 via-[#0c0f14]/80 to-[#0c0f14]/95" />
+        </div>
+        <div className="absolute inset-0 bg-texture-dark opacity-50" />
 
         <div className="relative mx-auto max-w-6xl px-4 py-16 md:py-24">
           <div className="max-w-3xl mx-auto text-center">
@@ -232,7 +243,7 @@ export default function HomePage() {
       <section className="py-16 md:py-24 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
+            <ScrollAnimate animation="slide-up">
               <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
                 Why Homeowners Trust Our Estimates
               </h2>
@@ -279,14 +290,15 @@ export default function HomePage() {
                   <div>
                     <h4 className="font-semibold text-slate-100">Built by Roofers</h4>
                     <p className="text-slate-400 mt-1">
-                      Created Tupelo, Mississippi with 20+ years of industry experience. We know what things actually cost.
+                      Created in Tupelo, Mississippi with 20+ years of industry experience. We know what things actually cost.
                     </p>
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollAnimate>
 
-            <div className="bg-gradient-card border border-slate-700 rounded-2xl p-8 shadow-xl">
+            <ScrollAnimate animation="slide-up" delay={100}>
+              <div className="bg-gradient-card border border-slate-700 rounded-2xl p-8 shadow-xl">
               <div className="text-center mb-6">
                 <div className="inline-flex items-center gap-2 text-[#c9a25c] font-semibold">
                   <Home className="h-5 w-5" />
@@ -316,7 +328,8 @@ export default function HomePage() {
                   <div className="text-sm text-slate-500 mt-2">Based on your area's market rates</div>
                 </div>
               </div>
-            </div>
+              </div>
+            </ScrollAnimate>
           </div>
         </div>
       </section>
@@ -417,14 +430,8 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="grid md:grid-cols-5 gap-8">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432]">
-                  <Home className="h-5 w-5 text-[#0c0f14]" />
-                </div>
-                <div>
-                  <span className="text-lg font-bold text-slate-100">Farrell Roofing</span>
-                  <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
-                </div>
+              <div className="mb-4">
+                <Logo size="sm" linkToHome={false} />
               </div>
               <p className="text-slate-500 text-sm leading-relaxed max-w-md">
                 Helping homeowners get honest, accurate roofing estimates without the hassle.

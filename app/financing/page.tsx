@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import {
-  Home,
   Calculator,
   ArrowRight,
   DollarSign,
@@ -15,6 +14,7 @@ import {
   CheckCircle,
 } from 'lucide-react'
 import { SiteFooter } from '@/components/layout/site-footer'
+import { PageHeader } from '@/components/layout/page-header'
 
 const TERM_OPTIONS = [
   { value: '36', label: '36 months (3 years)' },
@@ -50,27 +50,7 @@ export default function FinancingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      {/* Header */}
-      <header className="border-b border-slate-800 bg-[#0c0f14]/90 backdrop-blur-md sticky top-0 z-50">
-        <div className="mx-auto max-w-6xl px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg">
-                <Home className="h-6 w-6 text-[#0c0f14]" />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-slate-100">Farrell Roofing</h1>
-                <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
-              </div>
-            </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/services" className="text-sm text-slate-400 hover:text-[#c9a25c]">Services</Link>
-              <Link href="/about" className="text-sm text-slate-400 hover:text-[#c9a25c]">About</Link>
-              <Link href="/contact" className="text-sm text-slate-400 hover:text-[#c9a25c]">Contact</Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <PageHeader />
 
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">

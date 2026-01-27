@@ -3,7 +3,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Home, Menu, X, Phone, MapPin } from 'lucide-react'
+import { Menu, X, Phone, MapPin } from 'lucide-react'
+import { Logo } from '@/components/ui/logo'
 
 const navLinks = [
   { href: '/about', label: 'About' },
@@ -41,15 +42,7 @@ export function SiteHeader() {
       {/* Main Nav */}
       <div className="mx-auto max-w-6xl px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-gold to-gold-muted shadow-lg">
-              <Home className="h-6 w-6 text-ink" />
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-slate-100">Farrell Roofing</h1>
-              <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
-            </div>
-          </Link>
+          <Logo size="md" />
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-6">
