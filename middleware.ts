@@ -1,12 +1,40 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Check if Supabase is properly configured
+function hasValidSupabaseConfig(): boolean {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!url || !key) return false
+  if (url.includes('placeholder') || key.includes('placeholder')) return false
+  if (url === 'https://placeholder.supabase.co') return false
+
+  return true
+}
+
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   })
+
+  // Skip auth checks if Supabase is not configured (mock mode)
+  if (!hasValidSupabaseConfig()) {
+    // In mock mode, allow access to login page but protect admin routes
+    if (request.nextUrl.pathname.startsWith('/dashboard') ||
+        request.nextUrl.pathname.startsWith('/leads') ||
+        request.nextUrl.pathname.startsWith('/pricing')) {
+      // Redirect to login in mock mode for admin routes
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      url.searchParams.set('redirectTo', request.nextUrl.pathname)
+      return NextResponse.redirect(url)
+    }
+    // Allow login page to render
+    return response
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
