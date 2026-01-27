@@ -226,8 +226,36 @@ export default function ServiceAreasPage() {
         </div>
       </section>
 
+      {/* Compare Local Roofers */}
+      <section className="py-16 md:py-20 bg-[#161a23]">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-slate-100 mb-2">Compare Local Roofers</h2>
+            <p className="text-slate-400">Find the best roofing companies in your city with our comparison guides.</p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {allCities
+              .filter(city => city.priority === 'high' || city.isHQ)
+              .slice(0, 8)
+              .map((city) => (
+                <Link
+                  key={`compare-${city.slug}`}
+                  href={`/best-roofers-in-${city.slug}-ms`}
+                  className="group flex items-center gap-2 p-4 rounded-lg border bg-[#1a1f2e] border-slate-700 hover:border-[#c9a25c]/50 transition-all"
+                >
+                  <Star className="h-4 w-4 text-[#c9a25c]" />
+                  <span className="text-slate-200 group-hover:text-white text-sm">
+                    Best Roofers in {city.name}
+                  </span>
+                </Link>
+              ))}
+          </div>
+        </div>
+      </section>
+
       {/* Not in area? */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-16 md:py-24 bg-[#0c0f14]">
         <div className="mx-auto max-w-4xl px-4 text-center">
           <h2 className="text-2xl font-bold text-slate-100 mb-4">
             Don&apos;t See Your City?

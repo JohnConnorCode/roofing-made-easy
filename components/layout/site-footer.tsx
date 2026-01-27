@@ -105,7 +105,7 @@ export function SiteFooter() {
               Service Areas
             </h3>
             <ul className="space-y-2">
-              {topCities.map(city => (
+              {topCities.slice(0, 6).map(city => (
                 <li key={city.slug}>
                   <Link
                     href={`/${city.slug}-roofing`}
@@ -121,6 +121,24 @@ export function SiteFooter() {
                 </Link>
               </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Compare Roofers Section */}
+        <div className="mt-8 pt-8 border-t border-slate-800">
+          <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+            Compare Local Roofers
+          </h4>
+          <div className="flex flex-wrap gap-x-4 gap-y-2">
+            {topCities.slice(0, 6).map(city => (
+              <Link
+                key={`compare-${city.slug}`}
+                href={`/best-roofers-in-${city.slug}-ms`}
+                className="text-xs text-slate-400 hover:text-gold transition-colors"
+              >
+                Best Roofers in {city.name}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

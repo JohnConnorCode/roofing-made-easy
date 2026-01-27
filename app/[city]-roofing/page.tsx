@@ -26,7 +26,7 @@ import { CityLocationSchema, BreadcrumbSchema, FAQLocationSchema } from '@/compo
 import { EnhancedLocalBusinessSchema, ReviewSchema, SpeakableSchema } from '@/components/seo/advanced-schema'
 import { MultiLocationSchema, AggregateReviewSchema } from '@/components/seo/regional-schema'
 import { NAPSchema } from '@/components/seo/nap-schema'
-import { RelatedCitiesLinks } from '@/components/seo/internal-links'
+import { RelatedCitiesLinks, ComparisonPageLink } from '@/components/seo/internal-links'
 import { generateCityMeta } from '@/lib/seo/meta-utils'
 
 interface CityPageProps {
@@ -171,6 +171,11 @@ export default async function CityPage({ params }: CityPageProps) {
                   </span>
                 </Link>
               ))}
+            </div>
+
+            {/* Compare Roofers Link */}
+            <div className="mt-8">
+              <ComparisonPageLink city={city} variant="card" />
             </div>
 
             {/* Related Cities Internal Links */}
