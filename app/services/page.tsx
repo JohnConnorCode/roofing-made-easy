@@ -12,8 +12,7 @@ import {
   ArrowRight,
   CheckCircle,
 } from 'lucide-react'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { PageHeader } from '@/components/layout/page-header'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 
 export const metadata: Metadata = {
   title: 'Roofing Services | Roof Repair, Replacement & More',
@@ -36,7 +35,7 @@ const iconMap: Record<string, React.ReactNode> = {
 export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <PageHeader activeLink="/services" />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">

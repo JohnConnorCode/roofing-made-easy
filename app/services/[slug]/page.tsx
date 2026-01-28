@@ -11,8 +11,7 @@ import {
   Clock,
   DollarSign,
 } from 'lucide-react'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { PageHeader } from '@/components/layout/page-header'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 
 export default function ServiceDetailPage() {
   const params = useParams()
@@ -36,7 +35,7 @@ export default function ServiceDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <PageHeader activeLink="/services" />
+      <SiteHeader />
 
       {/* Breadcrumb */}
       <div className="bg-[#161a23] border-b border-slate-800">

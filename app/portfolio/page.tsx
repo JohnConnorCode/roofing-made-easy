@@ -10,8 +10,7 @@ import {
   Clock,
   Quote,
 } from 'lucide-react'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { PageHeader } from '@/components/layout/page-header'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 
 export const metadata: Metadata = {
   title: 'Our Work | Roofing Projects Portfolio',
@@ -25,7 +24,7 @@ export const metadata: Metadata = {
 export default function PortfolioPage() {
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <PageHeader activeLink="/portfolio" />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">

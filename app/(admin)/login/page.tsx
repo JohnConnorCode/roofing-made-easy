@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Loader2, Eye, EyeOff, Home } from 'lucide-react'
+import { Loader2, Eye, EyeOff } from 'lucide-react'
+import { AdminLogo } from '@/components/ui/admin-logo'
 
 function LoginForm() {
   const router = useRouter()
@@ -127,14 +128,8 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-dark p-4">
       {/* Logo/Branding */}
-      <div className="mb-8 flex items-center gap-3 animate-scale-in">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg glow-gold">
-          <Home className="h-7 w-7 text-[#0c0f14]" />
-        </div>
-        <div>
-          <h1 className="text-xl font-bold text-slate-100">Farrell Roofing</h1>
-          <p className="text-sm text-slate-500">Admin Portal</p>
-        </div>
+      <div className="mb-8 animate-scale-in">
+        <AdminLogo size="md" showPortalLabel={true} />
       </div>
 
       <div className="w-full max-w-md animate-slide-up delay-100">

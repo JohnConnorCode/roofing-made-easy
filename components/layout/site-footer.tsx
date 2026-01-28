@@ -1,8 +1,9 @@
 // Site Footer Component with Location Links
 import Link from 'next/link'
-import { Home, Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react'
+import { Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react'
 import { getCitiesByPriority, getAllCounties } from '@/lib/data/ms-locations'
 import { getPhoneLink, getPhoneDisplay, BUSINESS_CONFIG } from '@/lib/config/business'
+import { Logo } from '@/components/ui/logo'
 
 const services = [
   { href: '/services/roof-replacement', label: 'Roof Replacement' },
@@ -33,14 +34,9 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-gold to-gold-muted">
-                <Home className="h-5 w-5 text-ink" />
-              </div>
-              <div>
-                <span className="text-lg font-bold text-slate-100">Farrell Roofing</span>
-              </div>
-            </Link>
+            <div className="mb-4">
+              <Logo size="sm" showText={true} />
+            </div>
             <p className="text-slate-400 text-sm mb-4 max-w-sm">
               Northeast Mississippi&apos;s trusted roofing contractor. Proudly serving Tupelo and surrounding communities since 2010.
             </p>
@@ -177,7 +173,7 @@ export function SiteFooter() {
       <div className="border-t border-slate-800">
         <div className="mx-auto max-w-6xl px-4 py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-            <p>&copy; {new Date().getFullYear()} Farrell Roofing. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} {BUSINESS_CONFIG.name}. All rights reserved.</p>
             <div className="flex gap-4">
               <Link href="/terms" className="hover:text-gold transition-colors">Terms of Service</Link>
               <Link href="/privacy" className="hover:text-gold transition-colors">Privacy Policy</Link>

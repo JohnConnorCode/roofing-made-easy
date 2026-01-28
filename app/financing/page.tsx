@@ -13,8 +13,7 @@ import {
   Percent,
   CheckCircle,
 } from 'lucide-react'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { PageHeader } from '@/components/layout/page-header'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 
 const TERM_OPTIONS = [
   { value: '36', label: '36 months (3 years)' },
@@ -50,7 +49,7 @@ export default function FinancingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <PageHeader />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">

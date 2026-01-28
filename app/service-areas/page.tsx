@@ -10,8 +10,7 @@ import {
   Star,
   Shield,
 } from 'lucide-react'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { PageHeader } from '@/components/layout/page-header'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
 export const metadata: Metadata = {
@@ -38,7 +37,7 @@ export default function ServiceAreasPage() {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <PageHeader />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">

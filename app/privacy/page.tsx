@@ -1,8 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { PageHeader } from '@/components/layout/page-header'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Roofing Estimate Calculator',
@@ -12,7 +11,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <PageHeader />
+      <SiteHeader />
 
       {/* Breadcrumb */}
       <div className="bg-[#161a23] border-b border-slate-800">

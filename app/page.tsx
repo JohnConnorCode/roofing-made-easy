@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Logo } from '@/components/ui/logo'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 import {
   Loader2,
   Shield,
@@ -67,24 +67,7 @@ export default function HomePage() {
       <FAQSchema items={DEFAULT_FAQ_ITEMS} />
 
       {/* Header */}
-      <header className="border-b border-slate-800 bg-[#0c0f14]/90 backdrop-blur-md sticky top-0 z-50">
-        <div className="mx-auto max-w-6xl px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Logo size="md" />
-            <nav className="hidden md:flex items-center gap-6">
-              <a href="/about" className="text-sm text-slate-400 hover:text-[#c9a25c] transition-colors">About</a>
-              <a href="/services" className="text-sm text-slate-400 hover:text-[#c9a25c] transition-colors">Services</a>
-              <a href="/contact" className="text-sm text-slate-400 hover:text-[#c9a25c] transition-colors">Contact</a>
-            </nav>
-            <a
-              href="/login"
-              className="text-sm text-slate-500 hover:text-[#c9a25c] transition-colors"
-            >
-              Contractor Login
-            </a>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-[600px] flex items-center">
@@ -429,50 +412,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#0c0f14] py-12">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="grid md:grid-cols-5 gap-8">
-            <div className="md:col-span-2">
-              <div className="mb-4">
-                <Logo size="sm" linkToHome={false} />
-              </div>
-              <p className="text-slate-500 text-sm leading-relaxed max-w-md">
-                Helping homeowners get honest, accurate roofing estimates without the hassle.
-                Built with 20+ years of roofing industry experience.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-slate-100 mb-4">Services</h4>
-              <div className="space-y-2 text-sm text-slate-500">
-                <a href="/services" className="block hover:text-[#c9a25c] transition-colors">All Services</a>
-                <a href="/portfolio" className="block hover:text-[#c9a25c] transition-colors">Our Work</a>
-                <a href="/service-areas" className="block hover:text-[#c9a25c] transition-colors">Service Areas</a>
-                <a href="/financing" className="block hover:text-[#c9a25c] transition-colors">Financing</a>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold text-slate-100 mb-4">Company</h4>
-              <div className="space-y-2 text-sm text-slate-500">
-                <a href="/about" className="block hover:text-[#c9a25c] transition-colors">About Us</a>
-                <a href="/blog" className="block hover:text-[#c9a25c] transition-colors">Resources</a>
-                <a href="/contact" className="block hover:text-[#c9a25c] transition-colors">Contact</a>
-                <a href="/referral" className="block hover:text-[#c9a25c] transition-colors">Referral Program</a>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold text-slate-100 mb-4">Legal</h4>
-              <div className="space-y-2 text-sm text-slate-500">
-                <a href="/terms" className="block hover:text-[#c9a25c] transition-colors">Terms of Service</a>
-                <a href="/privacy" className="block hover:text-[#c9a25c] transition-colors">Privacy Policy</a>
-                <a href="/login" className="block hover:text-[#c9a25c] transition-colors">Contractor Portal</a>
-              </div>
-            </div>
-          </div>
-          <div className="mt-12 pt-8 border-t border-slate-800 text-center text-sm text-slate-600">
-            <p>&copy; {new Date().getFullYear()} Farrell Roofing. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

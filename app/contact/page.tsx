@@ -14,8 +14,7 @@ import {
   Send,
   CheckCircle,
 } from 'lucide-react'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { PageHeader } from '@/components/layout/page-header'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 import { BUSINESS_CONFIG, getFullAddress, getPhoneDisplay } from '@/lib/config/business'
 
 const PHONE_NUMBER = getPhoneDisplay()
@@ -52,7 +51,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <PageHeader activeLink="/contact" />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">

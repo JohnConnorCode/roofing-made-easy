@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { FileText, Printer, Download, Home } from 'lucide-react'
+import { FileText, Printer, Download } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { BUSINESS_CONFIG, getPhoneDisplay } from '@/lib/config/business'
 
@@ -143,11 +144,16 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
         {/* Header */}
         <div className="flex justify-between items-start mb-8 pb-6 border-b border-slate-200">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 print:bg-amber-500">
-              <Home className="h-6 w-6 text-white" />
+            <div className="relative h-12 w-12 rounded-xl overflow-hidden">
+              <Image
+                src="/logo.svg"
+                alt={BUSINESS_CONFIG.name}
+                fill
+                className="object-contain"
+              />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900">Farrell Roofing</h1>
+              <h1 className="text-xl font-bold text-slate-900">{BUSINESS_CONFIG.name}</h1>
               <p className="text-sm text-slate-500">Licensed & Insured Contractor</p>
             </div>
           </div>
@@ -281,7 +287,7 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
           </div>
           <div>
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">
-              Farrell Roofing
+              {BUSINESS_CONFIG.name}
             </p>
             <div className="border-b border-slate-300 mb-2 h-8" />
             <p className="text-sm text-slate-500">Authorized Representative</p>
@@ -291,7 +297,7 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
         {/* Footer */}
         <div className="mt-8 pt-4 border-t border-slate-100 text-center">
           <p className="text-xs text-slate-400">
-            Farrell Roofing | {BUSINESS_CONFIG.address.city}, {BUSINESS_CONFIG.address.stateCode} | {BUSINESS_CONFIG.email.support} | {getPhoneDisplay()}
+            {BUSINESS_CONFIG.name} | {BUSINESS_CONFIG.address.city}, {BUSINESS_CONFIG.address.stateCode} | {BUSINESS_CONFIG.email.support} | {getPhoneDisplay()}
           </p>
         </div>
       </div>

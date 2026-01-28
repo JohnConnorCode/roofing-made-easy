@@ -11,10 +11,10 @@ import {
   LogOut,
   Menu,
   X,
-  Home,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
+import { AdminLogo } from '@/components/ui/admin-logo'
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -63,12 +63,7 @@ export default function AdminLayoutClient({
     <div className="min-h-screen bg-stone-50">
       {/* Mobile header */}
       <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-slate-800 px-4 md:hidden">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-amber-600">
-            <Home className="h-5 w-5 text-white" />
-          </div>
-          <h1 className="text-lg font-bold text-white">Farrell Admin</h1>
-        </div>
+        <AdminLogo size="sm" />
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="p-2 text-white"
@@ -112,11 +107,8 @@ export default function AdminLayoutClient({
         {/* Desktop sidebar */}
         <aside className="hidden w-64 shrink-0 border-r bg-slate-800 md:block">
           <div className="sticky top-0 flex h-screen flex-col">
-            <div className="flex h-16 items-center gap-3 border-b border-slate-700 px-6">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-600">
-                <Home className="h-5 w-5 text-white" />
-              </div>
-              <h1 className="text-lg font-bold text-white">Farrell Admin</h1>
+            <div className="flex h-16 items-center border-b border-slate-700 px-6">
+              <AdminLogo size="sm" />
             </div>
 
             <nav className="flex-1 p-4">

@@ -1,20 +1,23 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { BUSINESS_CONFIG, getShortAddress } from '@/lib/config/business'
 
 interface LogoProps {
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   showText?: boolean
   className?: string
   linkToHome?: boolean
 }
 
 const sizeMap = {
+  xs: 'h-8 w-8',
   sm: 'h-9 w-9',
   md: 'h-11 w-11',
   lg: 'h-14 w-14',
 }
 
 const textSizeMap = {
+  xs: 'text-sm',
   sm: 'text-base',
   md: 'text-lg',
   lg: 'text-xl',
@@ -31,7 +34,7 @@ export function Logo({
       <div className={`relative ${sizeMap[size]} rounded-xl overflow-hidden shadow-lg glow-gold`}>
         <Image
           src="/logo.svg"
-          alt="Farrell Roofing"
+          alt={BUSINESS_CONFIG.name}
           fill
           className="object-contain"
           priority
@@ -40,9 +43,9 @@ export function Logo({
       {showText && (
         <div>
           <h1 className={`${textSizeMap[size]} font-bold text-slate-100 tracking-tight`}>
-            Farrell Roofing
+            {BUSINESS_CONFIG.name}
           </h1>
-          <p className="text-xs text-slate-500">Tupelo, Mississippi</p>
+          <p className="text-xs text-slate-500">{getShortAddress()}</p>
         </div>
       )}
     </div>

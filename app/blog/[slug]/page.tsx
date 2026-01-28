@@ -11,8 +11,7 @@ import {
   Calendar,
   Tag,
 } from 'lucide-react'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { PageHeader } from '@/components/layout/page-header'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -57,7 +56,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <PageHeader activeLink="/blog" />
+      <SiteHeader />
 
       {/* Breadcrumb */}
       <div className="bg-[#161a23] border-b border-slate-800">

@@ -14,8 +14,7 @@ import {
   Mail,
   MessageSquare,
 } from 'lucide-react'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { PageHeader } from '@/components/layout/page-header'
+import { SiteHeader, SiteFooter } from '@/components/layout'
 import { useToast } from '@/components/ui/toast'
 
 const REFERRAL_REWARDS = [
@@ -111,7 +110,7 @@ export default function ReferralPage() {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
-      <PageHeader />
+      <SiteHeader />
 
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">
