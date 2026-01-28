@@ -1,5 +1,6 @@
 // Dynamic City Roofing Page
-// URL: /[city]-roofing (e.g., /tupelo-roofing, /oxford-roofing)
+// URL: /:city-roofing (e.g., /tupelo-roofing, /oxford-roofing)
+// Internal route: /city/[city] with rewrite from /:city-roofing
 
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'

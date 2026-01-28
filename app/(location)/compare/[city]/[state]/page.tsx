@@ -1,5 +1,6 @@
 // Best Roofing Companies in [City], [State] - Comparison Page
-// URL: /best-roofers-in-[city]-[state] (e.g., /best-roofers-in-tupelo-ms)
+// URL: /best-roofers-in-:city-:state (e.g., /best-roofers-in-tupelo-ms)
+// Internal route: /compare/[city]/[state] with rewrite
 
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -19,8 +20,8 @@ import {
   HowToChooseSection,
   LocalPricingSection,
   ComparisonFAQ,
-  generateComparisonFaqs
 } from '@/components/comparison'
+import { generateComparisonFaqs } from '@/lib/data/comparison-faqs'
 import { Breadcrumbs, LocalStats } from '@/components/location'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { CTASection } from '@/components/shared'

@@ -1,5 +1,6 @@
 // Dynamic Service + City Page
-// URL: /[service]-[city]-ms (e.g., /roof-replacement-tupelo-ms)
+// URL: /:service-:city-ms (e.g., /roof-replacement-tupelo-ms)
+// Internal route: /service-city/[service]/[city] with rewrite
 
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'

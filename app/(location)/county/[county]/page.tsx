@@ -1,5 +1,6 @@
 // Dynamic County Roofing Page
-// URL: /[county]-county-roofing (e.g., /lee-county-roofing)
+// URL: /:county-county-roofing (e.g., /lee-county-roofing)
+// Internal route: /county/[county] with rewrite from /:county-county-roofing
 
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
