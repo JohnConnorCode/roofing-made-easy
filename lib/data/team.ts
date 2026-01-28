@@ -2,7 +2,13 @@
  * Team & Company Data
  *
  * Information about the company and team members.
+ *
+ * IMPORTANT: Set isRealTeamData to true only when real team information is available.
+ * Using placeholder team data in production can hurt credibility and SEO.
  */
+
+// Set to true ONLY when you have real team member data
+export const isRealTeamData = false
 
 export interface TeamMember {
   id: string
@@ -57,8 +63,8 @@ export const teamMembers: TeamMember[] = [
 
 export const companyInfo: CompanyInfo = {
   name: 'Farrell Roofing',
-  founded: 2003,
-  description: 'Farrell Roofing has been protecting homes and families for over two decades. What started as a small family operation has grown into one of the region\'s most trusted roofing companies, but we\'ve never lost sight of our roots.',
+  founded: 2010,
+  description: 'Farrell Roofing has been protecting homes and families for over a decade. What started as a small family operation has grown into one of the region\'s most trusted roofing companies, but we\'ve never lost sight of our roots.',
   mission: 'To provide every homeowner with honest, transparent, and high-quality roofing services. We believe you deserve to know exactly what you\'re paying for and why.',
   values: [
     {
@@ -79,9 +85,9 @@ export const companyInfo: CompanyInfo = {
     },
   ],
   stats: [
-    { label: 'Years in Business', value: '20+' },
+    { label: 'Years in Business', value: '15+' },
     { label: 'Roofs Completed', value: '8,500+' },
-    { label: 'Customer Rating', value: '4.9/5' },
+    // Customer rating removed - only show when BUSINESS_CONFIG.reviews.googleRating is set
     { label: 'Team Members', value: '45+' },
   ],
   licenses: [
@@ -89,10 +95,7 @@ export const companyInfo: CompanyInfo = {
     'Fully Bonded & Insured',
     'EPA Lead-Safe Certified',
   ],
-  certifications: [
-    'GAF Master Elite Contractor',
-    'Owens Corning Preferred Contractor',
-    'CertainTeed SELECT ShingleMaster',
-    'BBB A+ Rating',
-  ],
+  // Certifications are now gated behind BUSINESS_CONFIG.credentials flags
+  // and displayed conditionally in the about page
+  certifications: [],
 }

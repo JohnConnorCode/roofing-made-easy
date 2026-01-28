@@ -2,6 +2,7 @@
 import { MSCity } from '@/lib/data/ms-locations'
 import { MapPin, Shield, Star, Phone } from 'lucide-react'
 import Link from 'next/link'
+import { getPhoneLink, BUSINESS_CONFIG } from '@/lib/config/business'
 
 interface CityHeroProps {
   city: MSCity
@@ -43,10 +44,12 @@ export function CityHero({ city }: CityHeroProps) {
 
           {/* Trust Indicators */}
           <div className="flex flex-wrap justify-center gap-6 mb-10">
-            <div className="flex items-center gap-2 text-gray-300">
-              <Star className="w-5 h-5 text-gold fill-gold" />
-              <span>4.9 Rating</span>
-            </div>
+            {BUSINESS_CONFIG.reviews.googleRating && (
+              <div className="flex items-center gap-2 text-gray-300">
+                <Star className="w-5 h-5 text-gold fill-gold" />
+                <span>{BUSINESS_CONFIG.reviews.googleRating} Rating</span>
+              </div>
+            )}
             <div className="flex items-center gap-2 text-gray-300">
               <Shield className="w-5 h-5 text-gold" />
               <span>Licensed & Insured</span>
@@ -66,7 +69,7 @@ export function CityHero({ city }: CityHeroProps) {
               Get Free Estimate
             </Link>
             <a
-              href="tel:+16620000000"
+              href={getPhoneLink()}
               className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-gold/50 hover:border-gold text-white font-semibold px-8 py-4 rounded-lg transition-all"
             >
               <Phone className="w-5 h-5" />

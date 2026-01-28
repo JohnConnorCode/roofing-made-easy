@@ -24,6 +24,7 @@ import { FAQAccordion, DEFAULT_FAQ_ITEMS } from '@/components/faq/faq-accordion'
 import { ServiceSchema, FAQSchema } from '@/components/seo/json-ld'
 import { getFeaturedTestimonials } from '@/lib/data/testimonials'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
+import { BUSINESS_CONFIG } from '@/lib/config/business'
 
 function generateDemoLeadId(): string {
   return 'demo-' + Math.random().toString(36).substring(2, 15)
@@ -163,14 +164,16 @@ export default function HomePage() {
               <div className="text-3xl font-bold text-slate-100">2 min</div>
               <div className="text-sm text-slate-500 mt-1">Average Time</div>
             </div>
-            <div className="text-center">
-              <div className="flex justify-center gap-0.5 text-[#c9a25c]">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-current" />
-                ))}
+            {BUSINESS_CONFIG.reviews.googleRating && (
+              <div className="text-center">
+                <div className="flex justify-center gap-0.5 text-[#c9a25c]">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-current" />
+                  ))}
+                </div>
+                <div className="text-sm text-slate-500 mt-1">{BUSINESS_CONFIG.reviews.googleRating} Rating</div>
               </div>
-              <div className="text-sm text-slate-500 mt-1">4.9 Rating</div>
-            </div>
+            )}
           </ScrollStagger>
         </div>
       </section>

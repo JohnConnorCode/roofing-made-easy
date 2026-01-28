@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { Home, Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react'
 import { getCitiesByPriority, getAllCounties } from '@/lib/data/ms-locations'
+import { getPhoneLink, getPhoneDisplay, BUSINESS_CONFIG } from '@/lib/config/business'
 
 const services = [
   { href: '/services/roof-replacement', label: 'Roof Replacement' },
@@ -44,27 +45,33 @@ export function SiteFooter() {
               Northeast Mississippi&apos;s trusted roofing contractor. Proudly serving Tupelo and surrounding communities since 2010.
             </p>
             <div className="space-y-2 text-sm">
-              <a href="tel:+16620000000" className="flex items-center gap-2 text-slate-400 hover:text-gold transition-colors">
+              <a href={getPhoneLink()} className="flex items-center gap-2 text-slate-400 hover:text-gold transition-colors">
                 <Phone className="w-4 h-4" />
-                <span>(662) 000-0000</span>
+                <span>{getPhoneDisplay()}</span>
               </a>
-              <a href="mailto:info@farrellroofing.com" className="flex items-center gap-2 text-slate-400 hover:text-gold transition-colors">
+              <a href={`mailto:${BUSINESS_CONFIG.email.primary}`} className="flex items-center gap-2 text-slate-400 hover:text-gold transition-colors">
                 <Mail className="w-4 h-4" />
-                <span>info@farrellroofing.com</span>
+                <span>{BUSINESS_CONFIG.email.primary}</span>
               </a>
               <div className="flex items-center gap-2 text-slate-400">
                 <MapPin className="w-4 h-4" />
                 <span>Tupelo, MS 38801</span>
               </div>
             </div>
+            {(BUSINESS_CONFIG.social.facebook || BUSINESS_CONFIG.social.instagram) && (
             <div className="flex gap-4 mt-4">
-              <a href="https://facebook.com/farrellroofing" className="text-slate-500 hover:text-gold transition-colors" aria-label="Facebook">
+              {BUSINESS_CONFIG.social.facebook && (
+              <a href={BUSINESS_CONFIG.social.facebook} className="text-slate-500 hover:text-gold transition-colors" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="https://instagram.com/farrellroofing" className="text-slate-500 hover:text-gold transition-colors" aria-label="Instagram">
+              )}
+              {BUSINESS_CONFIG.social.instagram && (
+              <a href={BUSINESS_CONFIG.social.instagram} className="text-slate-500 hover:text-gold transition-colors" aria-label="Instagram">
                 <Instagram className="w-5 h-5" />
               </a>
+              )}
             </div>
+            )}
           </div>
 
           {/* Services */}

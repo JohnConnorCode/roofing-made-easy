@@ -3,7 +3,7 @@
 
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { getPhoneDisplay } from '@/lib/config/business'
+import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
 
 interface CTASectionProps {
   title: string
@@ -50,7 +50,7 @@ export function CTASection({
             </Link>
             {showPhone && (
               <a
-                href="tel:+16625550123"
+                href={getPhoneLink()}
                 className="inline-flex items-center justify-center bg-transparent border-2 border-gold/50 hover:border-gold text-white font-semibold px-8 py-4 rounded-lg transition-all"
               >
                 Call {getPhoneDisplay()}

@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { FileText, Printer, Download, Home } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
+import { BUSINESS_CONFIG, getPhoneDisplay } from '@/lib/config/business'
 
 interface QuoteLineItem {
   description: string
@@ -290,7 +291,7 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
         {/* Footer */}
         <div className="mt-8 pt-4 border-t border-slate-100 text-center">
           <p className="text-xs text-slate-400">
-            Farrell Roofing | Austin, TX | support@farrellroofing.com | (512) 555-0123
+            Farrell Roofing | {BUSINESS_CONFIG.address.city}, {BUSINESS_CONFIG.address.stateCode} | {BUSINESS_CONFIG.email.support} | {getPhoneDisplay()}
           </p>
         </div>
       </div>

@@ -16,6 +16,7 @@ import { SiteHeader, SiteFooter } from '@/components/layout'
 import { CountyLocationSchema, FAQLocationSchema, BreadcrumbSchema } from '@/components/seo/location-schema'
 import { EnhancedLocalBusinessSchema } from '@/components/seo/advanced-schema'
 import { generateCountyMeta } from '@/lib/seo/meta-utils'
+import { getPhoneLink, getPhoneDisplay, BUSINESS_CONFIG } from '@/lib/config/business'
 
 interface CountyPageProps {
   params: Promise<{
@@ -132,10 +133,12 @@ export default async function CountyPage({ params }: CountyPageProps) {
 
             {/* Trust Indicators */}
             <div className="flex flex-wrap justify-center gap-6 mb-10">
-              <div className="flex items-center gap-2 text-gray-300">
-                <Star className="w-5 h-5 text-gold fill-gold" />
-                <span>4.9 Rating</span>
-              </div>
+              {BUSINESS_CONFIG.reviews.googleRating && (
+                <div className="flex items-center gap-2 text-gray-300">
+                  <Star className="w-5 h-5 text-gold fill-gold" />
+                  <span>{BUSINESS_CONFIG.reviews.googleRating} Rating</span>
+                </div>
+              )}
               <div className="flex items-center gap-2 text-gray-300">
                 <Shield className="w-5 h-5 text-gold" />
                 <span>Licensed & Insured</span>
@@ -156,7 +159,7 @@ export default async function CountyPage({ params }: CountyPageProps) {
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
-                href="tel:+16620000000"
+                href={getPhoneLink()}
                 className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-gold/50 hover:border-gold text-white font-semibold px-8 py-4 rounded-lg transition-all"
               >
                 <Phone className="w-5 h-5" />
@@ -240,10 +243,10 @@ export default async function CountyPage({ params }: CountyPageProps) {
               <ArrowRight className="w-5 h-5" />
             </Link>
             <a
-              href="tel:+16620000000"
+              href={getPhoneLink()}
               className="inline-flex items-center justify-center bg-transparent border-2 border-gold/50 hover:border-gold text-white font-semibold px-8 py-4 rounded-lg transition-all"
             >
-              Call (662) 000-0000
+              Call {getPhoneDisplay()}
             </a>
           </div>
         </div>

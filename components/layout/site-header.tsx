@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Menu, X, Phone, MapPin } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
+import { getPhoneLink, getPhoneDisplay } from '@/lib/config/business'
 
 const navLinks = [
   { href: '/about', label: 'About' },
@@ -24,9 +25,9 @@ export function SiteHeader() {
       <div className="bg-slate-deep border-b border-slate-800 py-2 hidden md:block">
         <div className="mx-auto max-w-6xl px-4 flex items-center justify-between text-sm">
           <div className="flex items-center gap-6 text-slate-400">
-            <a href="tel:+16620000000" className="flex items-center gap-2 hover:text-gold transition-colors">
+            <a href={getPhoneLink()} className="flex items-center gap-2 hover:text-gold transition-colors">
               <Phone className="w-4 h-4" />
-              <span>(662) 000-0000</span>
+              <span>{getPhoneDisplay()}</span>
             </a>
             <span className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-gold" />
@@ -96,11 +97,11 @@ export function SiteHeader() {
               Get Free Estimate
             </Link>
             <a
-              href="tel:+16620000000"
+              href={getPhoneLink()}
               className="flex items-center justify-center gap-2 text-slate-400 py-3 border-t border-slate-800 mt-2"
             >
               <Phone className="w-4 h-4" />
-              <span>(662) 000-0000</span>
+              <span>{getPhoneDisplay()}</span>
             </a>
           </nav>
         </div>

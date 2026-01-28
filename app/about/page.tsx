@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { teamMembers, companyInfo } from '@/lib/data/team'
+import { teamMembers, companyInfo, isRealTeamData } from '@/lib/data/team'
+import { BUSINESS_CONFIG } from '@/lib/config/business'
 import {
   Award,
   Shield,
@@ -72,12 +73,30 @@ export default function AboutPage() {
                       {license}
                     </div>
                   ))}
-                  {companyInfo.certifications.map((cert, index) => (
-                    <div key={index} className="flex items-center gap-3 text-slate-400">
+                  {BUSINESS_CONFIG.credentials.gafCertified && (
+                    <div className="flex items-center gap-3 text-slate-400">
                       <Award className="h-5 w-5 text-[#c9a25c]" />
-                      {cert}
+                      GAF Master Elite Contractor
                     </div>
-                  ))}
+                  )}
+                  {BUSINESS_CONFIG.credentials.owensCorningPreferred && (
+                    <div className="flex items-center gap-3 text-slate-400">
+                      <Award className="h-5 w-5 text-[#c9a25c]" />
+                      Owens Corning Preferred Contractor
+                    </div>
+                  )}
+                  {BUSINESS_CONFIG.credentials.certainteedMaster && (
+                    <div className="flex items-center gap-3 text-slate-400">
+                      <Award className="h-5 w-5 text-[#c9a25c]" />
+                      CertainTeed SELECT ShingleMaster
+                    </div>
+                  )}
+                  {BUSINESS_CONFIG.credentials.bbbAccredited && (
+                    <div className="flex items-center gap-3 text-slate-400">
+                      <Award className="h-5 w-5 text-[#c9a25c]" />
+                      BBB A+ Rating
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -97,38 +116,40 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team */}
-      <section className="py-16 md:py-24 bg-[#0c0f14]">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">Meet Our Team</h2>
-            <p className="mt-4 text-lg text-slate-400">
-              The people behind every quality roof
-            </p>
-          </div>
+      {/* Team - Only show when real team data is available */}
+      {isRealTeamData && (
+        <section className="py-16 md:py-24 bg-[#0c0f14]">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">Meet Our Team</h2>
+              <p className="mt-4 text-lg text-slate-400">
+                The people behind every quality roof
+              </p>
+            </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
-            {teamMembers.map((member) => (
-              <div
-                key={member.id}
-                className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 text-center"
-              >
-                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#c9a25c] to-[#9a7432] flex items-center justify-center">
-                  <span className="text-2xl font-bold text-[#0c0f14]">
-                    {member.name.split(' ').map(n => n[0]).join('')}
-                  </span>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
+              {teamMembers.map((member) => (
+                <div
+                  key={member.id}
+                  className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 text-center"
+                >
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#c9a25c] to-[#9a7432] flex items-center justify-center">
+                    <span className="text-2xl font-bold text-[#0c0f14]">
+                      {member.name.split(' ').map(n => n[0]).join('')}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-100">{member.name}</h3>
+                  <p className="text-[#c9a25c] text-sm mb-3">{member.role}</p>
+                  <p className="text-slate-400 text-sm">{member.bio}</p>
+                  {member.years && (
+                    <p className="mt-3 text-xs text-slate-500">{member.years}+ years experience</p>
+                  )}
                 </div>
-                <h3 className="text-lg font-semibold text-slate-100">{member.name}</h3>
-                <p className="text-[#c9a25c] text-sm mb-3">{member.role}</p>
-                <p className="text-slate-400 text-sm">{member.bio}</p>
-                {member.years && (
-                  <p className="mt-3 text-xs text-slate-500">{member.years}+ years experience</p>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="py-16 md:py-24 bg-[#161a23] border-t border-slate-800">

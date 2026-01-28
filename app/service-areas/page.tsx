@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { SiteFooter } from '@/components/layout/site-footer'
 import { PageHeader } from '@/components/layout/page-header'
+import { BUSINESS_CONFIG } from '@/lib/config/business'
 
 export const metadata: Metadata = {
   title: 'Service Areas | Farrell Roofing | Northeast Mississippi',
@@ -55,10 +56,12 @@ export default function ServiceAreasPage() {
 
             {/* Trust Badges */}
             <div className="flex flex-wrap justify-center gap-6 mt-8">
-              <div className="flex items-center gap-2 text-slate-300">
-                <Star className="w-5 h-5 text-[#c9a25c] fill-[#c9a25c]" />
-                <span>4.9 Rating</span>
-              </div>
+              {BUSINESS_CONFIG.reviews.googleRating && (
+                <div className="flex items-center gap-2 text-slate-300">
+                  <Star className="w-5 h-5 text-[#c9a25c] fill-[#c9a25c]" />
+                  <span>{BUSINESS_CONFIG.reviews.googleRating} Rating</span>
+                </div>
+              )}
               <div className="flex items-center gap-2 text-slate-300">
                 <Shield className="w-5 h-5 text-[#c9a25c]" />
                 <span>Licensed & Insured</span>

@@ -3,6 +3,7 @@
 
 import { Metadata } from 'next'
 import { MSCity, MSCounty } from '@/lib/data/ms-locations'
+import { BUSINESS_CONFIG } from '@/lib/config/business'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
 const SITE_NAME = 'Farrell Roofing'
@@ -328,11 +329,11 @@ export const schemaFragments = {
 
   address: (city?: MSCity) => ({
     '@type': 'PostalAddress',
-    streetAddress: '123 Main Street',
-    addressLocality: city?.name || 'Tupelo',
-    addressRegion: 'MS',
-    postalCode: city?.zipCodes?.[0] || '38801',
-    addressCountry: 'US',
+    streetAddress: BUSINESS_CONFIG.address.street,
+    addressLocality: city?.name || BUSINESS_CONFIG.address.city,
+    addressRegion: BUSINESS_CONFIG.address.stateCode,
+    postalCode: city?.zipCodes?.[0] || BUSINESS_CONFIG.address.zip,
+    addressCountry: BUSINESS_CONFIG.address.countryCode,
   }),
 
   geoCoordinates: (city?: MSCity) => ({
@@ -356,12 +357,15 @@ export const schemaFragments = {
     },
   ],
 
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    bestRating: '5',
-    worstRating: '1',
-    ratingCount: '127',
-    reviewCount: '98',
-  },
+  // Only include aggregateRating when real review data is available
+  aggregateRating: BUSINESS_CONFIG.reviews.googleRating && BUSINESS_CONFIG.reviews.googleReviewCount
+    ? {
+        '@type': 'AggregateRating',
+        ratingValue: String(BUSINESS_CONFIG.reviews.googleRating),
+        bestRating: '5',
+        worstRating: '1',
+        ratingCount: String(BUSINESS_CONFIG.reviews.googleReviewCount),
+        reviewCount: String(BUSINESS_CONFIG.reviews.googleReviewCount),
+      }
+    : null,
 }

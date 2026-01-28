@@ -158,7 +158,7 @@ export function ComparisonArticleSchema({ city, pageUrl }: ComparisonArticleSche
         url: 'https://farrellroofing.com/images/farrell-roofing-logo.png'
       }
     },
-    datePublished: `${currentYear}-01-01`,
+    // Only use dateModified - don't claim publication date without real date
     dateModified: new Date().toISOString().split('T')[0],
     mainEntityOfPage: {
       '@type': 'WebPage',

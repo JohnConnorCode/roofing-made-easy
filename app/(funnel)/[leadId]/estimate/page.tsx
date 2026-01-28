@@ -21,8 +21,9 @@ import {
   RefreshCw,
   ExternalLink,
 } from 'lucide-react'
+import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
 
-const PHONE_NUMBER = process.env.NEXT_PUBLIC_PHONE_NUMBER || '(555) 000-0000'
+const PHONE_NUMBER = getPhoneDisplay()
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || ''
 
 interface EstimateData {
@@ -404,7 +405,7 @@ export default function EstimatePage() {
           className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100"
           leftIcon={<Phone className="h-5 w-5" />}
           onClick={() => {
-            window.location.href = `tel:${PHONE_NUMBER.replace(/\D/g, '')}`
+            window.location.href = getPhoneLink()
           }}
         >
           Call Us Now: {PHONE_NUMBER}

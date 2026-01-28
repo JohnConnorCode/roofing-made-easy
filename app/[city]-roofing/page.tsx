@@ -28,6 +28,7 @@ import { MultiLocationSchema, AggregateReviewSchema } from '@/components/seo/reg
 import { NAPSchema } from '@/components/seo/nap-schema'
 import { RelatedCitiesLinks, ComparisonPageLink } from '@/components/seo/internal-links'
 import { generateCityMeta } from '@/lib/seo/meta-utils'
+import { getPhoneLink, getPhoneDisplay } from '@/lib/config/business'
 
 interface CityPageProps {
   params: Promise<{
@@ -213,10 +214,10 @@ export default async function CityPage({ params }: CityPageProps) {
               <ArrowRight className="w-5 h-5" />
             </Link>
             <a
-              href="tel:+16620000000"
+              href={getPhoneLink()}
               className="inline-flex items-center justify-center bg-transparent border-2 border-gold/50 hover:border-gold text-white font-semibold px-8 py-4 rounded-lg transition-all"
             >
-              Call (662) 000-0000
+              Call {getPhoneDisplay()}
             </a>
           </div>
         </div>
