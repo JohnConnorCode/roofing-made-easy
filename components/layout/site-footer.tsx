@@ -1,7 +1,7 @@
 // Site Footer Component with Location Links
 import Link from 'next/link'
 import { Phone, Mail, MapPin, Facebook, Instagram } from 'lucide-react'
-import { getCitiesByPriority, getAllCounties } from '@/lib/data/ms-locations'
+import { getCitiesByPriority, getAllCounties, getAllCities } from '@/lib/data/ms-locations'
 import { getPhoneLink, getPhoneDisplay, BUSINESS_CONFIG } from '@/lib/config/business'
 import { Logo } from '@/components/ui/logo'
 
@@ -26,6 +26,15 @@ const company = [
 export function SiteFooter() {
   const topCities = getCitiesByPriority('high').slice(0, 8)
   const counties = getAllCounties().slice(0, 5)
+  const allCities = getAllCities()
+
+  // Group cities by county for the expanded locations section
+  const citiesByCounty = counties.slice(0, 4).map(county => ({
+    county,
+    cities: allCities.filter(c =>
+      c.county.toLowerCase() === county.name.replace(' County', '').toLowerCase()
+    ).slice(0, 4)
+  }))
 
   return (
     <footer className="bg-ink border-t border-slate-800">
@@ -141,6 +150,37 @@ export function SiteFooter() {
               >
                 Best Roofers in {city.name}
               </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Cities by County - Comprehensive SEO Links */}
+        <div className="mt-6 pt-6 border-t border-slate-800">
+          <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">
+            Service Areas by County
+          </h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {citiesByCounty.map(({ county, cities }) => (
+              <div key={county.slug}>
+                <Link
+                  href={`/${county.slug}-roofing`}
+                  className="text-sm font-medium text-gold hover:text-gold-light transition-colors"
+                >
+                  {county.name}
+                </Link>
+                <ul className="mt-2 space-y-1">
+                  {cities.map(city => (
+                    <li key={city.slug}>
+                      <Link
+                        href={`/${city.slug}-roofing`}
+                        className="text-xs text-slate-500 hover:text-slate-300 transition-colors"
+                      >
+                        {city.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
           </div>
         </div>

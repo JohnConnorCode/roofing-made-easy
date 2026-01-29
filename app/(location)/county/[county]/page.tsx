@@ -16,6 +16,7 @@ import { LocalStats, CountyAreas, LocalFAQ, Breadcrumbs } from '@/components/loc
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { CountyLocationSchema, FAQLocationSchema, BreadcrumbSchema } from '@/components/seo/location-schema'
 import { EnhancedLocalBusinessSchema } from '@/components/seo/advanced-schema'
+import { RegionalNavigation } from '@/components/seo/internal-links'
 import { generateCountyMeta } from '@/lib/seo/meta-utils'
 import { getPhoneLink, getPhoneDisplay, BUSINESS_CONFIG } from '@/lib/config/business'
 
@@ -225,6 +226,15 @@ export default async function CountyPage({ params }: CountyPageProps) {
 
       {/* FAQ */}
       <LocalFAQ county={county} />
+
+      {/* Regional Navigation - Cross-County Links */}
+      <section className="py-12 bg-ink">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <RegionalNavigation currentCounty={countySlug} />
+          </div>
+        </div>
+      </section>
 
       {/* Final CTA */}
       <section className="py-16 bg-gradient-dark">
