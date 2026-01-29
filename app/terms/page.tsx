@@ -35,7 +35,7 @@ export default function TermsPage() {
 
           <div className="space-y-6 text-slate-300">
             <p className="text-lg text-[#c9a25c]">
-              Effective Date: January 1, 2025
+              Effective Date: January 1, 2026
             </p>
 
             <p>
