@@ -187,8 +187,8 @@ export default function LeadsPage() {
       setLeads(prev => prev.map(lead =>
         lead.id === leadId ? { ...lead, status: newStatus } : lead
       ))
-    } catch (err) {
-      console.error('Failed to update lead status:', err)
+    } catch {
+      // Failed to update lead status
     }
   }
 
@@ -212,8 +212,8 @@ export default function LeadsPage() {
         selectedLeads.has(lead.id) ? { ...lead, status: newStatus } : lead
       ))
       setSelectedLeads(new Set())
-    } catch (err) {
-      console.error('Failed to bulk update:', err)
+    } catch {
+      // Failed to bulk update
     } finally {
       setIsProcessing(false)
     }
@@ -262,8 +262,8 @@ export default function LeadsPage() {
       a.click()
       document.body.removeChild(a)
       window.URL.revokeObjectURL(url)
-    } catch (err) {
-      console.error('Failed to export:', err)
+    } catch {
+      // Failed to export
     }
   }
 
@@ -278,7 +278,7 @@ export default function LeadsPage() {
     >
       <div className="flex items-center gap-1">
         {children}
-        <ArrowUpDown className={`h-3 w-3 ${sortField === field ? 'text-amber-600' : 'text-slate-400'}`} />
+        <ArrowUpDown className={`h-3 w-3 ${sortField === field ? 'text-gold' : 'text-slate-400'}`} />
       </div>
     </th>
   )
@@ -339,7 +339,7 @@ export default function LeadsPage() {
             <SkeletonLeadsTable />
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-8">
-              <AlertTriangle className="h-10 w-10 text-amber-500" />
+              <AlertTriangle className="h-10 w-10 text-gold" />
               <p className="mt-3 text-slate-600">{error}</p>
               <Button
                 variant="outline"
@@ -400,7 +400,7 @@ export default function LeadsPage() {
                         <tr
                           key={lead.id}
                           className={`border-b last:border-0 transition-colors ${
-                            isSelected ? 'bg-amber-50' : 'hover:bg-slate-50'
+                            isSelected ? 'bg-gold-light/10' : 'hover:bg-slate-50'
                           }`}
                         >
                           <td className="py-3 pr-2">
@@ -412,7 +412,7 @@ export default function LeadsPage() {
                           <td className="py-3 pr-4">
                             <Link
                               href={`/leads/${lead.id}`}
-                              className="font-medium text-amber-600 hover:underline"
+                              className="font-medium text-gold hover:underline"
                             >
                               {contact?.first_name && contact?.last_name
                                 ? `${contact.first_name} ${contact.last_name}`

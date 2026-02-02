@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { IntegrationCard } from '@/components/admin/integration-card'
 import {
   Building2,
   MapPin,
@@ -19,8 +20,41 @@ import {
   CheckCircle,
   Shield,
   Eye,
-  EyeOff
+  EyeOff,
+  Mail,
+  Send,
+  Plus,
+  X,
+  Plug,
+  Key,
 } from 'lucide-react'
+import {
+  getContainerClasses,
+  getIconClasses,
+  getBadgeClasses,
+} from '@/lib/styles/integration-status'
+import { getSectionNavClasses, adminSpinner, adminResult } from '@/lib/styles/admin-theme'
+
+interface IntegrationStatus {
+  name: string
+  id: string
+  configured: boolean
+  configuredVia: 'db' | 'env' | 'none'
+  description: string
+  envVars: string[]
+  docsUrl?: string
+  keyHint?: string
+  lastTestedAt?: string
+  lastTestSuccess?: boolean
+  lastTestError?: string
+  fields: Array<{
+    key: string
+    label: string
+    required: boolean
+    placeholder: string
+    sensitive: boolean
+  }>
+}
 
 interface Settings {
   company: {
@@ -87,6 +121,17 @@ export default function SettingsPage() {
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const [passwordSuccess, setPasswordSuccess] = useState(false)
 
+  // Email testing state
+  const [isSendingTestEmail, setIsSendingTestEmail] = useState(false)
+  const [testEmailError, setTestEmailError] = useState<string | null>(null)
+  const [testEmailSuccess, setTestEmailSuccess] = useState(false)
+  const [newEmailRecipient, setNewEmailRecipient] = useState('')
+
+  // Integrations state
+  const [integrations, setIntegrations] = useState<IntegrationStatus[]>([])
+  const [isLoadingIntegrations, setIsLoadingIntegrations] = useState(false)
+  const [encryptionConfigured, setEncryptionConfigured] = useState(false)
+
   const fetchSettings = useCallback(async () => {
     setIsLoading(true)
     setError(null)
@@ -102,9 +147,78 @@ export default function SettingsPage() {
     }
   }, [])
 
+  const fetchIntegrations = useCallback(async () => {
+    setIsLoadingIntegrations(true)
+    try {
+      const response = await fetch('/api/admin/integrations')
+      if (!response.ok) throw new Error('Failed to fetch integrations')
+      const data = await response.json()
+      setIntegrations(data.integrations)
+      setEncryptionConfigured(data.encryptionConfigured ?? false)
+    } catch {
+      // Failed to fetch integrations
+    } finally {
+      setIsLoadingIntegrations(false)
+    }
+  }, [])
+
+  // API handlers for integration credentials
+  const handleTestIntegration = async (serviceId: string, credentials: Record<string, string>) => {
+    const response = await fetch(`/api/admin/integrations/${serviceId}/test`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
+    })
+    const data = await response.json()
+    return {
+      success: data.success,
+      error: data.error,
+      details: data.details,
+    }
+  }
+
+  const handleSaveIntegration = async (serviceId: string, credentials: Record<string, string>) => {
+    const response = await fetch(`/api/admin/integrations/${serviceId}/credentials`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
+    })
+    const data = await response.json()
+    if (data.success) {
+      // Refresh integrations list
+      fetchIntegrations()
+    }
+    return {
+      success: data.success,
+      error: data.error,
+    }
+  }
+
+  const handleRemoveIntegration = async (serviceId: string) => {
+    const response = await fetch(`/api/admin/integrations/${serviceId}/credentials`, {
+      method: 'DELETE',
+    })
+    const data = await response.json()
+    if (data.success) {
+      // Refresh integrations list
+      fetchIntegrations()
+    }
+    return {
+      success: data.success,
+      error: data.error,
+    }
+  }
+
   useEffect(() => {
     fetchSettings()
   }, [fetchSettings])
+
+  // Fetch integrations when that section is selected
+  useEffect(() => {
+    if (activeSection === 'integrations' && integrations.length === 0) {
+      fetchIntegrations()
+    }
+  }, [activeSection, integrations.length, fetchIntegrations])
 
   const handleSave = async () => {
     if (!settings) return
@@ -119,8 +233,8 @@ export default function SettingsPage() {
       if (!response.ok) throw new Error('Failed to save settings')
       setSaveSuccess(true)
       setTimeout(() => setSaveSuccess(false), 3000)
-    } catch (err) {
-      console.error('Failed to save settings:', err)
+    } catch {
+      // Failed to save settings
     } finally {
       setIsSaving(false)
     }
@@ -174,6 +288,65 @@ export default function SettingsPage() {
         source.id === id ? { ...source, enabled: !source.enabled } : source
       )
     })
+  }
+
+  const addEmailRecipient = () => {
+    if (!settings || !newEmailRecipient || !newEmailRecipient.includes('@')) return
+    const currentRecipients = settings.notifications.emailRecipients || []
+    if (currentRecipients.includes(newEmailRecipient)) return
+    setSettings({
+      ...settings,
+      notifications: {
+        ...settings.notifications,
+        emailRecipients: [...currentRecipients, newEmailRecipient]
+      }
+    })
+    setNewEmailRecipient('')
+  }
+
+  const removeEmailRecipient = (email: string) => {
+    if (!settings) return
+    setSettings({
+      ...settings,
+      notifications: {
+        ...settings.notifications,
+        emailRecipients: (settings.notifications.emailRecipients || []).filter(e => e !== email)
+      }
+    })
+  }
+
+  const sendTestEmail = async () => {
+    const recipients = settings?.notifications.emailRecipients || []
+    if (recipients.length === 0) {
+      setTestEmailError('Please add at least one email recipient first')
+      return
+    }
+
+    setIsSendingTestEmail(true)
+    setTestEmailError(null)
+    setTestEmailSuccess(false)
+
+    try {
+      const response = await fetch('/api/email/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: recipients[0] })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setTestEmailError(data.details || data.error || 'Failed to send test email')
+        return
+      }
+
+      setTestEmailSuccess(true)
+      setTimeout(() => setTestEmailSuccess(false), 5000)
+    } catch (err) {
+      setTestEmailError('An error occurred. Please try again.')
+    } finally {
+      setIsSendingTestEmail(false)
+    }
   }
 
   const handlePasswordChange = async () => {
@@ -234,7 +407,7 @@ export default function SettingsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+        <Loader2 className={`h-8 w-8 animate-spin ${adminSpinner}`} />
       </div>
     )
   }
@@ -242,7 +415,7 @@ export default function SettingsPage() {
   if (error || !settings) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <AlertTriangle className="h-12 w-12 text-amber-500" />
+        <AlertTriangle className="h-12 w-12 text-gold" />
         <p className="mt-4 text-slate-600">{error || 'Failed to load settings'}</p>
         <Button
           variant="outline"
@@ -262,6 +435,7 @@ export default function SettingsPage() {
     { id: 'hours', label: 'Business Hours', icon: Clock },
     { id: 'pricing', label: 'Default Pricing', icon: DollarSign },
     { id: 'notifications', label: 'Notifications', icon: Bell },
+    { id: 'integrations', label: 'Integrations', icon: Plug },
     { id: 'sources', label: 'Lead Sources', icon: Tags },
     { id: 'security', label: 'Security', icon: Shield },
   ]
@@ -296,10 +470,7 @@ export default function SettingsPage() {
                     onClick={() => setActiveSection(section.id)}
                     className={`
                       w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors
-                      ${activeSection === section.id
-                        ? 'bg-amber-50 text-amber-700'
-                        : 'text-slate-600 hover:bg-slate-50'
-                      }
+                      ${getSectionNavClasses(activeSection === section.id)}
                     `}
                   >
                     <section.icon className="h-4 w-4" />
@@ -559,46 +730,249 @@ export default function SettingsPage() {
 
           {/* Notifications */}
           {activeSection === 'notifications' && (
-            <Card className="bg-white border-slate-200">
-              <CardHeader>
-                <CardTitle className="text-slate-900">Email Notifications</CardTitle>
-                <CardDescription>Configure when you receive email alerts</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <label className="flex items-center gap-3">
-                    <Checkbox
-                      checked={settings.notifications.newLeadEmail || false}
-                      onChange={(e) => updateNotifications('newLeadEmail', e.target.checked)}
+            <>
+              <Card className="bg-white border-slate-200">
+                <CardHeader>
+                  <CardTitle className="text-slate-900">Email Recipients</CardTitle>
+                  <CardDescription>Who should receive notification emails</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Email recipients list */}
+                  <div className="space-y-2">
+                    {(settings.notifications.emailRecipients || []).map((email) => (
+                      <div
+                        key={email}
+                        className="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Mail className="h-4 w-4 text-slate-400" />
+                          <span className="text-sm text-slate-700">{email}</span>
+                        </div>
+                        <button
+                          onClick={() => removeEmailRecipient(email)}
+                          className="p-1 rounded hover:bg-slate-200 text-slate-400 hover:text-red-500 transition-colors"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+                    ))}
+                    {(settings.notifications.emailRecipients || []).length === 0 && (
+                      <p className="text-sm text-slate-500 p-3 bg-gold-light/10 rounded-lg border border-gold-light/30">
+                        No email recipients configured. Add at least one to receive notifications.
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Add new recipient */}
+                  <div className="flex gap-2">
+                    <Input
+                      type="email"
+                      placeholder="Enter email address"
+                      value={newEmailRecipient}
+                      onChange={(e) => setNewEmailRecipient(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && addEmailRecipient()}
+                      className="flex-1"
                     />
-                    <div>
-                      <span className="text-sm font-medium text-slate-700">New Lead Notifications</span>
-                      <p className="text-xs text-slate-500">Receive email when a new lead is submitted</p>
+                    <Button
+                      variant="outline"
+                      onClick={addEmailRecipient}
+                      disabled={!newEmailRecipient || !newEmailRecipient.includes('@')}
+                      leftIcon={<Plus className="h-4 w-4" />}
+                    >
+                      Add
+                    </Button>
+                  </div>
+
+                  {/* Test email */}
+                  <div className="pt-4 border-t border-slate-200">
+                    {testEmailSuccess && (
+                      <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 mb-3">
+                        <CheckCircle className="h-4 w-4" />
+                        <span className="text-sm">Test email sent successfully</span>
+                      </div>
+                    )}
+                    {testEmailError && (
+                      <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 mb-3">
+                        <AlertTriangle className="h-4 w-4" />
+                        <span className="text-sm">{testEmailError}</span>
+                      </div>
+                    )}
+                    <Button
+                      variant="outline"
+                      onClick={sendTestEmail}
+                      isLoading={isSendingTestEmail}
+                      leftIcon={<Send className="h-4 w-4" />}
+                      disabled={(settings.notifications.emailRecipients || []).length === 0}
+                    >
+                      Send Test Email
+                    </Button>
+                    <p className="text-xs text-slate-500 mt-2">
+                      Sends a test email to the first recipient to verify your configuration
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-white border-slate-200">
+                <CardHeader>
+                  <CardTitle className="text-slate-900">Notification Types</CardTitle>
+                  <CardDescription>Configure when you receive email alerts</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-3">
+                      <Checkbox
+                        checked={settings.notifications.newLeadEmail || false}
+                        onChange={(e) => updateNotifications('newLeadEmail', e.target.checked)}
+                      />
+                      <div>
+                        <span className="text-sm font-medium text-slate-700">New Lead Notifications</span>
+                        <p className="text-xs text-slate-500">Receive email when a new lead submits contact info</p>
+                      </div>
+                    </label>
+                    <label className="flex items-center gap-3">
+                      <Checkbox
+                        checked={settings.notifications.estimateEmail || false}
+                        onChange={(e) => updateNotifications('estimateEmail', e.target.checked)}
+                      />
+                      <div>
+                        <span className="text-sm font-medium text-slate-700">Estimate Generated</span>
+                        <p className="text-xs text-slate-500">Receive email when an estimate is created</p>
+                      </div>
+                    </label>
+                    <label className="flex items-center gap-3">
+                      <Checkbox
+                        checked={settings.notifications.dailyDigest || false}
+                        onChange={(e) => updateNotifications('dailyDigest', e.target.checked)}
+                      />
+                      <div>
+                        <span className="text-sm font-medium text-slate-700">Daily Digest</span>
+                        <p className="text-xs text-slate-500">Daily summary of leads and pipeline status</p>
+                      </div>
+                    </label>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
+
+          {/* Integrations */}
+          {activeSection === 'integrations' && (
+            <div className="space-y-6">
+              <Card className="bg-white border-slate-200">
+                <CardHeader>
+                  <CardTitle className="text-slate-900 flex items-center gap-2">
+                    <Key className="h-5 w-5" />
+                    API Integrations
+                  </CardTitle>
+                  <CardDescription>
+                    Configure third-party service integrations. You can set up API keys directly here or use environment variables.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {!encryptionConfigured && (
+                    <div className="mb-4 p-4 bg-gold-light/10 border border-gold-light/30 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <AlertTriangle className="h-5 w-5 text-gold mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium text-gold-muted">Encryption Not Configured</h4>
+                          <p className="text-sm text-gold-muted/80 mt-1">
+                            To save API keys through the UI, set the <code className="px-1 py-0.5 bg-gold-light/20 rounded">API_KEYS_ENCRYPTION_KEY</code> environment variable.
+                          </p>
+                          <p className="text-xs text-gold-muted/70 mt-2">
+                            Generate one with: <code className="px-1 py-0.5 bg-gold-light/20 rounded">openssl rand -base64 32</code>
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </label>
-                  <label className="flex items-center gap-3">
-                    <Checkbox
-                      checked={settings.notifications.estimateEmail || false}
-                      onChange={(e) => updateNotifications('estimateEmail', e.target.checked)}
-                    />
-                    <div>
-                      <span className="text-sm font-medium text-slate-700">Estimate Generated</span>
-                      <p className="text-xs text-slate-500">Receive email when an estimate is created</p>
+                  )}
+
+                  {isLoadingIntegrations ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className={`h-6 w-6 animate-spin ${adminSpinner}`} />
                     </div>
-                  </label>
-                  <label className="flex items-center gap-3">
-                    <Checkbox
-                      checked={settings.notifications.dailyDigest || false}
-                      onChange={(e) => updateNotifications('dailyDigest', e.target.checked)}
-                    />
-                    <div>
-                      <span className="text-sm font-medium text-slate-700">Daily Digest</span>
-                      <p className="text-xs text-slate-500">Daily summary of leads and pipeline status</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {integrations
+                        .filter((i) => i.fields.length > 0) // Only show configurable integrations
+                        .map((integration) => (
+                          <IntegrationCard
+                            key={integration.id}
+                            id={integration.id}
+                            name={integration.name}
+                            description={integration.description}
+                            configured={integration.configured}
+                            configuredVia={integration.configuredVia}
+                            keyHint={integration.keyHint}
+                            lastTestedAt={integration.lastTestedAt}
+                            lastTestSuccess={integration.lastTestSuccess}
+                            lastTestError={integration.lastTestError}
+                            fields={integration.fields}
+                            docsUrl={integration.docsUrl}
+                            onTest={(creds) => handleTestIntegration(integration.id, creds)}
+                            onSave={(creds) => handleSaveIntegration(integration.id, creds)}
+                            onRemove={() => handleRemoveIntegration(integration.id)}
+                          />
+                        ))}
+
+                      {/* Supabase - not configurable via UI */}
+                      {integrations
+                        .filter((i) => i.fields.length === 0)
+                        .map((integration) => (
+                          <div
+                            key={integration.id}
+                            className={`p-4 ${getContainerClasses(integration.configured)}`}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-start gap-3">
+                                {integration.configured ? (
+                                  <CheckCircle className={`h-5 w-5 mt-0.5 ${getIconClasses(true)}`} />
+                                ) : (
+                                  <AlertTriangle className={`h-5 w-5 mt-0.5 ${getIconClasses(false)}`} />
+                                )}
+                                <div>
+                                  <h4 className="font-semibold text-slate-900">{integration.name}</h4>
+                                  <p className="text-sm text-slate-600 mt-1">{integration.description}</p>
+                                  <p className="text-xs text-slate-500 mt-2">
+                                    Configured via environment variables (required for the app to function)
+                                  </p>
+                                </div>
+                              </div>
+                              <span className={getBadgeClasses(integration.configured)}>
+                                {integration.configured ? 'Connected' : 'Not configured'}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                     </div>
-                  </label>
-                </div>
-              </CardContent>
-            </Card>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Help section */}
+              <Card className="bg-slate-50 border-slate-200">
+                <CardContent className="pt-6">
+                  <h4 className="font-medium text-slate-900 mb-3">How Integration Configuration Works</h4>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="p-3 bg-white rounded-lg border border-slate-200">
+                      <h5 className="font-medium text-slate-800 mb-1">Option 1: Configure Here</h5>
+                      <p className="text-sm text-slate-600">
+                        Click on any integration above and enter your API keys. Keys are encrypted and stored securely in the database.
+                      </p>
+                    </div>
+                    <div className="p-3 bg-white rounded-lg border border-slate-200">
+                      <h5 className="font-medium text-slate-800 mb-1">Option 2: Environment Variables</h5>
+                      <p className="text-sm text-slate-600">
+                        Set API keys in your hosting platform (Vercel). Environment variables take precedence over saved settings.
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-4">
+                    Both options are secure. Use the UI for easier management, or environment variables for deployment automation.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           )}
 
           {/* Lead Sources */}

@@ -48,7 +48,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick }: LeadCardPro
       onClick={onClick}
       className={`
         group relative bg-white rounded-lg border border-slate-200 p-3 shadow-sm cursor-pointer
-        hover:border-amber-300 hover:shadow-md transition-all
+        hover:border-gold-light hover:shadow-md transition-all
         ${isDragging ? 'opacity-50 rotate-2 shadow-lg' : ''}
       `}
     >
@@ -61,7 +61,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick }: LeadCardPro
       {onMoveClick && (
         <button
           onClick={onMoveClick}
-          className="absolute right-1 top-1 p-1.5 rounded-md bg-slate-100 hover:bg-amber-100 text-slate-500 hover:text-amber-700 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute right-1 top-1 p-1.5 rounded-md bg-slate-100 hover:bg-gold-light/20 text-slate-500 hover:text-gold-muted opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
           title="Move to..."
         >
           <MoveRight className="h-3.5 w-3.5" />
@@ -107,7 +107,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick }: LeadCardPro
             <a
               href={`tel:${contact.phone}`}
               onClick={(e) => e.stopPropagation()}
-              className="p-1.5 rounded-md hover:bg-slate-100 text-slate-400 hover:text-amber-600 transition-colors"
+              className="p-1.5 rounded-md hover:bg-slate-100 text-slate-400 hover:text-gold transition-colors"
               title="Call"
             >
               <Phone className="h-3.5 w-3.5" />
@@ -117,7 +117,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick }: LeadCardPro
             <a
               href={`mailto:${contact.email}`}
               onClick={(e) => e.stopPropagation()}
-              className="p-1.5 rounded-md hover:bg-slate-100 text-slate-400 hover:text-amber-600 transition-colors"
+              className="p-1.5 rounded-md hover:bg-slate-100 text-slate-400 hover:text-gold transition-colors"
               title="Email"
             >
               <Mail className="h-3.5 w-3.5" />

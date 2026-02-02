@@ -101,8 +101,8 @@ export default function CustomersPage() {
 
         <Card className="bg-white border-slate-200">
           <CardContent className="flex items-center gap-4 p-4">
-            <div className="rounded-lg bg-amber-100 p-3">
-              <Users className="h-5 w-5 text-amber-600" />
+            <div className="rounded-lg bg-gold-light/20 p-3">
+              <Users className="h-5 w-5 text-gold" />
             </div>
             <div>
               <p className="text-sm text-slate-500">Total Leads</p>

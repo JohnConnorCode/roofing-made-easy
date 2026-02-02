@@ -56,7 +56,7 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {sessionExpired && (
-        <div role="alert" className="rounded-lg bg-[#c9a25c]/10 border border-[#c9a25c]/30 p-3 text-sm text-[#c9a25c]">
+        <div role="alert" className="rounded-lg bg-gold-light/10 border border-gold-light/30 p-3 text-sm text-gold-light">
           Your session has expired. Please sign in again.
         </div>
       )}
@@ -76,7 +76,7 @@ function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           required
           autoComplete="email"
-          className="w-full rounded-lg border border-slate-700 bg-[#1a1f2e] px-4 py-3 text-slate-100 placeholder-slate-500 focus:border-[#c9a25c] focus:outline-none focus:ring-1 focus:ring-[#c9a25c] transition-colors"
+          className="w-full rounded-lg border border-slate-700 bg-slate-deep px-4 py-3 text-slate-100 placeholder-slate-500 focus:border-gold-light focus:outline-none focus:ring-1 focus:ring-gold-light transition-colors"
         />
       </div>
 
@@ -90,7 +90,7 @@ function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete="current-password"
-            className="w-full rounded-lg border border-slate-700 bg-[#1a1f2e] px-4 py-3 text-slate-100 placeholder-slate-500 focus:border-[#c9a25c] focus:outline-none focus:ring-1 focus:ring-[#c9a25c] transition-colors pr-12"
+            className="w-full rounded-lg border border-slate-700 bg-slate-deep px-4 py-3 text-slate-100 placeholder-slate-500 focus:border-gold-light focus:outline-none focus:ring-1 focus:ring-gold-light transition-colors pr-12"
           />
           <button
             type="button"
@@ -107,7 +107,7 @@ function LoginForm() {
         type="submit"
         variant="primary"
         size="lg"
-        className="w-full bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0 font-semibold"
+        className="w-full bg-gradient-to-r from-gold-light to-gold hover:from-gold-light/90 hover:to-gold-light text-ink border-0 font-semibold"
         isLoading={isLoading}
       >
         Sign In
@@ -119,7 +119,7 @@ function LoginForm() {
 function LoginFormFallback() {
   return (
     <div className="flex justify-center py-8">
-      <Loader2 className="h-8 w-8 animate-spin text-[#c9a25c]" />
+      <Loader2 className="h-8 w-8 animate-spin text-gold-light" />
     </div>
   )
 }
@@ -133,7 +133,7 @@ export default function LoginPage() {
       </div>
 
       <div className="w-full max-w-md animate-slide-up delay-100">
-        <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl shadow-xl p-8">
+        <div className="bg-slate-deep border border-slate-700 rounded-2xl shadow-xl p-8">
           <div className="text-center mb-6">
             <h2 className="text-xl font-semibold text-slate-100">Sign in to your account</h2>
             <p className="text-sm text-slate-500 mt-1">Enter your credentials to access the dashboard</p>
@@ -146,7 +146,7 @@ export default function LoginPage() {
 
       <p className="mt-8 text-center text-sm text-slate-500 animate-slide-up delay-200">
         Having trouble?{' '}
-        <a href="mailto:support@farrellroofing.com" className="text-[#c9a25c] hover:text-[#d4b06c] hover:underline transition-colors">
+        <a href="mailto:support@farrellroofing.com" className="text-gold-light hover:text-gold-light/90 hover:underline transition-colors">
           Contact support
         </a>
       </p>

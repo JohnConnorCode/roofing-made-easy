@@ -24,6 +24,11 @@ import {
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { AdminLogo } from '@/components/ui/admin-logo'
+import {
+  getNavClasses,
+  getChildNavClasses,
+  getParentNavClasses,
+} from '@/lib/styles/admin-theme'
 
 interface NavItem {
   href: string
@@ -143,13 +148,7 @@ export default function AdminLayoutClient({
             onClick={() => toggleExpanded(item.href)}
             className={cn(
               'flex w-full items-center justify-between gap-3 rounded-lg px-4 py-2.5 transition-colors',
-              isMobile
-                ? isItemActive
-                  ? 'bg-amber-50 text-amber-700'
-                  : 'text-slate-600 hover:bg-slate-50'
-                : isItemActive
-                ? 'bg-slate-700 text-white'
-                : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+              getParentNavClasses(isItemActive, isMobile)
             )}
           >
             <div className="flex items-center gap-3">
@@ -171,13 +170,10 @@ export default function AdminLayoutClient({
                     onClick={() => isMobile && setIsMobileMenuOpen(false)}
                     className={cn(
                       'flex items-center gap-3 rounded-lg px-4 py-2 transition-colors',
-                      isMobile
-                        ? isActive(child.href, child.href === '/leads' || child.href === '/pricing')
-                          ? 'bg-amber-50 text-amber-700'
-                          : 'text-slate-600 hover:bg-slate-50'
-                        : isActive(child.href, child.href === '/leads' || child.href === '/pricing')
-                        ? 'bg-amber-600 text-white'
-                        : 'text-slate-400 hover:bg-slate-700 hover:text-white'
+                      getChildNavClasses(
+                        isActive(child.href, child.href === '/leads' || child.href === '/pricing'),
+                        isMobile
+                      )
                     )}
                   >
                     <child.icon className="h-4 w-4" />
@@ -198,13 +194,7 @@ export default function AdminLayoutClient({
           onClick={() => isMobile && setIsMobileMenuOpen(false)}
           className={cn(
             'flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors',
-            isMobile
-              ? isActive(item.href)
-                ? 'bg-amber-50 text-amber-700'
-                : 'text-slate-600 hover:bg-slate-50'
-              : isActive(item.href)
-              ? 'bg-amber-600 text-white'
-              : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+            getNavClasses(isActive(item.href), isMobile)
           )}
         >
           <item.icon className="h-5 w-5" />

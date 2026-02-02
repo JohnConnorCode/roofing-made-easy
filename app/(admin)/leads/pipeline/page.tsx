@@ -105,8 +105,7 @@ export default function PipelinePage() {
 
         setStats(updatedStats)
       }
-    } catch (err) {
-      console.error('Failed to update lead status:', err)
+    } catch {
       setUpdateError('Failed to update lead status. Please try again.')
       // Refetch data on error to restore correct state
       fetchPipelineData()
@@ -128,7 +127,7 @@ export default function PipelinePage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-gold" />
       </div>
     )
   }
@@ -189,12 +188,12 @@ export default function PipelinePage() {
 
           <Card className="bg-white border-slate-200">
             <CardContent className="flex items-center gap-4 p-4">
-              <div className="rounded-lg bg-amber-100 p-3">
-                <TrendingUp className="h-5 w-5 text-amber-600" />
+              <div className="rounded-lg bg-gold-light/20 p-3">
+                <TrendingUp className="h-5 w-5 text-gold" />
               </div>
               <div>
                 <p className="text-sm text-slate-500">Win Rate</p>
-                <p className="text-2xl font-bold text-amber-600">{winRate}%</p>
+                <p className="text-2xl font-bold text-gold">{winRate}%</p>
               </div>
             </CardContent>
           </Card>
@@ -232,7 +231,7 @@ export default function PipelinePage() {
       {error ? (
         <Card className="bg-white border-slate-200">
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <AlertTriangle className="h-12 w-12 text-amber-500" />
+            <AlertTriangle className="h-12 w-12 text-gold" />
             <p className="mt-4 text-slate-600">{error}</p>
             <Button
               variant="outline"

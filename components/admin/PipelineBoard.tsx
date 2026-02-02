@@ -171,7 +171,7 @@ export function PipelineBoard({ leads, onLeadClick, onStatusChange, isUpdating }
               key={column.value}
               className={`
                 flex-shrink-0 w-72 rounded-lg border-t-4 ${column.border}
-                ${isDropTarget ? 'bg-amber-50 ring-2 ring-amber-300' : 'bg-slate-50'}
+                ${isDropTarget ? 'bg-gold-light/10 ring-2 ring-gold-light' : 'bg-slate-50'}
                 transition-all
               `}
               onDragOver={(e) => handleDragOver(e, column.value)}
@@ -214,7 +214,7 @@ export function PipelineBoard({ leads, onLeadClick, onStatusChange, isUpdating }
                     >
                       {isUpdating === lead.id && (
                         <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded-lg z-10">
-                          <Loader2 className="h-5 w-5 animate-spin text-amber-600" />
+                          <Loader2 className="h-5 w-5 animate-spin text-gold" />
                         </div>
                       )}
                       <LeadCard

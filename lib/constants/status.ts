@@ -31,10 +31,10 @@ export const LEAD_STATUSES: StatusConfig[] = [
   {
     value: 'new',
     label: 'New',
-    badge: 'bg-amber-100 text-amber-800 border-amber-200',
-    dot: 'bg-amber-500',
-    border: 'border-amber-500',
-    bg: 'bg-amber-50',
+    badge: 'bg-gold-light/20 text-gold-muted border-gold-light/30',
+    dot: 'bg-gold',
+    border: 'border-gold',
+    bg: 'bg-gold-light/10',
   },
   {
     value: 'intake_started',

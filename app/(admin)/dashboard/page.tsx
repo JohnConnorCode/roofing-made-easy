@@ -62,7 +62,7 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  new: 'bg-amber-500',
+  new: 'bg-gold',
   intake_started: 'bg-slate-400',
   intake_complete: 'bg-slate-500',
   estimate_generated: 'bg-green-500',
@@ -178,7 +178,7 @@ export default function DashboardPage() {
           {error ? (
             <Card className="bg-white border-slate-200">
               <CardContent className="flex flex-col items-center justify-center py-12">
-                <AlertTriangle className="h-12 w-12 text-amber-500" />
+                <AlertTriangle className="h-12 w-12 text-gold" />
                 <p className="mt-4 text-slate-600">{error}</p>
                 <Button
                   variant="outline"
@@ -202,8 +202,8 @@ export default function DashboardPage() {
                         <p className="text-sm text-slate-500">New Leads (MTD)</p>
                         <p className="text-3xl font-bold text-slate-900">{stats?.newLeadsThisMonth || 0}</p>
                       </div>
-                      <div className="rounded-lg bg-amber-100 p-3">
-                        <Users className="h-6 w-6 text-amber-600" />
+                      <div className="rounded-lg bg-gold-light/20 p-3">
+                        <Users className="h-6 w-6 text-gold" />
                       </div>
                     </div>
                     <div className="mt-3 flex items-center text-sm">
@@ -317,7 +317,7 @@ export default function DashboardPage() {
                     <div className="mt-4 pt-4 border-t">
                       <Link
                         href="/leads/pipeline"
-                        className="text-sm text-amber-600 hover:underline flex items-center gap-1"
+                        className="text-sm text-gold hover:underline flex items-center gap-1"
                       >
                         View Pipeline Board
                         <ArrowUpRight className="h-3 w-3" />
@@ -340,7 +340,7 @@ export default function DashboardPage() {
                     ) : (
                       <div className="space-y-4">
                         {sourcePercentages.map((source, idx) => {
-                          const colors = ['bg-amber-500', 'bg-blue-500', 'bg-green-500', 'bg-purple-500']
+                          const colors = ['bg-gold', 'bg-blue-500', 'bg-green-500', 'bg-purple-500']
                           return (
                             <div key={source.source} className="flex items-center gap-3">
                               <div className={`w-3 h-3 rounded-full ${colors[idx % colors.length]}`} />
@@ -375,7 +375,7 @@ export default function DashboardPage() {
                   <CardTitle className="text-slate-900">Recent Leads</CardTitle>
                   <Link
                     href="/leads"
-                    className="text-sm text-amber-600 hover:underline"
+                    className="text-sm text-gold hover:underline"
                   >
                     View all
                   </Link>
@@ -409,7 +409,7 @@ export default function DashboardPage() {
                                 <td className="py-3 pr-4">
                                   <Link
                                     href={`/leads/${lead.id}`}
-                                    className="font-medium text-amber-600 hover:underline"
+                                    className="font-medium text-gold hover:underline"
                                   >
                                     {contact?.first_name && contact?.last_name
                                       ? `${contact.first_name} ${contact.last_name}`
@@ -451,7 +451,7 @@ export default function DashboardPage() {
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    new: 'bg-amber-100 text-amber-800',
+    new: 'bg-gold-light/20 text-gold-muted',
     intake_started: 'bg-slate-100 text-slate-800',
     intake_complete: 'bg-slate-200 text-slate-800',
     estimate_generated: 'bg-green-100 text-green-800',
