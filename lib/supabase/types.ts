@@ -1447,6 +1447,102 @@ export type Database = {
           created_at?: string
         }
       }
+      // ============================================
+      // ADMIN DATA & PIPELINE TABLES (Migration 017)
+      // ============================================
+      admin_preferences: {
+        Row: {
+          id: string
+          user_id: string
+          pipeline_columns: Json
+          pipeline_card_fields: Json
+          dashboard_widgets: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          pipeline_columns?: Json
+          pipeline_card_fields?: Json
+          dashboard_widgets?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          pipeline_columns?: Json
+          pipeline_card_fields?: Json
+          dashboard_widgets?: Json
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      custom_pipeline_stages: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          color: string
+          position: number
+          is_system: boolean
+          is_visible: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          color?: string
+          position?: number
+          is_system?: boolean
+          is_visible?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          color?: string
+          position?: number
+          is_system?: boolean
+          is_visible?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      lead_stage_history: {
+        Row: {
+          id: string
+          lead_id: string
+          from_stage: string | null
+          to_stage: string
+          duration_minutes: number | null
+          changed_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          lead_id: string
+          from_stage?: string | null
+          to_stage: string
+          duration_minutes?: number | null
+          changed_by?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          lead_id?: string
+          from_stage?: string | null
+          to_stage?: string
+          duration_minutes?: number | null
+          changed_by?: string | null
+          created_at?: string
+        }
+      }
     }
     Enums: {
       lead_status: LeadStatus
@@ -1751,3 +1847,10 @@ export type EstimateMacro = Database['public']['Tables']['estimate_macros']['Row
 export type MacroLineItem = Database['public']['Tables']['macro_line_items']['Row']
 export type DetailedEstimate = Database['public']['Tables']['detailed_estimates']['Row']
 export type EstimateLineItem = Database['public']['Tables']['estimate_line_items']['Row']
+
+// ============================================
+// Helper types - Admin Data & Pipeline (Migration 017)
+// ============================================
+export type AdminPreferences = Database['public']['Tables']['admin_preferences']['Row']
+export type CustomPipelineStage = Database['public']['Tables']['custom_pipeline_stages']['Row']
+export type LeadStageHistory = Database['public']['Tables']['lead_stage_history']['Row']

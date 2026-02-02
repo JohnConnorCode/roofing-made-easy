@@ -1,23 +1,66 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
-import { LeadCard, type LeadCardData } from './LeadCard'
+import { useState, useCallback, useRef, useEffect } from 'react'
+import { LeadCard, type LeadCardData, type CardFieldKey } from './LeadCard'
 import { formatCurrency } from '@/lib/utils'
-import { ChevronDown, ChevronUp, Loader2, X } from 'lucide-react'
-import { LEAD_STATUSES, getStatusConfig } from '@/lib/constants/status'
+import { ChevronDown, ChevronUp, Loader2, X, Settings2 } from 'lucide-react'
+import { LEAD_STATUSES } from '@/lib/constants/status'
+import { PipelineConfigModal } from './PipelineConfigModal'
 
-// Primary statuses for main pipeline view
+// Primary statuses for main pipeline view (fallback if API fails)
 const PRIMARY_STATUS_IDS = ['new', 'estimate_generated', 'consultation_scheduled', 'quote_sent', 'won']
 const SECONDARY_STATUS_IDS = ['intake_started', 'intake_complete', 'lost', 'archived']
 
 export const PIPELINE_COLUMNS = LEAD_STATUSES.filter(s => PRIMARY_STATUS_IDS.includes(s.value))
 export const SECONDARY_COLUMNS = LEAD_STATUSES.filter(s => SECONDARY_STATUS_IDS.includes(s.value))
 
+interface PipelineStage {
+  id: string
+  name: string
+  slug: string
+  color: string
+  position: number
+  is_system: boolean
+  is_visible: boolean
+}
+
+// Convert dynamic stage to display config
+function stageToColumnConfig(stage: PipelineStage) {
+  // Map color to Tailwind classes
+  const colorMap: Record<string, { dot: string; border: string; bg: string }> = {
+    '#D4A853': { dot: 'bg-gold', border: 'border-gold', bg: 'bg-gold-light/10' },
+    '#22C55E': { dot: 'bg-green-500', border: 'border-green-500', bg: 'bg-green-50' },
+    '#3B82F6': { dot: 'bg-blue-500', border: 'border-blue-500', bg: 'bg-blue-50' },
+    '#A855F7': { dot: 'bg-purple-500', border: 'border-purple-500', bg: 'bg-purple-50' },
+    '#EF4444': { dot: 'bg-red-400', border: 'border-red-400', bg: 'bg-red-50' },
+    '#10B981': { dot: 'bg-emerald-500', border: 'border-emerald-500', bg: 'bg-emerald-50' },
+    '#94A3B8': { dot: 'bg-slate-400', border: 'border-slate-400', bg: 'bg-slate-50' },
+    '#64748B': { dot: 'bg-slate-500', border: 'border-slate-500', bg: 'bg-slate-50' },
+    '#CBD5E1': { dot: 'bg-slate-300', border: 'border-slate-300', bg: 'bg-slate-50' },
+    '#F97316': { dot: 'bg-orange-500', border: 'border-orange-500', bg: 'bg-orange-50' },
+    '#EC4899': { dot: 'bg-pink-500', border: 'border-pink-500', bg: 'bg-pink-50' },
+    '#6B7280': { dot: 'bg-gray-500', border: 'border-gray-500', bg: 'bg-gray-50' },
+  }
+
+  const colors = colorMap[stage.color] || { dot: 'bg-gray-500', border: 'border-gray-500', bg: 'bg-gray-50' }
+
+  return {
+    value: stage.slug,
+    label: stage.name,
+    badge: `${colors.bg} text-slate-700`,
+    ...colors,
+  }
+}
+
 interface PipelineBoardProps {
   leads: LeadCardData[]
   onLeadClick: (lead: LeadCardData) => void
   onStatusChange: (leadId: string, newStatus: string) => Promise<void>
   isUpdating?: string | null
+  stages?: PipelineStage[]
+  cardFields?: CardFieldKey[]
+  onStagesChange?: (stages: PipelineStage[]) => void
+  onCardFieldsChange?: (fields: CardFieldKey[]) => void
 }
 
 interface MoveMenuState {
@@ -26,16 +69,58 @@ interface MoveMenuState {
   position: { x: number; y: number }
 }
 
-export function PipelineBoard({ leads, onLeadClick, onStatusChange, isUpdating }: PipelineBoardProps) {
+const DEFAULT_CARD_FIELDS: CardFieldKey[] = ['name', 'estimate', 'location', 'job_type', 'urgency']
+
+export function PipelineBoard({
+  leads,
+  onLeadClick,
+  onStatusChange,
+  isUpdating,
+  stages: externalStages,
+  cardFields = DEFAULT_CARD_FIELDS,
+  onStagesChange,
+  onCardFieldsChange,
+}: PipelineBoardProps) {
   const [showSecondary, setShowSecondary] = useState(false)
   const [draggedLead, setDraggedLead] = useState<string | null>(null)
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null)
   const [moveMenu, setMoveMenu] = useState<MoveMenuState>({ isOpen: false, lead: null, position: { x: 0, y: 0 } })
+  const [isConfigOpen, setIsConfigOpen] = useState(false)
+  const [stages, setStages] = useState<PipelineStage[]>([])
+  const [localCardFields, setLocalCardFields] = useState<CardFieldKey[]>(cardFields)
   const longPressTimer = useRef<NodeJS.Timeout | null>(null)
 
-  const columns = showSecondary
+  // Load stages from API on mount
+  useEffect(() => {
+    if (externalStages && externalStages.length > 0) {
+      setStages(externalStages)
+      return
+    }
+
+    const loadStages = async () => {
+      try {
+        const response = await fetch('/api/admin/pipeline-stages')
+        if (response.ok) {
+          const data = await response.json()
+          setStages(data)
+        }
+      } catch {
+        // Fall back to default stages
+      }
+    }
+    loadStages()
+  }, [externalStages])
+
+  // Convert stages to column configs
+  const visibleStages = stages.filter(s => s.is_visible)
+  const dynamicColumns = visibleStages.map(stageToColumnConfig)
+
+  // Use dynamic columns if available, otherwise fall back to hardcoded
+  const fallbackColumns = showSecondary
     ? [...PIPELINE_COLUMNS.slice(0, 2), ...SECONDARY_COLUMNS.slice(0, 2), ...PIPELINE_COLUMNS.slice(2), ...SECONDARY_COLUMNS.slice(2)]
     : PIPELINE_COLUMNS
+
+  const columns = dynamicColumns.length > 0 ? dynamicColumns : fallbackColumns
 
   // Group leads by status
   const leadsByStatus = leads.reduce((acc, lead) => {
@@ -141,22 +226,154 @@ export function PipelineBoard({ leads, onLeadClick, onStatusChange, isUpdating }
     setMoveMenu({ isOpen: false, lead: null, position: { x: 0, y: 0 } })
   }
 
+  const handleSaveStages = async (newStages: PipelineStage[]): Promise<boolean> => {
+    const errors: string[] = []
+
+    try {
+      // Collect all API calls to run in parallel
+      const apiCalls: Promise<{ success: boolean; error?: string }>[] = []
+
+      // Update positions via bulk API
+      apiCalls.push(
+        fetch('/api/admin/pipeline-stages', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            stages: newStages.map((s, i) => ({ id: s.id, position: i }))
+          })
+        }).then(async (res) => {
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}))
+            return { success: false, error: data.error || 'Failed to update positions' }
+          }
+          return { success: true }
+        }).catch(() => ({ success: false, error: 'Network error updating positions' }))
+      )
+
+      // Update visibility for each changed stage - use externalStages as the reference
+      // to avoid stale state issues
+      const originalStages = externalStages || stages
+      for (const stage of newStages) {
+        const original = originalStages.find(s => s.id === stage.id)
+        if (original && original.is_visible !== stage.is_visible) {
+          apiCalls.push(
+            fetch(`/api/admin/pipeline-stages/${stage.id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ is_visible: stage.is_visible })
+            }).then(async (res) => {
+              if (!res.ok) {
+                const data = await res.json().catch(() => ({}))
+                return { success: false, error: data.error || `Failed to update visibility for ${stage.name}` }
+              }
+              return { success: true }
+            }).catch(() => ({ success: false, error: `Network error updating ${stage.name}` }))
+          )
+        }
+      }
+
+      // Handle new stages (temp IDs)
+      for (const stage of newStages) {
+        if (stage.id.startsWith('temp-')) {
+          apiCalls.push(
+            fetch('/api/admin/pipeline-stages', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: stage.name,
+                slug: stage.slug,
+                color: stage.color,
+                position: stage.position
+              })
+            }).then(async (res) => {
+              if (!res.ok) {
+                const data = await res.json().catch(() => ({}))
+                return { success: false, error: data.error || `Failed to create ${stage.name}` }
+              }
+              return { success: true }
+            }).catch(() => ({ success: false, error: `Network error creating ${stage.name}` }))
+          )
+        }
+      }
+
+      // Execute all API calls in parallel using Promise.allSettled
+      const results = await Promise.allSettled(apiCalls)
+
+      // Collect errors from failed or rejected calls
+      for (const result of results) {
+        if (result.status === 'rejected') {
+          errors.push('An unexpected error occurred')
+        } else if (!result.value.success && result.value.error) {
+          errors.push(result.value.error)
+        }
+      }
+
+      // If there were errors, return failure
+      if (errors.length > 0) {
+        console.error('Pipeline stage save errors:', errors)
+        return false
+      }
+
+      // Refresh stages on success
+      const response = await fetch('/api/admin/pipeline-stages')
+      if (response.ok) {
+        const data = await response.json()
+        setStages(data)
+        onStagesChange?.(data)
+      }
+
+      return true
+    } catch {
+      console.error('Failed to save pipeline stages')
+      return false
+    }
+  }
+
+  const handleSaveCardFields = async (fields: string[]) => {
+    setLocalCardFields(fields as CardFieldKey[])
+    onCardFieldsChange?.(fields as CardFieldKey[])
+
+    // Save to preferences API
+    try {
+      await fetch('/api/admin/preferences', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pipeline_card_fields: fields })
+      })
+    } catch {
+      // Handle error silently
+    }
+  }
+
   return (
     <div className="space-y-4">
       {/* Toggle secondary columns */}
       <div className="flex items-center justify-between">
-        <button
-          onClick={() => setShowSecondary(!showSecondary)}
-          className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700"
-        >
-          {showSecondary ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-          {showSecondary ? 'Hide additional statuses' : 'Show all statuses'}
-        </button>
+        <div className="flex items-center gap-4">
+          {dynamicColumns.length === 0 && (
+            <button
+              onClick={() => setShowSecondary(!showSecondary)}
+              className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700"
+            >
+              {showSecondary ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              {showSecondary ? 'Hide additional statuses' : 'Show all statuses'}
+            </button>
+          )}
 
-        {/* Touch hint */}
-        <p className="text-xs text-slate-400 hidden sm:block md:hidden">
-          Long-press cards to move
-        </p>
+          {/* Touch hint */}
+          <p className="text-xs text-slate-400 hidden sm:block md:hidden">
+            Long-press cards to move
+          </p>
+        </div>
+
+        {/* Configure button */}
+        <button
+          onClick={() => setIsConfigOpen(true)}
+          className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 px-3 py-1.5 rounded-md hover:bg-slate-100 transition-colors"
+        >
+          <Settings2 className="h-4 w-4" />
+          Configure
+        </button>
       </div>
 
       {/* Pipeline board */}
@@ -221,6 +438,7 @@ export function PipelineBoard({ leads, onLeadClick, onStatusChange, isUpdating }
                         lead={lead}
                         onClick={() => onLeadClick(lead)}
                         isDragging={draggedLead === lead.id}
+                        visibleFields={localCardFields}
                         onMoveClick={(e) => {
                           e.stopPropagation()
                           const rect = e.currentTarget.getBoundingClientRect()
@@ -289,6 +507,16 @@ export function PipelineBoard({ leads, onLeadClick, onStatusChange, isUpdating }
           </div>
         </>
       )}
+
+      {/* Pipeline Configuration Modal */}
+      <PipelineConfigModal
+        isOpen={isConfigOpen}
+        onClose={() => setIsConfigOpen(false)}
+        stages={stages}
+        cardFields={localCardFields}
+        onSaveStages={handleSaveStages}
+        onSaveCardFields={handleSaveCardFields}
+      />
     </div>
   )
 }
