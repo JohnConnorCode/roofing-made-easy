@@ -1,38 +1,89 @@
 'use client'
 
-import { useMemo, useCallback } from 'react'
-import { CoverSection } from './CoverSection'
-import { ScopeOfWork } from './ScopeOfWork'
-import { MaterialsList } from './MaterialsList'
-import { PricingTiers } from './PricingTiers'
-import { WarrantySection } from './WarrantySection'
-import { TrustSignals } from './TrustSignals'
-import { NextSteps } from './NextSteps'
+import { useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { calculatePricingTiers } from '@/lib/estimation/pricing-tiers'
-import { TERMS_AND_CONDITIONS, COMPANY_INFO } from '@/lib/data/estimate-content'
+import { Logo } from '@/components/ui/logo'
 import { formatCurrency } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
+import { COMPANY_INFO } from '@/lib/data/estimate-content'
 import type { JobType, RoofMaterial } from '@/lib/supabase/types'
-import type { TierLevel } from '@/lib/estimation/pricing-tiers'
-import { Info, Download, Share2, Printer, ArrowLeft, RefreshCw } from 'lucide-react'
+import {
+  CheckCircle,
+  Phone,
+  Calendar,
+  Download,
+  Share2,
+  ExternalLink,
+  Shield,
+  Clock,
+  MapPin,
+  Star,
+  ArrowRight,
+} from 'lucide-react'
+
+function getIncludedItems(jobType: JobType | null): string[] {
+  switch (jobType) {
+    case 'inspection':
+      return [
+        'Complete roof assessment',
+        'Damage identification',
+        'Photo documentation',
+        'Written condition report',
+        'Repair recommendations',
+        'No obligation quote',
+      ]
+    case 'maintenance':
+      return [
+        'Debris & leaf removal',
+        'Gutter cleaning',
+        'Minor sealant repairs',
+        'Flashing inspection',
+        'Condition assessment',
+        'Maintenance report',
+      ]
+    case 'repair':
+      return [
+        'Damage assessment',
+        'Material matching',
+        'Professional repair work',
+        'Weatherproof sealing',
+        'Site cleanup',
+        'Workmanship warranty',
+      ]
+    case 'gutter':
+      return [
+        'Old gutter removal',
+        'Fascia inspection',
+        'Seamless gutter install',
+        'Downspout routing',
+        'Leak testing',
+        'Cleanup & disposal',
+      ]
+    default:
+      // Full replacement
+      return [
+        'Complete tear-off & disposal',
+        'Deck inspection & repair',
+        'Premium underlayment',
+        'Quality roofing materials',
+        'Professional installation',
+        'Full cleanup & inspection',
+        '10-year workmanship warranty',
+        'Manufacturer warranty',
+      ]
+  }
+}
 
 export interface EstimateDocumentProps {
-  // Customer info
   customerName?: string
-
-  // Property info
   propertyAddress?: string
   city?: string
   state?: string
-
-  // Roof info
   jobType: JobType | null
   roofMaterial: RoofMaterial | null
   roofSizeSqft: number | null
-
-  // Estimate pricing
   priceLow: number
   priceLikely: number
   priceHigh: number
@@ -42,15 +93,11 @@ export interface EstimateDocumentProps {
     impact: number
     description: string
   }>
-
-  // Callbacks
   onScheduleConsultation: () => void
   onShare?: () => void
   onDownload?: () => void
   onBack?: () => void
   onStartNew?: () => void
-
-  // Config
   calendlyUrl?: string
 }
 
@@ -76,247 +123,198 @@ export function EstimateDocument({
 }: EstimateDocumentProps) {
   const phoneNumber = getPhoneDisplay()
 
-  // Calculate pricing tiers from base estimate
-  const { tiers } = useMemo(() => {
-    return calculatePricingTiers(
-      { priceLow, priceLikely, priceHigh },
-      roofMaterial,
-      'better' // Recommend the middle tier
-    )
-  }, [priceLow, priceLikely, priceHigh, roofMaterial])
-
   const handleCallNow = useCallback(() => {
     window.location.href = getPhoneLink()
   }, [])
 
-  const handlePrint = useCallback(() => {
-    window.print()
-  }, [])
+  const fullAddress = propertyAddress
+    ? city && state
+      ? `${propertyAddress}, ${city}, ${state}`
+      : propertyAddress
+    : null
 
-  const handleTierSelect = useCallback((tier: TierLevel) => {
-    // Could store selected tier for later use
-    console.log('Selected tier:', tier)
-  }, [])
+  const jobTypeLabel = jobType?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()) || 'Roofing Project'
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      {/* Action bar (hidden on print) */}
-      <div className="flex items-center justify-between print:hidden">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-slate-400 hover:text-slate-100 hover:bg-slate-800"
-          leftIcon={<ArrowLeft className="h-4 w-4" />}
-          onClick={onBack}
-        >
-          Back
-        </Button>
-
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-slate-400 hover:text-slate-100 hover:bg-slate-800"
-            leftIcon={<Printer className="h-4 w-4" />}
-            onClick={handlePrint}
-          >
-            Print
-          </Button>
-          {onDownload && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-slate-400 hover:text-slate-100 hover:bg-slate-800"
-              leftIcon={<Download className="h-4 w-4" />}
-              onClick={onDownload}
-            >
-              PDF
-            </Button>
-          )}
-          {onShare && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-slate-400 hover:text-slate-100 hover:bg-slate-800"
-              leftIcon={<Share2 className="h-4 w-4" />}
-              onClick={onShare}
-            >
-              Share
-            </Button>
-          )}
+    <div className="space-y-6">
+      {/* Header with success message */}
+      <div className="text-center">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#1a1f2e] border border-[#3d7a5a]">
+          <CheckCircle className="h-10 w-10 text-[#3d7a5a]" />
         </div>
+        <h1 className="text-2xl font-bold text-slate-100 md:text-3xl">
+          {customerName ? `${customerName}, Your Estimate is Ready!` : 'Your Estimate is Ready!'}
+        </h1>
+        {fullAddress && (
+          <p className="mt-2 text-slate-400 flex items-center justify-center gap-1">
+            <MapPin className="h-4 w-4" />
+            {fullAddress}
+          </p>
+        )}
       </div>
 
-      {/* Section 1: Cover */}
-      <CoverSection
-        customerName={customerName}
-        propertyAddress={propertyAddress}
-        city={city}
-        state={state}
-      />
-
-      {/* Section 1.5: Executive Summary - Quick overview */}
-      <Card className="border-slate-700/50 bg-[#161a23]">
-        <CardHeader className="border-b border-slate-700/50">
-          <CardTitle className="text-xl text-slate-100 flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#c9a25c]/20 text-[#c9a25c] text-sm font-semibold">
-              1
-            </span>
-            Executive Summary
+      {/* Main price card */}
+      <Card className="overflow-hidden border-0 shadow-xl">
+        <CardHeader className="bg-gradient-to-r from-[#c9a25c] to-[#9a7432] text-[#0c0f14] py-4">
+          <CardTitle className="text-center text-lg text-[#0c0f14]">
+            Estimated Investment for {jobTypeLabel}
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Project Overview */}
-            <div>
-              <h4 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-3">
-                Project Overview
-              </h4>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-400">Job Type:</span>
-                  <span className="text-slate-100 font-medium">
-                    {jobType?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Roofing Project'}
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-400">Material:</span>
-                  <span className="text-slate-100 font-medium">
-                    {roofMaterial?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'To Be Determined'}
-                  </span>
-                </div>
-                {roofSizeSqft && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-400">Estimated Size:</span>
-                    <span className="text-slate-100 font-medium">
-                      {roofSizeSqft.toLocaleString()} sq ft
-                    </span>
-                  </div>
-                )}
-              </div>
+        <CardContent className="p-6 bg-[#161a23]">
+          {/* Price display */}
+          <div className="flex items-end justify-center gap-8 mb-6">
+            <div className="text-center">
+              <p className="text-sm text-slate-500">Low</p>
+              <p className="text-xl font-semibold text-slate-300">
+                {formatCurrency(priceLow)}
+              </p>
             </div>
-
-            {/* Investment Range */}
-            <div>
-              <h4 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-3">
-                Investment Range
-              </h4>
-              <div className="p-4 rounded-lg bg-gradient-to-r from-[#c9a25c]/10 to-transparent border border-[#c9a25c]/30">
-                <div className="text-center">
-                  <p className="text-3xl font-bold text-[#c9a25c]">
-                    {formatCurrency(priceLikely)}
-                  </p>
-                  <p className="text-sm text-slate-400 mt-1">
-                    Range: {formatCurrency(priceLow)} - {formatCurrency(priceHigh)}
-                  </p>
-                </div>
-              </div>
+            <div className="text-center">
+              <p className="text-sm font-medium text-[#c9a25c]">Most Likely</p>
+              <p className="text-4xl font-bold text-[#c9a25c]">
+                {formatCurrency(priceLikely)}
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-slate-500">High</p>
+              <p className="text-xl font-semibold text-slate-300">
+                {formatCurrency(priceHigh)}
+              </p>
             </div>
           </div>
 
-          {/* AI Explanation */}
-          {explanation && (
-            <div className="mt-6 p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50">
-              <div className="flex items-start gap-3">
-                <Info className="h-5 w-5 text-[#c9a25c] shrink-0 mt-0.5" />
-                <p className="text-sm text-slate-300 leading-relaxed">{explanation}</p>
-              </div>
+          {/* Visual range bar */}
+          <div className="mb-6">
+            <div className="relative h-3 rounded-full bg-gradient-to-r from-[#3d7a5a] via-[#c9a25c] to-red-700">
+              <div
+                className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#0c0f14] bg-[#c9a25c] shadow-lg"
+                style={{
+                  left: `${((priceLikely - priceLow) / (priceHigh - priceLow)) * 100}%`,
+                }}
+              />
             </div>
-          )}
+            <div className="mt-2 flex justify-between text-xs text-slate-500">
+              <span>{formatCurrency(priceLow)}</span>
+              <span>{formatCurrency(priceHigh)}</span>
+            </div>
+          </div>
 
           {/* Price factors */}
           {factors && factors.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-slate-700/30">
-              <h4 className="text-sm font-medium text-slate-400 mb-3">Price Factors</h4>
-              <div className="grid gap-2 md:grid-cols-2">
+            <div className="border-t border-slate-700 pt-4 mb-4">
+              <p className="text-sm font-medium text-slate-400 mb-3">What affects your price:</p>
+              <div className="space-y-2">
                 {factors.map((factor, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-2 rounded bg-[#0c0f14]/50 text-sm"
-                  >
-                    <span className="text-slate-400">{factor.name}</span>
+                  <div key={index} className="flex items-center justify-between text-sm">
+                    <span className="text-slate-300">{factor.name}</span>
                     <span className={factor.impact > 0 ? 'text-[#c9a25c]' : 'text-[#3d7a5a]'}>
-                      {factor.impact > 0 ? '+' : ''}{formatCurrency(factor.impact)}
+                      {factor.impact > 0 ? '+' : ''}
+                      {formatCurrency(factor.impact)}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
           )}
+
+          {/* Explanation */}
+          {explanation && (
+            <div className="rounded-lg bg-[#1a1f2e] border border-slate-700 p-4">
+              <p className="text-sm text-slate-300 leading-relaxed">{explanation}</p>
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      {/* Section 2: Scope of Work */}
-      <ScopeOfWork jobType={jobType} />
-
-      {/* Section 3: Materials */}
-      <MaterialsList roofMaterial={roofMaterial} />
-
-      {/* Section 4: Pricing Tiers */}
-      <PricingTiers tiers={tiers} onSelectTier={handleTierSelect} />
-
-      {/* Section 5: Warranty */}
-      <WarrantySection />
-
-      {/* Section 6: Trust Signals */}
-      <TrustSignals />
-
-      {/* Section 7: Next Steps & CTAs */}
-      <NextSteps
-        onScheduleConsultation={onScheduleConsultation}
-        onCallNow={handleCallNow}
-        phoneNumber={phoneNumber}
-        calendlyUrl={calendlyUrl}
-      />
-
-      {/* Terms and Conditions */}
+      {/* What's included - job-type specific */}
       <Card className="border-slate-700/50 bg-[#161a23]">
-        <CardHeader className="border-b border-slate-700/50">
-          <CardTitle className="text-lg text-slate-100">Terms & Conditions</CardTitle>
-        </CardHeader>
         <CardContent className="p-6">
-          <ul className="space-y-2">
-            {TERMS_AND_CONDITIONS.map((term, index) => (
-              <li key={index} className="flex items-start gap-2 text-sm text-slate-400">
-                <span className="text-slate-600">{index + 1}.</span>
-                <span>{term}</span>
-              </li>
+          <h3 className="font-semibold text-slate-100 mb-4">What&apos;s Included</h3>
+          <div className="grid gap-3 md:grid-cols-2">
+            {getIncludedItems(jobType).map((item, index) => (
+              <div key={index} className="flex items-center gap-2 text-sm">
+                <CheckCircle className="h-4 w-4 text-[#3d7a5a] shrink-0" />
+                <span className="text-slate-300">{item}</span>
+              </div>
             ))}
-          </ul>
+          </div>
         </CardContent>
       </Card>
+
+      {/* Trust signals - compact */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className="flex flex-col items-center p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
+          <Shield className="h-6 w-6 text-[#3d7a5a] mb-2" />
+          <p className="text-sm font-medium text-slate-100">Licensed & Insured</p>
+        </div>
+        <div className="flex flex-col items-center p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
+          <Clock className="h-6 w-6 text-[#3d7a5a] mb-2" />
+          <p className="text-sm font-medium text-slate-100">Since {COMPANY_INFO.foundedYear}</p>
+        </div>
+        <div className="flex flex-col items-center p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
+          <Star className="h-6 w-6 text-[#3d7a5a] mb-2" />
+          <p className="text-sm font-medium text-slate-100">Local Experts</p>
+        </div>
+      </div>
+
+      {/* Primary CTAs */}
+      <div className="space-y-3 print:hidden">
+        <Button
+          variant="primary"
+          size="xl"
+          className="w-full bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0 shadow-lg"
+          leftIcon={<Calendar className="h-5 w-5" />}
+          rightIcon={calendlyUrl ? <ExternalLink className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+          onClick={onScheduleConsultation}
+        >
+          Schedule Free Consultation
+        </Button>
+
+        <Button
+          variant="secondary"
+          size="lg"
+          className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100"
+          leftIcon={<Phone className="h-5 w-5" />}
+          onClick={handleCallNow}
+        >
+          Call Us: {phoneNumber}
+        </Button>
+      </div>
+
+      {/* Secondary actions */}
+      <div className="flex gap-3 print:hidden">
+        <Button
+          variant="ghost"
+          size="md"
+          className="flex-1 text-slate-400 hover:text-slate-100 hover:bg-slate-800"
+          leftIcon={<Download className="h-5 w-5" />}
+          onClick={onDownload}
+        >
+          Save PDF
+        </Button>
+        <Button
+          variant="ghost"
+          size="md"
+          className="flex-1 text-slate-400 hover:text-slate-100 hover:bg-slate-800"
+          leftIcon={<Share2 className="h-5 w-5" />}
+          onClick={onShare}
+        >
+          Share
+        </Button>
+      </div>
 
       {/* Disclaimer */}
       <div className="rounded-lg bg-[#1a1f2e] border border-slate-700 p-4 text-center text-xs text-slate-500">
         <p>
-          This preliminary estimate is for informational purposes only and does not constitute
-          a binding quote or contract. Final pricing will be determined after an on-site
-          inspection by a licensed contractor. Actual costs may vary based on factors not
-          visible in photos or disclosed during intake. This estimate is provided by{' '}
-          {COMPANY_INFO.legalName}.
+          This is a preliminary estimate based on the information you provided.
+          Final pricing confirmed after free on-site inspection.
+          No obligation - just honest pricing.
         </p>
       </div>
 
-      {/* Footer navigation (hidden on print) */}
-      <div className="flex justify-between pt-4 border-t border-slate-700 print:hidden">
-        <Button
-          variant="ghost"
-          size="md"
-          className="text-slate-400 hover:text-slate-100 hover:bg-slate-800"
-          leftIcon={<ArrowLeft className="h-4 w-4" />}
-          onClick={onBack}
-        >
-          Back
-        </Button>
-        <Button
-          variant="outline"
-          size="md"
-          className="border-slate-600 text-slate-300 hover:bg-slate-800"
-          leftIcon={<RefreshCw className="h-4 w-4" />}
-          onClick={onStartNew}
-        >
-          Start New Estimate
-        </Button>
+      {/* Footer with logo */}
+      <div className="flex items-center justify-center pt-4 border-t border-slate-700/50">
+        <Logo size="sm" showText={true} linkToHome={false} />
       </div>
     </div>
   )

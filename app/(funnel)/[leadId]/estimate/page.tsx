@@ -33,83 +33,112 @@ function generateDemoEstimate(funnelData: {
   hasChimneys: boolean
   hasSolarPanels: boolean
 }): EstimateData {
-  // Base price per sqft by material
-  const basePricePerSqft: Record<string, number> = {
-    asphalt_shingle: 4.5,
-    metal: 8.0,
-    tile: 10.0,
-    slate: 15.0,
-    wood_shake: 7.0,
-    flat_membrane: 6.0,
-    unknown: 5.0,
-  }
-
-  const roofSize = funnelData.roofSizeSqft || 2000
-  const material = funnelData.roofMaterial || 'asphalt_shingle'
-  const pricePerSqft = basePricePerSqft[material] || 5.0
-
-  let basePrice = roofSize * pricePerSqft
-
-  // Adjust for job type
-  if (funnelData.jobType === 'repair') {
-    basePrice = basePrice * 0.15 // Repairs are ~15% of full replacement
-  } else if (funnelData.jobType === 'inspection') {
-    basePrice = 250 // Flat fee for inspection
-  } else if (funnelData.jobType === 'maintenance') {
-    basePrice = 400 // Flat fee for maintenance
-  }
-
+  const jobType = funnelData.jobType
   const factors: EstimateData['factors'] = []
 
-  // Add story adjustment
+  // Fixed-price services (don't scale with roof size)
+  if (jobType === 'inspection') {
+    return {
+      priceLow: 0,
+      priceLikely: 0,
+      priceHigh: 250,
+      explanation: 'Our comprehensive roof inspection includes a detailed assessment of your roof condition, identification of any issues, and a written report with recommendations. Many homeowners qualify for a free inspection.',
+      factors: [],
+    }
+  }
+
+  if (jobType === 'maintenance') {
+    return {
+      priceLow: 250,
+      priceLikely: 400,
+      priceHigh: 600,
+      explanation: 'Routine maintenance includes gutter cleaning, debris removal, minor sealant repairs, and a condition assessment. Regular maintenance extends your roof life and prevents costly repairs.',
+      factors: [],
+    }
+  }
+
+  // Size-based pricing for replacement/repair
+  const roofSize = funnelData.roofSizeSqft || 2000
+  const material = funnelData.roofMaterial || 'asphalt_shingle'
+
+  // Base price per sqft by material (for full replacement)
+  const basePricePerSqft: Record<string, number> = {
+    asphalt_shingle: 4.5,
+    metal: 8.5,
+    tile: 12.0,
+    slate: 18.0,
+    wood_shake: 9.0,
+    flat_membrane: 7.0,
+    unknown: 5.5,
+  }
+
+  const pricePerSqft = basePricePerSqft[material] || 5.5
+  let basePrice = roofSize * pricePerSqft
+
+  // Repairs are typically $500-$3,000 for common issues
+  if (jobType === 'repair') {
+    const repairBase = 800
+    const repairMax = 2500
+    return {
+      priceLow: 350,
+      priceLikely: repairBase,
+      priceHigh: repairMax,
+      explanation: 'Repair costs depend on the extent of damage and materials needed. Common repairs like fixing leaks, replacing damaged shingles, or resealing flashing typically fall within this range. We\'ll provide an exact quote after inspection.',
+      factors: [],
+    }
+  }
+
+  // Full replacement - add adjustments
   if (funnelData.stories >= 2) {
-    const storyAdjust = basePrice * 0.15 * (funnelData.stories - 1)
+    const storyAdjust = Math.round(basePrice * 0.12 * (funnelData.stories - 1))
     factors.push({
       name: `${funnelData.stories}-Story Home`,
       impact: storyAdjust,
-      description: 'Additional labor and safety requirements',
+      description: 'Additional labor and safety equipment',
     })
     basePrice += storyAdjust
   }
 
-  // Add feature adjustments
   if (funnelData.hasSkylights) {
     factors.push({
       name: 'Skylights',
-      impact: 350,
-      description: 'Additional flashing and sealing work',
+      impact: 400,
+      description: 'Flashing and sealing around skylights',
     })
-    basePrice += 350
+    basePrice += 400
   }
 
   if (funnelData.hasChimneys) {
     factors.push({
       name: 'Chimney Flashing',
-      impact: 450,
-      description: 'Chimney flashing replacement',
+      impact: 500,
+      description: 'New chimney flashing installation',
     })
-    basePrice += 450
+    basePrice += 500
   }
 
   if (funnelData.hasSolarPanels) {
     factors.push({
-      name: 'Solar Panel Removal/Reinstall',
-      impact: 1500,
-      description: 'Temporary removal and reinstallation of panels',
+      name: 'Solar Panel Coordination',
+      impact: 1800,
+      description: 'Removal and reinstallation by solar provider',
     })
-    basePrice += 1500
+    basePrice += 1800
   }
 
-  // Calculate range
+  // Calculate realistic range (±15%)
   const priceLow = Math.round(basePrice * 0.85)
   const priceLikely = Math.round(basePrice)
-  const priceHigh = Math.round(basePrice * 1.25)
+  const priceHigh = Math.round(basePrice * 1.15)
+
+  const materialName = material.replace(/_/g, ' ')
+  const explanation = `Based on your ${roofSize.toLocaleString()} sq ft ${materialName} roof, a full replacement typically costs ${formatCurrency(priceLow)} to ${formatCurrency(priceHigh)}. This includes tear-off, new underlayment, materials, installation, and cleanup. Final pricing confirmed after on-site inspection.`
 
   return {
     priceLow,
     priceLikely,
     priceHigh,
-    explanation: `Based on your ${roofSize.toLocaleString()} sq ft ${material.replace('_', ' ')} roof, we estimate your ${funnelData.jobType?.replace('_', ' ') || 'roofing project'} will cost between ${formatCurrency(priceLow)} and ${formatCurrency(priceHigh)}, with ${formatCurrency(priceLikely)} being the most likely final cost. This estimate accounts for materials, labor, and the specific features of your property. Final pricing will be confirmed after an on-site inspection.`,
+    explanation,
     factors,
   }
 }

@@ -11,15 +11,51 @@ import {
   LogOut,
   Menu,
   X,
+  Kanban,
+  List,
+  Users2,
+  Settings,
+  FileText,
+  Tag,
+  Map,
+  ChevronDown,
+  ChevronRight,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { AdminLogo } from '@/components/ui/admin-logo'
 
-const NAV_ITEMS = [
+interface NavItem {
+  href: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  children?: NavItem[]
+}
+
+const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/leads', label: 'Leads', icon: Users },
-  { href: '/pricing', label: 'Pricing', icon: DollarSign },
+  {
+    href: '/leads',
+    label: 'Leads',
+    icon: Users,
+    children: [
+      { href: '/leads/pipeline', label: 'Pipeline View', icon: Kanban },
+      { href: '/leads', label: 'All Leads', icon: List },
+    ],
+  },
+  { href: '/customers', label: 'Customers', icon: Users2 },
+  {
+    href: '/pricing',
+    label: 'Pricing',
+    icon: DollarSign,
+    children: [
+      { href: '/pricing', label: 'Base Rates', icon: DollarSign },
+      { href: '/pricing/geographic', label: 'Geographic', icon: Map },
+      { href: '/line-items', label: 'Line Items', icon: Tag },
+      { href: '/macros', label: 'Templates', icon: FileText },
+    ],
+  },
+  { href: '/settings', label: 'Settings', icon: Settings },
 ]
 
 export default function AdminLayoutClient({
@@ -30,6 +66,21 @@ export default function AdminLayoutClient({
   const pathname = usePathname()
   const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
+
+  // Auto-expand parent menu items based on current path
+  useEffect(() => {
+    NAV_ITEMS.forEach((item) => {
+      if (item.children) {
+        const isChildActive = item.children.some((child) =>
+          pathname === child.href || (child.href !== '/' && pathname.startsWith(child.href))
+        )
+        if (isChildActive) {
+          setExpandedItems((prev) => new Set([...prev, item.href]))
+        }
+      }
+    })
+  }, [pathname])
 
   // Monitor auth state changes (session expiration)
   useEffect(() => {
@@ -54,9 +105,113 @@ export default function AdminLayoutClient({
     router.push('/login')
   }
 
+  const toggleExpanded = (href: string) => {
+    setExpandedItems((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(href)) {
+        newSet.delete(href)
+      } else {
+        newSet.add(href)
+      }
+      return newSet
+    })
+  }
+
+  const isActive = (href: string, exactMatch: boolean = false) => {
+    if (exactMatch) {
+      return pathname === href
+    }
+    return pathname === href || pathname.startsWith(href + '/')
+  }
+
   // Don't show admin nav on login page
   if (pathname === '/login') {
     return <>{children}</>
+  }
+
+  const renderNavItem = (item: NavItem, isMobile: boolean = false) => {
+    const hasChildren = item.children && item.children.length > 0
+    const isExpanded = expandedItems.has(item.href)
+    const isItemActive = hasChildren
+      ? item.children!.some((child) => isActive(child.href, child.href === '/leads' || child.href === '/pricing'))
+      : isActive(item.href, item.href === '/leads' || item.href === '/pricing')
+
+    if (hasChildren) {
+      return (
+        <li key={item.href}>
+          <button
+            onClick={() => toggleExpanded(item.href)}
+            className={cn(
+              'flex w-full items-center justify-between gap-3 rounded-lg px-4 py-2.5 transition-colors',
+              isMobile
+                ? isItemActive
+                  ? 'bg-amber-50 text-amber-700'
+                  : 'text-slate-600 hover:bg-slate-50'
+                : isItemActive
+                ? 'bg-slate-700 text-white'
+                : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <item.icon className="h-5 w-5" />
+              <span className={isMobile ? 'text-lg' : ''}>{item.label}</span>
+            </div>
+            {isExpanded ? (
+              <ChevronDown className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+          </button>
+          {isExpanded && (
+            <ul className={cn('mt-1 space-y-1', isMobile ? 'ml-4' : 'ml-7')}>
+              {item.children!.map((child) => (
+                <li key={child.href}>
+                  <Link
+                    href={child.href}
+                    onClick={() => isMobile && setIsMobileMenuOpen(false)}
+                    className={cn(
+                      'flex items-center gap-3 rounded-lg px-4 py-2 transition-colors',
+                      isMobile
+                        ? isActive(child.href, child.href === '/leads' || child.href === '/pricing')
+                          ? 'bg-amber-50 text-amber-700'
+                          : 'text-slate-600 hover:bg-slate-50'
+                        : isActive(child.href, child.href === '/leads' || child.href === '/pricing')
+                        ? 'bg-amber-600 text-white'
+                        : 'text-slate-400 hover:bg-slate-700 hover:text-white'
+                    )}
+                  >
+                    <child.icon className="h-4 w-4" />
+                    <span className={cn('text-sm', isMobile && 'text-base')}>{child.label}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      )
+    }
+
+    return (
+      <li key={item.href}>
+        <Link
+          href={item.href}
+          onClick={() => isMobile && setIsMobileMenuOpen(false)}
+          className={cn(
+            'flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors',
+            isMobile
+              ? isActive(item.href)
+                ? 'bg-amber-50 text-amber-700'
+                : 'text-slate-600 hover:bg-slate-50'
+              : isActive(item.href)
+              ? 'bg-amber-600 text-white'
+              : 'text-slate-300 hover:bg-slate-700 hover:text-white'
+          )}
+        >
+          <item.icon className="h-5 w-5" />
+          <span className={isMobile ? 'text-lg' : ''}>{item.label}</span>
+        </Link>
+      </li>
+    )
   }
 
   return (
@@ -74,24 +229,11 @@ export default function AdminLayoutClient({
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-16 z-40 bg-white md:hidden">
+        <div className="fixed inset-0 top-16 z-40 bg-white md:hidden overflow-y-auto">
           <nav className="flex flex-col p-4">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={cn(
-                  'flex items-center gap-3 rounded-lg px-4 py-3 text-lg',
-                  pathname.startsWith(item.href)
-                    ? 'bg-amber-50 text-amber-700'
-                    : 'text-slate-600 hover:bg-slate-50'
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.label}
-              </Link>
-            ))}
+            <ul className="space-y-1">
+              {NAV_ITEMS.map((item) => renderNavItem(item, true))}
+            </ul>
             <button
               onClick={handleLogout}
               className="mt-4 flex items-center gap-3 rounded-lg px-4 py-3 text-lg text-red-600 hover:bg-red-50"
@@ -111,24 +253,9 @@ export default function AdminLayoutClient({
               <AdminLogo size="sm" />
             </div>
 
-            <nav className="flex-1 p-4">
+            <nav className="flex-1 overflow-y-auto p-4">
               <ul className="space-y-1">
-                {NAV_ITEMS.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        'flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors',
-                        pathname.startsWith(item.href)
-                          ? 'bg-amber-600 text-white'
-                          : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                      )}
-                    >
-                      <item.icon className="h-5 w-5" />
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
+                {NAV_ITEMS.map((item) => renderNavItem(item))}
               </ul>
             </nav>
 

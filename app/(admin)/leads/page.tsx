@@ -6,8 +6,21 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { formatDate, formatPhone } from '@/lib/utils'
-import { Search, ChevronLeft, ChevronRight, AlertTriangle, RefreshCw, Inbox } from 'lucide-react'
+import { QuickStatusSelect } from '@/components/admin/QuickStatusSelect'
+import { BulkActions } from '@/components/admin/BulkActions'
+import {
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  AlertTriangle,
+  RefreshCw,
+  Inbox,
+  Kanban,
+  ArrowUpDown,
+  Download
+} from 'lucide-react'
 import { SkeletonLeadsTable } from '@/components/ui/skeleton'
 import { calculateLeadScore, getScoreTierDisplay, type LeadScoreInput } from '@/lib/leads/scoring'
 
@@ -25,6 +38,7 @@ interface Lead {
     roof_size_sqft?: number
   }[]
   uploads?: { id: string }[]
+  estimates?: { price_likely: number }[]
 }
 
 const STATUS_OPTIONS = [
@@ -40,6 +54,9 @@ const STATUS_OPTIONS = [
   { value: 'archived', label: 'Archived' },
 ]
 
+type SortField = 'created_at' | 'name' | 'status' | 'step'
+type SortDirection = 'asc' | 'desc'
+
 const LIMIT = 20
 
 export default function LeadsPage() {
@@ -50,6 +67,10 @@ export default function LeadsPage() {
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('')
   const [offset, setOffset] = useState(0)
+  const [sortField, setSortField] = useState<SortField>('created_at')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+  const [selectedLeads, setSelectedLeads] = useState<Set<string>>(new Set())
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const fetchLeads = useCallback(async () => {
     setIsLoading(true)
@@ -82,6 +103,11 @@ export default function LeadsPage() {
     fetchLeads()
   }, [fetchLeads])
 
+  // Clear selection when filters change
+  useEffect(() => {
+    setSelectedLeads(new Set())
+  }, [status, offset])
+
   const filteredLeads = leads.filter((lead) => {
     if (!search) return true
     const contact = lead.contacts?.[0]
@@ -95,18 +121,186 @@ export default function LeadsPage() {
     )
   })
 
+  // Sort leads
+  const sortedLeads = [...filteredLeads].sort((a, b) => {
+    let comparison = 0
+    switch (sortField) {
+      case 'created_at':
+        comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        break
+      case 'name':
+        const nameA = `${a.contacts?.[0]?.first_name || ''} ${a.contacts?.[0]?.last_name || ''}`
+        const nameB = `${b.contacts?.[0]?.first_name || ''} ${b.contacts?.[0]?.last_name || ''}`
+        comparison = nameA.localeCompare(nameB)
+        break
+      case 'status':
+        comparison = a.status.localeCompare(b.status)
+        break
+      case 'step':
+        comparison = a.current_step - b.current_step
+        break
+    }
+    return sortDirection === 'desc' ? -comparison : comparison
+  })
+
   const totalPages = Math.ceil(total / LIMIT)
   const currentPage = Math.floor(offset / LIMIT) + 1
 
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortField(field)
+      setSortDirection('desc')
+    }
+  }
+
+  const handleSelectAll = () => {
+    if (selectedLeads.size === sortedLeads.length) {
+      setSelectedLeads(new Set())
+    } else {
+      setSelectedLeads(new Set(sortedLeads.map(l => l.id)))
+    }
+  }
+
+  const handleSelectLead = (leadId: string) => {
+    const newSelection = new Set(selectedLeads)
+    if (newSelection.has(leadId)) {
+      newSelection.delete(leadId)
+    } else {
+      newSelection.add(leadId)
+    }
+    setSelectedLeads(newSelection)
+  }
+
+  const handleStatusChange = async (leadId: string, newStatus: string) => {
+    try {
+      const response = await fetch(`/api/leads/${leadId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      })
+
+      if (!response.ok) throw new Error('Failed to update')
+
+      // Update local state
+      setLeads(prev => prev.map(lead =>
+        lead.id === leadId ? { ...lead, status: newStatus } : lead
+      ))
+    } catch (err) {
+      console.error('Failed to update lead status:', err)
+    }
+  }
+
+  const handleBulkStatusChange = async (newStatus: string) => {
+    if (selectedLeads.size === 0) return
+    setIsProcessing(true)
+    try {
+      const response = await fetch('/api/leads/bulk', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          leadIds: Array.from(selectedLeads),
+          status: newStatus
+        })
+      })
+
+      if (!response.ok) throw new Error('Failed to update')
+
+      // Update local state
+      setLeads(prev => prev.map(lead =>
+        selectedLeads.has(lead.id) ? { ...lead, status: newStatus } : lead
+      ))
+      setSelectedLeads(new Set())
+    } catch (err) {
+      console.error('Failed to bulk update:', err)
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const handleBulkExport = async () => {
+    if (selectedLeads.size === 0) return
+
+    try {
+      const response = await fetch(`/api/leads/bulk?ids=${Array.from(selectedLeads).join(',')}`)
+      if (!response.ok) throw new Error('Failed to export')
+
+      const data = await response.json()
+      const leads = data.leads || []
+
+      // Convert to CSV
+      if (leads.length === 0) return
+
+      const headers = Object.keys(leads[0])
+      const csvContent = [
+        headers.join(','),
+        ...leads.map((row: Record<string, unknown>) =>
+          headers.map(h => {
+            const val = row[h]
+            let str = String(val || '')
+            // Prevent CSV injection - prefix cells starting with formula characters
+            if (/^[=+\-@\t\r]/.test(str)) {
+              str = "'" + str
+            }
+            // Escape quotes and wrap in quotes if contains comma or special chars
+            if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes("'")) {
+              return `"${str.replace(/"/g, '""')}"`
+            }
+            return str
+          }).join(',')
+        )
+      ].join('\n')
+
+      // Download
+      const blob = new Blob([csvContent], { type: 'text/csv' })
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `leads-export-${new Date().toISOString().split('T')[0]}.csv`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('Failed to export:', err)
+    }
+  }
+
+  const handleBulkArchive = async () => {
+    await handleBulkStatusChange('archived')
+  }
+
+  const SortHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
+    <th
+      className="pb-3 pr-4 cursor-pointer hover:text-slate-700 select-none"
+      onClick={() => handleSort(field)}
+    >
+      <div className="flex items-center gap-1">
+        {children}
+        <ArrowUpDown className={`h-3 w-3 ${sortField === field ? 'text-amber-600' : 'text-slate-400'}`} />
+      </div>
+    </th>
+  )
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Leads</h1>
-        <p className="text-slate-500">Manage your roofing leads</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Leads</h1>
+          <p className="text-slate-500">Manage your roofing leads</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Link href="/leads/pipeline">
+            <Button variant="outline" size="sm" leftIcon={<Kanban className="h-4 w-4" />}>
+              Pipeline View
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Filters */}
-      <Card>
+      <Card className="bg-white border-slate-200">
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="relative flex-1">
@@ -115,24 +309,29 @@ export default function LeadsPage() {
                 placeholder="Search by name, email, or city..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10"
+                className="pl-10 bg-white border-slate-300 text-slate-900"
               />
             </div>
             <Select
               options={STATUS_OPTIONS}
               value={status}
               onChange={setStatus}
-              className="md:w-48"
+              className="md:w-48 bg-white border-slate-300 text-slate-900"
             />
           </div>
         </CardContent>
       </Card>
 
       {/* Leads table */}
-      <Card>
+      <Card className="bg-white border-slate-200">
         <CardHeader>
-          <CardTitle>
+          <CardTitle className="text-slate-900">
             {total} Lead{total !== 1 ? 's' : ''}
+            {selectedLeads.size > 0 && (
+              <span className="ml-2 text-sm font-normal text-slate-500">
+                ({selectedLeads.size} selected)
+              </span>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -166,17 +365,23 @@ export default function LeadsPage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b text-left text-sm text-slate-500">
-                      <th className="pb-3 pr-4">Name</th>
+                      <th className="pb-3 pr-2 w-8">
+                        <Checkbox
+                          checked={selectedLeads.size === sortedLeads.length && sortedLeads.length > 0}
+                          onChange={handleSelectAll}
+                        />
+                      </th>
+                      <SortHeader field="name">Name</SortHeader>
                       <th className="pb-3 pr-4">Contact</th>
                       <th className="pb-3 pr-4">Location</th>
-                      <th className="pb-3 pr-4">Status</th>
+                      <SortHeader field="status">Status</SortHeader>
                       <th className="pb-3 pr-4">Score</th>
-                      <th className="pb-3 pr-4">Step</th>
-                      <th className="pb-3">Date</th>
+                      <SortHeader field="step">Step</SortHeader>
+                      <SortHeader field="created_at">Date</SortHeader>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredLeads.map((lead) => {
+                    {sortedLeads.map((lead) => {
                       const contact = lead.contacts?.[0]
                       const property = lead.properties?.[0]
                       const intake = lead.intakes?.[0]
@@ -189,8 +394,21 @@ export default function LeadsPage() {
                       }
                       const leadScore = calculateLeadScore(scoreInput)
                       const scoreTier = getScoreTierDisplay(leadScore.tier)
+                      const isSelected = selectedLeads.has(lead.id)
+
                       return (
-                        <tr key={lead.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
+                        <tr
+                          key={lead.id}
+                          className={`border-b last:border-0 transition-colors ${
+                            isSelected ? 'bg-amber-50' : 'hover:bg-slate-50'
+                          }`}
+                        >
+                          <td className="py-3 pr-2">
+                            <Checkbox
+                              checked={isSelected}
+                              onChange={() => handleSelectLead(lead.id)}
+                            />
+                          </td>
                           <td className="py-3 pr-4">
                             <Link
                               href={`/leads/${lead.id}`}
@@ -215,7 +433,12 @@ export default function LeadsPage() {
                               : 'N/A'}
                           </td>
                           <td className="py-3 pr-4">
-                            <StatusBadge status={lead.status} />
+                            <QuickStatusSelect
+                              leadId={lead.id}
+                              currentStatus={lead.status}
+                              onStatusChange={handleStatusChange}
+                              compact
+                            />
                           </td>
                           <td className="py-3 pr-4">
                             <span
@@ -271,28 +494,16 @@ export default function LeadsPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Bulk actions bar */}
+      <BulkActions
+        selectedCount={selectedLeads.size}
+        onClearSelection={() => setSelectedLeads(new Set())}
+        onBulkStatusChange={handleBulkStatusChange}
+        onBulkExport={handleBulkExport}
+        onBulkArchive={handleBulkArchive}
+        isProcessing={isProcessing}
+      />
     </div>
-  )
-}
-
-function StatusBadge({ status }: { status: string }) {
-  const styles: Record<string, string> = {
-    new: 'bg-amber-100 text-amber-800',
-    intake_started: 'bg-slate-100 text-slate-800',
-    intake_complete: 'bg-slate-200 text-slate-800',
-    estimate_generated: 'bg-green-100 text-green-800',
-    consultation_scheduled: 'bg-amber-100 text-amber-800',
-    quote_sent: 'bg-slate-700 text-white',
-    won: 'bg-green-600 text-white',
-    lost: 'bg-slate-100 text-slate-600',
-    archived: 'bg-slate-100 text-slate-500',
-  }
-
-  return (
-    <span
-      className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${styles[status] || 'bg-slate-100'}`}
-    >
-      {status.replace('_', ' ')}
-    </span>
   )
 }
