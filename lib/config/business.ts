@@ -191,13 +191,13 @@ export function validateBusinessConfig(): string[] {
   const warnings: string[] = []
 
   if (!BUSINESS_CONFIG.phone.isReal) {
-    warnings.push('WARNING: Phone number is placeholder data')
+    warnings.push('WARNING: Phone number is placeholder data - update phone.raw and phone.display')
   }
   if (!BUSINESS_CONFIG.address.isReal) {
-    warnings.push('WARNING: Address is placeholder data')
+    warnings.push('WARNING: Address is placeholder data - update address fields')
   }
   if (getSocialLinks().length === 0) {
-    warnings.push('WARNING: No social media profiles configured')
+    warnings.push('WARNING: No social media profiles configured - consider adding Facebook or Google Business')
   }
   if (!hasVerifiedReviews()) {
     warnings.push('WARNING: No verified reviews configured - review schemas disabled')
@@ -205,8 +205,49 @@ export function validateBusinessConfig(): string[] {
   if (!BUSINESS_CONFIG.verification.google) {
     warnings.push('WARNING: Google Search Console not verified')
   }
+  if (!BUSINESS_CONFIG.credentials.stateContractorLicense) {
+    warnings.push('WARNING: State contractor license not configured')
+  }
+
+  // Check if any certification flags are true
+  const certFlags = [
+    BUSINESS_CONFIG.credentials.gafCertified,
+    BUSINESS_CONFIG.credentials.owensCorningPreferred,
+    BUSINESS_CONFIG.credentials.certainteedMaster,
+    BUSINESS_CONFIG.credentials.bbbAccredited,
+    BUSINESS_CONFIG.credentials.stateLicensed,
+  ]
+  if (!certFlags.some(v => v)) {
+    warnings.push('WARNING: No certifications configured (GAF, Owens Corning, etc.)')
+  }
 
   return warnings
+}
+
+/**
+ * Run validation and log warnings
+ * Call this in build scripts or server startup
+ */
+export function runBusinessConfigValidation(): void {
+  const warnings = validateBusinessConfig()
+
+  if (warnings.length > 0) {
+    console.log('\n' + '='.repeat(60))
+    console.log('BUSINESS CONFIGURATION WARNINGS')
+    console.log('='.repeat(60))
+    warnings.forEach((warning) => console.log(`  ${warning}`))
+    console.log('='.repeat(60))
+    console.log('Update lib/config/business.ts before production deployment')
+    console.log('='.repeat(60) + '\n')
+  }
+}
+
+/**
+ * Check if configuration is production-ready
+ */
+export function isProductionReady(): boolean {
+  return BUSINESS_CONFIG.phone.isReal &&
+         BUSINESS_CONFIG.address.isReal
 }
 
 // Export type for use elsewhere

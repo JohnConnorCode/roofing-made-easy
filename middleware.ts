@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 
 // Check if Supabase is properly configured
 function hasValidSupabaseConfig(): boolean {
@@ -13,6 +14,35 @@ function hasValidSupabaseConfig(): boolean {
   return true
 }
 
+// Check if path is an admin route
+function isAdminRoute(pathname: string): boolean {
+  return pathname.startsWith('/dashboard') ||
+         pathname.startsWith('/leads') ||
+         pathname.startsWith('/pricing')
+}
+
+// Check if path is a customer portal route
+function isCustomerPortalRoute(pathname: string): boolean {
+  return pathname.startsWith('/portal')
+}
+
+// Check if path is a customer auth route
+function isCustomerAuthRoute(pathname: string): boolean {
+  return pathname === '/customer/login' || pathname === '/customer/register'
+}
+
+// Check if path is an API route
+function isApiRoute(pathname: string): boolean {
+  return pathname.startsWith('/api/')
+}
+
+// Check if path is an auth API route
+function isAuthApiRoute(pathname: string): boolean {
+  return pathname.startsWith('/api/auth/') ||
+         pathname.startsWith('/api/customer/register') ||
+         pathname.startsWith('/api/customer/login')
+}
+
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({
     request: {
@@ -20,19 +50,40 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+  const pathname = request.nextUrl.pathname
+
+  // Rate limiting for API routes
+  if (isApiRoute(pathname)) {
+    const clientIP = getClientIP(request)
+    const limitType = isAuthApiRoute(pathname) ? 'auth' : 'api'
+    const rateLimitResult = checkRateLimit(clientIP, limitType)
+
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
+    // Add rate limit headers to successful responses
+    response.headers.set('X-RateLimit-Remaining', String(rateLimitResult.remaining))
+    response.headers.set('X-RateLimit-Reset', String(Math.ceil(rateLimitResult.resetTime / 1000)))
+  }
+
   // Skip auth checks if Supabase is not configured (mock mode)
   if (!hasValidSupabaseConfig()) {
-    // In mock mode, allow access to login page but protect admin routes
-    if (request.nextUrl.pathname.startsWith('/dashboard') ||
-        request.nextUrl.pathname.startsWith('/leads') ||
-        request.nextUrl.pathname.startsWith('/pricing')) {
-      // Redirect to login in mock mode for admin routes
+    // In mock mode, protect admin routes
+    if (isAdminRoute(pathname)) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
-      url.searchParams.set('redirectTo', request.nextUrl.pathname)
+      url.searchParams.set('redirectTo', pathname)
       return NextResponse.redirect(url)
     }
-    // Allow login page to render
+    // In mock mode, protect customer portal routes
+    if (isCustomerPortalRoute(pathname)) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/customer/login'
+      url.searchParams.set('redirectTo', pathname)
+      return NextResponse.redirect(url)
+    }
+    // Allow auth pages to render
     return response
   }
 
@@ -62,22 +113,36 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   // Check if accessing admin routes
-  if (request.nextUrl.pathname.startsWith('/dashboard') ||
-      request.nextUrl.pathname.startsWith('/leads') ||
-      request.nextUrl.pathname.startsWith('/pricing')) {
+  if (isAdminRoute(pathname)) {
     if (!user) {
-      // Redirect to login
       const url = request.nextUrl.clone()
       url.pathname = '/login'
-      url.searchParams.set('redirectTo', request.nextUrl.pathname)
+      url.searchParams.set('redirectTo', pathname)
       return NextResponse.redirect(url)
     }
   }
 
-  // Redirect logged-in users away from login page
-  if (request.nextUrl.pathname === '/login' && user) {
+  // Check if accessing customer portal routes
+  if (isCustomerPortalRoute(pathname)) {
+    if (!user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/customer/login'
+      url.searchParams.set('redirectTo', pathname)
+      return NextResponse.redirect(url)
+    }
+  }
+
+  // Redirect logged-in users away from admin login page
+  if (pathname === '/login' && user) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
+    return NextResponse.redirect(url)
+  }
+
+  // Redirect logged-in users away from customer auth pages
+  if (isCustomerAuthRoute(pathname) && user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/portal'
     return NextResponse.redirect(url)
   }
 
@@ -86,9 +151,16 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    // API routes (for rate limiting)
+    '/api/:path*',
+    // Admin routes
     '/dashboard/:path*',
     '/leads/:path*',
     '/pricing/:path*',
     '/login',
+    // Customer portal routes
+    '/portal/:path*',
+    '/customer/login',
+    '/customer/register',
   ],
 }

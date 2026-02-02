@@ -37,6 +37,10 @@ export const RATE_LIMITS = {
   leadCreation: { windowMs: 60 * 1000, maxRequests: 10 }, // 10 per minute
   estimateCalculation: { windowMs: 60 * 1000, maxRequests: 5 }, // 5 per minute
   general: { windowMs: 60 * 1000, maxRequests: 20 }, // 20 per minute
+  api: { windowMs: 60 * 1000, maxRequests: 100 }, // 100 per minute for API routes
+  auth: { windowMs: 60 * 1000, maxRequests: 10 }, // 10 per minute for auth routes
+  ai: { windowMs: 60 * 1000, maxRequests: 10 }, // 10 AI requests per minute (cost protection)
+  aiVision: { windowMs: 60 * 1000, maxRequests: 5 }, // 5 vision requests per minute (higher cost)
 } as const
 
 export type RateLimitType = keyof typeof RATE_LIMITS

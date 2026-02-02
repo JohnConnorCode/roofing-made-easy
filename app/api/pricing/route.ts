@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requireAdmin } from '@/lib/api/auth'
 
 export async function GET(request: NextRequest) {
   try {
+    // Require admin authentication
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
+
     const supabase = await createClient()
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
@@ -44,6 +49,10 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Require admin authentication
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
+
     const body = await request.json()
     const supabase = await createClient()
 
@@ -86,6 +95,10 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    // Require admin authentication
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
+
     const body = await request.json()
     const { id, ...updates } = body
 

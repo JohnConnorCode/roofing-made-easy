@@ -12,6 +12,11 @@ import {
   Calendar,
   Percent,
   CheckCircle,
+  UserPlus,
+  CreditCard,
+  Clock,
+  Shield,
+  TrendingUp,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 
@@ -193,12 +198,97 @@ export default function FinancingPage() {
         </div>
       </section>
 
+      {/* Pre-Qualification Section */}
+      <section className="py-16 md:py-24 bg-[#0c0f14]">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#c9a25c]/10 border border-[#c9a25c]/30 px-4 py-2 text-sm text-[#c9a25c] mb-6">
+                <CreditCard className="h-4 w-4" />
+                Pre-Qualification Available
+              </div>
+              <h2 className="text-3xl font-bold text-slate-100 md:text-4xl mb-6">
+                Get Pre-Qualified in Minutes
+              </h2>
+              <p className="text-lg text-slate-400 mb-6">
+                Create a free account to get personalized financing options based on your credit profile. See what you qualify for without affecting your credit score.
+              </p>
+
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#3d7a5a]/20 flex items-center justify-center">
+                    <Clock className="h-5 w-5 text-[#3d7a5a]" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-100">Quick Pre-Approval</h4>
+                    <p className="text-sm text-slate-400">Get matched with lenders in as little as 60 seconds</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#3d7a5a]/20 flex items-center justify-center">
+                    <Shield className="h-5 w-5 text-[#3d7a5a]" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-100">No Impact on Credit</h4>
+                    <p className="text-sm text-slate-400">Soft credit check only during pre-qualification</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#3d7a5a]/20 flex items-center justify-center">
+                    <TrendingUp className="h-5 w-5 text-[#3d7a5a]" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-slate-100">Compare Multiple Offers</h4>
+                    <p className="text-sm text-slate-400">See rates from multiple lenders side by side</p>
+                  </div>
+                </div>
+              </div>
+
+              <Link href="/customer/register">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
+                  rightIcon={<ArrowRight className="h-5 w-5" />}
+                >
+                  <UserPlus className="mr-2 h-5 w-5" />
+                  Create Free Account
+                </Button>
+              </Link>
+            </div>
+
+            <div className="bg-gradient-to-br from-[#1a1f2e] to-[#161a23] border border-slate-700 rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-slate-100 mb-6">
+                Benefits of Creating an Account
+              </h3>
+              <ul className="space-y-4">
+                {[
+                  'Get personalized rate quotes from multiple lenders',
+                  'Track your pre-qualification status in real-time',
+                  'Save and compare different financing options',
+                  'Securely upload documents for faster approval',
+                  'Get notified when better rates become available',
+                  'Access special financing programs and promotions',
+                ].map((benefit, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-[#3d7a5a] flex-shrink-0 mt-0.5" />
+                    <span className="text-slate-300">{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Disclaimer */}
       <section className="py-8 bg-[#0c0f14] border-t border-slate-800">
         <div className="mx-auto max-w-4xl px-4">
           <p className="text-xs text-slate-500 text-center">
-            * This calculator provides estimates only. Actual rates and terms depend on credit approval.
-            Financing provided through third-party lenders. Contact us for current rates and promotions.
+            * This calculator provides estimates only. Actual rates and terms depend on credit approval and lender requirements.
+            Always compare offers from multiple lenders before making a decision.
           </p>
         </div>
       </section>

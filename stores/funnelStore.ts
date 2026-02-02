@@ -5,6 +5,8 @@ import type {
   RoofMaterial,
   RoofPitch,
   TimelineUrgency,
+  RoofVariables,
+  DetailedEstimate,
 } from '@/lib/supabase/types'
 
 export type RoofIssue =
@@ -103,6 +105,11 @@ export interface FunnelState {
       description: string
     }>
   } | null
+
+  // Advanced Estimation (Xactimate-style)
+  roofVariables: RoofVariables | null
+  detailedEstimate: DetailedEstimate | null
+  sketchId: string | null
 }
 
 export interface FunnelActions {
@@ -169,6 +176,11 @@ export interface FunnelActions {
   // Step 8
   setEstimate: (estimate: FunnelState['estimate']) => void
 
+  // Advanced Estimation
+  setRoofVariables: (variables: RoofVariables) => void
+  setDetailedEstimate: (estimate: DetailedEstimate | null) => void
+  setSketchId: (sketchId: string | null) => void
+
   // Reset
   resetFunnel: () => void
 }
@@ -205,6 +217,9 @@ const initialState: FunnelState = {
   consentSms: false,
   consentTerms: false,
   estimate: null,
+  roofVariables: null,
+  detailedEstimate: null,
+  sketchId: null,
 }
 
 export const useFunnelStore = create<FunnelState & FunnelActions>()(
@@ -287,6 +302,11 @@ export const useFunnelStore = create<FunnelState & FunnelActions>()(
       // Step 8
       setEstimate: (estimate) => set({ estimate }),
 
+      // Advanced Estimation
+      setRoofVariables: (roofVariables) => set({ roofVariables }),
+      setDetailedEstimate: (detailedEstimate) => set({ detailedEstimate }),
+      setSketchId: (sketchId) => set({ sketchId }),
+
       // Reset
       resetFunnel: () => set(initialState),
     }),
@@ -328,6 +348,8 @@ export const useFunnelStore = create<FunnelState & FunnelActions>()(
         consentMarketing: state.consentMarketing,
         consentSms: state.consentSms,
         consentTerms: state.consentTerms,
+        roofVariables: state.roofVariables,
+        sketchId: state.sketchId,
       }),
     }
   )
@@ -370,3 +392,6 @@ export const useContact = () => useFunnelStore((state) => ({
   consentTerms: state.consentTerms,
 }))
 export const useEstimate = () => useFunnelStore((state) => state.estimate)
+export const useRoofVariables = () => useFunnelStore((state) => state.roofVariables)
+export const useDetailedEstimate = () => useFunnelStore((state) => state.detailedEstimate)
+export const useSketchId = () => useFunnelStore((state) => state.sketchId)

@@ -19,8 +19,13 @@ import {
   HelpCircle,
   Home,
   Quote,
+  CreditCard,
+  FileText,
+  HandHeart,
+  UserPlus,
 } from 'lucide-react'
 import { FAQAccordion, DEFAULT_FAQ_ITEMS } from '@/components/faq/faq-accordion'
+import Link from 'next/link'
 import { ServiceSchema, FAQSchema } from '@/components/seo/json-ld'
 import { getFeaturedTestimonials } from '@/lib/data/testimonials'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
@@ -320,8 +325,91 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Beyond the Estimate Section */}
       <section className="py-16 md:py-24 bg-[#161a23]">
+        <div className="mx-auto max-w-6xl px-4">
+          <ScrollAnimate className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+              Beyond the Estimate
+            </h2>
+            <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
+              Getting a new roof is more than just knowing the price. Explore financing options, navigate insurance claims, and discover assistance programs you may qualify for.
+            </p>
+          </ScrollAnimate>
+
+          <ScrollStagger className="grid md:grid-cols-3 gap-8">
+            <Link href="/financing" className="block">
+              <div className="text-center card-hover bg-[#1a1f2e] border border-slate-800 rounded-2xl p-8 h-full transition-all hover:border-[#c9a25c]/50">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c]/20 to-[#c9a25c]/5 mx-auto mb-6 border border-[#c9a25c]/30">
+                  <CreditCard className="h-8 w-8 text-[#c9a25c]" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-100 mb-3">
+                  Financing Options
+                </h3>
+                <p className="text-slate-400 mb-4">
+                  Pre-qualify for affordable monthly payments. Don't let cost stop you from protecting your home.
+                </p>
+                <span className="text-[#c9a25c] text-sm font-medium inline-flex items-center gap-1">
+                  Explore Options <ArrowRight className="h-4 w-4" />
+                </span>
+              </div>
+            </Link>
+
+            <Link href="/insurance-help" className="block">
+              <div className="text-center card-hover bg-[#1a1f2e] border border-slate-800 rounded-2xl p-8 h-full transition-all hover:border-[#c9a25c]/50">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c]/20 to-[#c9a25c]/5 mx-auto mb-6 border border-[#c9a25c]/30">
+                  <FileText className="h-8 w-8 text-[#c9a25c]" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-100 mb-3">
+                  Insurance Claim Help
+                </h3>
+                <p className="text-slate-400 mb-4">
+                  Step-by-step guidance through the claims process. Get the coverage you're entitled to.
+                </p>
+                <span className="text-[#c9a25c] text-sm font-medium inline-flex items-center gap-1">
+                  Learn More <ArrowRight className="h-4 w-4" />
+                </span>
+              </div>
+            </Link>
+
+            <Link href="/assistance-programs" className="block">
+              <div className="text-center card-hover bg-[#1a1f2e] border border-slate-800 rounded-2xl p-8 h-full transition-all hover:border-[#c9a25c]/50">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c]/20 to-[#c9a25c]/5 mx-auto mb-6 border border-[#c9a25c]/30">
+                  <HandHeart className="h-8 w-8 text-[#c9a25c]" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-100 mb-3">
+                  Assistance Programs
+                </h3>
+                <p className="text-slate-400 mb-4">
+                  Find federal, state, and local programs you may qualify for. Free money you didn't know existed.
+                </p>
+                <span className="text-[#c9a25c] text-sm font-medium inline-flex items-center gap-1">
+                  Check Eligibility <ArrowRight className="h-4 w-4" />
+                </span>
+              </div>
+            </Link>
+          </ScrollStagger>
+
+          <div className="mt-12 text-center">
+            <Link href="/customer/register">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-[#c9a25c] text-[#c9a25c] hover:bg-[#c9a25c]/10"
+              >
+                <UserPlus className="mr-2 h-5 w-5" />
+                Create Free Account
+              </Button>
+            </Link>
+            <p className="mt-3 text-sm text-slate-500">
+              Track your project, access resources, and manage everything in one place
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16 md:py-24 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
           <ScrollAnimate className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">

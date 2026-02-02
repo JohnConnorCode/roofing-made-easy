@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { analyzePhoto } from '@/lib/ai'
 import type { Upload } from '@/lib/supabase/types'
+import {
+  checkRateLimit,
+  getClientIP,
+  rateLimitResponse,
+} from '@/lib/rate-limit'
+import { requireLeadOwnership } from '@/lib/api/auth'
 
 export async function POST(
   request: NextRequest,
@@ -9,6 +15,19 @@ export async function POST(
 ) {
   try {
     const { leadId } = await params
+
+    // Require authentication with lead ownership check
+    const { error: authError } = await requireLeadOwnership(leadId)
+    if (authError) return authError
+
+    // Rate limiting for vision AI (higher cost)
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'aiVision')
+
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     const body = await request.json()
     const { uploadId } = body
 

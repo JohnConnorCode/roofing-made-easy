@@ -19,6 +19,8 @@ const company = [
   { href: '/portfolio', label: 'Our Work' },
   { href: '/blog', label: 'Blog' },
   { href: '/financing', label: 'Financing' },
+  { href: '/insurance-help', label: 'Insurance Help' },
+  { href: '/assistance-programs', label: 'Assistance Programs' },
   { href: '/referral', label: 'Referral Program' },
   { href: '/contact', label: 'Contact' },
 ]

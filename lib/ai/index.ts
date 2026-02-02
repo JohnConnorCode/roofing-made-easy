@@ -109,6 +109,26 @@ export async function generateInternalNotes(
   return withFallback(providers, (provider) => provider.generateInternalNotes(input))
 }
 
+// Photo measurement analysis
+export {
+  analyzePhotoForMeasurements,
+  analyzeMultiplePhotos,
+  type PhotoMeasurementInput,
+  type PhotoMeasurementResult,
+  type DetectedRoofPlane,
+  type DetectedFeature,
+} from './photo-measurements'
+
+// Line item suggestions
+export {
+  suggestLineItems,
+  checkForMissingItems,
+  type LineItemSuggestionInput,
+  type LineItemSuggestionResult,
+  type LineItemRecommendation,
+  type MacroRecommendation,
+} from './line-item-suggestions'
+
 export {
   type PhotoAnalysisResult,
   type PhotoAnalysisInput,

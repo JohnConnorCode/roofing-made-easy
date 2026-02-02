@@ -20,6 +20,10 @@ import {
   ImageIcon,
   RefreshCw,
   TrendingUp,
+  CreditCard,
+  Shield,
+  HandHeart,
+  UserCheck,
 } from 'lucide-react'
 import { SkeletonLeadDetail } from '@/components/ui/skeleton'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
@@ -77,6 +81,37 @@ interface LeadDetail {
     price_likely: number
     price_high: number
     ai_explanation: string
+    created_at: string
+  }>
+  // Customer hub data
+  customer_lead?: {
+    customer: {
+      id: string
+      email: string
+      first_name: string
+      last_name: string
+      created_at: string
+    }
+  }
+  financing_applications?: Array<{
+    id: string
+    amount_requested: number
+    credit_range: string
+    income_range: string
+    status: string
+    created_at: string
+  }>
+  insurance_claims?: Array<{
+    id: string
+    insurance_company: string
+    claim_number: string
+    status: string
+    created_at: string
+  }>
+  program_applications?: Array<{
+    id: string
+    program_id: string
+    status: string
     created_at: string
   }>
 }
@@ -527,6 +562,131 @@ export default function LeadDetailPage() {
             </CardContent>
           </Card>
         )}
+
+        {/* Customer Qualification Hub */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <UserCheck className="h-5 w-5" />
+              Customer Qualification
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-3">
+              {/* Customer Account */}
+              <div className="rounded-lg border border-slate-200 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <User className="h-4 w-4 text-slate-500" />
+                  <p className="text-sm font-medium text-slate-700">Customer Account</p>
+                </div>
+                {lead.customer_lead?.customer ? (
+                  <div>
+                    <p className="text-sm text-slate-900">
+                      {lead.customer_lead.customer.first_name} {lead.customer_lead.customer.last_name}
+                    </p>
+                    <p className="text-xs text-slate-500">{lead.customer_lead.customer.email}</p>
+                    <span className="inline-flex items-center gap-1 mt-2 text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
+                      <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                      Active
+                    </span>
+                  </div>
+                ) : (
+                  <p className="text-sm text-slate-500">No account created</p>
+                )}
+              </div>
+
+              {/* Financing Status */}
+              <div className="rounded-lg border border-slate-200 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <CreditCard className="h-4 w-4 text-slate-500" />
+                  <p className="text-sm font-medium text-slate-700">Financing</p>
+                </div>
+                {lead.financing_applications && lead.financing_applications.length > 0 ? (
+                  <div>
+                    <p className="text-sm text-slate-900">
+                      {formatCurrency(lead.financing_applications[0].amount_requested)} requested
+                    </p>
+                    <p className="text-xs text-slate-500 capitalize">
+                      Credit: {lead.financing_applications[0].credit_range?.replace('_', ' ')}
+                    </p>
+                    <span className={`inline-flex items-center gap-1 mt-2 text-xs px-2 py-1 rounded ${
+                      lead.financing_applications[0].status === 'approved'
+                        ? 'text-green-600 bg-green-50'
+                        : lead.financing_applications[0].status === 'denied'
+                        ? 'text-red-600 bg-red-50'
+                        : 'text-amber-600 bg-amber-50'
+                    }`}>
+                      {lead.financing_applications[0].status.replace('_', ' ')}
+                    </span>
+                  </div>
+                ) : (
+                  <p className="text-sm text-slate-500">Not interested</p>
+                )}
+              </div>
+
+              {/* Insurance Claim Status */}
+              <div className="rounded-lg border border-slate-200 p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="h-4 w-4 text-slate-500" />
+                  <p className="text-sm font-medium text-slate-700">Insurance Claim</p>
+                </div>
+                {lead.insurance_claims && lead.insurance_claims.length > 0 ? (
+                  <div>
+                    <p className="text-sm text-slate-900">
+                      {lead.insurance_claims[0].insurance_company || 'Company not specified'}
+                    </p>
+                    {lead.insurance_claims[0].claim_number && (
+                      <p className="text-xs text-slate-500 font-mono">
+                        #{lead.insurance_claims[0].claim_number}
+                      </p>
+                    )}
+                    <span className={`inline-flex items-center gap-1 mt-2 text-xs px-2 py-1 rounded ${
+                      lead.insurance_claims[0].status === 'approved' || lead.insurance_claims[0].status === 'settled'
+                        ? 'text-green-600 bg-green-50'
+                        : lead.insurance_claims[0].status === 'denied'
+                        ? 'text-red-600 bg-red-50'
+                        : 'text-blue-600 bg-blue-50'
+                    }`}>
+                      {lead.insurance_claims[0].status.replace('_', ' ')}
+                    </span>
+                  </div>
+                ) : intake?.has_insurance_claim ? (
+                  <p className="text-sm text-amber-600">Claim indicated, not tracked</p>
+                ) : (
+                  <p className="text-sm text-slate-500">No claim</p>
+                )}
+              </div>
+            </div>
+
+            {/* Assistance Programs */}
+            {lead.program_applications && lead.program_applications.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-slate-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <HandHeart className="h-4 w-4 text-slate-500" />
+                  <p className="text-sm font-medium text-slate-700">
+                    Assistance Programs ({lead.program_applications.length})
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {lead.program_applications.map((app) => (
+                    <span
+                      key={app.id}
+                      className={`text-xs px-2 py-1 rounded ${
+                        app.status === 'approved'
+                          ? 'text-green-600 bg-green-50'
+                          : app.status === 'denied'
+                          ? 'text-red-600 bg-red-50'
+                          : 'text-slate-600 bg-slate-100'
+                      }`}
+                    >
+                      {app.program_id} - {app.status.replace('_', ' ')}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

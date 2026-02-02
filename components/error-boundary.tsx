@@ -1,6 +1,7 @@
 'use client'
 
 import React, { Component, ErrorInfo, ReactNode } from 'react'
+import * as Sentry from '@sentry/nextjs'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 
@@ -28,10 +29,15 @@ export class ErrorBoundary extends Component<Props, State> {
     // Log error for debugging
     console.error('ErrorBoundary caught an error:', error, errorInfo)
 
-    // Prepare for Sentry integration
-    // TODO: Replace with Sentry.captureException when Sentry is configured
-    if (typeof window !== 'undefined') {
-      // Store error info for potential analytics/logging
+    // Send to Sentry if configured
+    Sentry.withScope((scope) => {
+      scope.setExtra('componentStack', errorInfo.componentStack)
+      scope.setTag('errorBoundary', 'true')
+      Sentry.captureException(error)
+    })
+
+    // Additional logging in development
+    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
       const errorData = {
         message: error.message,
         stack: error.stack,
@@ -40,16 +46,9 @@ export class ErrorBoundary extends Component<Props, State> {
         url: window.location.href,
         userAgent: navigator.userAgent,
       }
-
-      // Log to console in development
-      if (process.env.NODE_ENV === 'development') {
-        console.group('Error Details')
-        console.log('Error:', errorData)
-        console.groupEnd()
-      }
-
-      // Future: Send to error tracking service
-      // sendToErrorTracker(errorData)
+      console.group('Error Details')
+      console.log('Error:', errorData)
+      console.groupEnd()
     }
   }
 

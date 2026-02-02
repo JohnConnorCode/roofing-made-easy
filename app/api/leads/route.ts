@@ -7,7 +7,9 @@ import {
   rateLimitResponse,
   createRateLimitHeaders,
 } from '@/lib/rate-limit'
+import { requireAdmin } from '@/lib/api/auth'
 
+// POST is public - anyone can create a lead (with rate limiting)
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting for lead creation
@@ -79,8 +81,13 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// GET requires admin - listing all leads is an admin operation
 export async function GET(request: NextRequest) {
   try {
+    // Require admin authentication
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
+
     // Rate limiting for general API calls
     const clientIP = getClientIP(request)
     const rateLimitResult = checkRateLimit(clientIP, 'general')
