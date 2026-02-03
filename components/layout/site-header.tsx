@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 import { getPhoneLink, getPhoneDisplay } from '@/lib/config/business'
+import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
 
 const navLinks = [
   { href: '/about', label: 'About' },
@@ -115,12 +116,9 @@ export function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/"
-              className="bg-gold hover:bg-gold-light text-ink font-semibold px-5 py-2.5 rounded-lg transition-all text-sm"
-            >
+            <StartFunnelButton className="bg-gold hover:bg-gold-light text-ink font-semibold px-5 py-2.5 rounded-lg transition-all text-sm">
               Free Estimate
-            </Link>
+            </StartFunnelButton>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -165,13 +163,12 @@ export function SiteHeader() {
               ))}
             </div>
 
-            <Link
-              href="/"
-              className="bg-gold hover:bg-gold-light text-ink font-semibold px-5 py-3 rounded-lg transition-all text-center mt-2"
+            <StartFunnelButton
+              className="bg-gold hover:bg-gold-light text-ink font-semibold px-5 py-3 rounded-lg transition-all text-center mt-2 w-full"
               onClick={() => setMobileMenuOpen(false)}
             >
               Get Free Estimate
-            </Link>
+            </StartFunnelButton>
             <a
               href={getPhoneLink()}
               className="flex items-center justify-center gap-2 text-slate-400 py-3 border-t border-slate-800 mt-2"

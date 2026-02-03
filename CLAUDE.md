@@ -1,5 +1,16 @@
 # Claude Code Instructions
 
+## Core Expectations - READ THIS FIRST
+
+**The user NEVER runs technical commands.** Claude handles ALL technical work:
+- Running builds, tests, linters
+- Running database migrations
+- Deploying code
+- Installing dependencies
+- Any and all CLI operations
+
+When Claude creates migrations, database changes, or any code that requires execution, Claude MUST run those commands immediately. Never tell the user to run something - just do it.
+
 ## Supabase Connection - CRITICAL
 
 ### Project Details

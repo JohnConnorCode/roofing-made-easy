@@ -40,7 +40,7 @@ export function StatusCard({
   }
 
   const content = (
-    <Card className={cn('transition-all hover:border-slate-600', variants[variant], href && 'cursor-pointer hover:shadow-lg')}>
+    <Card variant="dark" className={cn('transition-all hover:border-slate-600', variants[variant], href && 'cursor-pointer hover:shadow-lg')}>
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">

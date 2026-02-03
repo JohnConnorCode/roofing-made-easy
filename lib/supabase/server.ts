@@ -53,7 +53,6 @@ export async function createClient() {
 
   // Development: Allow mock mode for local development without Supabase
   if (isMockMode() || !hasValidSupabaseConfig()) {
-    console.warn('⚠️ Using mock Supabase client (server) - NOT FOR PRODUCTION USE')
     return createMockClient() as unknown as ReturnType<typeof createServerClient<Database>>
   }
 
@@ -124,7 +123,6 @@ export async function createAdminClient() {
 
   // Development: Allow mock mode
   if (isMockMode() || !hasValidSupabaseConfig()) {
-    console.warn('⚠️ Using mock admin Supabase client - NOT FOR PRODUCTION USE')
     return createMockClient() as unknown as ReturnType<typeof createServerClient<Database>>
   }
 

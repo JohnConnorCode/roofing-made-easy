@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { FileText, Printer, Download } from 'lucide-react'
+import { FileText, Printer, Download, Loader2 } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { BUSINESS_CONFIG, getPhoneDisplay } from '@/lib/config/business'
 
@@ -66,6 +66,7 @@ interface QuoteGeneratorProps {
 export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
   const printRef = useRef<HTMLDivElement>(null)
   const [isEditing, setIsEditing] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
 
   // Generate default quote data from lead
   const defaultLineItems: QuoteLineItem[] = []
@@ -116,6 +117,28 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
     window.print()
   }
 
+  const handleDownloadPDF = async () => {
+    setIsDownloading(true)
+    try {
+      const response = await fetch(`/api/leads/${leadData.id}/quote-pdf`)
+      if (!response.ok) throw new Error('Failed to generate PDF')
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `Quote_${quote.customerName.replace(/\s+/g, '_')}_${quote.quoteNumber}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+    } catch {
+      // PDF download failed
+    } finally {
+      setIsDownloading(false)
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between no-print">
@@ -127,10 +150,19 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
           <Button
             variant="outline"
             size="sm"
+            onClick={handleDownloadPDF}
+            disabled={isDownloading}
+            leftIcon={isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+          >
+            {isDownloading ? 'Generating...' : 'Download PDF'}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handlePrint}
             leftIcon={<Printer className="h-4 w-4" />}
           >
-            Print Quote
+            Print
           </Button>
         </div>
       </div>

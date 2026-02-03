@@ -70,7 +70,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
 
   if (submitted) {
     return (
-      <Card className="border-[#3d7a5a]/30 bg-[#3d7a5a]/5">
+      <Card variant="dark" className="border-[#3d7a5a]/30 bg-[#3d7a5a]/5">
         <CardContent className="pt-6 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#3d7a5a]/20 border border-[#3d7a5a]">
             <CheckCircle className="h-8 w-8 text-[#3d7a5a]" />
@@ -95,7 +95,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
   }
 
   return (
-    <Card className="border-slate-700">
+    <Card variant="dark" className="border-slate-700">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-slate-100">
           <DollarSign className="h-5 w-5 text-[#c9a25c]" />

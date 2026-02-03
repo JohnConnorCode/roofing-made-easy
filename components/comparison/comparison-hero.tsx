@@ -43,7 +43,7 @@ export function ComparisonHero({ city }: ComparisonHeroProps) {
           </p>
 
           {/* Location Context */}
-          <div className="flex items-center justify-center gap-2 text-gray-400 mb-8">
+          <div className="flex items-center justify-center gap-2 text-slate-400 mb-8">
             <MapPin className="w-4 h-4 text-gold" />
             <span className="text-sm">
               Serving {city.name}, {city.county} County, Mississippi

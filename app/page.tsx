@@ -39,10 +39,6 @@ import { getFeaturedTestimonials } from '@/lib/data/testimonials'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
-function generateDemoLeadId(): string {
-  return 'demo-' + Math.random().toString(36).substring(2, 15)
-}
-
 // Updated FAQ items with objection-handling focus
 const HOMEPAGE_FAQ_ITEMS = [
   {
@@ -74,9 +70,11 @@ const HOMEPAGE_FAQ_ITEMS = [
 export default function HomePage() {
   const router = useRouter()
   const [isCreating, setIsCreating] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleGetStarted = async () => {
     setIsCreating(true)
+    setError(null)
     try {
       const response = await fetch('/api/leads', {
         method: 'POST',
@@ -89,14 +87,14 @@ export default function HomePage() {
 
       if (response.ok) {
         const data = await response.json()
-        router.push(`/${data.lead.id}/address`)
+        router.push(`/${data.lead.id}/property`)
       } else {
-        const demoId = generateDemoLeadId()
-        router.push(`/${demoId}/address`)
+        setError('Unable to start your estimate. Please try again.')
+        setIsCreating(false)
       }
-    } catch (error) {
-      const demoId = generateDemoLeadId()
-      router.push(`/${demoId}/address`)
+    } catch {
+      setError('Connection error. Please check your internet and try again.')
+      setIsCreating(false)
     }
   }
 
@@ -161,6 +159,12 @@ export default function HomePage() {
                 )}
               </Button>
             </div>
+
+            {error && (
+              <div className="mt-4 bg-red-900/50 border border-red-700 rounded-lg px-4 py-3 text-center animate-slide-up">
+                <p className="text-red-200 text-sm">{error}</p>
+              </div>
+            )}
 
             <p className="mt-4 text-sm text-slate-500 animate-slide-up delay-500">
               Free forever • No account required • No contractors calling you

@@ -41,7 +41,7 @@ export function LocalPricingSection({ city }: LocalPricingSectionProps) {
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
               What Affects Roofing Costs in {city.name}?
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <p className="text-slate-400 max-w-2xl mx-auto">
               Understanding pricing factors helps you evaluate estimates and budget for your project.
             </p>
           </div>
@@ -55,7 +55,7 @@ export function LocalPricingSection({ city }: LocalPricingSectionProps) {
                   className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 pb-4 border-b border-gold/5 last:border-0 last:pb-0"
                 >
                   <span className="text-white font-medium sm:w-40 shrink-0">{factor}</span>
-                  <span className="text-gray-400 text-sm">{description}</span>
+                  <span className="text-slate-300 text-sm">{description}</span>
                 </div>
               ))}
             </div>

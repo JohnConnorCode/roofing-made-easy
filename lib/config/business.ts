@@ -155,6 +155,14 @@ export const BUSINESS_CONFIG = {
 // HELPER FUNCTIONS
 // =============================================================================
 
+/**
+ * Get the business configuration object
+ * Used by communication services for templating
+ */
+export function getBusinessConfig(): BusinessConfig {
+  return BUSINESS_CONFIG
+}
+
 export function getPhoneLink(): string {
   return `tel:${BUSINESS_CONFIG.phone.raw.replace(/[^+\d]/g, '')}`
 }
@@ -232,15 +240,52 @@ export function runBusinessConfigValidation(): void {
   const warnings = validateBusinessConfig()
 
   if (warnings.length > 0) {
+    // eslint-disable-next-line no-console
     console.log('\n' + '='.repeat(60))
+    // eslint-disable-next-line no-console
     console.log('BUSINESS CONFIGURATION WARNINGS')
+    // eslint-disable-next-line no-console
     console.log('='.repeat(60))
+    // eslint-disable-next-line no-console
     warnings.forEach((warning) => console.log(`  ${warning}`))
+    // eslint-disable-next-line no-console
     console.log('='.repeat(60))
+    // eslint-disable-next-line no-console
     console.log('Update lib/config/business.ts before production deployment')
+    // eslint-disable-next-line no-console
     console.log('='.repeat(60) + '\n')
   }
 }
+
+/**
+ * Build-time validation - blocks deployment if placeholder data in production
+ * This runs at import time on production builds
+ */
+function validateProductionConfig(): void {
+  // VERCEL_ENV is set by Vercel during deployment (production, preview, or development)
+  // This distinguishes actual Vercel deployments from local `npm run build`
+  const isVercelProduction = process.env.VERCEL_ENV === 'production'
+  const bypassCheck = process.env.BYPASS_CONFIG_CHECK === 'true'
+
+  // Only block on actual Vercel production deployments, not local builds
+  if (isVercelProduction && !bypassCheck) {
+    if (!BUSINESS_CONFIG.phone.isReal) {
+      throw new Error(
+        'DEPLOYMENT BLOCKED: Phone number is placeholder data. ' +
+        'Update BUSINESS_CONFIG.phone.isReal to true after setting real phone number in lib/config/business.ts'
+      )
+    }
+    if (!BUSINESS_CONFIG.address.isReal) {
+      throw new Error(
+        'DEPLOYMENT BLOCKED: Address is placeholder data. ' +
+        'Update BUSINESS_CONFIG.address.isReal to true after setting real address in lib/config/business.ts'
+      )
+    }
+  }
+}
+
+// Run validation at module import time (build time)
+validateProductionConfig()
 
 /**
  * Check if configuration is production-ready

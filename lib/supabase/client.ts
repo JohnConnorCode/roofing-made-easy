@@ -34,7 +34,6 @@ export function createClient() {
 
   // Development: Allow mock mode for local development without Supabase
   if (isMockMode() || !hasValidSupabaseConfig()) {
-    console.warn('⚠️ Using mock Supabase client - NOT FOR PRODUCTION USE')
     return createMockClient() as unknown as ReturnType<typeof createBrowserClient<Database>>
   }
 

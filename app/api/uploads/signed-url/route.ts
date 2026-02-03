@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requireLeadOwnership } from '@/lib/api/auth'
 import { v4 as uuidv4 } from 'uuid'
 
 export async function POST(request: NextRequest) {
@@ -13,6 +14,10 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Verify user owns this lead or is admin
+    const { error: authError } = await requireLeadOwnership(leadId)
+    if (authError) return authError
 
     // Validate content type
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif']
@@ -35,7 +40,6 @@ export async function POST(request: NextRequest) {
       .createSignedUploadUrl(storagePath)
 
     if (signedUrlError) {
-      console.error('Error creating signed URL:', signedUrlError)
       return NextResponse.json(
         { error: 'Failed to create upload URL' },
         { status: 500 }
@@ -56,7 +60,6 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (uploadError || !upload) {
-      console.error('Error creating upload record:', uploadError)
       return NextResponse.json(
         { error: 'Failed to create upload record' },
         { status: 500 }
@@ -69,8 +72,7 @@ export async function POST(request: NextRequest) {
       token: signedUrl.token,
       storagePath,
     })
-  } catch (error) {
-    console.error('Error in POST /api/uploads/signed-url:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

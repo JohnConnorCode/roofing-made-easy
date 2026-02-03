@@ -34,9 +34,9 @@ export class OpenAIProvider implements AiProvider {
   name = 'openai' as const
   private client: OpenAI
 
-  constructor() {
+  constructor(apiKey?: string) {
     this.client = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: apiKey || process.env.OPENAI_API_KEY,
     })
   }
 

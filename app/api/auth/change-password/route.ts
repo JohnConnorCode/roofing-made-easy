@@ -63,7 +63,6 @@ export async function POST(request: NextRequest) {
     })
 
     if (updateError) {
-      console.error('Error updating password:', updateError)
       return NextResponse.json(
         { error: 'Failed to update password. Please try again.' },
         { status: 500 }
@@ -74,8 +73,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Password updated successfully',
     })
-  } catch (error) {
-    console.error('Error in POST /api/auth/change-password:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

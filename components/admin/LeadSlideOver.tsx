@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { X, Phone, Mail, MapPin, Calendar, FileText, Image, ExternalLink, Loader2 } from 'lucide-react'
+import { X, Phone, Mail, MapPin, Calendar, FileText, Image, ExternalLink, Loader2, MessageSquare } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { formatCurrency, formatDate, formatPhone } from '@/lib/utils'
 import Link from 'next/link'
 import type { LeadCardData } from './LeadCard'
+import { CommunicationTimeline } from './communication-timeline'
 
 interface LeadDetails extends LeadCardData {
   intakes?: {
@@ -59,8 +60,8 @@ export function LeadSlideOver({ lead, isOpen, onClose, onStatusChange }: LeadSli
         const data = await response.json()
         setDetails(data.lead)
       }
-    } catch (error) {
-      console.error('Failed to fetch lead details:', error)
+    } catch {
+      // Fetch failed silently
     } finally {
       setIsLoading(false)
     }
@@ -272,6 +273,17 @@ export function LeadSlideOver({ lead, isOpen, onClose, onStatusChange }: LeadSli
                       +{uploads.length - 6} more photos
                     </p>
                   )}
+                </div>
+              )}
+
+              {/* Communication Timeline */}
+              {lead?.id && (
+                <div>
+                  <h3 className="text-sm font-medium text-slate-900 mb-3 flex items-center gap-2">
+                    <MessageSquare className="h-4 w-4" />
+                    Communications
+                  </h3>
+                  <CommunicationTimeline leadId={lead.id} />
                 </div>
               )}
             </>

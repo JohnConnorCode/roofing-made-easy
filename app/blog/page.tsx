@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { getAllBlogPosts, getCategories } from '@/lib/data/blog'
 import {
@@ -71,9 +72,21 @@ export default function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="bg-[#1a1f2e] border border-slate-700 rounded-2xl overflow-hidden hover:border-[#c9a25c]/50 transition-colors group"
               >
-                {/* Placeholder image */}
-                <div className="aspect-video bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
-                  <BookOpen className="h-8 w-8 text-slate-600" />
+                {/* Blog post image */}
+                <div className="aspect-video relative bg-gradient-to-br from-slate-700 to-slate-800">
+                  {post.image ? (
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <BookOpen className="h-8 w-8 text-slate-600" />
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-6">

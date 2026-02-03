@@ -207,8 +207,8 @@ export default function LineItemsPage() {
   const handleDelete = async (item: LineItem) => {
     const confirmed = await confirm({
       title: 'Delete Line Item?',
-      message: `Are you sure you want to delete "${item.name}"? This action cannot be undone.`,
-      confirmLabel: 'Delete',
+      description: `Are you sure you want to delete "${item.name}"? This action cannot be undone.`,
+      confirmText: 'Delete',
       variant: 'danger',
     })
 

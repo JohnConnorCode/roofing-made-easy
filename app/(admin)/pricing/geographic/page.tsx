@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { GeographicPricing } from '@/lib/supabase/types'
-import { Save, Plus, Trash2, MapPin, RefreshCw } from 'lucide-react'
+import { Save, Plus, Trash2, MapPin, RefreshCw, Loader2 } from 'lucide-react'
+import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 
 const US_STATES = [
   'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
@@ -19,6 +20,7 @@ const US_STATES = [
 
 export default function GeographicPricingPage() {
   const { showToast } = useToast()
+  const { confirm, ConfirmDialog } = useConfirmDialog()
   const [regions, setRegions] = useState<GeographicPricing[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
@@ -119,7 +121,13 @@ export default function GeographicPricingPage() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this region?')) return
+    const confirmed = await confirm({
+      title: 'Delete Region',
+      description: 'Are you sure you want to delete this geographic pricing region? This action cannot be undone.',
+      confirmText: 'Delete',
+      variant: 'danger',
+    })
+    if (!confirmed) return
 
     try {
       const response = await fetch(`/api/geographic-pricing/${id}`, {
@@ -130,7 +138,7 @@ export default function GeographicPricingPage() {
 
       showToast('Region deleted', 'success')
       setRegions((prev) => prev.filter((r) => r.id !== id))
-    } catch (error) {
+    } catch {
       showToast('Failed to delete region', 'error')
     }
   }
@@ -587,6 +595,7 @@ export default function GeographicPricingPage() {
             ))}
         </div>
       )}
+      <ConfirmDialog />
     </div>
   )
 }

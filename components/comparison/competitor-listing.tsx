@@ -22,7 +22,7 @@ export function CompetitorListing({ city }: ContractorTypesListingProps) {
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
               Types of Roofing Contractors in {city.name}
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <p className="text-slate-400 max-w-2xl mx-auto">
               Understanding the different types of roofing contractors can help you find
               the right fit for your project. Here are the main categories you will encounter
               when searching for roofers in {city.county} County.
@@ -41,7 +41,7 @@ export function CompetitorListing({ city }: ContractorTypesListingProps) {
             <h3 className="text-lg font-semibold text-white mb-3">
               Our Recommendation
             </h3>
-            <p className="text-gray-400 leading-relaxed">
+            <p className="text-slate-300 leading-relaxed">
               When choosing a roofing contractor in {city.name}, we recommend getting at least
               three written estimates, verifying licensing and insurance with the Mississippi
               State Board of Contractors, and checking online reviews from verified customers.
@@ -75,7 +75,7 @@ function ContractorTypeCard({ contractorType, city }: ContractorTypeCardProps) {
       </div>
 
       {/* Description */}
-      <p className="text-gray-400 leading-relaxed mb-6">
+      <p className="text-slate-300 leading-relaxed mb-6">
         {contractorType.description}
       </p>
 
@@ -89,7 +89,7 @@ function ContractorTypeCard({ contractorType, city }: ContractorTypeCardProps) {
           </h4>
           <ul className="space-y-2">
             {contractorType.bestFor.map((item, index) => (
-              <li key={index} className="text-sm text-gray-400 flex items-start gap-2">
+              <li key={index} className="text-sm text-slate-300 flex items-start gap-2">
                 <span className="text-green-500 mt-1">•</span>
                 {item}
               </li>
@@ -105,7 +105,7 @@ function ContractorTypeCard({ contractorType, city }: ContractorTypeCardProps) {
           </h4>
           <ul className="space-y-2">
             {contractorType.considerations.map((item, index) => (
-              <li key={index} className="text-sm text-gray-400 flex items-start gap-2">
+              <li key={index} className="text-sm text-slate-300 flex items-start gap-2">
                 <span className="text-amber-500 mt-1">•</span>
                 {item}
               </li>

@@ -29,7 +29,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
             <li>
               <Link
                 href="/"
-                className="flex items-center gap-1 text-gray-400 hover:text-gold transition-colors"
+                className="flex items-center gap-1 text-slate-300 hover:text-gold transition-colors"
               >
                 <Home className="w-4 h-4" />
                 <span className="sr-only sm:not-sr-only">Home</span>
@@ -38,7 +38,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
 
             {items.map((item, index) => (
               <li key={item.href} className="flex items-center gap-2">
-                <ChevronRight className="w-4 h-4 text-gray-600 shrink-0" />
+                <ChevronRight className="w-4 h-4 text-slate-500 shrink-0" />
                 {index === items.length - 1 ? (
                   <span className="text-gold font-medium truncate">
                     {item.name}
@@ -46,7 +46,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
                 ) : (
                   <Link
                     href={item.href}
-                    className="text-gray-400 hover:text-gold transition-colors truncate"
+                    className="text-slate-300 hover:text-gold transition-colors truncate"
                   >
                     {item.name}
                   </Link>

@@ -71,17 +71,64 @@ export async function requireAdmin(): Promise<AuthResult> {
   return { user, error: null }
 }
 
+export interface CustomerAuthResult {
+  user: User | null
+  customerId: string | null
+  error: NextResponse | null
+}
+
 /**
- * Check if user owns a specific lead (for customer access)
- * Verifies the lead belongs to the authenticated user via customer_leads table
+ * Require authenticated customer
+ * Returns the customer ID for use in subsequent queries
  */
-export async function requireLeadOwnership(leadId: string): Promise<AuthResult> {
+export async function requireCustomer(): Promise<CustomerAuthResult> {
   const supabase = await createClient()
   const { data: { user }, error } = await supabase.auth.getUser()
 
   if (error || !user) {
     return {
       user: null,
+      customerId: null,
+      error: NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+  }
+
+  // Get customer record by auth_user_id
+  const { data: customer } = await supabase
+    .from('customers' as never)
+    .select('id')
+    .eq('auth_user_id', user.id)
+    .single()
+
+  if (!customer) {
+    return {
+      user,
+      customerId: null,
+      error: NextResponse.json(
+        { error: 'Customer not found' },
+        { status: 404 }
+      )
+    }
+  }
+
+  return { user, customerId: (customer as { id: string }).id, error: null }
+}
+
+/**
+ * Check if user owns a specific lead (for customer access)
+ * Verifies the lead belongs to the authenticated user via customer_leads table
+ */
+export async function requireLeadOwnership(leadId: string): Promise<CustomerAuthResult> {
+  const supabase = await createClient()
+  const { data: { user }, error } = await supabase.auth.getUser()
+
+  if (error || !user) {
+    return {
+      user: null,
+      customerId: null,
       error: NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -95,20 +142,41 @@ export async function requireLeadOwnership(leadId: string): Promise<AuthResult> 
     user.app_metadata?.role === 'admin'
 
   if (isAdmin) {
-    return { user, error: null }
+    return { user, customerId: null, error: null }
   }
 
-  // Check if user owns this lead via customer_leads
+  // Get customer record by auth_user_id
+  const { data: customer } = await supabase
+    .from('customers' as never)
+    .select('id')
+    .eq('auth_user_id', user.id)
+    .single()
+
+  if (!customer) {
+    return {
+      user,
+      customerId: null,
+      error: NextResponse.json(
+        { error: 'Customer not found' },
+        { status: 404 }
+      )
+    }
+  }
+
+  const customerId = (customer as { id: string }).id
+
+  // Check if customer owns this lead via customer_leads
   const { data: customerLead } = await supabase
     .from('customer_leads' as never)
     .select('id')
-    .eq('customer_id', user.id)
+    .eq('customer_id', customerId)
     .eq('lead_id', leadId)
     .single()
 
   if (!customerLead) {
     return {
-      user: null,
+      user,
+      customerId,
       error: NextResponse.json(
         { error: 'Forbidden' },
         { status: 403 }
@@ -116,5 +184,5 @@ export async function requireLeadOwnership(leadId: string): Promise<AuthResult> 
     }
   }
 
-  return { user, error: null }
+  return { user, customerId, error: null }
 }

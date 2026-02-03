@@ -67,8 +67,7 @@ export async function POST(request: Request) {
       provider: result.provider,
       latencyMs: result.latencyMs,
     })
-  } catch (error) {
-    console.error('Line item suggestion error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -125,8 +124,7 @@ export async function GET(request: Request) {
       success: true,
       missingItems: missing,
     })
-  } catch (error) {
-    console.error('Missing items check error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

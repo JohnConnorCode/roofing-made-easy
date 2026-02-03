@@ -36,8 +36,8 @@ export default function PricingPage() {
           setRules(data.rules)
           setOriginalRules(JSON.parse(JSON.stringify(data.rules)))
         }
-      } catch (error) {
-        console.error('Error fetching pricing rules:', error)
+      } catch {
+        // Failed to fetch pricing rules
       } finally {
         setIsLoading(false)
       }
@@ -80,8 +80,8 @@ export default function PricingPage() {
       }
       setOriginalRules(JSON.parse(JSON.stringify(rules)))
       setHasChanges(false)
-    } catch (error) {
-      console.error('Error saving pricing rules:', error)
+    } catch {
+      // Failed to save pricing rules
     } finally {
       setIsSaving(false)
     }

@@ -187,7 +187,6 @@ export async function GET(request: NextRequest) {
     if (error) {
       // If table doesn't exist or no row, return defaults
       if (error.code === 'PGRST116' || error.code === '42P01') {
-        console.warn('Settings table not found or empty, using defaults')
         return NextResponse.json({ settings: defaultSettings })
       }
       throw error
@@ -195,8 +194,7 @@ export async function GET(request: NextRequest) {
 
     const settings = transformRowToSettings(data as SettingsRow)
     return NextResponse.json({ settings })
-  } catch (error) {
-    console.error('Error in GET /api/settings:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -284,7 +282,6 @@ export async function PUT(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Error updating settings:', error)
       return NextResponse.json(
         { error: 'Failed to update settings' },
         { status: 500 }
@@ -293,8 +290,7 @@ export async function PUT(request: NextRequest) {
 
     const settings = transformRowToSettings(updatedRow as SettingsRow)
     return NextResponse.json({ success: true, settings })
-  } catch (error) {
-    console.error('Error in PUT /api/settings:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -50,7 +50,6 @@ export async function POST(request: NextRequest) {
       })
 
     if (uploadError) {
-      console.error('Error uploading file:', uploadError)
       return NextResponse.json(
         { error: 'Failed to upload file' },
         { status: 500 }
@@ -72,7 +71,6 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (recordError || !upload) {
-      console.error('Error creating upload record:', recordError)
       return NextResponse.json(
         { error: 'Failed to create upload record' },
         { status: 500 }
@@ -89,8 +87,7 @@ export async function POST(request: NextRequest) {
       storagePath,
       publicUrl: urlData.publicUrl,
     })
-  } catch (error) {
-    console.error('Error in POST /api/uploads/complete:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

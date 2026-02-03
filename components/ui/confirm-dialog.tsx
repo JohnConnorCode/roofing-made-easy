@@ -1,147 +1,214 @@
 'use client'
 
-import { useState, useCallback, createContext, useContext, ReactNode } from 'react'
+import * as React from 'react'
+import { cn } from '@/lib/utils'
 import { Button } from './button'
-import { AlertTriangle, X } from 'lucide-react'
+import { X } from 'lucide-react'
 
-interface ConfirmOptions {
+export interface ConfirmDialogProps {
+  isOpen: boolean
+  onClose: () => void
+  onConfirm: () => void
   title: string
-  message: string
-  confirmLabel?: string
-  cancelLabel?: string
+  description?: string
+  confirmText?: string
+  cancelText?: string
   variant?: 'danger' | 'warning' | 'default'
+  isLoading?: boolean
 }
 
-interface ConfirmDialogContextType {
+export function ConfirmDialog({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  description,
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
+  variant = 'default',
+  isLoading = false,
+}: ConfirmDialogProps) {
+  // Handle escape key
+  React.useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose()
+      }
+    }
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isOpen, onClose])
+
+  // Prevent body scroll when open
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
+  if (!isOpen) return null
+
+  const confirmButtonVariant = variant === 'danger' ? 'destructive' : 'primary'
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm animate-in fade-in-0"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      {/* Dialog */}
+      <div
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="confirm-dialog-title"
+        aria-describedby={description ? 'confirm-dialog-description' : undefined}
+        className={cn(
+          'fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2',
+          'rounded-xl bg-white p-6 shadow-xl mx-4',
+          'animate-in fade-in-0 zoom-in-95',
+          'dark:bg-slate-900 dark:border dark:border-slate-700'
+        )}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
+          aria-label="Close"
+        >
+          <X className="h-5 w-5" />
+        </button>
+
+        {/* Content */}
+        <div className="pr-8">
+          <h2
+            id="confirm-dialog-title"
+            className={cn(
+              'text-lg font-semibold',
+              variant === 'danger' && 'text-red-600',
+              variant === 'warning' && 'text-amber-600',
+              variant === 'default' && 'text-slate-900 dark:text-slate-100'
+            )}
+          >
+            {title}
+          </h2>
+          {description && (
+            <p
+              id="confirm-dialog-description"
+              className="mt-2 text-sm text-slate-600 dark:text-slate-400"
+            >
+              {description}
+            </p>
+          )}
+        </div>
+
+        {/* Actions */}
+        <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <Button
+            variant="outline"
+            onClick={onClose}
+            disabled={isLoading}
+            className="w-full sm:w-auto"
+          >
+            {cancelText}
+          </Button>
+          <Button
+            variant={confirmButtonVariant}
+            onClick={onConfirm}
+            isLoading={isLoading}
+            className="w-full sm:w-auto"
+          >
+            {confirmText}
+          </Button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// Type for confirm function options
+export type ConfirmOptions = Omit<ConfirmDialogProps, 'isOpen' | 'onClose' | 'onConfirm'>
+
+// Hook return type
+export interface UseConfirmDialogReturn {
+  confirm: (options: ConfirmOptions) => Promise<boolean>
+  showConfirm: (options: ConfirmOptions) => Promise<boolean>
+  ConfirmDialog: React.FC
+}
+
+// Hook for easier usage
+export function useConfirmDialog(): UseConfirmDialogReturn {
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [config, setConfig] = React.useState<ConfirmOptions>({
+    title: '',
+  })
+  const resolverRef = React.useRef<((value: boolean) => void) | null>(null)
+
+  const confirmFn = React.useCallback(
+    (options: ConfirmOptions): Promise<boolean> => {
+      setConfig(options)
+      setIsOpen(true)
+      return new Promise((resolve) => {
+        resolverRef.current = resolve
+      })
+    },
+    []
+  )
+
+  const handleClose = React.useCallback(() => {
+    setIsOpen(false)
+    resolverRef.current?.(false)
+  }, [])
+
+  const handleConfirm = React.useCallback(() => {
+    setIsOpen(false)
+    resolverRef.current?.(true)
+  }, [])
+
+  const ConfirmDialogComponent = React.useCallback(
+    () => (
+      <ConfirmDialog
+        isOpen={isOpen}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+        {...config}
+      />
+    ),
+    [isOpen, handleClose, handleConfirm, config]
+  )
+
+  return { confirm: confirmFn, showConfirm: confirmFn, ConfirmDialog: ConfirmDialogComponent }
+}
+
+// Context for global confirm dialog access
+interface ConfirmDialogContextValue {
   confirm: (options: ConfirmOptions) => Promise<boolean>
 }
 
-const ConfirmDialogContext = createContext<ConfirmDialogContextType | null>(null)
+const ConfirmDialogContext = React.createContext<ConfirmDialogContextValue | null>(null)
 
-export function useConfirmDialog() {
-  const context = useContext(ConfirmDialogContext)
-  if (!context) {
-    throw new Error('useConfirmDialog must be used within a ConfirmDialogProvider')
-  }
-  return context
-}
-
-interface ConfirmDialogProviderProps {
-  children: ReactNode
-}
-
-export function ConfirmDialogProvider({ children }: ConfirmDialogProviderProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [options, setOptions] = useState<ConfirmOptions | null>(null)
-  const [resolvePromise, setResolvePromise] = useState<((value: boolean) => void) | null>(null)
-
-  const confirm = useCallback((opts: ConfirmOptions): Promise<boolean> => {
-    return new Promise((resolve) => {
-      setOptions(opts)
-      setResolvePromise(() => resolve)
-      setIsOpen(true)
-    })
-  }, [])
-
-  const handleConfirm = useCallback(() => {
-    setIsOpen(false)
-    resolvePromise?.(true)
-    setResolvePromise(null)
-    setOptions(null)
-  }, [resolvePromise])
-
-  const handleCancel = useCallback(() => {
-    setIsOpen(false)
-    resolvePromise?.(false)
-    setResolvePromise(null)
-    setOptions(null)
-  }, [resolvePromise])
-
-  const variantStyles = {
-    danger: {
-      icon: 'bg-red-100 text-red-600',
-      button: 'bg-red-600 hover:bg-red-700',
-    },
-    warning: {
-      icon: 'bg-amber-100 text-amber-600',
-      button: 'bg-amber-600 hover:bg-amber-700',
-    },
-    default: {
-      icon: 'bg-slate-100 text-slate-600',
-      button: 'bg-slate-800 hover:bg-slate-900',
-    },
-  }
-
-  const styles = variantStyles[options?.variant || 'default']
+export function ConfirmDialogProvider({ children }: { children: React.ReactNode }) {
+  const { confirm, ConfirmDialog } = useConfirmDialog()
 
   return (
     <ConfirmDialogContext.Provider value={{ confirm }}>
       {children}
-
-      {/* Dialog overlay */}
-      {isOpen && options && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={handleCancel}
-            aria-hidden="true"
-          />
-
-          {/* Dialog */}
-          <div
-            className="relative mx-4 w-full max-w-md rounded-lg bg-white p-6 shadow-xl"
-            role="alertdialog"
-            aria-modal="true"
-            aria-labelledby="confirm-dialog-title"
-            aria-describedby="confirm-dialog-description"
-          >
-            {/* Close button */}
-            <button
-              onClick={handleCancel}
-              className="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
-              aria-label="Close dialog"
-            >
-              <X className="h-5 w-5" />
-            </button>
-
-            {/* Icon */}
-            <div className="flex justify-center mb-4">
-              <div className={`flex h-12 w-12 items-center justify-center rounded-full ${styles.icon}`}>
-                <AlertTriangle className="h-6 w-6" />
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="text-center">
-              <h2 id="confirm-dialog-title" className="text-lg font-semibold text-slate-900">
-                {options.title}
-              </h2>
-              <p id="confirm-dialog-description" className="mt-2 text-sm text-slate-600">
-                {options.message}
-              </p>
-            </div>
-
-            {/* Actions */}
-            <div className="mt-6 flex gap-3">
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={handleCancel}
-              >
-                {options.cancelLabel || 'Cancel'}
-              </Button>
-              <Button
-                variant="primary"
-                className={`flex-1 ${styles.button}`}
-                onClick={handleConfirm}
-              >
-                {options.confirmLabel || 'Confirm'}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDialog />
     </ConfirmDialogContext.Provider>
   )
+}
+
+export function useConfirm() {
+  const context = React.useContext(ConfirmDialogContext)
+  if (!context) {
+    throw new Error('useConfirm must be used within a ConfirmDialogProvider')
+  }
+  return context.confirm
 }

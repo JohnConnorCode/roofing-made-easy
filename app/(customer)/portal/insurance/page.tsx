@@ -209,7 +209,7 @@ export default function InsurancePage() {
               onAddNote={() => setShowStatusUpdate(true)}
             />
           ) : showForm ? (
-            <Card className="border-slate-700">
+            <Card variant="dark" className="border-slate-700">
               <CardHeader>
                 <CardTitle className="text-slate-100">Start Tracking Your Claim</CardTitle>
                 <CardDescription>
@@ -303,7 +303,7 @@ export default function InsurancePage() {
               </CardContent>
             </Card>
           ) : (
-            <Card className="border-slate-700">
+            <Card variant="dark" className="border-slate-700">
               <CardContent className="py-8 text-center">
                 <Shield className="h-12 w-12 text-slate-600 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-slate-200 mb-2">Track Your Insurance Claim</h3>
@@ -379,7 +379,7 @@ export default function InsurancePage() {
         {/* Sidebar - resources */}
         <div className="space-y-6">
           {/* Quick actions */}
-          <Card className="border-slate-700">
+          <Card variant="dark" className="border-slate-700">
             <CardHeader>
               <CardTitle className="text-base text-slate-100">Quick Actions</CardTitle>
             </CardHeader>
@@ -415,7 +415,7 @@ export default function InsurancePage() {
           </Card>
 
           {/* Resources */}
-          <Card className="border-slate-700">
+          <Card variant="dark" className="border-slate-700">
             <CardHeader>
               <CardTitle className="text-base text-slate-100">Helpful Resources</CardTitle>
             </CardHeader>

@@ -60,7 +60,6 @@ export async function GET(request: NextRequest) {
     const { data: lineItems, error } = await query
 
     if (error) {
-      console.error('Error fetching line items:', error)
       return NextResponse.json(
         { error: 'Failed to fetch line items' },
         { status: 500 }
@@ -68,8 +67,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ lineItems })
-  } catch (error) {
-    console.error('Error in GET /api/line-items:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -108,7 +106,6 @@ export async function POST(request: NextRequest) {
           { status: 409 }
         )
       }
-      console.error('Error creating line item:', error)
       return NextResponse.json(
         { error: 'Failed to create line item' },
         { status: 500 }
@@ -116,8 +113,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ lineItem }, { status: 201 })
-  } catch (error) {
-    console.error('Error in POST /api/line-items:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

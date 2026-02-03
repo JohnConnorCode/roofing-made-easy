@@ -1,9 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
+import { z } from 'zod'
+
+// Validation schema for customer registration
+const registerSchema = z.object({
+  authUserId: z.string().uuid('Invalid auth user ID'),
+  email: z.string().email('Invalid email address'),
+  firstName: z.string().max(100).optional(),
+  lastName: z.string().max(100).optional(),
+  phone: z.string().max(20).optional(),
+  consentMarketing: z.boolean().optional(),
+  leadId: z.string().uuid().optional(),
+})
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    const validation = registerSchema.safeParse(body)
+
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: validation.error.flatten() },
+        { status: 400 }
+      )
+    }
+
     const {
       authUserId,
       email,
@@ -12,14 +33,7 @@ export async function POST(request: NextRequest) {
       phone,
       consentMarketing,
       leadId,
-    } = body
-
-    if (!authUserId || !email) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
-    }
+    } = validation.data
 
     const supabase = await createAdminClient()
 
@@ -53,7 +67,6 @@ export async function POST(request: NextRequest) {
     const customer = customerData as CustomerRecord | null
 
     if (customerError) {
-      console.error('Error creating customer:', customerError)
       return NextResponse.json(
         { error: 'Failed to create customer record' },
         { status: 500 }
@@ -71,14 +84,12 @@ export async function POST(request: NextRequest) {
         } as never)
 
       if (linkError) {
-        console.error('Error linking lead:', linkError)
-        // Don't fail the registration, just log the error
+        // Don't fail the registration - lead link will be retried later
       }
     }
 
     return NextResponse.json({ customer }, { status: 201 })
-  } catch (error) {
-    console.error('Registration error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

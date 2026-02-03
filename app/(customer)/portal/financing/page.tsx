@@ -325,7 +325,7 @@ export default function FinancingPage() {
           />
 
           {/* Benefits info */}
-          <Card className="border-slate-700">
+          <Card variant="dark" className="border-slate-700">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-slate-100">
                 <DollarSign className="h-5 w-5 text-[#c9a25c]" />

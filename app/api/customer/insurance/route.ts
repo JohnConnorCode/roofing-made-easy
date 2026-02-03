@@ -128,8 +128,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(claim, { status: 201 })
-  } catch (error) {
-    console.error('Insurance claim error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -179,8 +178,7 @@ export async function GET() {
     }
 
     return NextResponse.json(claims)
-  } catch (error) {
-    console.error('Insurance claims fetch error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

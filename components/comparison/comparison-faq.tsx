@@ -30,7 +30,7 @@ export function ComparisonFAQ({ city, customFaqs }: ComparisonFAQProps) {
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
               Frequently Asked Questions
             </h2>
-            <p className="text-gray-400">
+            <p className="text-slate-400">
               Common questions about finding roofers in {city.name}, {city.stateCode}
             </p>
           </div>
@@ -61,7 +61,7 @@ export function ComparisonFAQ({ city, customFaqs }: ComparisonFAQProps) {
                   }`}
                 >
                   <div className="px-5 pb-5">
-                    <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
+                    <p className="text-slate-300 leading-relaxed">{faq.answer}</p>
                   </div>
                 </div>
               </div>

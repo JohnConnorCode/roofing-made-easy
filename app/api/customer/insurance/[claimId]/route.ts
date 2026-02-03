@@ -146,8 +146,7 @@ export async function PATCH(
     }
 
     return NextResponse.json(claim)
-  } catch (error) {
-    console.error('Insurance claim update error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

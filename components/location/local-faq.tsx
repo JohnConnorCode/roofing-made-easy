@@ -60,7 +60,7 @@ export function LocalFAQ({ city, county }: LocalFAQProps) {
             <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-4">
               Frequently Asked Questions
             </h2>
-            <p className="text-gray-400 text-center mb-8">
+            <p className="text-slate-400 text-center mb-8">
               Common questions about roofing services in {locationName}, Mississippi
             </p>
 
@@ -84,7 +84,7 @@ export function LocalFAQ({ city, county }: LocalFAQProps) {
 
                   {openIndex === index && (
                     <div className="px-5 pb-5">
-                      <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
+                      <p className="text-slate-300 leading-relaxed">{faq.answer}</p>
                     </div>
                   )}
                 </div>

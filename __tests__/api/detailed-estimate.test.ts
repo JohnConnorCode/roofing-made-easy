@@ -148,7 +148,7 @@ describe('Detailed Estimate API', () => {
         lead_id: lead.id,
         name: 'Estimate 1',
         version: 1,
-        variables: sampleVariables,
+        variables: sampleVariables as unknown as Record<string, unknown>,
         price_likely: 10000,
         is_superseded: false,
       })
@@ -156,7 +156,7 @@ describe('Detailed Estimate API', () => {
         lead_id: lead.id,
         name: 'Estimate 2',
         version: 2,
-        variables: sampleVariables,
+        variables: sampleVariables as unknown as Record<string, unknown>,
         price_likely: 12000,
         is_superseded: false,
       })
@@ -209,7 +209,7 @@ describe('Detailed Estimate API', () => {
           method: 'POST',
           body: {
             name: 'New Estimate',
-            variables: sampleVariables,
+            variables: sampleVariables as unknown as Record<string, unknown>,
             overhead_percent: 10,
             profit_percent: 15,
             tax_percent: 7,
@@ -235,7 +235,7 @@ describe('Detailed Estimate API', () => {
           method: 'POST',
           body: {
             name: 'Estimate for Missing Lead',
-            variables: sampleVariables,
+            variables: sampleVariables as unknown as Record<string, unknown>,
           },
         }
       )
@@ -295,7 +295,7 @@ describe('Detailed Estimate API', () => {
           method: 'POST',
           body: {
             name: 'Invalid Overhead Estimate',
-            variables: sampleVariables,
+            variables: sampleVariables as unknown as Record<string, unknown>,
             overhead_percent: 75, // Max is 50
           },
         }
@@ -315,7 +315,7 @@ describe('Detailed Estimate API', () => {
           method: 'POST',
           body: {
             name: 'Invalid Profit Estimate',
-            variables: sampleVariables,
+            variables: sampleVariables as unknown as Record<string, unknown>,
             profit_percent: -5, // Min is 0
           },
         }
@@ -342,7 +342,7 @@ describe('Detailed Estimate API', () => {
           method: 'POST',
           body: {
             name: 'Geo Pricing Estimate',
-            variables: sampleVariables,
+            variables: sampleVariables as unknown as Record<string, unknown>,
             geographic_pricing_id: geoPricing.id,
           },
         }
@@ -367,7 +367,7 @@ describe('Detailed Estimate API', () => {
         lead_id: lead.id,
         name: 'Version 1',
         version: 1,
-        variables: sampleVariables,
+        variables: sampleVariables as unknown as Record<string, unknown>,
       })
 
       const request = createMockRequest(
@@ -376,7 +376,7 @@ describe('Detailed Estimate API', () => {
           method: 'POST',
           body: {
             name: 'Version 2',
-            variables: sampleVariables,
+            variables: sampleVariables as unknown as Record<string, unknown>,
           },
         }
       )
@@ -397,7 +397,7 @@ describe('Detailed Estimate API', () => {
           method: 'POST',
           body: {
             name: 'Draft Status Estimate',
-            variables: sampleVariables,
+            variables: sampleVariables as unknown as Record<string, unknown>,
           },
         }
       )

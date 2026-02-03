@@ -40,7 +40,6 @@ export async function GET(request: NextRequest) {
       .order('updated_at', { ascending: false })
 
     if (leadsError) {
-      console.error('Error fetching leads:', leadsError)
       return NextResponse.json(
         { error: 'Failed to fetch dashboard stats' },
         { status: 500 }
@@ -150,8 +149,7 @@ export async function GET(request: NextRequest) {
       sourceBreakdown,
       recentActivity
     })
-  } catch (error) {
-    console.error('Error in GET /api/dashboard/stats:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

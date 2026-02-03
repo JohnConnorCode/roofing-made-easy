@@ -33,7 +33,7 @@ export function LocalContent({ city }: LocalContentProps) {
               </div>
               <ul className="space-y-2">
                 {city.localContent.weatherChallenges.map((challenge, index) => (
-                  <li key={index} className="flex items-start gap-2 text-gray-400">
+                  <li key={index} className="flex items-start gap-2 text-slate-300">
                     <span className="text-gold mt-1">•</span>
                     <span>{challenge}</span>
                   </li>
@@ -51,7 +51,7 @@ export function LocalContent({ city }: LocalContentProps) {
               </div>
               <ul className="space-y-2">
                 {city.localContent.commonRoofTypes.map((type, index) => (
-                  <li key={index} className="flex items-start gap-2 text-gray-400">
+                  <li key={index} className="flex items-start gap-2 text-slate-300">
                     <span className="text-gold mt-1">•</span>
                     <span>{type}</span>
                   </li>

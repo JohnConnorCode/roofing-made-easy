@@ -67,7 +67,7 @@ export function HowToChooseSection({ city }: HowToChooseSectionProps) {
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
               How to Choose the Right Roofer in {city.name}
             </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+            <p className="text-slate-400 max-w-2xl mx-auto">
               Selecting a roofing contractor is a significant decision. Here's what to look for
               when choosing a roofer in {city.name}, Mississippi.
             </p>
@@ -88,7 +88,7 @@ export function HowToChooseSection({ city }: HowToChooseSectionProps) {
                     <h3 className="text-lg font-semibold text-white mb-2">
                       {item.title}
                     </h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">
+                    <p className="text-slate-300 text-sm leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -126,21 +126,21 @@ export function HowToChooseSection({ city }: HowToChooseSectionProps) {
             <h3 className="text-xl font-semibold text-white mb-4">
               Understanding Roofing Estimates in {city.name}
             </h3>
-            <p className="text-gray-400 leading-relaxed mb-4">
+            <p className="text-slate-300 leading-relaxed mb-4">
               When comparing roofing estimates from contractors in {city.name}, you'll
               typically see costs broken down into materials, labor, and additional items
               like permits and debris removal. The average roof replacement in {city.name}
               ranges from {city.stats.avgReplacementCost}, depending on roof size, pitch,
               and material selection.
             </p>
-            <p className="text-gray-400 leading-relaxed mb-4">
+            <p className="text-slate-300 leading-relaxed mb-4">
               Don't automatically choose the lowest bid. Instead, compare what's included:
               the quality of shingles or materials, underlayment specifications, flashing
               work, and warranty terms. A slightly higher quote that includes premium
               materials and a strong workmanship warranty often represents better long-term
               value for {city.name} homeowners.
             </p>
-            <p className="text-gray-400 leading-relaxed">
+            <p className="text-slate-300 leading-relaxed">
               Given {city.localContent.weatherChallenges[0]?.toLowerCase() || 'local weather conditions'},
               investing in quality materials and professional installation protects your
               home and can save significant money on repairs over your roof's lifetime.

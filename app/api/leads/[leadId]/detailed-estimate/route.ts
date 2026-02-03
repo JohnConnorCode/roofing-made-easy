@@ -70,7 +70,6 @@ export async function GET(
     const { data: estimates, error } = await query
 
     if (error) {
-      console.error('Error fetching estimates:', error)
       return NextResponse.json(
         { error: 'Failed to fetch estimates' },
         { status: 500 }
@@ -78,8 +77,7 @@ export async function GET(
     }
 
     return NextResponse.json({ estimates })
-  } catch (error) {
-    console.error('Error in GET /api/leads/[leadId]/detailed-estimate:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -180,7 +178,6 @@ export async function POST(
       .single()
 
     if (error) {
-      console.error('Error creating estimate:', error)
       return NextResponse.json(
         { error: 'Failed to create estimate' },
         { status: 500 }
@@ -188,8 +185,7 @@ export async function POST(
     }
 
     return NextResponse.json({ estimate }, { status: 201 })
-  } catch (error) {
-    console.error('Error in POST /api/leads/[leadId]/detailed-estimate:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

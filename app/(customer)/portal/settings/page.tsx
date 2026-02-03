@@ -18,12 +18,15 @@ import {
   Trash2,
   Save,
   Plus,
+  Loader2,
 } from 'lucide-react'
+import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 import type { NotificationPreferences } from '@/lib/supabase/types'
 
 export default function SettingsPage() {
   const router = useRouter()
   const { showToast } = useToast()
+  const { confirm, ConfirmDialog } = useConfirmDialog()
   const {
     customer,
     linkedLeads,
@@ -161,12 +164,16 @@ export default function SettingsPage() {
   }
 
   const handleRemoveProperty = async (leadLinkId: string) => {
-    if (!confirm('Are you sure you want to remove this property from your account?')) {
-      return
-    }
+    const confirmed = await confirm({
+      title: 'Remove Property',
+      description: 'Are you sure you want to remove this property from your account? You can always add it back later using your estimate link.',
+      confirmText: 'Remove',
+      variant: 'danger',
+    })
+    if (!confirmed) return
 
     try {
-      const response = await fetch(`/api/customer/leads/${leadLinkId}`, {
+      const response = await fetch(`/api/customer/lead-links/${leadLinkId}`, {
         method: 'DELETE',
       })
 
@@ -174,7 +181,7 @@ export default function SettingsPage() {
 
       removeLinkedLead(leadLinkId)
       showToast('Property removed', 'success')
-    } catch (error) {
+    } catch {
       showToast('Failed to remove property', 'error')
     }
   }
@@ -232,7 +239,7 @@ export default function SettingsPage() {
         <div className="lg:col-span-3">
           {/* Profile section */}
           {activeSection === 'profile' && (
-            <Card className="border-slate-700">
+            <Card variant="dark" className="border-slate-700">
               <CardHeader>
                 <CardTitle className="text-slate-100">Profile Information</CardTitle>
                 <CardDescription>Update your personal information</CardDescription>
@@ -283,7 +290,7 @@ export default function SettingsPage() {
 
           {/* Notifications section */}
           {activeSection === 'notifications' && (
-            <Card className="border-slate-700">
+            <Card variant="dark" className="border-slate-700">
               <CardHeader>
                 <CardTitle className="text-slate-100">Notification Preferences</CardTitle>
                 <CardDescription>Choose how you want to receive updates</CardDescription>
@@ -338,7 +345,7 @@ export default function SettingsPage() {
 
           {/* Password section */}
           {activeSection === 'password' && (
-            <Card className="border-slate-700">
+            <Card variant="dark" className="border-slate-700">
               <CardHeader>
                 <CardTitle className="text-slate-100">Change Password</CardTitle>
                 <CardDescription>Update your account password</CardDescription>
@@ -380,7 +387,7 @@ export default function SettingsPage() {
 
           {/* Properties section */}
           {activeSection === 'properties' && (
-            <Card className="border-slate-700">
+            <Card variant="dark" className="border-slate-700">
               <CardHeader>
                 <CardTitle className="text-slate-100">Linked Properties</CardTitle>
                 <CardDescription>Manage properties connected to your account</CardDescription>
@@ -456,6 +463,7 @@ export default function SettingsPage() {
           )}
         </div>
       </div>
+      <ConfirmDialog />
     </div>
   )
 }

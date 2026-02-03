@@ -36,13 +36,11 @@ export async function GET(
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Region not found' }, { status: 404 })
       }
-      console.error('Error fetching region:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ region: data })
-  } catch (error) {
-    console.error('Geographic pricing error:', error)
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -97,13 +95,11 @@ export async function PATCH(
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Region not found' }, { status: 404 })
       }
-      console.error('Error updating region:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ region: data })
-  } catch (error) {
-    console.error('Geographic pricing error:', error)
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -126,13 +122,11 @@ export async function DELETE(
       .eq('id', regionId)
 
     if (error) {
-      console.error('Error deleting region:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Geographic pricing error:', error)
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

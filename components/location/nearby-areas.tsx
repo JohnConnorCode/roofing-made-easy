@@ -22,7 +22,7 @@ export function NearbyAreas({ city }: NearbyAreasProps) {
           <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-4">
             Also Serving Nearby Areas
           </h2>
-          <p className="text-gray-400 text-center mb-8">
+          <p className="text-slate-400 text-center mb-8">
             In addition to {city.name}, Farrell Roofing serves these nearby communities in Northeast Mississippi.
           </p>
 
@@ -74,7 +74,7 @@ export function CountyAreas({ countySlug, countyName }: CountyAreasProps) {
           <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-4">
             Cities We Serve in {countyName}
           </h2>
-          <p className="text-gray-400 text-center mb-8">
+          <p className="text-slate-400 text-center mb-8">
             Farrell Roofing provides comprehensive roofing services throughout {countyName}.
           </p>
 

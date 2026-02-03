@@ -2,10 +2,10 @@
  * Admin Visual QA - Screenshot all admin pages to verify styling
  * Run with: npx playwright test e2e/admin-visual-qa.spec.ts --headed
  */
-import { test, expect } from '@playwright/test'
+import { test, expect, Page } from '@playwright/test'
 
 // Helper to login and navigate
-async function loginAsAdmin(page: ReturnType<typeof test.step>) {
+async function loginAsAdmin(page: Page) {
   await page.goto('/login')
   await page.fill('input[type="email"]', process.env.TEST_ADMIN_EMAIL || 'admin@test.com')
   await page.fill('input[type="password"]', process.env.TEST_ADMIN_PASSWORD || 'testpassword')

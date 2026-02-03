@@ -36,7 +36,8 @@ export function createMockRequest(
     requestInit.body = JSON.stringify(body)
   }
 
-  return new NextRequest(new URL(url, 'http://localhost:3000'), requestInit)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return new NextRequest(new URL(url, 'http://localhost:3000'), requestInit as any)
 }
 
 /**
@@ -82,6 +83,7 @@ export interface MockLineItem {
   notes: string | null
   created_at: string
   updated_at: string
+  [key: string]: unknown
 }
 
 export interface MockMacro {
@@ -98,6 +100,7 @@ export interface MockMacro {
   notes: string | null
   created_at: string
   updated_at: string
+  [key: string]: unknown
 }
 
 export interface MockMacroLineItem {
@@ -130,6 +133,7 @@ export interface MockGeographicPricing {
   is_active: boolean
   created_at: string
   updated_at: string
+  [key: string]: unknown
 }
 
 export interface MockRoofSketch {
@@ -213,6 +217,7 @@ export interface MockDetailedEstimate {
   customer_notes: string | null
   created_at: string
   updated_at: string
+  [key: string]: unknown
 }
 
 export interface MockLead {

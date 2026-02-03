@@ -66,7 +66,6 @@ export async function GET(
           { status: 404 }
         )
       }
-      console.error('Error fetching macro:', error)
       return NextResponse.json(
         { error: 'Failed to fetch macro' },
         { status: 500 }
@@ -74,8 +73,7 @@ export async function GET(
     }
 
     return NextResponse.json({ macro })
-  } catch (error) {
-    console.error('Error in GET /api/macros/[macroId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -134,7 +132,6 @@ export async function PATCH(
           { status: 404 }
         )
       }
-      console.error('Error updating macro:', error)
       return NextResponse.json(
         { error: 'Failed to update macro' },
         { status: 500 }
@@ -142,8 +139,7 @@ export async function PATCH(
     }
 
     return NextResponse.json({ macro })
-  } catch (error) {
-    console.error('Error in PATCH /api/macros/[macroId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -185,7 +181,6 @@ export async function DELETE(
       .eq('id', macroId)
 
     if (error) {
-      console.error('Error deleting macro:', error)
       return NextResponse.json(
         { error: 'Failed to delete macro' },
         { status: 500 }
@@ -193,8 +188,7 @@ export async function DELETE(
     }
 
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Error in DELETE /api/macros/[macroId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -241,7 +235,6 @@ export async function POST(
           { status: 409 }
         )
       }
-      console.error('Error adding line item to macro:', error)
       return NextResponse.json(
         { error: 'Failed to add line item to macro' },
         { status: 500 }
@@ -249,8 +242,7 @@ export async function POST(
     }
 
     return NextResponse.json({ macroLineItem }, { status: 201 })
-  } catch (error) {
-    console.error('Error in POST /api/macros/[macroId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

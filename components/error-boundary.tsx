@@ -36,20 +36,6 @@ export class ErrorBoundary extends Component<Props, State> {
       Sentry.captureException(error)
     })
 
-    // Additional logging in development
-    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-      const errorData = {
-        message: error.message,
-        stack: error.stack,
-        componentStack: errorInfo.componentStack,
-        timestamp: new Date().toISOString(),
-        url: window.location.href,
-        userAgent: navigator.userAgent,
-      }
-      console.group('Error Details')
-      console.log('Error:', errorData)
-      console.groupEnd()
-    }
   }
 
   handleRetry = () => {

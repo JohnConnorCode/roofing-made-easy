@@ -18,7 +18,16 @@ function hasValidSupabaseConfig(): boolean {
 function isAdminRoute(pathname: string): boolean {
   return pathname.startsWith('/dashboard') ||
          pathname.startsWith('/leads') ||
-         pathname.startsWith('/pricing')
+         pathname.startsWith('/estimates') ||
+         pathname.startsWith('/pricing') ||
+         pathname.startsWith('/macros') ||
+         pathname.startsWith('/customers') ||
+         pathname.startsWith('/settings') ||
+         pathname.startsWith('/line-items') ||
+         pathname.startsWith('/team') ||
+         pathname.startsWith('/tasks') ||
+         pathname.startsWith('/templates') ||
+         pathname.startsWith('/workflows')
 }
 
 // Check if path is a customer portal route
@@ -107,7 +116,21 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Refresh session if expired
+  // Refresh session if expired - this updates cookies automatically
+  const { data: { session } } = await supabase.auth.getSession()
+
+  // If session exists but is close to expiry (within 60 seconds), refresh it
+  if (session?.expires_at) {
+    const expiresAt = session.expires_at * 1000 // Convert to ms
+    const now = Date.now()
+    const bufferMs = 60 * 1000 // 60 seconds buffer
+
+    if (expiresAt - now < bufferMs) {
+      await supabase.auth.refreshSession()
+    }
+  }
+
+  // Get user after potential refresh
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -118,6 +141,20 @@ export async function middleware(request: NextRequest) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
       url.searchParams.set('redirectTo', pathname)
+      return NextResponse.redirect(url)
+    }
+
+    // Verify user is an admin (not just authenticated)
+    const isAdmin =
+      user.user_metadata?.role === 'admin' ||
+      user.app_metadata?.role === 'admin' ||
+      user.user_metadata?.is_admin === true ||
+      user.app_metadata?.is_admin === true
+
+    if (!isAdmin) {
+      // Non-admin user trying to access admin routes - redirect to home
+      const url = request.nextUrl.clone()
+      url.pathname = '/'
       return NextResponse.redirect(url)
     }
   }
@@ -156,7 +193,16 @@ export const config = {
     // Admin routes
     '/dashboard/:path*',
     '/leads/:path*',
+    '/estimates/:path*',
     '/pricing/:path*',
+    '/macros/:path*',
+    '/customers/:path*',
+    '/settings/:path*',
+    '/line-items/:path*',
+    '/team/:path*',
+    '/tasks/:path*',
+    '/templates/:path*',
+    '/workflows/:path*',
     '/login',
     // Customer portal routes
     '/portal/:path*',

@@ -8,6 +8,7 @@ import {
   createRateLimitHeaders,
 } from '@/lib/rate-limit'
 import { requireAdmin } from '@/lib/api/auth'
+import { triggerWorkflows } from '@/lib/communication/workflow-engine'
 
 // POST is public - anyone can create a lead (with rate limiting)
 export async function POST(request: NextRequest) {
@@ -49,7 +50,6 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (leadError || !lead) {
-      console.error('Error creating lead:', leadError)
       return NextResponse.json(
         { error: 'Failed to create lead' },
         { status: 500 }
@@ -65,6 +65,14 @@ export async function POST(request: NextRequest) {
       supabase.from('intakes').insert({ lead_id: leadId } as never),
     ])
 
+    // Trigger lead_created workflows (async, don't wait)
+    triggerWorkflows('lead_created', {
+      leadId,
+      data: {
+        source: parsed.data.source || 'web_funnel',
+      },
+    }).catch(err => console.error('Failed to trigger lead_created workflows:', err))
+
     return NextResponse.json(
       { lead },
       {
@@ -73,7 +81,7 @@ export async function POST(request: NextRequest) {
       }
     )
   } catch (error) {
-    console.error('Error in POST /api/leads:', error)
+    console.error('Lead creation error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -120,7 +128,6 @@ export async function GET(request: NextRequest) {
     const { data: leads, error, count } = await query
 
     if (error) {
-      console.error('Error fetching leads:', error)
       return NextResponse.json(
         { error: 'Failed to fetch leads' },
         { status: 500 }
@@ -129,7 +136,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ leads, total: count })
   } catch (error) {
-    console.error('Error in GET /api/leads:', error)
+    console.error('Leads fetch error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

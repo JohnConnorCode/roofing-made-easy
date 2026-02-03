@@ -182,7 +182,7 @@ export function CountyCitiesGrid({ countySlug, countyName, currentCity }: County
             }`}
           >
             <span className="font-medium">{city.name}</span>
-            <span className="block text-xs text-gray-500 mt-1">
+            <span className="block text-xs text-slate-400 mt-1">
               Pop. {city.population.toLocaleString()}
             </span>
           </Link>
@@ -217,7 +217,7 @@ export function RegionalNavigation({ currentCounty }: RegionalNavigationProps) {
             }`}
           >
             <span className="font-medium">{county.name}</span>
-            <span className="block text-xs text-gray-500 mt-1">
+            <span className="block text-xs text-slate-400 mt-1">
               {county.cities.length} cities
             </span>
           </Link>
@@ -313,7 +313,7 @@ export function FooterLocationLinks() {
                 <Link
                   key={city.slug}
                   href={`/${city.slug}-roofing`}
-                  className="text-xs text-gray-400 hover:text-white transition-colors"
+                  className="text-xs text-slate-400 hover:text-white transition-colors"
                 >
                   {city.name}
                 </Link>
@@ -341,7 +341,7 @@ export function ComparisonPageLink({ city, variant = 'inline' }: ComparisonLinkP
         href={href}
         className="block p-4 bg-gradient-to-r from-gold/10 to-gold/5 border border-gold/20 hover:border-gold/40 rounded-xl transition-all"
       >
-        <p className="text-sm text-gray-400 mb-1">Compare Local Contractors</p>
+        <p className="text-sm text-slate-400 mb-1">Compare Local Contractors</p>
         <p className="text-white font-medium">
           Best Roofing Companies in {city.name} →
         </p>

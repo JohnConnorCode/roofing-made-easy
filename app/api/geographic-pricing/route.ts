@@ -45,13 +45,11 @@ export async function GET(request: Request) {
     const { data, error } = await query
 
     if (error) {
-      console.error('Error fetching geographic pricing:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ regions: data || [] })
-  } catch (error) {
-    console.error('Geographic pricing error:', error)
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -93,13 +91,11 @@ export async function POST(request: Request) {
       .single()
 
     if (error) {
-      console.error('Error creating geographic pricing:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ region: data }, { status: 201 })
-  } catch (error) {
-    console.error('Geographic pricing error:', error)
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

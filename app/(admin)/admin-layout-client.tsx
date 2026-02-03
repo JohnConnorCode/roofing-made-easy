@@ -20,6 +20,14 @@ import {
   Map,
   ChevronDown,
   ChevronRight,
+  CheckSquare,
+  UserCog,
+  Mail,
+  Zap,
+  ClipboardList,
+  BookOpen,
+  Receipt,
+  MessageSquare,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -46,9 +54,23 @@ const NAV_ITEMS: NavItem[] = [
     children: [
       { href: '/leads/pipeline', label: 'Pipeline View', icon: Kanban },
       { href: '/leads', label: 'All Leads', icon: List },
+      { href: '/estimates', label: 'Estimates', icon: ClipboardList },
+      { href: '/invoices', label: 'Invoices', icon: Receipt },
+      { href: '/messages', label: 'Messages', icon: MessageSquare },
     ],
   },
+  { href: '/tasks', label: 'Tasks', icon: CheckSquare },
   { href: '/customers', label: 'Customers', icon: Users2 },
+  { href: '/team', label: 'Team', icon: UserCog },
+  {
+    href: '/automation',
+    label: 'Automation',
+    icon: Zap,
+    children: [
+      { href: '/workflows', label: 'Workflows', icon: Zap },
+      { href: '/templates', label: 'Templates', icon: Mail },
+    ],
+  },
   {
     href: '/pricing',
     label: 'Pricing',
@@ -57,10 +79,11 @@ const NAV_ITEMS: NavItem[] = [
       { href: '/pricing', label: 'Base Rates', icon: DollarSign },
       { href: '/pricing/geographic', label: 'Geographic', icon: Map },
       { href: '/line-items', label: 'Line Items', icon: Tag },
-      { href: '/macros', label: 'Templates', icon: FileText },
+      { href: '/macros', label: 'Estimate Templates', icon: FileText },
     ],
   },
   { href: '/settings', label: 'Settings', icon: Settings },
+  { href: '/features', label: 'Platform Guide', icon: BookOpen },
 ]
 
 export default function AdminLayoutClient({

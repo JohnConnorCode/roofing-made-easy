@@ -120,8 +120,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(application, { status: 201 })
-  } catch (error) {
-    console.error('Financing application error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -171,8 +170,7 @@ export async function GET() {
     }
 
     return NextResponse.json(applications)
-  } catch (error) {
-    console.error('Financing fetch error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

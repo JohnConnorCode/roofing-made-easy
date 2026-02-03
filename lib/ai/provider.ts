@@ -114,9 +114,9 @@ export async function withFallback<T>(
       if (result.success) {
         return result
       }
-      console.warn(`Provider ${provider.name} failed:`, result.error)
-    } catch (error) {
-      console.error(`Provider ${provider.name} threw error:`, error)
+      // Provider failed, try next
+    } catch {
+      // Provider threw error, try next
     }
   }
 

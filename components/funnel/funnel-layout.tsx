@@ -1,6 +1,8 @@
 'use client'
 
-import { useCurrentStep } from '@/stores/funnelStore'
+import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
+import { useCurrentStep, useFunnelStore } from '@/stores/funnelStore'
 import { ProgressBar } from './progress-bar'
 import { cn } from '@/lib/utils'
 import { SiteHeader } from '@/components/layout/site-header'
@@ -13,6 +15,30 @@ interface FunnelLayoutProps {
 
 export function FunnelLayout({ children, className }: FunnelLayoutProps) {
   const currentStep = useCurrentStep()
+  const pathname = usePathname()
+  const { address, firstName, email } = useFunnelStore()
+
+  // Scroll to top on every page/step change
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  // Warn users before leaving if they have unsaved progress
+  useEffect(() => {
+    const hasProgress = address || firstName || email
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      // Only warn if user has entered data and hasn't completed the funnel
+      if (hasProgress && currentStep < 4) {
+        e.preventDefault()
+        // Modern browsers ignore custom messages, but this triggers the default warning
+        return ''
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [address, firstName, email, currentStep])
 
   return (
     <div className="min-h-screen bg-gradient-dark flex flex-col">

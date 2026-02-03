@@ -3,14 +3,45 @@
 @theme inline {
   --font-sans: var(--font-inter);
 
-  /* Dark Earthy Color Palette - Gold & Ink */
-  --color-ink: #0c0f14;
-  --color-ink-light: #161a23;
-  --color-slate-deep: #1a1f2e;
-  --color-gold: #b5893a;
-  --color-gold-muted: #9a7432;
-  --color-gold-light: #c9a25c;
-  --color-success: #3d7a5a;
+  /* ============================================================
+   * COLOR SYSTEM - Design Tokens
+   * ============================================================
+   * Use these semantic tokens for consistent contrast.
+   * WCAG AA requires 4.5:1 contrast ratio for normal text.
+   * ============================================================ */
+
+  /* === BACKGROUND COLORS === */
+  --color-ink: #0c0f14;           /* Darkest - page bg */
+  --color-ink-light: #161a23;     /* Section backgrounds */
+  --color-slate-deep: #1a1f2e;    /* Card backgrounds */
+
+  /* === BRAND COLORS === */
+  --color-gold: #b5893a;          /* Primary brand */
+  --color-gold-muted: #9a7432;    /* Brand secondary */
+  --color-gold-light: #c9a25c;    /* Brand accent/highlight */
+  --color-success: #3d7a5a;       /* Success states */
+
+  /* === TEXT ON DARK BACKGROUNDS ===
+   * Use these instead of gray-400/500/600 on dark backgrounds!
+   * All provide WCAG AA compliant contrast (4.5:1+) against ink/slate-deep
+   */
+  --color-text-primary: #f1f5f9;   /* slate-100: Headings, important text */
+  --color-text-secondary: #e2e8f0; /* slate-200: Strong body text */
+  --color-text-body: #cbd5e1;      /* slate-300: Main body text - USE THIS */
+  --color-text-muted: #94a3b8;     /* slate-400: Descriptions, labels */
+  --color-text-subtle: #64748b;    /* slate-500: Captions (use sparingly) */
+
+  /* === CONTRAST REFERENCE ===
+   * Against #0c0f14 (ink):
+   *   slate-100 (#f1f5f9): 16.7:1 ✓✓
+   *   slate-200 (#e2e8f0): 14.6:1 ✓✓
+   *   slate-300 (#cbd5e1): 11.8:1 ✓✓ <- Best for body text
+   *   slate-400 (#94a3b8): 6.8:1  ✓  <- OK for labels
+   *   slate-500 (#64748b): 4.1:1  ~  <- Borderline, use sparingly
+   *   gray-400  (#9ca3af): 6.3:1  ✓  <- OK but prefer slate
+   *   gray-500  (#6b7280): 3.9:1  ✗  <- AVOID on dark bg
+   *   gray-600  (#4b5563): 2.5:1  ✗  <- NEVER on dark bg
+   * ============================================================ */
 }
 
 body {

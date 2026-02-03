@@ -51,7 +51,6 @@ export async function GET(
           { status: 404 }
         )
       }
-      console.error('Error fetching line item:', error)
       return NextResponse.json(
         { error: 'Failed to fetch line item' },
         { status: 500 }
@@ -59,8 +58,7 @@ export async function GET(
     }
 
     return NextResponse.json({ lineItem })
-  } catch (error) {
-    console.error('Error in GET /api/line-items/[itemId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -110,7 +108,6 @@ export async function PATCH(
           { status: 409 }
         )
       }
-      console.error('Error updating line item:', error)
       return NextResponse.json(
         { error: 'Failed to update line item' },
         { status: 500 }
@@ -118,8 +115,7 @@ export async function PATCH(
     }
 
     return NextResponse.json({ lineItem })
-  } catch (error) {
-    console.error('Error in PATCH /api/line-items/[itemId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -146,7 +142,6 @@ export async function DELETE(
       .eq('id', itemId)
 
     if (error) {
-      console.error('Error deleting line item:', error)
       return NextResponse.json(
         { error: 'Failed to delete line item' },
         { status: 500 }
@@ -154,8 +149,7 @@ export async function DELETE(
     }
 
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Error in DELETE /api/line-items/[itemId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

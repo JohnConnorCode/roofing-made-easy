@@ -165,8 +165,8 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ custo
       const data = await response.json()
       setCustomer(prev => prev ? { ...prev, ...data.customer } : null)
       setIsEditing(false)
-    } catch (err) {
-      console.error('Failed to save customer:', err)
+    } catch {
+      // Save failed silently
     } finally {
       setIsSaving(false)
     }

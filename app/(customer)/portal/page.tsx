@@ -1,16 +1,20 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useCustomerStore } from '@/stores/customerStore'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useToast } from '@/components/ui/toast'
 import {
   StatusCard,
   EstimateSummary,
   ProgressTimeline,
+  DocumentHub,
+  QuoteViewer,
+  ProjectUpdates,
   type TimelineStep,
 } from '@/components/customer'
 import {
@@ -28,6 +32,7 @@ const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || ''
 
 export default function CustomerPortalPage() {
   const router = useRouter()
+  const { showToast } = useToast()
   const {
     customer,
     linkedLeads,
@@ -46,6 +51,91 @@ export default function CustomerPortalPage() {
   } = useCustomerStore()
 
   const [isInitializing, setIsInitializing] = useState(true)
+  const [isUploading, setIsUploading] = useState(false)
+
+  // Refetch customer data (used after upload)
+  const refetchData = useCallback(async () => {
+    try {
+      const response = await fetch('/api/customer/profile')
+      if (response.ok) {
+        const data = await response.json()
+        setLinkedLeads(data.linkedLeads || [])
+      }
+    } catch {
+      // Refetch failed silently
+    }
+  }, [setLinkedLeads])
+
+  // Handle photo upload
+  const handlePhotoUpload = useCallback(async (files: FileList) => {
+    if (!selectedLeadId || files.length === 0) return
+
+    setIsUploading(true)
+    let successCount = 0
+    let errorCount = 0
+
+    try {
+      for (const file of Array.from(files)) {
+        try {
+          // Get signed URL
+          const signedUrlResponse = await fetch(`/api/customer/leads/${selectedLeadId}/uploads`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              filename: file.name,
+              contentType: file.type,
+            }),
+          })
+
+          if (!signedUrlResponse.ok) {
+            errorCount++
+            continue
+          }
+
+          const { uploadId, signedUrl, token } = await signedUrlResponse.json()
+
+          // Upload file to storage
+          const uploadResponse = await fetch(signedUrl, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': file.type,
+            },
+            body: file,
+          })
+
+          if (!uploadResponse.ok) {
+            errorCount++
+            continue
+          }
+
+          // Mark upload as complete
+          await fetch(`/api/customer/leads/${selectedLeadId}/uploads`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              uploadId,
+              fileSize: file.size,
+            }),
+          })
+
+          successCount++
+        } catch {
+          errorCount++
+        }
+      }
+
+      if (successCount > 0) {
+        showToast(`${successCount} photo${successCount > 1 ? 's' : ''} uploaded successfully`, 'success')
+        // Refetch to show new photos
+        await refetchData()
+      }
+      if (errorCount > 0) {
+        showToast(`${errorCount} photo${errorCount > 1 ? 's' : ''} failed to upload`, 'error')
+      }
+    } finally {
+      setIsUploading(false)
+    }
+  }, [selectedLeadId, showToast, refetchData])
 
   // Fetch customer data on mount
   useEffect(() => {
@@ -83,8 +173,8 @@ export default function CustomerPortalPage() {
           const primaryLead = data.linkedLeads.find((l: { is_primary: boolean }) => l.is_primary)
           setSelectedLeadId(primaryLead?.lead_id || data.linkedLeads[0].lead_id)
         }
-      } catch (error) {
-        console.error('Error fetching customer data:', error)
+      } catch {
+        // Failed to fetch customer data
       } finally {
         setLoading(false)
         setIsInitializing(false)
@@ -192,7 +282,7 @@ export default function CustomerPortalPage() {
       {linkedLeads.length > 0 && (
         <>
           {/* Progress tracker */}
-          <Card className="border-slate-700">
+          <Card variant="dark" className="border-slate-700">
             <CardHeader>
               <CardTitle className="text-slate-100">Your Progress</CardTitle>
             </CardHeader>
@@ -216,6 +306,41 @@ export default function CustomerPortalPage() {
                 city: property?.city || undefined,
                 state: property?.state || undefined,
               }}
+            />
+          )}
+
+          {/* Quote and Updates Grid */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            {/* Quote Viewer */}
+            {estimate && selectedLeadId && (
+              <QuoteViewer
+                leadId={selectedLeadId}
+                estimate={{
+                  price_low: estimate.price_low,
+                  price_likely: estimate.price_likely,
+                  price_high: estimate.price_high,
+                  created_at: estimate.created_at,
+                  valid_until: estimate.valid_until || undefined,
+                }}
+                customerName={customer?.first_name ? `${customer.first_name} ${customer.last_name || ''}` : undefined}
+                jobType={currentLead?.lead?.intake?.job_type || undefined}
+              />
+            )}
+
+            {/* Project Updates */}
+            {selectedLeadId && (
+              <ProjectUpdates leadId={selectedLeadId} />
+            )}
+          </div>
+
+          {/* Document Hub / Photos */}
+          {selectedLeadId && (
+            <DocumentHub
+              photos={currentLead?.lead?.uploads || []}
+              supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL || ''}
+              leadId={selectedLeadId}
+              onUpload={handlePhotoUpload}
+              isUploading={isUploading}
             />
           )}
 

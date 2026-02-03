@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/data/blog'
 import {
@@ -86,7 +87,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {post.title}
             </h1>
 
-            <div className="flex items-center justify-center gap-6 text-sm text-slate-400">
+            <div className="flex items-center justify-center gap-6 text-sm text-slate-400 mb-8">
               <span className="flex items-center gap-2">
                 <User className="h-4 w-4" />
                 {post.author}
@@ -104,6 +105,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 {post.readTime} min read
               </span>
             </div>
+
+            {/* Featured Image */}
+            {post.image && (
+              <div className="relative aspect-video rounded-2xl overflow-hidden mb-8">
+                <Image
+                  src={post.image}
+                  alt={post.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 800px"
+                />
+              </div>
+            )}
           </header>
 
           {/* Content */}

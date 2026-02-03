@@ -100,8 +100,7 @@ export async function PATCH(
     }
 
     return NextResponse.json(link)
-  } catch (error) {
-    console.error('Lead link update error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -155,8 +154,7 @@ export async function DELETE(
     }
 
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Lead link delete error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

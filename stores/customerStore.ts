@@ -11,6 +11,7 @@ import type {
   Estimate,
   Property,
   Intake,
+  Upload,
 } from '@/lib/supabase/types'
 
 // Extended lead with related data
@@ -19,6 +20,7 @@ export interface CustomerLeadWithDetails extends CustomerLead {
     property?: Property
     intake?: Intake
     estimate?: Estimate
+    uploads?: Upload[]
   }
 }
 

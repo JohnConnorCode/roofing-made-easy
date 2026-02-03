@@ -42,7 +42,7 @@ export function ServicesCTA({ city }: ServicesCTAProps) {
           <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-4">
             Roofing Services in {city.name}
           </h2>
-          <p className="text-gray-400 text-center mb-8 max-w-2xl mx-auto">
+          <p className="text-slate-400 text-center mb-8 max-w-2xl mx-auto">
             From routine maintenance to complete replacements, we offer comprehensive roofing solutions for {city.name} homeowners.
           </p>
 
@@ -57,7 +57,7 @@ export function ServicesCTA({ city }: ServicesCTAProps) {
                   <service.icon className="w-6 h-6 text-gold" />
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{service.name}</h3>
-                <p className="text-gray-400 text-sm mb-4">{service.description}</p>
+                <p className="text-slate-300 text-sm mb-4">{service.description}</p>
                 <span className="inline-flex items-center gap-1 text-gold text-sm group-hover:gap-2 transition-all">
                   Learn more
                   <ArrowRight className="w-4 h-4" />

@@ -44,7 +44,7 @@ export function EstimateSummary({
 
   if (compact) {
     return (
-      <Card className="border-slate-700">
+      <Card variant="dark" className="border-slate-700">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>

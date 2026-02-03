@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -37,12 +38,35 @@ export default function ContactPage() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          subject: formData.subject || undefined,
+          message: formData.message,
+        }),
+      })
 
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    showToast('Message sent successfully! We\'ll be in touch soon.', 'success')
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message')
+      }
+
+      setIsSubmitted(true)
+      showToast('Message sent successfully! We\'ll be in touch soon.', 'success')
+    } catch (err) {
+      showToast(
+        err instanceof Error ? err.message : 'Failed to send message. Please try again.',
+        'error'
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -54,8 +78,18 @@ export default function ContactPage() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
-        <div className="mx-auto max-w-6xl px-4">
+      <section className="py-16 md:py-24 bg-[#161a23] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <Image
+            src="/images/contact/office.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#161a23] via-[#161a23]/90 to-[#161a23]/70" />
+        </div>
+        <div className="mx-auto max-w-6xl px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
               Get In Touch

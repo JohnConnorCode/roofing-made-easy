@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
     const { data: rules, error } = await query
 
     if (error) {
-      console.error('Error fetching pricing rules:', error)
       return NextResponse.json(
         { error: 'Failed to fetch pricing rules' },
         { status: 500 }
@@ -38,8 +37,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ rules })
-  } catch (error) {
-    console.error('Error in GET /api/pricing:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -76,7 +74,6 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Error creating pricing rule:', error)
       return NextResponse.json(
         { error: 'Failed to create pricing rule' },
         { status: 500 }
@@ -84,8 +81,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ rule }, { status: 201 })
-  } catch (error) {
-    console.error('Error in POST /api/pricing:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -119,7 +115,6 @@ export async function PATCH(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Error updating pricing rule:', error)
       return NextResponse.json(
         { error: 'Failed to update pricing rule' },
         { status: 500 }
@@ -127,8 +122,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     return NextResponse.json({ rule })
-  } catch (error) {
-    console.error('Error in PATCH /api/pricing:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

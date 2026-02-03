@@ -21,7 +21,13 @@ import {
   MapPin,
   Star,
   ArrowRight,
+  Home,
+  Layers,
+  AlertTriangle,
+  FileText,
+  Image,
 } from 'lucide-react'
+import type { RoofPitch, TimelineUrgency } from '@/lib/supabase/types'
 
 function getIncludedItems(jobType: JobType | null): string[] {
   switch (jobType) {
@@ -93,12 +99,63 @@ export interface EstimateDocumentProps {
     impact: number
     description: string
   }>
+  validUntil?: string
   onScheduleConsultation: () => void
   onShare?: () => void
   onDownload?: () => void
   onBack?: () => void
   onStartNew?: () => void
   calendlyUrl?: string
+  isPublicView?: boolean
+  // Project details
+  roofAgeYears?: number | null
+  roofPitch?: RoofPitch | null
+  stories?: number
+  hasSkylights?: boolean
+  hasChimneys?: boolean
+  hasSolarPanels?: boolean
+  issues?: string[]
+  timelineUrgency?: TimelineUrgency | null
+  hasInsuranceClaim?: boolean
+  insuranceCompany?: string
+  photos?: Array<{ previewUrl: string }>
+  estimateNumber?: string
+  estimateDate?: string
+}
+
+// Helper to format issue names
+function formatIssue(issue: string): string {
+  return issue
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (l) => l.toUpperCase())
+}
+
+// Helper to format timeline urgency
+function formatTimeline(urgency: TimelineUrgency | null): string {
+  if (!urgency) return 'Not specified'
+  const labels: Record<TimelineUrgency, string> = {
+    emergency: 'Emergency (24-48hrs)',
+    asap: 'ASAP (1 week)',
+    within_month: 'Within a Month',
+    within_3_months: 'Within 3 Months',
+    flexible: 'Flexible',
+    just_exploring: 'Just Exploring',
+  }
+  return labels[urgency] || urgency
+}
+
+// Helper to format roof pitch
+function formatPitch(pitch: RoofPitch | null): string {
+  if (!pitch) return 'Not specified'
+  const labels: Record<RoofPitch, string> = {
+    flat: 'Flat (0-2/12)',
+    low: 'Low (3-4/12)',
+    medium: 'Medium (5-7/12)',
+    steep: 'Steep (8-10/12)',
+    very_steep: 'Very Steep (11+/12)',
+    unknown: 'Unknown',
+  }
+  return labels[pitch] || pitch
 }
 
 export function EstimateDocument({
@@ -114,12 +171,28 @@ export function EstimateDocument({
   priceHigh,
   explanation,
   factors,
+  validUntil,
   onScheduleConsultation,
   onShare,
   onDownload,
   onBack,
   onStartNew,
   calendlyUrl,
+  isPublicView,
+  // Project details
+  roofAgeYears,
+  roofPitch,
+  stories = 1,
+  hasSkylights = false,
+  hasChimneys = false,
+  hasSolarPanels = false,
+  issues = [],
+  timelineUrgency,
+  hasInsuranceClaim = false,
+  insuranceCompany,
+  photos = [],
+  estimateNumber,
+  estimateDate,
 }: EstimateDocumentProps) {
   const phoneNumber = getPhoneDisplay()
 
@@ -134,9 +207,37 @@ export function EstimateDocument({
     : null
 
   const jobTypeLabel = jobType?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()) || 'Roofing Project'
+  const materialLabel = roofMaterial?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()) || 'Not specified'
+
+  // Generate estimate number if not provided
+  const displayEstimateNumber = estimateNumber || `EST-${Date.now().toString(36).toUpperCase()}`
+  const displayEstimateDate = estimateDate || new Date().toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
+  // Calculate validity (30 days from now)
+  const validityDate = validUntil || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
+  // Check if we have any project details to show
+  const hasProjectDetails = roofSizeSqft || roofAgeYears || stories > 1 || hasSkylights || hasChimneys || hasSolarPanels || issues.length > 0 || timelineUrgency || hasInsuranceClaim || photos.length > 0
 
   return (
     <div className="space-y-6">
+      {/* Estimate Header with number and date */}
+      <div className="flex items-center justify-between text-sm text-slate-500">
+        <div className="flex items-center gap-2">
+          <FileText className="h-4 w-4" />
+          <span>{displayEstimateNumber}</span>
+        </div>
+        <div>{displayEstimateDate}</div>
+      </div>
+
       {/* Header with success message */}
       <div className="text-center">
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#1a1f2e] border border-[#3d7a5a]">
@@ -241,6 +342,138 @@ export function EstimateDocument({
         </CardContent>
       </Card>
 
+      {/* Project Summary - Show collected data */}
+      {hasProjectDetails && (
+        <Card className="border-slate-700/50 bg-[#161a23]">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Home className="h-5 w-5 text-[#c9a25c]" />
+              <h3 className="font-semibold text-slate-100">Your Project Details</h3>
+            </div>
+
+            {/* Property Info Grid */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-4">
+              {roofSizeSqft && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">Roof Size</p>
+                  <p className="text-slate-200 font-medium">{roofSizeSqft.toLocaleString()} sq ft</p>
+                </div>
+              )}
+              {roofMaterial && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">Material</p>
+                  <p className="text-slate-200 font-medium">{materialLabel}</p>
+                </div>
+              )}
+              {roofAgeYears !== null && roofAgeYears !== undefined && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">Roof Age</p>
+                  <p className="text-slate-200 font-medium">{roofAgeYears} years</p>
+                </div>
+              )}
+              {stories > 1 && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">Stories</p>
+                  <p className="text-slate-200 font-medium">{stories} {stories === 1 ? 'Story' : 'Stories'}</p>
+                </div>
+              )}
+              {roofPitch && roofPitch !== 'unknown' && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">Roof Pitch</p>
+                  <p className="text-slate-200 font-medium">{formatPitch(roofPitch)}</p>
+                </div>
+              )}
+              {timelineUrgency && (
+                <div>
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">Timeline</p>
+                  <p className="text-slate-200 font-medium">{formatTimeline(timelineUrgency)}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Roof Features */}
+            {(hasSkylights || hasChimneys || hasSolarPanels) && (
+              <div className="border-t border-slate-700 pt-4 mb-4">
+                <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Roof Features</p>
+                <div className="flex flex-wrap gap-2">
+                  {hasSkylights && (
+                    <span className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded">
+                      Skylights
+                    </span>
+                  )}
+                  {hasChimneys && (
+                    <span className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded">
+                      Chimneys
+                    </span>
+                  )}
+                  {hasSolarPanels && (
+                    <span className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded">
+                      Solar Panels
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Issues Identified */}
+            {issues.length > 0 && (
+              <div className="border-t border-slate-700 pt-4 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle className="h-4 w-4 text-red-400" />
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">Issues Identified</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {issues.map((issue) => (
+                    <span key={issue} className="px-2 py-1 bg-red-900/30 text-red-300 text-xs rounded">
+                      {formatIssue(issue)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Insurance Claim */}
+            {hasInsuranceClaim && (
+              <div className="border-t border-slate-700 pt-4 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <FileText className="h-4 w-4 text-blue-400" />
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">Insurance Claim</p>
+                </div>
+                <p className="text-slate-200 text-sm">
+                  {insuranceCompany ? `${insuranceCompany}` : 'Insurance claim in progress'}
+                </p>
+              </div>
+            )}
+
+            {/* Photos */}
+            {photos.length > 0 && (
+              <div className="border-t border-slate-700 pt-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Image className="h-4 w-4 text-[#c9a25c]" />
+                  <p className="text-xs text-slate-500 uppercase tracking-wide">
+                    {photos.length} {photos.length === 1 ? 'Photo' : 'Photos'} Uploaded
+                  </p>
+                </div>
+                <div className="grid grid-cols-6 gap-2">
+                  {photos.slice(0, 6).map((photo, index) => (
+                    <div key={index} className="aspect-square overflow-hidden rounded bg-slate-800">
+                      <img
+                        src={photo.previewUrl}
+                        alt={`Roof photo ${index + 1}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+                {photos.length > 6 && (
+                  <p className="text-xs text-slate-500 mt-1">+{photos.length - 6} more</p>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       {/* Trust signals - compact */}
       <div className="grid grid-cols-3 gap-3">
         <div className="flex flex-col items-center p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
@@ -309,6 +542,9 @@ export function EstimateDocument({
           This is a preliminary estimate based on the information you provided.
           Final pricing confirmed after free on-site inspection.
           No obligation - just honest pricing.
+        </p>
+        <p className="mt-2 text-slate-400">
+          Estimate valid until {validityDate}
         </p>
       </div>
 

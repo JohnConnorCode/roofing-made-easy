@@ -24,6 +24,9 @@ import {
   Shield,
   HandHeart,
   UserCheck,
+  Mail,
+  Download,
+  Send,
 } from 'lucide-react'
 import { SkeletonLeadDetail } from '@/components/ui/skeleton'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
@@ -31,13 +34,7 @@ import { calculateLeadScore, getScoreTierDisplay, type LeadScoreInput } from '@/
 import { LeadNotes } from '@/components/admin/lead-notes'
 import { FollowUpReminder } from '@/components/admin/follow-up-reminder'
 import { QuoteGenerator } from '@/components/admin/quote-generator'
-
-// Construct public URL for Supabase storage
-const getPhotoUrl = (storagePath: string) => {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  if (!supabaseUrl || !storagePath) return null
-  return `${supabaseUrl}/storage/v1/object/public/photos/${storagePath}`
-}
+import { PhotoGallery } from '@/components/admin/photo-gallery'
 
 interface LeadDetail {
   id: string
@@ -139,6 +136,8 @@ export default function LeadDetailPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
+  const [isResendingEstimate, setIsResendingEstimate] = useState(false)
+  const [isDownloadingPDF, setIsDownloadingPDF] = useState(false)
 
   const fetchLead = async () => {
     setIsLoading(true)
@@ -173,9 +172,9 @@ export default function LeadDetailPage() {
     if (destructiveStatuses.includes(newStatus)) {
       const confirmed = await confirm({
         title: `Mark Lead as ${newStatus.charAt(0).toUpperCase() + newStatus.slice(1)}?`,
-        message: `Are you sure you want to mark this lead as "${newStatus}"? This action can be undone by changing the status again.`,
-        confirmLabel: `Mark as ${newStatus}`,
-        cancelLabel: 'Cancel',
+        description: `Are you sure you want to mark this lead as "${newStatus}"? This action can be undone by changing the status again.`,
+        confirmText: `Mark as ${newStatus}`,
+        cancelText: 'Cancel',
         variant: newStatus === 'lost' ? 'danger' : 'warning',
       })
       if (!confirmed) return
@@ -197,6 +196,63 @@ export default function LeadDetailPage() {
       showToast('Failed to update status. Please try again.', 'error')
     } finally {
       setIsSaving(false)
+    }
+  }
+
+  const handleResendEstimate = async () => {
+    if (!lead) return
+
+    setIsResendingEstimate(true)
+    try {
+      const response = await fetch(`/api/leads/${leadId}/estimate/resend`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ includeSms: true }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to resend estimate')
+      }
+
+      let message = 'Estimate email sent'
+      if (data.results?.sms) {
+        message += ' and SMS sent'
+      }
+      showToast(message, 'success')
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to resend estimate'
+      showToast(message, 'error')
+    } finally {
+      setIsResendingEstimate(false)
+    }
+  }
+
+  const handleDownloadPDF = async () => {
+    setIsDownloadingPDF(true)
+    try {
+      const response = await fetch(`/api/leads/${leadId}/estimate/pdf`)
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF')
+      }
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = response.headers.get('Content-Disposition')?.match(/filename="(.+)"/)?.[1] || 'estimate.pdf'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+
+      showToast('PDF downloaded', 'success')
+    } catch (err) {
+      showToast('Failed to download PDF', 'error')
+    } finally {
+      setIsDownloadingPDF(false)
     }
   }
 
@@ -435,11 +491,35 @@ export default function LeadDetailPage() {
 
         {/* Estimate */}
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="flex items-center gap-2">
               <DollarSign className="h-5 w-5" />
               Estimate
             </CardTitle>
+            {estimate && contact?.email && (
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleDownloadPDF}
+                  disabled={isDownloadingPDF}
+                  leftIcon={<Download className="h-4 w-4" />}
+                  title="Download PDF"
+                >
+                  {isDownloadingPDF ? 'Downloading...' : 'PDF'}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleResendEstimate}
+                  disabled={isResendingEstimate}
+                  leftIcon={<Send className="h-4 w-4" />}
+                  title="Resend estimate to customer"
+                >
+                  {isResendingEstimate ? 'Sending...' : 'Resend'}
+                </Button>
+              </div>
+            )}
           </CardHeader>
           <CardContent>
             {estimate ? (
@@ -465,6 +545,15 @@ export default function LeadDetailPage() {
                     <p className="text-sm text-slate-700">{estimate.ai_explanation}</p>
                   </div>
                 )}
+                {/* Show email delivery info */}
+                {contact?.email && (
+                  <div className="pt-2 border-t border-slate-200">
+                    <p className="text-xs text-slate-500 flex items-center gap-1">
+                      <Mail className="h-3 w-3" />
+                      Will be sent to: {contact.email}
+                    </p>
+                  </div>
+                )}
               </div>
             ) : (
               <p className="text-slate-500">No estimate generated</p>
@@ -481,48 +570,11 @@ export default function LeadDetailPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {lead.uploads && lead.uploads.length > 0 ? (
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                {lead.uploads.map((upload) => {
-                  const photoUrl = getPhotoUrl(upload.storage_path)
-                  return (
-                    <a
-                      key={upload.id}
-                      href={photoUrl || '#'}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative aspect-square overflow-hidden rounded-lg bg-slate-100"
-                    >
-                      {photoUrl ? (
-                        <>
-                          <img
-                            src={photoUrl}
-                            alt={upload.original_filename || 'Roof photo'}
-                            className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
-                        </>
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-slate-400">
-                          <ImageIcon className="h-8 w-8" />
-                        </div>
-                      )}
-                      {upload.ai_analyzed && upload.ai_detected_issues?.length > 0 && (
-                        <div className="absolute bottom-2 left-2 rounded bg-amber-500 px-2 py-1 text-xs font-medium text-white">
-                          {upload.ai_detected_issues.length} issue{upload.ai_detected_issues.length > 1 ? 's' : ''} detected
-                        </div>
-                      )}
-                    </a>
-                  )
-                })}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-center">
-                <ImageIcon className="h-10 w-10 text-slate-300" />
-                <p className="mt-3 text-slate-600">No photos uploaded</p>
-                <p className="text-sm text-slate-400">Photos from the customer will appear here.</p>
-              </div>
-            )}
+            <PhotoGallery
+              photos={lead.uploads || []}
+              supabaseUrl={process.env.NEXT_PUBLIC_SUPABASE_URL || ''}
+              leadId={lead.id}
+            />
           </CardContent>
         </Card>
 

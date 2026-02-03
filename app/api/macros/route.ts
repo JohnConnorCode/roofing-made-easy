@@ -60,7 +60,6 @@ export async function GET(request: NextRequest) {
     const { data: macros, error } = await query
 
     if (error) {
-      console.error('Error fetching macros:', error)
       return NextResponse.json(
         { error: 'Failed to fetch macros' },
         { status: 500 }
@@ -68,8 +67,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ macros })
-  } catch (error) {
-    console.error('Error in GET /api/macros:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -112,7 +110,6 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Error creating macro:', error)
       return NextResponse.json(
         { error: 'Failed to create macro' },
         { status: 500 }
@@ -120,8 +117,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ macro }, { status: 201 })
-  } catch (error) {
-    console.error('Error in POST /api/macros:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

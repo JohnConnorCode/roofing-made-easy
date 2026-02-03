@@ -1,11 +1,13 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { LeadCard, type LeadCardData, type CardFieldKey } from './LeadCard'
 import { formatCurrency } from '@/lib/utils'
-import { ChevronDown, ChevronUp, Loader2, X, Settings2 } from 'lucide-react'
+import { ChevronDown, ChevronUp, Loader2, X, Settings2, CheckSquare, Square, MoveRight, Trash2, Tag } from 'lucide-react'
 import { LEAD_STATUSES } from '@/lib/constants/status'
 import { PipelineConfigModal } from './PipelineConfigModal'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 
 // Primary statuses for main pipeline view (fallback if API fails)
 const PRIMARY_STATUS_IDS = ['new', 'estimate_generated', 'consultation_scheduled', 'quote_sent', 'won']
@@ -56,6 +58,8 @@ interface PipelineBoardProps {
   leads: LeadCardData[]
   onLeadClick: (lead: LeadCardData) => void
   onStatusChange: (leadId: string, newStatus: string) => Promise<void>
+  onBulkStatusChange?: (leadIds: string[], newStatus: string) => Promise<void>
+  onBulkDelete?: (leadIds: string[]) => Promise<void>
   isUpdating?: string | null
   stages?: PipelineStage[]
   cardFields?: CardFieldKey[]
@@ -75,6 +79,8 @@ export function PipelineBoard({
   leads,
   onLeadClick,
   onStatusChange,
+  onBulkStatusChange,
+  onBulkDelete,
   isUpdating,
   stages: externalStages,
   cardFields = DEFAULT_CARD_FIELDS,
@@ -89,6 +95,12 @@ export function PipelineBoard({
   const [stages, setStages] = useState<PipelineStage[]>([])
   const [localCardFields, setLocalCardFields] = useState<CardFieldKey[]>(cardFields)
   const longPressTimer = useRef<NodeJS.Timeout | null>(null)
+
+  // Bulk selection state
+  const [selectedLeads, setSelectedLeads] = useState<Set<string>>(new Set())
+  const [isBulkMode, setIsBulkMode] = useState(false)
+  const [showBulkMoveMenu, setShowBulkMoveMenu] = useState(false)
+  const [isBulkUpdating, setIsBulkUpdating] = useState(false)
 
   // Load stages from API on mount
   useEffect(() => {
@@ -226,6 +238,81 @@ export function PipelineBoard({
     setMoveMenu({ isOpen: false, lead: null, position: { x: 0, y: 0 } })
   }
 
+  // Bulk selection handlers
+  const toggleBulkMode = () => {
+    if (isBulkMode) {
+      setSelectedLeads(new Set())
+    }
+    setIsBulkMode(!isBulkMode)
+  }
+
+  const toggleLeadSelection = (leadId: string) => {
+    setSelectedLeads(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(leadId)) {
+        newSet.delete(leadId)
+      } else {
+        newSet.add(leadId)
+      }
+      return newSet
+    })
+  }
+
+  const selectAllInColumn = (status: string) => {
+    const columnLeadIds = (leadsByStatus[status] || []).map(l => l.id)
+    setSelectedLeads(prev => {
+      const newSet = new Set(prev)
+      const allSelected = columnLeadIds.every(id => prev.has(id))
+      if (allSelected) {
+        columnLeadIds.forEach(id => newSet.delete(id))
+      } else {
+        columnLeadIds.forEach(id => newSet.add(id))
+      }
+      return newSet
+    })
+  }
+
+  const selectAll = () => {
+    if (selectedLeads.size === leads.length) {
+      setSelectedLeads(new Set())
+    } else {
+      setSelectedLeads(new Set(leads.map(l => l.id)))
+    }
+  }
+
+  const handleBulkStatusChange = async (newStatus: string) => {
+    if (!onBulkStatusChange || selectedLeads.size === 0) return
+    setIsBulkUpdating(true)
+    try {
+      await onBulkStatusChange(Array.from(selectedLeads), newStatus)
+      setSelectedLeads(new Set())
+      setShowBulkMoveMenu(false)
+    } finally {
+      setIsBulkUpdating(false)
+    }
+  }
+
+  const handleBulkDelete = async () => {
+    if (!onBulkDelete || selectedLeads.size === 0) return
+    if (!confirm(`Are you sure you want to delete ${selectedLeads.size} lead(s)? This action cannot be undone.`)) {
+      return
+    }
+    setIsBulkUpdating(true)
+    try {
+      await onBulkDelete(Array.from(selectedLeads))
+      setSelectedLeads(new Set())
+    } finally {
+      setIsBulkUpdating(false)
+    }
+  }
+
+  // Calculate selected leads value
+  const selectedValue = useMemo(() => {
+    return leads
+      .filter(l => selectedLeads.has(l.id))
+      .reduce((sum, lead) => sum + (lead.estimates?.[0]?.price_likely || 0), 0)
+  }, [leads, selectedLeads])
+
   const handleSaveStages = async (newStages: PipelineStage[]): Promise<boolean> => {
     const errors: string[] = []
 
@@ -347,7 +434,75 @@ export function PipelineBoard({
 
   return (
     <div className="space-y-4">
-      {/* Toggle secondary columns */}
+      {/* Bulk action bar */}
+      {isBulkMode && selectedLeads.size > 0 && (
+        <div className="flex items-center justify-between p-3 bg-gold-light/20 rounded-lg border border-gold-light">
+          <div className="flex items-center gap-4">
+            <span className="text-sm font-medium text-slate-900">
+              {selectedLeads.size} selected
+              {selectedValue > 0 && (
+                <span className="text-slate-500 ml-2">
+                  ({formatCurrency(selectedValue)} total value)
+                </span>
+              )}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setShowBulkMoveMenu(!showBulkMoveMenu)}
+                disabled={isBulkUpdating}
+                leftIcon={<MoveRight className="h-4 w-4" />}
+              >
+                Move to...
+              </Button>
+              {showBulkMoveMenu && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setShowBulkMoveMenu(false)}
+                  />
+                  <div className="absolute right-0 top-full mt-1 z-50 bg-white rounded-lg shadow-xl border py-2 min-w-[180px]">
+                    {LEAD_STATUSES.map((status) => (
+                      <button
+                        key={status.value}
+                        onClick={() => handleBulkStatusChange(status.value)}
+                        className="w-full px-3 py-2 text-left text-sm flex items-center gap-2 hover:bg-slate-100 text-slate-700"
+                      >
+                        <div className={`w-2 h-2 rounded-full ${status.dot}`} />
+                        {status.label}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            {onBulkDelete && (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleBulkDelete}
+                disabled={isBulkUpdating}
+                className="text-red-500 hover:text-red-700 hover:border-red-300"
+                leftIcon={<Trash2 className="h-4 w-4" />}
+              >
+                Delete
+              </Button>
+            )}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setSelectedLeads(new Set())}
+            >
+              Clear
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Toggle secondary columns and bulk mode */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           {dynamicColumns.length === 0 && (
@@ -360,10 +515,34 @@ export function PipelineBoard({
             </button>
           )}
 
+          {/* Bulk select toggle */}
+          <button
+            onClick={toggleBulkMode}
+            className={`flex items-center gap-2 text-sm px-3 py-1.5 rounded-md transition-colors ${
+              isBulkMode
+                ? 'bg-gold-light/20 text-gold-dark'
+                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            {isBulkMode ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+            {isBulkMode ? 'Exit bulk mode' : 'Select multiple'}
+          </button>
+
+          {isBulkMode && (
+            <button
+              onClick={selectAll}
+              className="text-sm text-slate-500 hover:text-slate-700"
+            >
+              {selectedLeads.size === leads.length ? 'Deselect all' : 'Select all'}
+            </button>
+          )}
+
           {/* Touch hint */}
-          <p className="text-xs text-slate-400 hidden sm:block md:hidden">
-            Long-press cards to move
-          </p>
+          {!isBulkMode && (
+            <p className="text-xs text-slate-400 hidden sm:block md:hidden">
+              Long-press cards to move
+            </p>
+          )}
         </div>
 
         {/* Configure button */}
@@ -398,7 +577,16 @@ export function PipelineBoard({
               {/* Column header */}
               <div className={`p-3 border-b border-slate-200 ${column.bg} rounded-t-lg`}>
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-slate-900 text-sm">{column.label}</h3>
+                  <div className="flex items-center gap-2">
+                    {isBulkMode && columnLeads.length > 0 && (
+                      <Checkbox
+                        checked={columnLeads.every(l => selectedLeads.has(l.id))}
+                        onChange={() => selectAllInColumn(column.value)}
+                        className="h-4 w-4"
+                      />
+                    )}
+                    <h3 className="font-semibold text-slate-900 text-sm">{column.label}</h3>
+                  </div>
                   <span className="bg-white px-2 py-0.5 rounded-full text-xs font-semibold text-slate-600 shadow-sm">
                     {stats.count}
                   </span>
@@ -420,13 +608,13 @@ export function PipelineBoard({
                   columnLeads.map((lead) => (
                     <div
                       key={lead.id}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, lead.id)}
+                      draggable={!isBulkMode}
+                      onDragStart={(e) => !isBulkMode && handleDragStart(e, lead.id)}
                       onDragEnd={handleDragEnd}
-                      onTouchStart={(e) => handleTouchStart(e, lead)}
+                      onTouchStart={(e) => !isBulkMode && handleTouchStart(e, lead)}
                       onTouchEnd={handleTouchEnd}
                       onTouchMove={handleTouchMove}
-                      onContextMenu={(e) => handleContextMenu(e, lead)}
+                      onContextMenu={(e) => !isBulkMode && handleContextMenu(e, lead)}
                       className="relative touch-manipulation"
                     >
                       {isUpdating === lead.id && (
@@ -434,12 +622,29 @@ export function PipelineBoard({
                           <Loader2 className="h-5 w-5 animate-spin text-gold" />
                         </div>
                       )}
+                      {isBulkMode && (
+                        <div
+                          className={`absolute left-2 top-2 z-10 ${
+                            selectedLeads.has(lead.id) ? 'opacity-100' : 'opacity-70'
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            toggleLeadSelection(lead.id)
+                          }}
+                        >
+                          <Checkbox
+                            checked={selectedLeads.has(lead.id)}
+                            onChange={() => toggleLeadSelection(lead.id)}
+                            className="h-4 w-4 bg-white shadow"
+                          />
+                        </div>
+                      )}
                       <LeadCard
                         lead={lead}
-                        onClick={() => onLeadClick(lead)}
+                        onClick={() => isBulkMode ? toggleLeadSelection(lead.id) : onLeadClick(lead)}
                         isDragging={draggedLead === lead.id}
                         visibleFields={localCardFields}
-                        onMoveClick={(e) => {
+                        onMoveClick={isBulkMode ? undefined : (e) => {
                           e.stopPropagation()
                           const rect = e.currentTarget.getBoundingClientRect()
                           setMoveMenu({

@@ -18,6 +18,7 @@ export interface Service {
   priceRange?: string
   timeframe?: string
   icon: string
+  image?: string
 }
 
 // ============================================================================
@@ -243,6 +244,7 @@ export const services: Service[] = [
     priceRange: '$8,000 - $25,000',
     timeframe: '1-3 days',
     icon: 'home',
+    image: '/images/services/roof-replacement.jpg',
   },
   {
     id: 'repair',
@@ -270,6 +272,7 @@ export const services: Service[] = [
     priceRange: '$300 - $3,000',
     timeframe: 'Same day - 1 day',
     icon: 'wrench',
+    image: '/images/services/roof-repair.jpg',
   },
   {
     id: 'inspection',
@@ -296,6 +299,7 @@ export const services: Service[] = [
     priceRange: '$150 - $400',
     timeframe: '1-2 hours',
     icon: 'search',
+    image: '/images/services/roof-inspection.jpg',
   },
   {
     id: 'gutters',
@@ -323,6 +327,7 @@ export const services: Service[] = [
     priceRange: '$1,000 - $5,000',
     timeframe: '1 day',
     icon: 'droplet',
+    image: '/images/services/process-install.jpg',
   },
   {
     id: 'maintenance',
@@ -349,6 +354,7 @@ export const services: Service[] = [
     priceRange: '$200 - $500/year',
     timeframe: '2-3 hours per visit',
     icon: 'shield',
+    image: '/images/services/roof-inspection.jpg',
   },
   {
     id: 'emergency',
@@ -376,6 +382,7 @@ export const services: Service[] = [
     priceRange: 'Varies by damage',
     timeframe: 'Same day response',
     icon: 'alert',
+    image: '/images/services/storm-damage-repair.jpg',
   },
 ]
 

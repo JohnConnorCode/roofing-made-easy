@@ -1,8 +1,10 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Select } from '@/components/ui/select'
 import { PipelineBoard } from '@/components/admin/PipelineBoard'
 import { LeadSlideOver } from '@/components/admin/LeadSlideOver'
 import type { LeadCardData } from '@/components/admin/LeadCard'
@@ -14,15 +16,44 @@ import {
   Users,
   DollarSign,
   List,
-  Loader2
+  Loader2,
+  Search,
+  Filter,
+  X,
+  Download,
 } from 'lucide-react'
 import Link from 'next/link'
+import { JOB_TYPE_MAP } from '@/lib/constants/status'
 
 interface PipelineStats {
   totalLeads: number
   totalPipelineValue: number
   byStatus: { status: string; count: number; value: number }[]
 }
+
+// Filter options
+const JOB_TYPE_OPTIONS = [
+  { value: '', label: 'All Job Types' },
+  ...Object.entries(JOB_TYPE_MAP).map(([value, config]) => ({
+    value,
+    label: config.label,
+  })),
+]
+
+const DATE_RANGE_OPTIONS = [
+  { value: '', label: 'Any time' },
+  { value: '7', label: 'Last 7 days' },
+  { value: '30', label: 'Last 30 days' },
+  { value: '90', label: 'Last 90 days' },
+]
+
+const VALUE_RANGE_OPTIONS = [
+  { value: '', label: 'Any value' },
+  { value: '0-5000', label: 'Under $5,000' },
+  { value: '5000-10000', label: '$5,000 - $10,000' },
+  { value: '10000-20000', label: '$10,000 - $20,000' },
+  { value: '20000+', label: 'Over $20,000' },
+]
 
 export default function PipelinePage() {
   const [leads, setLeads] = useState<LeadCardData[]>([])
@@ -31,6 +62,13 @@ export default function PipelinePage() {
   const [error, setError] = useState<string | null>(null)
   const [selectedLead, setSelectedLead] = useState<LeadCardData | null>(null)
   const [updatingLeadId, setUpdatingLeadId] = useState<string | null>(null)
+
+  // Filter state
+  const [searchQuery, setSearchQuery] = useState('')
+  const [jobTypeFilter, setJobTypeFilter] = useState('')
+  const [dateRangeFilter, setDateRangeFilter] = useState('')
+  const [valueRangeFilter, setValueRangeFilter] = useState('')
+  const [showFilters, setShowFilters] = useState(false)
 
   const fetchPipelineData = useCallback(async () => {
     setIsLoading(true)
@@ -118,6 +156,119 @@ export default function PipelinePage() {
     setSelectedLead(lead)
   }
 
+  // Bulk status change handler
+  const handleBulkStatusChange = async (leadIds: string[], newStatus: string) => {
+    try {
+      // Update each lead
+      await Promise.all(
+        leadIds.map(leadId =>
+          fetch(`/api/leads/${leadId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus }),
+          })
+        )
+      )
+      // Refresh data
+      await fetchPipelineData()
+    } catch {
+      setUpdateError('Failed to update some leads. Please try again.')
+    }
+  }
+
+  // Filter leads
+  const filteredLeads = useMemo(() => {
+    return leads.filter(lead => {
+      // Search filter (name, email, phone, address)
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase()
+        const contact = lead.contacts?.[0]
+        const property = lead.properties?.[0]
+        const name = contact ? `${contact.first_name} ${contact.last_name}`.toLowerCase() : ''
+        const email = contact?.email?.toLowerCase() || ''
+        const phone = contact?.phone?.toLowerCase() || ''
+        const address = property ? `${property.street_address} ${property.city}`.toLowerCase() : ''
+
+        if (!name.includes(query) && !email.includes(query) && !phone.includes(query) && !address.includes(query)) {
+          return false
+        }
+      }
+
+      // Job type filter
+      if (jobTypeFilter && lead.intakes?.[0]?.job_type !== jobTypeFilter) {
+        return false
+      }
+
+      // Date range filter
+      if (dateRangeFilter) {
+        const days = parseInt(dateRangeFilter)
+        const leadDate = new Date(lead.created_at)
+        const cutoff = new Date()
+        cutoff.setDate(cutoff.getDate() - days)
+        if (leadDate < cutoff) {
+          return false
+        }
+      }
+
+      // Value range filter
+      if (valueRangeFilter) {
+        const estimateValue = lead.estimates?.[0]?.price_likely || 0
+        if (valueRangeFilter === '0-5000' && estimateValue >= 5000) return false
+        if (valueRangeFilter === '5000-10000' && (estimateValue < 5000 || estimateValue >= 10000)) return false
+        if (valueRangeFilter === '10000-20000' && (estimateValue < 10000 || estimateValue >= 20000)) return false
+        if (valueRangeFilter === '20000+' && estimateValue < 20000) return false
+      }
+
+      return true
+    })
+  }, [leads, searchQuery, jobTypeFilter, dateRangeFilter, valueRangeFilter])
+
+  // Check if any filters are active
+  const hasActiveFilters = searchQuery || jobTypeFilter || dateRangeFilter || valueRangeFilter
+
+  // Clear all filters
+  const clearFilters = () => {
+    setSearchQuery('')
+    setJobTypeFilter('')
+    setDateRangeFilter('')
+    setValueRangeFilter('')
+  }
+
+  // Export to CSV
+  const handleExportCSV = () => {
+    const headers = ['Name', 'Email', 'Phone', 'Address', 'City', 'State', 'Status', 'Job Type', 'Estimate', 'Created']
+    const rows = filteredLeads.map(lead => {
+      const contact = lead.contacts?.[0]
+      const property = lead.properties?.[0]
+      const intake = lead.intakes?.[0]
+      const estimate = lead.estimates?.[0]
+      return [
+        contact ? `${contact.first_name} ${contact.last_name}` : '',
+        contact?.email || '',
+        contact?.phone || '',
+        property?.street_address || '',
+        property?.city || '',
+        property?.state || '',
+        lead.status,
+        intake?.job_type || '',
+        estimate?.price_likely || '',
+        new Date(lead.created_at).toLocaleDateString(),
+      ]
+    })
+
+    const csvContent = [headers, ...rows]
+      .map(row => row.map(cell => `"${cell}"`).join(','))
+      .join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `pipeline-export-${new Date().toISOString().split('T')[0]}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   // Calculate win rate
   const wonCount = stats?.byStatus.find(s => s.status === 'won')?.count || 0
   const lostCount = stats?.byStatus.find(s => s.status === 'lost')?.count || 0
@@ -138,7 +289,11 @@ export default function PipelinePage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Pipeline</h1>
-          <p className="text-slate-500">Drag leads between columns to update status</p>
+          <p className="text-slate-500">
+            {hasActiveFilters
+              ? `Showing ${filteredLeads.length} of ${leads.length} leads`
+              : 'Drag leads between columns to update status'}
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/leads">
@@ -149,6 +304,29 @@ export default function PipelinePage() {
           <Button
             variant="outline"
             size="sm"
+            onClick={() => setShowFilters(!showFilters)}
+            leftIcon={<Filter className="h-4 w-4" />}
+            className={showFilters || hasActiveFilters ? 'bg-gold-light/20 border-gold-light' : ''}
+          >
+            Filters
+            {hasActiveFilters && (
+              <span className="ml-1 px-1.5 py-0.5 bg-gold text-white text-xs rounded-full">
+                {[searchQuery, jobTypeFilter, dateRangeFilter, valueRangeFilter].filter(Boolean).length}
+              </span>
+            )}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportCSV}
+            leftIcon={<Download className="h-4 w-4" />}
+            disabled={filteredLeads.length === 0}
+          >
+            Export
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={fetchPipelineData}
             leftIcon={<RefreshCw className="h-4 w-4" />}
           >
@@ -156,6 +334,75 @@ export default function PipelinePage() {
           </Button>
         </div>
       </div>
+
+      {/* Filters panel */}
+      {showFilters && (
+        <Card className="bg-white border-slate-200">
+          <CardContent className="p-4">
+            <div className="flex flex-col gap-4 md:flex-row md:items-end">
+              {/* Search */}
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">Search</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                  <Input
+                    placeholder="Search by name, email, phone, or address..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 bg-white border-slate-300 text-slate-900"
+                  />
+                </div>
+              </div>
+
+              {/* Job Type */}
+              <div className="md:w-44">
+                <label className="block text-sm font-medium text-slate-700 mb-1">Job Type</label>
+                <Select
+                  options={JOB_TYPE_OPTIONS}
+                  value={jobTypeFilter}
+                  onChange={setJobTypeFilter}
+                  className="bg-white border-slate-300 text-slate-900"
+                />
+              </div>
+
+              {/* Date Range */}
+              <div className="md:w-40">
+                <label className="block text-sm font-medium text-slate-700 mb-1">Created</label>
+                <Select
+                  options={DATE_RANGE_OPTIONS}
+                  value={dateRangeFilter}
+                  onChange={setDateRangeFilter}
+                  className="bg-white border-slate-300 text-slate-900"
+                />
+              </div>
+
+              {/* Value Range */}
+              <div className="md:w-44">
+                <label className="block text-sm font-medium text-slate-700 mb-1">Estimate Value</label>
+                <Select
+                  options={VALUE_RANGE_OPTIONS}
+                  value={valueRangeFilter}
+                  onChange={setValueRangeFilter}
+                  className="bg-white border-slate-300 text-slate-900"
+                />
+              </div>
+
+              {/* Clear filters */}
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearFilters}
+                  leftIcon={<X className="h-4 w-4" />}
+                  className="text-slate-500"
+                >
+                  Clear
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Stats cards */}
       {stats && (
@@ -246,9 +493,10 @@ export default function PipelinePage() {
         </Card>
       ) : (
         <PipelineBoard
-          leads={leads}
+          leads={filteredLeads}
           onLeadClick={handleLeadClick}
           onStatusChange={handleStatusChange}
+          onBulkStatusChange={handleBulkStatusChange}
           isUpdating={updatingLeadId}
         />
       )}

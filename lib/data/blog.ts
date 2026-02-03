@@ -17,6 +17,7 @@ export interface BlogPost {
   readTime: number
   featured?: boolean
   tags: string[]
+  image?: string
 }
 
 export const blogPosts: BlogPost[] = [
@@ -139,6 +140,7 @@ If your roof is showing any of these warning signs, don't wait for a leak to app
     readTime: 8,
     featured: true,
     tags: ['roof replacement', 'maintenance', 'inspection', 'mississippi roofing'],
+    image: '/images/blog/roof-warning-signs.jpg',
   },
   {
     id: '2',
@@ -334,6 +336,7 @@ Ready to explore your options? [Contact Farrell Roofing](/contact) for a free co
     readTime: 12,
     featured: true,
     tags: ['metal roofing', 'asphalt shingles', 'comparison', 'mississippi', 'roofing materials'],
+    image: '/images/blog/metal-vs-asphalt.jpg',
   },
   {
     id: '3',
@@ -557,6 +560,7 @@ Don't let Mississippi's challenging climate shorten your roof's lifespan. A cons
     publishedAt: '2026-01-08',
     readTime: 10,
     tags: ['maintenance', 'checklist', 'seasonal', 'mississippi', 'roof care'],
+    image: '/images/blog/roof-maintenance.jpg',
   },
   {
     id: '4',
@@ -881,6 +885,7 @@ If storm damage has affected your roof, [contact us](/contact) for a free damage
     readTime: 14,
     featured: true,
     tags: ['insurance', 'storm damage', 'claims', 'mississippi', 'hurricane'],
+    image: '/images/blog/insurance-claims.jpg',
   },
   {
     id: '5',
@@ -1152,6 +1157,7 @@ We've served [Tupelo](/tupelo-roofing), [Oxford](/oxford-roofing), [Starkville](
     publishedAt: '2025-11-20',
     readTime: 12,
     tags: ['contractor', 'hiring', 'tips', 'mississippi', 'verification'],
+    image: '/images/blog/choosing-contractor.jpg',
   },
 ]
 

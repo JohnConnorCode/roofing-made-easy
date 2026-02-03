@@ -24,6 +24,22 @@ vi.mock('@/lib/supabase/server', () => ({
   })),
 }))
 
+// Mock the auth module to simulate admin user
+vi.mock('@/lib/api/auth', () => ({
+  requireAdmin: vi.fn(() => Promise.resolve({
+    user: {
+      id: 'test-admin-123',
+      email: 'admin@test.com',
+      user_metadata: { role: 'admin' }
+    },
+    error: null
+  })),
+  requireAuth: vi.fn(() => Promise.resolve({
+    user: { id: 'test-user-123' },
+    error: null
+  })),
+}))
+
 function createMockQueryBuilder(table: string) {
   let filters: Array<{ column: string; value: unknown; operator: string }> = []
   let containsFilter: { column: string; value: unknown[] } | null = null

@@ -34,6 +34,7 @@ import {
   getBadgeClasses,
 } from '@/lib/styles/integration-status'
 import { getSectionNavClasses, adminSpinner, adminResult } from '@/lib/styles/admin-theme'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface IntegrationStatus {
   name: string
@@ -441,23 +442,26 @@ export default function SettingsPage() {
   ]
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
-          <p className="text-slate-500">Configure your business settings</p>
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
+            <p className="text-slate-500">Configure your business settings</p>
+          </div>
+          <Button
+            onClick={handleSave}
+            isLoading={isSaving}
+            leftIcon={saveSuccess ? <CheckCircle className="h-4 w-4" /> : <Save className="h-4 w-4" />}
+            className={saveSuccess ? 'bg-green-600 hover:bg-green-700' : ''}
+          >
+            {saveSuccess ? 'Saved!' : 'Save Changes'}
+          </Button>
         </div>
-        <Button
-          onClick={handleSave}
-          isLoading={isSaving}
-          leftIcon={saveSuccess ? <CheckCircle className="h-4 w-4" /> : <Save className="h-4 w-4" />}
-          className={saveSuccess ? 'bg-green-600 hover:bg-green-700' : ''}
-        >
-          {saveSuccess ? 'Saved!' : 'Save Changes'}
-        </Button>
-      </div>
+      </FadeInSection>
 
+      <FadeInSection delay={150} animation="slide-up">
       <div className="grid gap-6 lg:grid-cols-4">
         {/* Sidebar navigation */}
         <div className="lg:col-span-1">
@@ -1106,6 +1110,7 @@ export default function SettingsPage() {
           )}
         </div>
       </div>
-    </div>
+      </FadeInSection>
+    </AdminPageTransition>
   )
 }

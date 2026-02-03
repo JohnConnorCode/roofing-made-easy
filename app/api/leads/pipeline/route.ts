@@ -44,7 +44,6 @@ export async function GET(request: NextRequest) {
     const { data: rawLeads, error } = await query
 
     if (error) {
-      console.error('Error fetching pipeline leads:', error)
       return NextResponse.json(
         { error: 'Failed to fetch pipeline data' },
         { status: 500 }
@@ -99,8 +98,7 @@ export async function GET(request: NextRequest) {
       pipeline,
       stats
     })
-  } catch (error) {
-    console.error('Error in GET /api/leads/pipeline:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

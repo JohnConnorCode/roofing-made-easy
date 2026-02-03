@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { teamMembers, companyInfo, isRealTeamData } from '@/lib/data/team'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
@@ -28,13 +29,25 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              About {companyInfo.name}
-            </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              {companyInfo.description}
-            </p>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
+                About {companyInfo.name}
+              </h1>
+              <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
+                {companyInfo.description}
+              </p>
+            </div>
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden animate-slide-up delay-200">
+              <Image
+                src="/images/about/team-work.jpg"
+                alt="Farrell Roofing team at work"
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
           </div>
         </div>
       </section>

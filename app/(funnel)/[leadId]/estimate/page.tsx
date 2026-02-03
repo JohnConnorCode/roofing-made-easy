@@ -147,7 +147,6 @@ export default function EstimatePage() {
   const params = useParams()
   const router = useRouter()
   const leadId = params.leadId as string
-  const isDemoMode = leadId.startsWith('demo-')
 
   const {
     firstName,
@@ -155,10 +154,17 @@ export default function EstimatePage() {
     jobType,
     roofSizeSqft,
     roofMaterial,
+    roofAgeYears,
+    roofPitch,
     stories,
     hasSkylights,
     hasChimneys,
     hasSolarPanels,
+    issues,
+    timelineUrgency,
+    hasInsuranceClaim,
+    insuranceCompany,
+    photos,
     address,
     setEstimate,
     resetFunnel,
@@ -190,9 +196,33 @@ export default function EstimatePage() {
     }
   }, [showToast])
 
-  const handleDownloadPDF = useCallback(() => {
-    window.print()
-  }, [])
+  const handleDownloadPDF = useCallback(async () => {
+    try {
+      // Download PDF from API
+      const response = await fetch(`/api/leads/${leadId}/estimate/pdf`)
+
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF')
+      }
+
+      // Get the blob and create a download link
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = response.headers.get('Content-Disposition')?.match(/filename="(.+)"/)?.[1] || 'estimate.pdf'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+
+      showToast('PDF downloaded successfully', 'success')
+    } catch {
+      // Fallback to print if PDF generation fails
+      showToast('Opening print dialog instead...', 'info')
+      window.print()
+    }
+  }, [leadId, showToast])
 
   const handleShare = useCallback(async () => {
     const shareUrl = window.location.href
@@ -229,18 +259,13 @@ export default function EstimatePage() {
     window.location.href = '/'
   }, [resetFunnel])
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   useEffect(() => {
     async function fetchEstimate() {
-      // In demo mode, use generated estimate
-      if (isDemoMode) {
-        // Simulate loading delay
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-        setEstimateData(demoEstimate)
-        setEstimate(demoEstimate)
-        setIsLoading(false)
-        return
-      }
-
       try {
         const response = await fetch(`/api/leads/${leadId}/estimate`)
         if (!response.ok) {
@@ -259,7 +284,8 @@ export default function EstimatePage() {
         setEstimateData(estimateData)
         setEstimate(estimateData)
       } catch (err) {
-        // Fallback to demo estimate on error
+        // Fallback to locally generated estimate on error
+        console.error('Failed to fetch estimate from server:', err)
         setEstimateData(demoEstimate)
         setEstimate(demoEstimate)
       } finally {
@@ -268,7 +294,7 @@ export default function EstimatePage() {
     }
 
     fetchEstimate()
-  }, [leadId, isDemoMode, demoEstimate, setEstimate])
+  }, [leadId, demoEstimate, setEstimate])
 
   if (isLoading) {
     return (
@@ -323,6 +349,18 @@ export default function EstimatePage() {
       onBack={handleBack}
       onStartNew={handleStartNew}
       calendlyUrl={CALENDLY_URL}
+      // Project details
+      roofAgeYears={roofAgeYears}
+      roofPitch={roofPitch}
+      stories={stories}
+      hasSkylights={hasSkylights}
+      hasChimneys={hasChimneys}
+      hasSolarPanels={hasSolarPanels}
+      issues={issues}
+      timelineUrgency={timelineUrgency}
+      hasInsuranceClaim={hasInsuranceClaim}
+      insuranceCompany={insuranceCompany}
+      photos={photos}
     />
   )
 }

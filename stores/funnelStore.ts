@@ -228,9 +228,10 @@ export const useFunnelStore = create<FunnelState & FunnelActions>()(
       ...initialState,
 
       // Navigation
+      // New 3-step funnel: 1=Property, 2=Details, 3=Contact, 4=Estimate (view only)
       setLeadId: (leadId) => set({ leadId }),
       setCurrentStep: (step) => set({ currentStep: step }),
-      nextStep: () => set((state) => ({ currentStep: Math.min(state.currentStep + 1, 8) })),
+      nextStep: () => set((state) => ({ currentStep: Math.min(state.currentStep + 1, 4) })),
       prevStep: () => set((state) => ({ currentStep: Math.max(state.currentStep - 1, 1) })),
 
       // Loading state

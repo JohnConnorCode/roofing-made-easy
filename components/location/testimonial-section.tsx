@@ -43,7 +43,7 @@ export function TestimonialSection({ city }: TestimonialSectionProps) {
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div>
                 <p className="text-white font-semibold">{testimonial.name}</p>
-                <div className="flex items-center gap-2 text-gray-400 text-sm">
+                <div className="flex items-center gap-2 text-slate-400 text-sm">
                   {testimonial.neighborhood && (
                     <>
                       <MapPin className="w-4 h-4 text-gold" />
@@ -56,7 +56,7 @@ export function TestimonialSection({ city }: TestimonialSectionProps) {
               </div>
 
               <div className="text-right">
-                <p className="text-sm text-gray-500">Verified Customer</p>
+                <p className="text-sm text-slate-400">Verified Customer</p>
                 <p className="text-sm text-gold">{city.name}, MS</p>
               </div>
             </div>

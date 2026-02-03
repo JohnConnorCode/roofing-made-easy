@@ -36,39 +36,40 @@ export async function GET(
           { status: 404 }
         )
       }
-      console.error('Error fetching lead:', error)
       return NextResponse.json(
         { error: 'Failed to fetch lead' },
         { status: 500 }
       )
     }
 
-    // Fetch customer qualification data if available
-    const { data: customerLead } = await supabase
-      .from('customer_leads' as never)
-      .select(`
-        customer:customers(id, email, first_name, last_name, created_at)
-      `)
-      .eq('lead_id', leadId)
-      .single()
-
-    const { data: financingApplications } = await supabase
-      .from('financing_applications' as never)
-      .select('id, amount_requested, credit_range, income_range, status, created_at')
-      .eq('lead_id', leadId)
-      .order('created_at', { ascending: false })
-
-    const { data: insuranceClaims } = await supabase
-      .from('insurance_claims' as never)
-      .select('id, insurance_company, claim_number, status, created_at')
-      .eq('lead_id', leadId)
-      .order('created_at', { ascending: false })
-
-    const { data: programApplications } = await supabase
-      .from('customer_program_applications' as never)
-      .select('id, program_id, status, created_at')
-      .eq('lead_id', leadId)
-      .order('created_at', { ascending: false })
+    // Fetch customer qualification data in parallel for better performance
+    const [
+      { data: customerLead },
+      { data: financingApplications },
+      { data: insuranceClaims },
+      { data: programApplications },
+    ] = await Promise.all([
+      supabase
+        .from('customer_leads' as never)
+        .select(`customer:customers(id, email, first_name, last_name, created_at)`)
+        .eq('lead_id', leadId)
+        .single(),
+      supabase
+        .from('financing_applications' as never)
+        .select('id, amount_requested, credit_range, income_range, status, created_at')
+        .eq('lead_id', leadId)
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('insurance_claims' as never)
+        .select('id, insurance_company, claim_number, status, created_at')
+        .eq('lead_id', leadId)
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('customer_program_applications' as never)
+        .select('id, program_id, status, created_at')
+        .eq('lead_id', leadId)
+        .order('created_at', { ascending: false }),
+    ])
 
     return NextResponse.json({
       lead: {
@@ -79,8 +80,7 @@ export async function GET(
         program_applications: programApplications || [],
       }
     })
-  } catch (error) {
-    console.error('Error in GET /api/leads/[leadId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -129,7 +129,6 @@ export async function PATCH(
           { status: 404 }
         )
       }
-      console.error('Error updating lead:', error)
       return NextResponse.json(
         { error: 'Failed to update lead' },
         { status: 500 }
@@ -137,8 +136,7 @@ export async function PATCH(
     }
 
     return NextResponse.json({ lead })
-  } catch (error) {
-    console.error('Error in PATCH /api/leads/[leadId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

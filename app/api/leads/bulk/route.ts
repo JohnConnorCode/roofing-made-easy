@@ -53,7 +53,6 @@ export async function PUT(request: NextRequest) {
       .select('id, status')
 
     if (error) {
-      console.error('Error updating leads:', error)
       return NextResponse.json(
         { error: 'Failed to update leads' },
         { status: 500 }
@@ -65,8 +64,7 @@ export async function PUT(request: NextRequest) {
       updated: data?.length || 0,
       leads: data
     })
-  } catch (error) {
-    console.error('Error in PUT /api/leads/bulk:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -128,7 +126,6 @@ export async function GET(request: NextRequest) {
       .in('id', leadIds)
 
     if (error) {
-      console.error('Error fetching leads for export:', error)
       return NextResponse.json(
         { error: 'Failed to fetch leads' },
         { status: 500 }
@@ -164,8 +161,7 @@ export async function GET(request: NextRequest) {
     }) || []
 
     return NextResponse.json({ leads: exportData })
-  } catch (error) {
-    console.error('Error in GET /api/leads/bulk:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

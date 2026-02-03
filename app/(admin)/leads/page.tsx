@@ -10,6 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { formatDate, formatPhone } from '@/lib/utils'
 import { QuickStatusSelect } from '@/components/admin/QuickStatusSelect'
 import { BulkActions } from '@/components/admin/BulkActions'
+import { LeadCreateModal } from '@/components/admin/LeadCreateModal'
 import {
   Search,
   ChevronLeft,
@@ -19,10 +20,12 @@ import {
   Inbox,
   Kanban,
   ArrowUpDown,
-  Download
+  Download,
+  Plus
 } from 'lucide-react'
 import { SkeletonLeadsTable } from '@/components/ui/skeleton'
 import { calculateLeadScore, getScoreTierDisplay, type LeadScoreInput } from '@/lib/leads/scoring'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface Lead {
   id: string
@@ -71,6 +74,7 @@ export default function LeadsPage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
   const [selectedLeads, setSelectedLeads] = useState<Set<string>>(new Set())
   const [isProcessing, setIsProcessing] = useState(false)
+  const [showCreateModal, setShowCreateModal] = useState(false)
 
   const fetchLeads = useCallback(async () => {
     setIsLoading(true)
@@ -284,22 +288,28 @@ export default function LeadsPage() {
   )
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Leads</h1>
-          <p className="text-slate-500">Manage your roofing leads</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link href="/leads/pipeline">
-            <Button variant="outline" size="sm" leftIcon={<Kanban className="h-4 w-4" />}>
-              Pipeline View
+    <AdminPageTransition className="space-y-6">
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Leads</h1>
+            <p className="text-slate-500">Manage your roofing leads</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Link href="/leads/pipeline">
+              <Button variant="outline" size="sm" leftIcon={<Kanban className="h-4 w-4" />}>
+                Pipeline View
+              </Button>
+            </Link>
+            <Button size="sm" leftIcon={<Plus className="h-4 w-4" />} onClick={() => setShowCreateModal(true)}>
+              New Lead
             </Button>
-          </Link>
+          </div>
         </div>
-      </div>
+      </FadeInSection>
 
       {/* Filters */}
+      <FadeInSection delay={100} animation="slide-up">
       <Card className="bg-white border-slate-200">
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 md:flex-row">
@@ -321,8 +331,10 @@ export default function LeadsPage() {
           </div>
         </CardContent>
       </Card>
+      </FadeInSection>
 
       {/* Leads table */}
+      <FadeInSection delay={200} animation="slide-up">
       <Card className="bg-white border-slate-200">
         <CardHeader>
           <CardTitle className="text-slate-900">
@@ -494,6 +506,7 @@ export default function LeadsPage() {
           )}
         </CardContent>
       </Card>
+      </FadeInSection>
 
       {/* Bulk actions bar */}
       <BulkActions
@@ -504,6 +517,12 @@ export default function LeadsPage() {
         onBulkArchive={handleBulkArchive}
         isProcessing={isProcessing}
       />
-    </div>
+
+      {/* Create Lead Modal */}
+      <LeadCreateModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+      />
+    </AdminPageTransition>
   )
 }

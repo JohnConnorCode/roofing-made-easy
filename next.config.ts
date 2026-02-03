@@ -28,6 +28,26 @@ const nextConfig: NextConfig = {
     ];
   },
   async headers() {
+    // Build CSP directives - sanitize URL to prevent invalid header characters
+    // HTTP headers cannot contain control characters (0x00-0x1F, 0x7F)
+    const sanitizeForHeader = (str: string) => str.trim().replace(/[\x00-\x1F\x7F\r\n]/g, '')
+    const rawSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://*.supabase.co'
+    const supabaseUrl = sanitizeForHeader(rawSupabaseUrl)
+    const cspDirectives = [
+      "default-src 'self'",
+      `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://vercel.live`,
+      `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
+      `img-src 'self' data: blob: ${supabaseUrl} https://*.unsplash.com https://*.googleapis.com`,
+      `font-src 'self' https://fonts.gstatic.com`,
+      `connect-src 'self' ${supabaseUrl} wss://*.supabase.co https://api.stripe.com https://vitals.vercel-insights.com https://vercel.live`,
+      `frame-src 'self' https://js.stripe.com https://hooks.stripe.com`,
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+      "upgrade-insecure-requests",
+    ].map(sanitizeForHeader)
+
     return [
       {
         // Apply security headers to all routes
@@ -47,7 +67,19 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=()',
+            value: 'camera=(), microphone=(), geolocation=(self)',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: cspDirectives.join('; '),
+          },
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
           },
         ],
       },

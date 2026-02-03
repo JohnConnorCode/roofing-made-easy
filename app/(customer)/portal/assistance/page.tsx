@@ -220,7 +220,7 @@ export default function AssistancePage() {
       )}
 
       {/* Filters */}
-      <Card className="border-slate-700">
+      <Card variant="dark" className="border-slate-700">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <CardTitle className="text-base text-slate-100">Find Programs</CardTitle>
@@ -364,7 +364,7 @@ export default function AssistancePage() {
 
       {/* Programs list */}
       {filteredPrograms.length === 0 ? (
-        <Card className="border-slate-700">
+        <Card variant="dark" className="border-slate-700">
           <CardContent className="py-8 text-center">
             <HandHeart className="h-12 w-12 text-slate-600 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-slate-200 mb-2">No Programs Found</h3>

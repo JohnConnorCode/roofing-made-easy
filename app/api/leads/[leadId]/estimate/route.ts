@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { PricingEngine, DEFAULT_PRICING_RULES } from '@/lib/pricing/engine'
 import { generateExplanation } from '@/lib/ai'
-import type { PricingRule, Intake, Property } from '@/lib/supabase/types'
+import { notifyEstimateGenerated, sendCustomerEstimateEmail } from '@/lib/email'
+import { sendEstimateReadySms } from '@/lib/sms'
+import { autoCreateCustomerAccount } from '@/lib/customer/auto-create'
+import { triggerWorkflows } from '@/lib/communication/workflow-engine'
+import type { PricingRule, Intake, Property, Contact } from '@/lib/supabase/types'
 import {
   checkRateLimit,
   getClientIP,
@@ -12,8 +16,10 @@ import {
 
 interface LeadWithRelations {
   id: string
+  share_token: string
   intakes: Intake[] | Intake | null
   properties: Property[] | Property | null
+  contacts: Contact[] | Contact | null
 }
 
 export async function POST(
@@ -30,7 +36,7 @@ export async function POST(
     }
 
     const { leadId } = await params
-    const supabase = await createClient()
+    const supabase = await createAdminClient()
 
     // Fetch lead data
     const { data, error: leadError } = await supabase
@@ -38,7 +44,8 @@ export async function POST(
       .select(`
         *,
         intakes(*),
-        properties(*)
+        properties(*),
+        contacts(*)
       `)
       .eq('id', leadId)
       .single()
@@ -52,6 +59,17 @@ export async function POST(
       )
     }
 
+    // Security: Prevent estimate generation abuse
+    // Only allow estimate generation for leads in appropriate status
+    const leadStatus = (lead as { status?: string }).status
+    const allowedStatuses = ['new', 'in_progress', 'contacted', 'intake_complete']
+    if (leadStatus && !allowedStatuses.includes(leadStatus)) {
+      return NextResponse.json(
+        { error: 'Estimate already generated for this lead' },
+        { status: 400 }
+      )
+    }
+
     // Fetch pricing rules
     let pricingRules: PricingRule[]
     const { data: rules, error: rulesError } = await supabase
@@ -60,7 +78,6 @@ export async function POST(
       .eq('is_active', true)
 
     if (rulesError || !rules || rules.length === 0) {
-      console.warn('Using default pricing rules')
       pricingRules = DEFAULT_PRICING_RULES as PricingRule[]
     } else {
       pricingRules = rules as PricingRule[]
@@ -69,6 +86,7 @@ export async function POST(
     // Calculate estimate
     const intake = Array.isArray(lead.intakes) ? lead.intakes[0] : lead.intakes
     const property = Array.isArray(lead.properties) ? lead.properties[0] : lead.properties
+    const contact = Array.isArray(lead.contacts) ? lead.contacts[0] : lead.contacts
 
     const engine = new PricingEngine(pricingRules)
     const result = engine.calculateEstimate({
@@ -127,9 +145,9 @@ export async function POST(
       .single()
 
     if (estimateError) {
-      console.error('Error saving estimate:', estimateError)
+      console.error('Failed to save estimate:', estimateError)
       return NextResponse.json(
-        { error: 'Failed to save estimate' },
+        { error: 'Failed to save estimate', details: estimateError.message },
         { status: 500 }
       )
     }
@@ -139,6 +157,87 @@ export async function POST(
       .from('leads')
       .update({ status: 'estimate_generated' } as never)
       .eq('id', leadId)
+
+    // Trigger estimate_generated workflows (async, don't wait)
+    triggerWorkflows('estimate_generated', {
+      leadId,
+      data: {
+        email: contact?.email,
+        phone: contact?.phone,
+        estimateTotal: result.priceLikely,
+        shareToken: lead.share_token,
+      },
+    }).catch(err => console.error('Failed to trigger estimate_generated workflows:', err))
+
+    // Prepare customer name
+    const customerName = contact?.first_name && contact?.last_name
+      ? `${contact.first_name} ${contact.last_name}`
+      : contact?.first_name || undefined
+
+    // Send admin notification (non-blocking)
+    notifyEstimateGenerated({
+      leadId,
+      contactName: customerName,
+      email: contact?.email || undefined,
+      phone: contact?.phone || undefined,
+      address: property?.street_address || undefined,
+      city: property?.city || undefined,
+      state: property?.state || undefined,
+      jobType: intake?.job_type || undefined,
+      roofMaterial: intake?.roof_material || undefined,
+      roofSizeSqft: intake?.roof_size_sqft || undefined,
+      priceLow: result.priceLow,
+      priceLikely: result.priceLikely,
+      priceHigh: result.priceHigh,
+    }).catch(() => {
+      // Admin notification failed - non-fatal
+    })
+
+    // Send customer estimate email if they have an email (non-blocking)
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+    if (contact?.email && lead.share_token) {
+      const estimateRecord = estimate as { valid_until?: string }
+      sendCustomerEstimateEmail({
+        customerEmail: contact.email,
+        contactName: customerName,
+        address: property?.street_address || undefined,
+        city: property?.city || undefined,
+        state: property?.state || undefined,
+        jobType: intake?.job_type || undefined,
+        priceLow: result.priceLow,
+        priceLikely: result.priceLikely,
+        priceHigh: result.priceHigh,
+        shareToken: lead.share_token,
+        validUntil: estimateRecord.valid_until,
+      }).catch(() => {
+        // Customer email failed - non-fatal
+      })
+    }
+
+    // Send customer SMS if they have a phone and consented (non-blocking)
+    if (contact?.phone && contact.consent_sms && lead.share_token) {
+      const estimateUrl = `${BASE_URL}/estimate/${lead.share_token}`
+      sendEstimateReadySms(
+        contact.phone,
+        customerName || 'there',
+        estimateUrl
+      ).catch(() => {
+        // SMS failed - non-fatal
+      })
+    }
+
+    // Auto-create customer account if they have an email (non-blocking)
+    if (contact?.email) {
+      autoCreateCustomerAccount({
+        leadId,
+        email: contact.email,
+        firstName: contact.first_name || undefined,
+        lastName: contact.last_name || undefined,
+        phone: contact.phone || undefined,
+      }).catch(() => {
+        // Auto-create failed - non-fatal
+      })
+    }
 
     // Log AI output
     if (aiResult.success && estimate) {
@@ -164,7 +263,7 @@ export async function POST(
       headers: createRateLimitHeaders(rateLimitResult),
     })
   } catch (error) {
-    console.error('Error in POST /api/leads/[leadId]/estimate:', error)
+    console.error('Estimate generation error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -186,7 +285,7 @@ export async function GET(
     }
 
     const { leadId } = await params
-    const supabase = await createClient()
+    const supabase = await createAdminClient()
 
     const { data: estimate, error } = await supabase
       .from('estimates')
@@ -204,7 +303,6 @@ export async function GET(
           { status: 404 }
         )
       }
-      console.error('Error fetching estimate:', error)
       return NextResponse.json(
         { error: 'Failed to fetch estimate' },
         { status: 500 }
@@ -213,7 +311,7 @@ export async function GET(
 
     return NextResponse.json(estimate)
   } catch (error) {
-    console.error('Error in GET /api/leads/[leadId]/estimate:', error)
+    console.error('Estimate fetch error:', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -97,8 +97,7 @@ export async function GET(
         insurance_claims: insuranceClaims || []
       }
     })
-  } catch (error) {
-    console.error('Error in GET /api/customers/[customerId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -153,7 +152,6 @@ export async function PUT(
           { status: 404 }
         )
       }
-      console.error('Error updating customer:', error)
       return NextResponse.json(
         { error: 'Failed to update customer' },
         { status: 500 }
@@ -161,8 +159,7 @@ export async function PUT(
     }
 
     return NextResponse.json({ customer })
-  } catch (error) {
-    console.error('Error in PUT /api/customers/[customerId]:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

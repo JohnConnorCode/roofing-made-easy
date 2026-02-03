@@ -89,7 +89,7 @@ export async function POST(
       .eq('id', uploadId)
 
     if (updateError) {
-      console.error('Error updating upload:', updateError)
+      // Update failed - continue anyway
     }
 
     // Log AI output
@@ -118,8 +118,7 @@ export async function POST(
       analysis: result.data,
       provider: result.provider,
     })
-  } catch (error) {
-    console.error('Error in POST /api/leads/[leadId]/ai-analyze:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

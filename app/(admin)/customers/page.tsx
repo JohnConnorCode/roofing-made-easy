@@ -17,6 +17,7 @@ import {
   TrendingUp,
   Loader2
 } from 'lucide-react'
+import { AdminPageTransition, FadeInSection, StaggerContainer } from '@/components/admin/page-transition'
 
 const LIMIT = 20
 
@@ -78,15 +79,17 @@ export default function CustomersPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">Customers</h1>
-        <p className="text-slate-500">Manage your customer relationships</p>
-      </div>
+      <FadeInSection delay={0} animation="fade-in">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Customers</h1>
+          <p className="text-slate-500">Manage your customer relationships</p>
+        </div>
+      </FadeInSection>
 
       {/* Stats */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <StaggerContainer className="grid gap-4 md:grid-cols-4" staggerDelay={75}>
         <Card className="bg-white border-slate-200">
           <CardContent className="flex items-center gap-4 p-4">
             <div className="rounded-lg bg-slate-100 p-3">
@@ -134,24 +137,27 @@ export default function CustomersPage() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </StaggerContainer>
 
       {/* Search */}
-      <Card className="bg-white border-slate-200">
-        <CardContent className="p-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
-            <Input
-              placeholder="Search by name, email, or phone..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 bg-white border-slate-300 text-slate-900"
-            />
-          </div>
-        </CardContent>
-      </Card>
+      <FadeInSection delay={400} animation="slide-up">
+        <Card className="bg-white border-slate-200">
+          <CardContent className="p-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+              <Input
+                placeholder="Search by name, email, or phone..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-10 bg-white border-slate-300 text-slate-900"
+              />
+            </div>
+          </CardContent>
+        </Card>
+      </FadeInSection>
 
       {/* Customer list */}
+      <FadeInSection delay={500} animation="slide-up">
       <Card className="bg-white border-slate-200">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-slate-900">
@@ -231,6 +237,7 @@ export default function CustomersPage() {
           )}
         </CardContent>
       </Card>
-    </div>
+      </FadeInSection>
+    </AdminPageTransition>
   )
 }

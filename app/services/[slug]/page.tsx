@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { getServiceBySlug, services } from '@/lib/data/services'
 import {
@@ -53,28 +54,43 @@ export default function ServiceDetailPage() {
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              {service.name}
-            </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              {service.fullDescription}
-            </p>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
+                {service.name}
+              </h1>
+              <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
+                {service.fullDescription}
+              </p>
 
-            <div className="mt-8 flex flex-wrap gap-6 animate-slide-up delay-200">
-              {service.priceRange && (
-                <div className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5 text-[#c9a25c]" />
-                  <span className="text-slate-300">{service.priceRange}</span>
-                </div>
-              )}
-              {service.timeframe && (
-                <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-[#c9a25c]" />
-                  <span className="text-slate-300">{service.timeframe}</span>
-                </div>
-              )}
+              <div className="mt-8 flex flex-wrap gap-6 animate-slide-up delay-200">
+                {service.priceRange && (
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5 text-[#c9a25c]" />
+                    <span className="text-slate-300">{service.priceRange}</span>
+                  </div>
+                )}
+                {service.timeframe && (
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-[#c9a25c]" />
+                    <span className="text-slate-300">{service.timeframe}</span>
+                  </div>
+                )}
+              </div>
             </div>
+
+            {service.image && (
+              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden animate-slide-up delay-200">
+                <Image
+                  src={service.image}
+                  alt={service.name}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>

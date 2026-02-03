@@ -23,6 +23,8 @@ import {
 } from 'lucide-react'
 import { SkeletonDashboard } from '@/components/ui/skeleton'
 import { SimpleAnalytics } from '@/components/admin/simple-analytics'
+import { VelocityAnalytics } from '@/components/admin/VelocityAnalytics'
+import { AdminPageTransition, FadeInSection, StaggerContainer } from '@/components/admin/page-transition'
 import Link from 'next/link'
 
 interface DashboardStats {
@@ -80,7 +82,7 @@ export default function DashboardPage() {
   const [recentLeads, setRecentLeads] = useState<RecentLead[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [showAnalytics, setShowAnalytics] = useState(false)
+  const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'velocity'>('overview')
   const [allLeads, setAllLeads] = useState<any[]>([])
 
   const fetchDashboardData = useCallback(async () => {
@@ -138,41 +140,62 @@ export default function DashboardPage() {
   const maxStatusCount = Math.max(...Object.values(statusCounts), 1)
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
-          <p className="text-slate-500">
-            {showAnalytics ? 'Performance analytics' : "Today's pipeline at a glance"}
-          </p>
+    <AdminPageTransition className="space-y-8">
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+            <p className="text-slate-500">
+              {activeTab === 'overview' && "Today's pipeline at a glance"}
+              {activeTab === 'analytics' && 'Performance analytics'}
+              {activeTab === 'velocity' && 'Pipeline velocity & conversions'}
+            </p>
+          </div>
+          <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
+            <button
+              onClick={() => setActiveTab('overview')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                activeTab === 'overview'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setActiveTab('analytics')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
+                activeTab === 'analytics'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              <BarChart3 className="h-4 w-4" />
+              Analytics
+            </button>
+            <button
+              onClick={() => setActiveTab('velocity')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
+                activeTab === 'velocity'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              <TrendingUp className="h-4 w-4" />
+              Velocity
+            </button>
+          </div>
         </div>
-        <div className="flex gap-2 bg-slate-100 p-1 rounded-lg">
-          <button
-            onClick={() => setShowAnalytics(false)}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              !showAnalytics
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            Overview
-          </button>
-          <button
-            onClick={() => setShowAnalytics(true)}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
-              showAnalytics
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-500 hover:text-slate-700'
-            }`}
-          >
-            <BarChart3 className="h-4 w-4" />
-            Analytics
-          </button>
-        </div>
-      </div>
+      </FadeInSection>
 
-      {showAnalytics ? (
-        <SimpleAnalytics leads={allLeads} />
+      {activeTab === 'analytics' ? (
+        <FadeInSection delay={100} animation="slide-up">
+          <SimpleAnalytics leads={allLeads} />
+        </FadeInSection>
+      ) : activeTab === 'velocity' ? (
+        <FadeInSection delay={100} animation="slide-up">
+          <VelocityAnalytics />
+        </FadeInSection>
       ) : (
         <>
           {error ? (
@@ -194,7 +217,7 @@ export default function DashboardPage() {
           ) : (
             <>
               {/* Primary Stats */}
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <StaggerContainer className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" staggerDelay={75}>
                 <Card className="bg-white border-slate-200">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
@@ -278,9 +301,10 @@ export default function DashboardPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
+              </StaggerContainer>
 
               {/* Pipeline and Sources */}
+              <FadeInSection delay={400} animation="slide-up">
               <div className="grid gap-6 lg:grid-cols-2">
                 {/* Pipeline by Status */}
                 <Card className="bg-white border-slate-200">
@@ -368,8 +392,10 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               </div>
+              </FadeInSection>
 
               {/* Recent leads */}
+              <FadeInSection delay={550} animation="slide-up">
               <Card className="bg-white border-slate-200">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle className="text-slate-900">Recent Leads</CardTitle>
@@ -441,11 +467,12 @@ export default function DashboardPage() {
                   )}
                 </CardContent>
               </Card>
+              </FadeInSection>
             </>
           )}
         </>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }
 

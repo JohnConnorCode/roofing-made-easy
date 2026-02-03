@@ -68,11 +68,11 @@ export function FeaturedCompanyCard({ city }: FeaturedCompanyCardProps) {
 
             {/* Credentials */}
             <div className="flex items-center gap-4 flex-wrap">
-              <div className="flex items-center gap-2 text-gray-400">
+              <div className="flex items-center gap-2 text-slate-400">
                 <Shield className="w-4 h-4 text-gold" />
                 <span className="text-sm">Licensed & Insured</span>
               </div>
-              <div className="flex items-center gap-2 text-gray-400">
+              <div className="flex items-center gap-2 text-slate-400">
                 <Clock className="w-4 h-4 text-gold" />
                 <span className="text-sm">Since {BUSINESS_CONFIG.foundedYear}</span>
               </div>
@@ -127,21 +127,21 @@ export function FeaturedCompanyCard({ city }: FeaturedCompanyCardProps) {
           <div className="flex items-center gap-3">
             <Phone className="w-5 h-5 text-gold" />
             <div>
-              <p className="text-xs text-gray-500">Phone</p>
+              <p className="text-xs text-slate-400">Phone</p>
               <p className="text-white font-medium">{getPhoneDisplay()}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <MapPin className="w-5 h-5 text-gold" />
             <div>
-              <p className="text-xs text-gray-500">Location</p>
+              <p className="text-xs text-slate-400">Location</p>
               <p className="text-white font-medium">Tupelo, MS (HQ)</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <Clock className="w-5 h-5 text-gold" />
             <div>
-              <p className="text-xs text-gray-500">Hours</p>
+              <p className="text-xs text-slate-400">Hours</p>
               <p className="text-white font-medium">Mon-Fri 7am-6pm</p>
             </div>
           </div>

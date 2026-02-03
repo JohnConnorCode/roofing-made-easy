@@ -54,7 +54,6 @@ export async function GET(request: NextRequest) {
     const { data: customers, error, count } = await query
 
     if (error) {
-      console.error('Error fetching customers:', error)
       return NextResponse.json(
         { error: 'Failed to fetch customers' },
         { status: 500 }
@@ -95,8 +94,7 @@ export async function GET(request: NextRequest) {
       customers: transformedCustomers,
       total: count || 0
     })
-  } catch (error) {
-    console.error('Error in GET /api/customers:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

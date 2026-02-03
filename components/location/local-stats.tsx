@@ -73,9 +73,9 @@ export function LocalStats({ city, county }: LocalStatsProps) {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gold/10 mb-4">
                 <stat.icon className="w-6 h-6 text-gold" />
               </div>
-              <p className="text-sm text-gray-400 mb-1">{stat.label}</p>
+              <p className="text-sm text-slate-400 mb-1">{stat.label}</p>
               <p className="text-xl font-bold text-white mb-1">{stat.value}</p>
-              <p className="text-xs text-gray-500">{stat.description}</p>
+              <p className="text-xs text-slate-400">{stat.description}</p>
             </div>
           ))}
         </div>

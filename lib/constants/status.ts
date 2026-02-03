@@ -8,6 +8,8 @@ export type LeadStatus =
   | 'intake_started'
   | 'intake_complete'
   | 'estimate_generated'
+  | 'estimate_sent'
+  | 'quote_created'
   | 'consultation_scheduled'
   | 'quote_sent'
   | 'won'
@@ -54,11 +56,27 @@ export const LEAD_STATUSES: StatusConfig[] = [
   },
   {
     value: 'estimate_generated',
-    label: 'Estimate Generated',
+    label: 'Estimate Ready',
     badge: 'bg-green-100 text-green-800 border-green-200',
     dot: 'bg-green-500',
     border: 'border-green-500',
     bg: 'bg-green-50',
+  },
+  {
+    value: 'estimate_sent',
+    label: 'Estimate Sent',
+    badge: 'bg-teal-100 text-teal-800 border-teal-200',
+    dot: 'bg-teal-500',
+    border: 'border-teal-500',
+    bg: 'bg-teal-50',
+  },
+  {
+    value: 'quote_created',
+    label: 'Quote Created',
+    badge: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+    dot: 'bg-indigo-500',
+    border: 'border-indigo-500',
+    bg: 'bg-indigo-50',
   },
   {
     value: 'consultation_scheduled',

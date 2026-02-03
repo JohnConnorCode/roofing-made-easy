@@ -86,8 +86,7 @@ export async function POST(request: Request) {
         latencyMs: result.latencyMs,
       })
     }
-  } catch (error) {
-    console.error('Photo measurement error:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

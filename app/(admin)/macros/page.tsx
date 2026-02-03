@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { useToast } from '@/components/ui/toast'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Plus, Edit2, Trash2, FileText, Star, Copy, X } from 'lucide-react'
+import { Plus, Edit2, Trash2, FileText, Star, Copy, X, Loader2 } from 'lucide-react'
+import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 
 type MacroRoofType =
   | 'asphalt_shingle' | 'metal_standing_seam' | 'metal_corrugated'
@@ -88,6 +89,7 @@ const emptyFormData: MacroFormData = {
 
 export default function MacrosPage() {
   const { showToast } = useToast()
+  const { confirm, ConfirmDialog } = useConfirmDialog()
   const [macros, setMacros] = useState<EstimateMacro[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -133,7 +135,13 @@ export default function MacrosPage() {
   }
 
   const handleDelete = async (macroId: string) => {
-    if (!confirm('Are you sure you want to delete this template?')) return
+    const confirmed = await confirm({
+      title: 'Delete Template',
+      description: 'Are you sure you want to delete this estimate template? This action cannot be undone.',
+      confirmText: 'Delete',
+      variant: 'danger',
+    })
+    if (!confirmed) return
 
     try {
       const response = await fetch(`/api/macros/${macroId}`, {
@@ -144,7 +152,7 @@ export default function MacrosPage() {
 
       showToast('Template deleted', 'success')
       setMacros((prev) => prev.filter((m) => m.id !== macroId))
-    } catch (error) {
+    } catch {
       showToast('Failed to delete template', 'error')
     }
   }
@@ -540,6 +548,7 @@ export default function MacrosPage() {
           </div>
         </div>
       )}
+      <ConfirmDialog />
     </div>
   )
 }
