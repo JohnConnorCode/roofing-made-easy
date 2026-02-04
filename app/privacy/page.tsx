@@ -3,9 +3,22 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Roofing Estimate Calculator',
-  description: 'Privacy Policy for the Roofing Estimate Calculator',
+  title: 'Privacy Policy | Farrell Roofing',
+  description: 'Privacy Policy for Farrell Roofing. Learn how we collect, use, and protect your information when using our roofing estimate services.',
+  alternates: {
+    canonical: `${BASE_URL}/privacy`,
+  },
+  openGraph: {
+    title: 'Privacy Policy | Farrell Roofing',
+    description: 'How Farrell Roofing collects, uses, and protects your personal information.',
+    url: `${BASE_URL}/privacy`,
+    siteName: 'Farrell Roofing',
+    locale: 'en_US',
+    type: 'website',
+  },
 }
 
 export default function PrivacyPage() {

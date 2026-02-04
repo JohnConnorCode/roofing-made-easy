@@ -12,12 +12,34 @@ import {
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+
 export const metadata: Metadata = {
-  title: 'Our Work | Roofing Projects Portfolio',
+  title: 'Our Work | Roofing Projects Portfolio | Farrell Roofing',
   description: 'View our completed roofing projects in Tupelo and Northeast Mississippi. See real examples of roof replacements, repairs, and storm damage restoration.',
   openGraph: {
     title: 'Roofing Portfolio | Farrell Roofing',
     description: 'Browse our completed roofing projects across Northeast Mississippi.',
+    url: `${BASE_URL}/portfolio`,
+    siteName: 'Farrell Roofing',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: `${BASE_URL}/api/og?type=service&title=Our%20Work&subtitle=Roofing%20Projects%20Portfolio`,
+        width: 1200,
+        height: 630,
+        alt: 'Farrell Roofing Projects Portfolio',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Roofing Portfolio | Farrell Roofing',
+    description: 'Browse our completed roofing projects across Northeast Mississippi.',
+  },
+  alternates: {
+    canonical: `${BASE_URL}/portfolio`,
   },
 }
 

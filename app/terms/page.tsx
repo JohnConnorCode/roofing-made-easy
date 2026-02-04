@@ -3,9 +3,22 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+
 export const metadata: Metadata = {
-  title: 'Terms of Service | Roofing Estimate Calculator',
-  description: 'Terms of Service for the Roofing Estimate Calculator',
+  title: 'Terms of Service | Farrell Roofing',
+  description: 'Terms of Service for Farrell Roofing. Read our terms and conditions for using our roofing estimate and contractor services.',
+  alternates: {
+    canonical: `${BASE_URL}/terms`,
+  },
+  openGraph: {
+    title: 'Terms of Service | Farrell Roofing',
+    description: 'Terms and conditions for using Farrell Roofing services.',
+    url: `${BASE_URL}/terms`,
+    siteName: 'Farrell Roofing',
+    locale: 'en_US',
+    type: 'website',
+  },
 }
 
 export default function TermsPage() {

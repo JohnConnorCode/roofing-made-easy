@@ -140,6 +140,9 @@ export default function RootLayout({
   return (
     <html lang="en-US" dir="ltr">
       <head>
+        {/* RSS Feed Discovery */}
+        <link rel="alternate" type="application/rss+xml" title="Farrell Roofing Blog" href="/feed.xml" />
+
         {/* Preconnect to important origins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

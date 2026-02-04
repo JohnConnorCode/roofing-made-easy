@@ -35,37 +35,37 @@ export default function robots(): MetadataRoute.Robots {
       // GPTBot (OpenAI/ChatGPT)
       {
         userAgent: 'GPTBot',
-        allow: ['/', '/llms.txt', '/services/', '/blog/', '/about', '/contact'],
+        allow: ['/', '/llms.txt', '/llms-full.txt', '/services/', '/blog/', '/about', '/contact'],
         disallow: ['/api/', '/admin/', '/login/', '/leads/', '/dashboard/'],
       },
       // Claude-Web (Anthropic/Claude)
       {
         userAgent: 'Claude-Web',
-        allow: ['/', '/llms.txt', '/services/', '/blog/', '/about', '/contact'],
+        allow: ['/', '/llms.txt', '/llms-full.txt', '/services/', '/blog/', '/about', '/contact'],
         disallow: ['/api/', '/admin/', '/login/', '/leads/', '/dashboard/'],
       },
       // Anthropic AI
       {
         userAgent: 'anthropic-ai',
-        allow: ['/', '/llms.txt', '/services/', '/blog/', '/about', '/contact'],
+        allow: ['/', '/llms.txt', '/llms-full.txt', '/services/', '/blog/', '/about', '/contact'],
         disallow: ['/api/', '/admin/', '/login/', '/leads/', '/dashboard/'],
       },
       // PerplexityBot
       {
         userAgent: 'PerplexityBot',
-        allow: ['/', '/llms.txt', '/services/', '/blog/', '/about', '/contact'],
+        allow: ['/', '/llms.txt', '/llms-full.txt', '/services/', '/blog/', '/about', '/contact'],
         disallow: ['/api/', '/admin/', '/login/', '/leads/', '/dashboard/'],
       },
       // Google-Extended (Gemini/Bard training)
       {
         userAgent: 'Google-Extended',
-        allow: ['/', '/llms.txt', '/services/', '/blog/', '/about', '/contact'],
+        allow: ['/', '/llms.txt', '/llms-full.txt', '/services/', '/blog/', '/about', '/contact'],
         disallow: ['/api/', '/admin/', '/login/', '/leads/', '/dashboard/'],
       },
       // CCBot (Common Crawl - used by many AI models)
       {
         userAgent: 'CCBot',
-        allow: ['/', '/llms.txt', '/services/', '/blog/', '/about', '/contact'],
+        allow: ['/', '/llms.txt', '/llms-full.txt', '/services/', '/blog/', '/about', '/contact'],
         disallow: ['/api/', '/admin/', '/login/', '/leads/', '/dashboard/'],
       },
     ],
