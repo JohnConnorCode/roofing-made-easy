@@ -24,8 +24,7 @@ const ENV_VARS: EnvVar[] = [
   // Google - Required for address autocomplete
   { name: 'NEXT_PUBLIC_GOOGLE_PLACES_API_KEY', required: false, description: 'Google Places API key' },
 
-  // Admin - Required for notifications
-  { name: 'ADMIN_EMAIL', required: true, description: 'Admin email for notifications' },
+  // Base URL - Required for email links
   { name: 'NEXT_PUBLIC_BASE_URL', required: true, description: 'Base URL for the application' },
 
   // Email - Required for email notifications
