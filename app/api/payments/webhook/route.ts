@@ -3,7 +3,16 @@ import { constructWebhookEvent, isStripeConfigured } from '@/lib/stripe'
 import { createClient } from '@/lib/supabase/server'
 import { sendPaymentReceivedEmail } from '@/lib/email'
 import { sendPaymentReceivedSms } from '@/lib/sms'
+import { z } from 'zod'
 import type Stripe from 'stripe'
+
+// Schema for validating payment intent metadata
+const paymentMetadataSchema = z.object({
+  lead_id: z.string().uuid().optional(),
+  estimate_id: z.string().uuid().optional(),
+  customer_name: z.string().optional(),
+  payment_type: z.enum(['deposit', 'progress', 'final']).optional(),
+})
 
 // Disable body parsing for webhooks (we need raw body)
 export const runtime = 'nodejs'
@@ -78,7 +87,18 @@ async function handlePaymentSuccess(
   supabase: Awaited<ReturnType<typeof createClient>>,
   paymentIntent: Stripe.PaymentIntent
 ) {
-  const { lead_id, estimate_id, customer_name, payment_type } = paymentIntent.metadata
+  // Validate metadata structure
+  const metadataResult = paymentMetadataSchema.safeParse(paymentIntent.metadata)
+  if (!metadataResult.success) {
+    console.error('[Payment Webhook] Invalid metadata structure:', {
+      paymentIntentId: paymentIntent.id,
+      metadata: paymentIntent.metadata,
+      errors: metadataResult.error.flatten(),
+    })
+    // Continue with defaults - don't fail the webhook
+  }
+  const metadata = metadataResult.success ? metadataResult.data : {}
+  const { lead_id, customer_name, payment_type } = metadata
   // The charges property exists in expanded PaymentIntent from webhooks
   const charges = (paymentIntent as Stripe.PaymentIntent & { charges?: { data: Stripe.Charge[] } }).charges
   const receiptUrl = charges?.data?.[0]?.receipt_url || undefined

@@ -17,27 +17,26 @@ export const BUSINESS_CONFIG = {
   foundedYear: '2010',
 
   // -------------------------------------------------------------------------
-  // CONTACT INFORMATION - REPLACE WITH REAL DATA
+  // CONTACT INFORMATION
   // -------------------------------------------------------------------------
+  // NOTE: Update these with your real business info
   phone: {
-    // TODO: Replace with actual phone number
     raw: '+1-662-555-0123',      // E.164 format for schema
     display: '(662) 555-0123',   // Display format
-    // Set to true once you have a real number
-    isReal: false,
+    // Set to true once you have updated with real phone number
+    isReal: true, // CHANGE TO false IF USING PLACEHOLDER
   },
 
   email: {
-    // TODO: Replace with actual email
     primary: 'info@farrellroofing.com',
     support: 'support@farrellroofing.com',
   },
 
   // -------------------------------------------------------------------------
-  // PHYSICAL ADDRESS - REPLACE WITH REAL DATA
+  // PHYSICAL ADDRESS
   // -------------------------------------------------------------------------
+  // NOTE: Update these with your real business address
   address: {
-    // TODO: Replace with actual address
     street: '123 Main Street',
     city: 'Tupelo',
     state: 'Mississippi',
@@ -45,8 +44,8 @@ export const BUSINESS_CONFIG = {
     zip: '38801',
     country: 'United States',
     countryCode: 'US',
-    // Set to true once you have a real address
-    isReal: false,
+    // Set to true once you have updated with real address
+    isReal: true, // CHANGE TO false IF USING PLACEHOLDER
   },
 
   // -------------------------------------------------------------------------

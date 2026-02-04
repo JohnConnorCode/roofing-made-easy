@@ -34,6 +34,15 @@ function validateProductionEnv() {
     errors.push('CRON_SECRET is required to secure cron job endpoints')
   }
 
+  // Admin configuration
+  if (!process.env.ADMIN_EMAIL) {
+    errors.push('ADMIN_EMAIL is required for admin notifications')
+  }
+
+  if (!process.env.NEXT_PUBLIC_BASE_URL) {
+    errors.push('NEXT_PUBLIC_BASE_URL is required for email links and webhooks')
+  }
+
   // Warn about optional but important vars (don't fail)
   const warnings: string[] = []
 
