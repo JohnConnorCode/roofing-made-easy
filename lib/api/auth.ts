@@ -186,3 +186,44 @@ export async function requireLeadOwnership(leadId: string): Promise<CustomerAuth
 
   return { user, customerId, error: null }
 }
+
+/**
+ * Pagination validation utilities
+ * Prevents DoS attacks via unbounded pagination
+ */
+export interface PaginationParams {
+  limit: number
+  offset: number
+}
+
+const DEFAULT_LIMIT = 50
+const MAX_LIMIT = 100
+
+/**
+ * Parse and validate pagination parameters from URL search params
+ * Returns safe, bounded values
+ */
+export function parsePagination(searchParams: URLSearchParams): PaginationParams {
+  const rawLimit = searchParams.get('limit')
+  const rawOffset = searchParams.get('offset')
+
+  // Parse limit with bounds checking
+  let limit = DEFAULT_LIMIT
+  if (rawLimit) {
+    const parsed = parseInt(rawLimit, 10)
+    if (!isNaN(parsed) && parsed > 0) {
+      limit = Math.min(parsed, MAX_LIMIT)
+    }
+  }
+
+  // Parse offset with bounds checking
+  let offset = 0
+  if (rawOffset) {
+    const parsed = parseInt(rawOffset, 10)
+    if (!isNaN(parsed) && parsed >= 0) {
+      offset = parsed
+    }
+  }
+
+  return { limit, offset }
+}

@@ -7,8 +7,23 @@ import {
   rateLimitResponse,
   createRateLimitHeaders,
 } from '@/lib/rate-limit'
-import { requireAdmin } from '@/lib/api/auth'
+import { requireAdmin, parsePagination } from '@/lib/api/auth'
 import { triggerWorkflows } from '@/lib/communication/workflow-engine'
+
+// Valid status values for filtering (must match LeadStatus type in lib/constants/status.ts)
+const VALID_STATUSES = new Set([
+  'new',
+  'intake_started',
+  'intake_complete',
+  'estimate_generated',
+  'estimate_sent',
+  'quote_created',
+  'consultation_scheduled',
+  'quote_sent',
+  'won',
+  'lost',
+  'archived',
+])
 
 // POST is public - anyone can create a lead (with rate limiting)
 export async function POST(request: NextRequest) {
@@ -108,8 +123,15 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
 
     const status = searchParams.get('status')
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { limit, offset } = parsePagination(searchParams)
+
+    // Validate status parameter if provided
+    if (status && !VALID_STATUSES.has(status)) {
+      return NextResponse.json(
+        { error: `Invalid status. Valid values: ${Array.from(VALID_STATUSES).join(', ')}` },
+        { status: 400 }
+      )
+    }
 
     let query = supabase
       .from('leads')

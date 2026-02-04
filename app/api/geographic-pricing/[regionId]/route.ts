@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
+import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
 
 // Validation schema for updates
 const updateGeoPricingSchema = z.object({
@@ -15,10 +16,17 @@ const updateGeoPricingSchema = z.object({
 })
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ regionId: string }> }
 ) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -36,20 +44,31 @@ export async function GET(
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Region not found' }, { status: 404 })
       }
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      console.error('Geographic pricing fetch error:', error)
+      return NextResponse.json({ error: 'Failed to fetch pricing region' }, { status: 500 })
     }
 
-    return NextResponse.json({ region: data })
+    return NextResponse.json(
+      { region: data },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 export async function PATCH(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ regionId: string }> }
 ) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -95,20 +114,31 @@ export async function PATCH(
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Region not found' }, { status: 404 })
       }
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      console.error('Geographic pricing update error:', error)
+      return NextResponse.json({ error: 'Failed to update pricing region' }, { status: 500 })
     }
 
-    return NextResponse.json({ region: data })
+    return NextResponse.json(
+      { region: data },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ regionId: string }> }
 ) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -122,10 +152,14 @@ export async function DELETE(
       .eq('id', regionId)
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      console.error('Geographic pricing delete error:', error)
+      return NextResponse.json({ error: 'Failed to delete pricing region' }, { status: 500 })
     }
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json(
+      { success: true },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

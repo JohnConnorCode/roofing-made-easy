@@ -61,11 +61,17 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
     coApplicant: false,
   })
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await onSubmit(formData)
-    setSubmitted(true)
+    setError(null)
+    try {
+      await onSubmit(formData)
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to submit. Please try again.')
+    }
   }
 
   if (submitted) {
@@ -108,6 +114,13 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Error message */}
+          {error && (
+            <div className="rounded-lg bg-red-500/10 border border-red-500/30 p-4">
+              <p className="text-sm text-red-400">{error}</p>
+            </div>
+          )}
+
           {/* Amount requested */}
           <div>
             <Input

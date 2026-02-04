@@ -1,8 +1,9 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type { GeographicPricing } from '@/lib/supabase/types'
 import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
+import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
 
 // Validation schema for geographic pricing
 const geoPricingSchema = z.object({
@@ -16,8 +17,15 @@ const geoPricingSchema = z.object({
   is_active: z.boolean().default(true),
 })
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -45,17 +53,28 @@ export async function GET(request: Request) {
     const { data, error } = await query
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      console.error('Geographic pricing fetch error:', error)
+      return NextResponse.json({ error: 'Failed to fetch pricing regions' }, { status: 500 })
     }
 
-    return NextResponse.json({ regions: data || [] })
+    return NextResponse.json(
+      { regions: data || [] },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -91,10 +110,14 @@ export async function POST(request: Request) {
       .single()
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      console.error('Geographic pricing create error:', error)
+      return NextResponse.json({ error: 'Failed to create pricing region' }, { status: 500 })
     }
 
-    return NextResponse.json({ region: data }, { status: 201 })
+    return NextResponse.json(
+      { region: data },
+      { status: 201, headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

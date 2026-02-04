@@ -147,7 +147,7 @@ export async function POST(
     if (estimateError) {
       console.error('Failed to save estimate:', estimateError)
       return NextResponse.json(
-        { error: 'Failed to save estimate', details: estimateError.message },
+        { error: 'Failed to save estimate' },
         { status: 500 }
       )
     }
@@ -189,8 +189,8 @@ export async function POST(
       priceLow: result.priceLow,
       priceLikely: result.priceLikely,
       priceHigh: result.priceHigh,
-    }).catch(() => {
-      // Admin notification failed - non-fatal
+    }).catch((err) => {
+      console.error('[Estimate] Admin notification failed:', err instanceof Error ? err.message : 'Unknown error')
     })
 
     // Send customer estimate email if they have an email (non-blocking)
@@ -209,8 +209,8 @@ export async function POST(
         priceHigh: result.priceHigh,
         shareToken: lead.share_token,
         validUntil: estimateRecord.valid_until,
-      }).catch(() => {
-        // Customer email failed - non-fatal
+      }).catch((err) => {
+        console.error('[Estimate] Customer email failed:', err instanceof Error ? err.message : 'Unknown error')
       })
     }
 
@@ -221,8 +221,8 @@ export async function POST(
         contact.phone,
         customerName || 'there',
         estimateUrl
-      ).catch(() => {
-        // SMS failed - non-fatal
+      ).catch((err) => {
+        console.error('[Estimate] SMS notification failed:', err instanceof Error ? err.message : 'Unknown error')
       })
     }
 
@@ -234,8 +234,8 @@ export async function POST(
         firstName: contact.first_name || undefined,
         lastName: contact.last_name || undefined,
         phone: contact.phone || undefined,
-      }).catch(() => {
-        // Auto-create failed - non-fatal
+      }).catch((err) => {
+        console.error('[Estimate] Auto-create customer account failed:', err instanceof Error ? err.message : 'Unknown error')
       })
     }
 

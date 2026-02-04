@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { requireAdmin } from '@/lib/api/auth'
+import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
 
 const createLineItemSchema = z.object({
   item_code: z.string().min(1).max(20),
@@ -28,6 +29,13 @@ const createLineItemSchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -66,7 +74,10 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    return NextResponse.json({ lineItems })
+    return NextResponse.json(
+      { lineItems },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -77,6 +88,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -112,7 +130,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    return NextResponse.json({ lineItem }, { status: 201 })
+    return NextResponse.json(
+      { lineItem },
+      { status: 201, headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },

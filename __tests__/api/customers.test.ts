@@ -255,6 +255,11 @@ vi.mock('@/lib/api/auth', () => ({
     user: { id: 'test-admin-123', email: 'admin@test.com', user_metadata: { role: 'admin' } },
     error: null
   })),
+  parsePagination: vi.fn((searchParams: URLSearchParams) => {
+    const limit = parseInt(searchParams.get('limit') || '50', 10)
+    const offset = parseInt(searchParams.get('offset') || '0', 10)
+    return { limit: Math.min(limit, 100), offset: Math.max(offset, 0) }
+  }),
 }))
 
 describe('Customers API', () => {

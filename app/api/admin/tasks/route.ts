@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
+import { parsePagination } from '@/lib/api/auth'
 import { ActivityLogger } from '@/lib/team/activity-logger'
 import type { TaskType, TaskPriority, TaskStatus, CreateTaskRequest } from '@/lib/team/types'
 import { z } from 'zod'
@@ -48,8 +49,7 @@ export async function GET(request: NextRequest) {
     const customerId = searchParams.get('customer_id')
     const overdue = searchParams.get('overdue')
     const search = searchParams.get('search')
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { limit, offset } = parsePagination(searchParams)
 
     // Build query
     let query = supabase

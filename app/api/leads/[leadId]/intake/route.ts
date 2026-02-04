@@ -75,6 +75,30 @@ export async function PATCH(
 
     const supabase = await createClient()
 
+    // Security: Verify lead exists and is in a valid status for updates
+    const { data: existingLead, error: leadError } = await supabase
+      .from('leads')
+      .select('id, status')
+      .eq('id', leadId)
+      .single()
+
+    if (leadError || !existingLead) {
+      return NextResponse.json(
+        { error: 'Lead not found' },
+        { status: 404 }
+      )
+    }
+
+    // Only allow intake updates for leads in appropriate statuses
+    const allowedStatuses = ['new', 'intake_started']
+    const leadStatus = (existingLead as { status?: string }).status
+    if (leadStatus && !allowedStatuses.includes(leadStatus)) {
+      return NextResponse.json(
+        { error: 'Lead intake already completed' },
+        { status: 400 }
+      )
+    }
+
     // Update lead step if provided
     let intakeJustCompleted = false
     if (body.current_step) {

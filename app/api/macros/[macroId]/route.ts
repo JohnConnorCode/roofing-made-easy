@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { requireAdmin } from '@/lib/api/auth'
+import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
 
 const updateMacroSchema = z.object({
   name: z.string().min(1).max(255).optional(),
@@ -40,6 +41,13 @@ export async function GET(
   { params }: { params: Promise<{ macroId: string }> }
 ) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -72,7 +80,10 @@ export async function GET(
       )
     }
 
-    return NextResponse.json({ macro })
+    return NextResponse.json(
+      { macro },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -86,6 +97,13 @@ export async function PATCH(
   { params }: { params: Promise<{ macroId: string }> }
 ) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -138,7 +156,10 @@ export async function PATCH(
       )
     }
 
-    return NextResponse.json({ macro })
+    return NextResponse.json(
+      { macro },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -152,6 +173,13 @@ export async function DELETE(
   { params }: { params: Promise<{ macroId: string }> }
 ) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -187,7 +215,10 @@ export async function DELETE(
       )
     }
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json(
+      { success: true },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
@@ -202,6 +233,13 @@ export async function POST(
   { params }: { params: Promise<{ macroId: string }> }
 ) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Require admin authentication
     const { error: authError } = await requireAdmin()
     if (authError) return authError
@@ -241,7 +279,10 @@ export async function POST(
       )
     }
 
-    return NextResponse.json({ macroLineItem }, { status: 201 })
+    return NextResponse.json(
+      { macroLineItem },
+      { status: 201, headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },

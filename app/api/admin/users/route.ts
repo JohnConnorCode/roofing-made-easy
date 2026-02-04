@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requirePermission, getDefaultPermissions } from '@/lib/team/permissions'
+import { parsePagination } from '@/lib/api/auth'
 import { ActivityLogger } from '@/lib/team/activity-logger'
 import type { UserRole, CreateUserRequest } from '@/lib/team/types'
 import { z } from 'zod'
@@ -35,8 +36,7 @@ export async function GET(request: NextRequest) {
     const isActive = searchParams.get('is_active')
     const teamId = searchParams.get('team_id')
     const search = searchParams.get('search')
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { limit, offset } = parsePagination(searchParams)
 
     // Build query joining user_profiles with auth.users (via view)
     let query = supabase
@@ -174,6 +174,20 @@ export async function POST(request: NextRequest) {
     // Log activity
     await ActivityLogger.userCreated(user, newUserId, email, role as UserRole)
 
+    // If no password was provided, trigger a password reset email
+    // This is more secure than returning the password in the response
+    let resetEmailSent = false
+    if (!password) {
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/auth/reset-password`,
+      })
+      if (resetError) {
+        console.error('Error sending password reset email:', resetError)
+      } else {
+        resetEmailSent = true
+      }
+    }
+
     // Fetch the complete user data
     const { data: newUser } = await supabase
       .from('user_with_teams')
@@ -182,7 +196,13 @@ export async function POST(request: NextRequest) {
       .single()
 
     return NextResponse.json(
-      { user: newUser, tempPassword: password ? undefined : tempPassword },
+      {
+        user: newUser,
+        resetEmailSent,
+        message: resetEmailSent
+          ? 'User created. A password reset email has been sent.'
+          : 'User created successfully.',
+      },
       { status: 201 }
     )
   } catch (error) {

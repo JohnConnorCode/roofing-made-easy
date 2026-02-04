@@ -99,6 +99,10 @@ export default function TeamPage() {
   const [activeTab, setActiveTab] = useState<'users' | 'teams' | 'invitations'>('users')
   const [showInviteModal, setShowInviteModal] = useState(false)
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
+  const [showEditUserModal, setShowEditUserModal] = useState(false)
+  const [showEditTeamModal, setShowEditTeamModal] = useState(false)
+  const [editingUser, setEditingUser] = useState<User | null>(null)
+  const [editingTeam, setEditingTeam] = useState<Team | null>(null)
   const [expandedTeams, setExpandedTeams] = useState<Set<string>>(new Set())
 
   // Invite form state
@@ -114,6 +118,11 @@ export default function TeamPage() {
   const [teamColor, setTeamColor] = useState('#6366f1')
   const [teamManagerId, setTeamManagerId] = useState('')
   const [isCreatingTeam, setIsCreatingTeam] = useState(false)
+
+  // User edit form state
+  const [editUserRole, setEditUserRole] = useState<UserRole>('crew')
+  const [editUserActive, setEditUserActive] = useState(true)
+  const [isUpdatingUser, setIsUpdatingUser] = useState(false)
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -250,6 +259,86 @@ export default function TeamPage() {
       await fetchInvitations()
     } catch {
       setError('Failed to cancel invitation')
+    }
+  }
+
+  const handleEditUser = (user: User) => {
+    setEditingUser(user)
+    setEditUserRole(user.role)
+    setEditUserActive(user.is_active)
+    setShowEditUserModal(true)
+  }
+
+  const handleUpdateUser = async () => {
+    if (!editingUser) return
+    setIsUpdatingUser(true)
+
+    try {
+      const response = await fetch(`/api/admin/users/${editingUser.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          role: editUserRole,
+          is_active: editUserActive,
+        }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to update user')
+      }
+
+      await fetchUsers()
+      setShowEditUserModal(false)
+      setEditingUser(null)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update user')
+    } finally {
+      setIsUpdatingUser(false)
+    }
+  }
+
+  const handleEditTeam = (team: Team) => {
+    setEditingTeam(team)
+    setTeamName(team.name)
+    setTeamDescription(team.description || '')
+    setTeamColor(team.color)
+    setTeamManagerId(team.manager?.id || '')
+    setShowEditTeamModal(true)
+  }
+
+  const handleUpdateTeam = async () => {
+    if (!editingTeam || !teamName) return
+    setIsCreatingTeam(true)
+
+    try {
+      const response = await fetch(`/api/admin/teams/${editingTeam.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: teamName,
+          description: teamDescription || undefined,
+          color: teamColor,
+          manager_id: teamManagerId || undefined,
+        }),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to update team')
+      }
+
+      await fetchTeams()
+      setShowEditTeamModal(false)
+      setEditingTeam(null)
+      setTeamName('')
+      setTeamDescription('')
+      setTeamColor('#6366f1')
+      setTeamManagerId('')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update team')
+    } finally {
+      setIsCreatingTeam(false)
     }
   }
 
@@ -450,7 +539,7 @@ export default function TeamPage() {
 
                       {/* Actions */}
                       <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => handleEditUser(user)}>
                           <Pencil className="h-4 w-4" />
                         </Button>
                         <Button variant="ghost" size="sm">
@@ -561,7 +650,7 @@ export default function TeamPage() {
                         <Button variant="outline" size="sm" leftIcon={<UserPlus className="h-4 w-4" />}>
                           Add Member
                         </Button>
-                        <Button variant="outline" size="sm" leftIcon={<Pencil className="h-4 w-4" />}>
+                        <Button variant="outline" size="sm" leftIcon={<Pencil className="h-4 w-4" />} onClick={() => handleEditTeam(team)}>
                           Edit Team
                         </Button>
                       </div>
@@ -777,6 +866,150 @@ export default function TeamPage() {
                   leftIcon={isCreatingTeam ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Users className="h-4 w-4" />}
                 >
                   {isCreatingTeam ? 'Creating...' : 'Create Team'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {showEditUserModal && editingUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div className="p-6">
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Edit User</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    User
+                  </label>
+                  <p className="text-slate-900">
+                    {editingUser.first_name && editingUser.last_name
+                      ? `${editingUser.first_name} ${editingUser.last_name}`
+                      : editingUser.email}
+                  </p>
+                  <p className="text-sm text-slate-500">{editingUser.email}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Role
+                  </label>
+                  <Select
+                    options={ROLE_OPTIONS.filter(r => r.value)}
+                    value={editUserRole}
+                    onChange={(v) => setEditUserRole(v as UserRole)}
+                  />
+                </div>
+                <div>
+                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                    <input
+                      type="checkbox"
+                      checked={editUserActive}
+                      onChange={(e) => setEditUserActive(e.target.checked)}
+                      className="rounded border-slate-300"
+                    />
+                    Active
+                  </label>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Inactive users cannot access the system
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 flex justify-end gap-3">
+                <Button variant="outline" onClick={() => { setShowEditUserModal(false); setEditingUser(null); }}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleUpdateUser}
+                  disabled={isUpdatingUser}
+                  leftIcon={isUpdatingUser ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Pencil className="h-4 w-4" />}
+                >
+                  {isUpdatingUser ? 'Saving...' : 'Save Changes'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Team Modal */}
+      {showEditTeamModal && editingTeam && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div className="p-6">
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Edit Team</h2>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Team Name
+                  </label>
+                  <Input
+                    placeholder="e.g., Installation Crew A"
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Description (optional)
+                  </label>
+                  <textarea
+                    className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
+                    rows={2}
+                    placeholder="Team responsibilities and notes"
+                    value={teamDescription}
+                    onChange={(e) => setTeamDescription(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Team Color
+                  </label>
+                  <div className="flex gap-2">
+                    {['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'].map(color => (
+                      <button
+                        key={color}
+                        className={`h-8 w-8 rounded-full border-2 ${
+                          teamColor === color ? 'border-slate-900' : 'border-transparent'
+                        }`}
+                        style={{ backgroundColor: color }}
+                        onClick={() => setTeamColor(color)}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    Team Manager (optional)
+                  </label>
+                  <Select
+                    options={[
+                      { value: '', label: 'No manager' },
+                      ...users
+                        .filter(u => u.is_active && ['admin', 'manager', 'crew_lead'].includes(u.role))
+                        .map(u => ({
+                          value: u.id,
+                          label: u.first_name && u.last_name
+                            ? `${u.first_name} ${u.last_name}`
+                            : u.email
+                        }))
+                    ]}
+                    value={teamManagerId}
+                    onChange={setTeamManagerId}
+                  />
+                </div>
+              </div>
+              <div className="mt-6 flex justify-end gap-3">
+                <Button variant="outline" onClick={() => { setShowEditTeamModal(false); setEditingTeam(null); setTeamName(''); setTeamDescription(''); setTeamColor('#6366f1'); setTeamManagerId(''); }}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleUpdateTeam}
+                  disabled={!teamName || isCreatingTeam}
+                  leftIcon={isCreatingTeam ? <RefreshCw className="h-4 w-4 animate-spin" /> : <Users className="h-4 w-4" />}
+                >
+                  {isCreatingTeam ? 'Saving...' : 'Save Changes'}
                 </Button>
               </div>
             </div>

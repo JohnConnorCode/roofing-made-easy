@@ -31,6 +31,9 @@ Return your analysis as JSON with this exact structure:
 Be conservative - only identify issues you can clearly see. Do NOT make up damage that isn't visible.
 Respond with only the JSON object, no other text.`
 
+// 60 second timeout for AI API calls (image analysis can be slow)
+const AI_TIMEOUT_MS = 60_000
+
 export class AnthropicProvider implements AiProvider {
   name = 'anthropic' as const
   private client: Anthropic
@@ -38,6 +41,8 @@ export class AnthropicProvider implements AiProvider {
   constructor() {
     this.client = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
+      timeout: AI_TIMEOUT_MS,
+      maxRetries: 2,
     })
   }
 

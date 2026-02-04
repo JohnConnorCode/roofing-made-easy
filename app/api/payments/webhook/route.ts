@@ -61,7 +61,12 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ received: true })
-  } catch {
+  } catch (error) {
+    console.error('[Stripe Webhook] Critical error processing webhook:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+    })
     return NextResponse.json(
       { error: 'Webhook handler failed' },
       { status: 500 }

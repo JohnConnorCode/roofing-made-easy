@@ -145,6 +145,7 @@ export default function WorkflowsPage() {
   const [formBusinessEnd, setFormBusinessEnd] = useState('18:00')
   const [formBusinessDays, setFormBusinessDays] = useState([1, 2, 3, 4, 5])
   const [isSaving, setIsSaving] = useState(false)
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState(false)
 
   const fetchWorkflows = useCallback(async () => {
     setIsLoading(true)
@@ -724,12 +725,15 @@ export default function WorkflowsPage() {
                   <button
                     type="button"
                     className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-4"
-                    onClick={() => {}}
+                    onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
                   >
                     <Settings className="h-4 w-4" />
                     Advanced Settings
+                    <ChevronDown className={`h-4 w-4 transition-transform ${showAdvancedSettings ? 'rotate-180' : ''}`} />
                   </button>
 
+                  {showAdvancedSettings && (
+                  <>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -831,6 +835,8 @@ export default function WorkflowsPage() {
                       </div>
                     )}
                   </div>
+                  </>
+                  )}
                 </div>
               </div>
 

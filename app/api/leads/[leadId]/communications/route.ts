@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requirePermission } from '@/lib/team/permissions'
+import { parsePagination } from '@/lib/api/auth'
 
 interface RouteParams {
   params: Promise<{ leadId: string }>
@@ -24,8 +25,7 @@ export async function GET(
     const supabase = await createClient()
     const { searchParams } = new URL(request.url)
 
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { limit, offset } = parsePagination(searchParams)
 
     // Fetch communication logs for this lead
     const { data: logs, error, count } = await supabase

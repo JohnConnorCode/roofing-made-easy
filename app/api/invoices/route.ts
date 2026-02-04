@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { requireAdmin } from '@/lib/api/auth'
+import { requireAdmin, parsePagination } from '@/lib/api/auth'
 import { z } from 'zod'
+import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
 
 // Schema for creating an invoice
 const createInvoiceSchema = z.object({
@@ -25,6 +26,13 @@ const createInvoiceSchema = z.object({
 // GET - List invoices (admin only)
 export async function GET(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     const { error: authError } = await requireAdmin()
     if (authError) return authError
 
@@ -34,8 +42,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
     const leadId = searchParams.get('leadId')
     const customerId = searchParams.get('customerId')
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { limit, offset } = parsePagination(searchParams)
 
     let query = supabase
       .from('invoices')
@@ -72,7 +79,10 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    return NextResponse.json({ invoices, total: count })
+    return NextResponse.json(
+      { invoices, total: count },
+      { headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch (error) {
     console.error('Invoices fetch error:', error)
     return NextResponse.json(
@@ -85,6 +95,13 @@ export async function GET(request: NextRequest) {
 // POST - Create a new invoice (admin only)
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'api')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     const { user, error: authError } = await requireAdmin()
     if (authError) return authError
 
@@ -208,7 +225,10 @@ export async function POST(request: NextRequest) {
       .eq('id', invoiceId)
       .single()
 
-    return NextResponse.json({ invoice: completeInvoice }, { status: 201 })
+    return NextResponse.json(
+      { invoice: completeInvoice },
+      { status: 201, headers: createRateLimitHeaders(rateLimitResult) }
+    )
   } catch (error) {
     console.error('Invoice creation error:', error)
     return NextResponse.json(

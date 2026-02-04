@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
+import { parsePagination } from '@/lib/api/auth'
 import type { TaskStatus, TaskPriority, TaskType } from '@/lib/team/types'
 
 // GET /api/admin/tasks/my - Get current user's tasks
@@ -28,8 +29,7 @@ export async function GET(request: NextRequest) {
     const priority = searchParams.get('priority') as TaskPriority | null
     const type = searchParams.get('type') as TaskType | null
     const includeCreated = searchParams.get('include_created') === 'true'
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { limit, offset } = parsePagination(searchParams)
 
     // Build query for tasks assigned to current user
     let query = supabase

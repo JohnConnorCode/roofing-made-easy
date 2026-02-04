@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requirePermission } from '@/lib/team/permissions'
+import { parsePagination } from '@/lib/api/auth'
 import type { MessageStatus, MessageChannel } from '@/lib/communication/types'
 
 // GET /api/admin/messages/scheduled - List scheduled messages
@@ -22,8 +23,7 @@ export async function GET(request: NextRequest) {
     const channel = searchParams.get('channel') as MessageChannel | null
     const leadId = searchParams.get('lead_id')
     const workflowId = searchParams.get('workflow_id')
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { limit, offset } = parsePagination(searchParams)
 
     let query = supabase
       .from('scheduled_messages')

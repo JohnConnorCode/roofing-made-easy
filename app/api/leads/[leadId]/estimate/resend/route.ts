@@ -139,7 +139,8 @@ export async function POST(
       message: 'Estimate resent successfully',
       results,
     })
-  } catch {
+  } catch (error) {
+    console.error('[Estimate Resend] Error:', error instanceof Error ? error.message : 'Unknown error')
     return NextResponse.json(
       { error: 'Failed to resend estimate' },
       { status: 500 }

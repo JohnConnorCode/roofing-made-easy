@@ -92,7 +92,8 @@ export async function POST(request: NextRequest) {
       },
       { status: 201, headers: createRateLimitHeaders(rateLimitResult) }
     )
-  } catch {
+  } catch (error) {
+    console.error('[Contact Form] Error:', error instanceof Error ? error.message : 'Unknown error')
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requirePermission } from '@/lib/team/permissions'
+import { parsePagination } from '@/lib/api/auth'
 import { sendEmail } from '@/lib/communication/send-email'
 import { sendSMS } from '@/lib/communication/send-sms'
 import { renderTemplate, getLeadVariables, getCompanyVariables } from '@/lib/communication/template-renderer'
@@ -38,8 +39,7 @@ export async function GET(request: NextRequest) {
     const customerId = searchParams.get('customer_id')
     const startDate = searchParams.get('start_date')
     const endDate = searchParams.get('end_date')
-    const limit = parseInt(searchParams.get('limit') || '50')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { limit, offset } = parsePagination(searchParams)
 
     let query = supabase
       .from('communication_logs')

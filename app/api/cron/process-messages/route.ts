@@ -15,9 +15,9 @@ import { emailWrapper } from '@/lib/email/templates'
 
 const CRON_SECRET = process.env.CRON_SECRET
 
-// Validate CRON_SECRET is configured in production
+// Validate CRON_SECRET is configured - required in ALL environments
 function validateCronSecret(): { valid: boolean; error?: string } {
-  if (process.env.NODE_ENV === 'production' && !CRON_SECRET) {
+  if (!CRON_SECRET) {
     return {
       valid: false,
       error: 'CRON_SECRET environment variable is not configured. Cron jobs are disabled.',
@@ -52,12 +52,10 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Verify cron secret (skip in dev)
-  if (process.env.NODE_ENV === 'production' && CRON_SECRET) {
-    const authHeader = request.headers.get('authorization')
-    if (authHeader !== `Bearer ${CRON_SECRET}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+  // Verify cron secret - ALWAYS required in all environments
+  const authHeader = request.headers.get('authorization')
+  if (authHeader !== `Bearer ${CRON_SECRET}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const supabase = await createClient()
@@ -83,7 +81,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error('Error fetching scheduled messages:', error)
       return NextResponse.json(
-        { error: 'Failed to fetch scheduled messages', details: error.message },
+        { error: 'Failed to fetch scheduled messages' },
         { status: 500 }
       )
     }
@@ -196,7 +194,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Cron job error:', error)
     return NextResponse.json(
-      { error: 'Cron job failed', details: error instanceof Error ? error.message : 'Unknown error' },
+      { error: 'Cron job failed' },
       { status: 500 }
     )
   }

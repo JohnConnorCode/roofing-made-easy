@@ -30,6 +30,9 @@ Return your analysis as JSON with this exact structure:
 
 Be conservative - only identify issues you can clearly see. Do NOT make up damage that isn't visible.`
 
+// 60 second timeout for AI API calls (image analysis can be slow)
+const AI_TIMEOUT_MS = 60_000
+
 export class OpenAIProvider implements AiProvider {
   name = 'openai' as const
   private client: OpenAI
@@ -37,6 +40,8 @@ export class OpenAIProvider implements AiProvider {
   constructor(apiKey?: string) {
     this.client = new OpenAI({
       apiKey: apiKey || process.env.OPENAI_API_KEY,
+      timeout: AI_TIMEOUT_MS,
+      maxRetries: 2,
     })
   }
 

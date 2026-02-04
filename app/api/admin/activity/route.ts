@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireManagerOrAbove } from '@/lib/team/permissions'
+import { parsePagination } from '@/lib/api/auth'
 import type { ActivityCategory } from '@/lib/team/types'
 
 // GET /api/admin/activity - Get activity logs
@@ -24,8 +25,7 @@ export async function GET(request: NextRequest) {
     const entityId = searchParams.get('entity_id')
     const startDate = searchParams.get('start_date')
     const endDate = searchParams.get('end_date')
-    const limit = parseInt(searchParams.get('limit') || '100')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const { limit, offset } = parsePagination(searchParams)
 
     // Build query
     let query = supabase
