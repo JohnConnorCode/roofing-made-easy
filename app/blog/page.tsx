@@ -6,17 +6,48 @@ import { getAllBlogPosts, getCategories } from '@/lib/data/blog'
 import {
   ArrowRight,
   Clock,
-  Tag,
   BookOpen,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { CollectionPageSchema, BreadcrumbSchema } from '@/components/seo/list-schema'
+import { BUSINESS_CONFIG } from '@/lib/config/business'
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
 
 export const metadata: Metadata = {
-  title: 'Roofing Resources & Blog | Tips & Guides',
-  description: 'Expert roofing advice, tips, and guides for Mississippi homeowners. Learn about roof maintenance, storm damage, materials, and more.',
+  title: `Roofing Resources & Blog | Tips & Guides | ${BUSINESS_CONFIG.name}`,
+  description: `Expert roofing advice, tips, and guides for ${BUSINESS_CONFIG.serviceArea.region} homeowners. Learn about roof maintenance, storm damage, materials, and more from local roofing experts.`,
+  keywords: [
+    'roofing tips',
+    'roof maintenance guide',
+    'roofing advice Mississippi',
+    'storm damage roof',
+    'roof repair tips',
+    'roofing materials guide',
+  ],
   openGraph: {
-    title: 'Roofing Resources | Farrell Roofing',
-    description: 'Expert roofing tips and guides for Northeast Mississippi homeowners.',
+    title: `Roofing Resources | ${BUSINESS_CONFIG.name}`,
+    description: `Expert roofing tips and guides for ${BUSINESS_CONFIG.serviceArea.region} homeowners.`,
+    url: `${BASE_URL}/blog`,
+    siteName: BUSINESS_CONFIG.name,
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: `${BASE_URL}/api/og?type=blog&title=Roofing%20Resources%20%26%20Blog&subtitle=Expert%20Tips%20%E2%80%A2%20Guides%20%E2%80%A2%20Advice`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_CONFIG.name} Blog`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Roofing Resources | ${BUSINESS_CONFIG.name}`,
+    description: `Expert roofing advice for ${BUSINESS_CONFIG.serviceArea.region} homeowners.`,
+  },
+  alternates: {
+    canonical: `${BASE_URL}/blog`,
   },
 }
 
@@ -24,8 +55,30 @@ export default function BlogPage() {
   const posts = getAllBlogPosts()
   const categories = getCategories()
 
+  const breadcrumbs = [
+    { name: 'Home', url: BASE_URL },
+    { name: 'Blog', url: `${BASE_URL}/blog` },
+  ]
+
+  const postItems = posts.map(p => ({
+    title: p.title,
+    slug: p.slug,
+    excerpt: p.excerpt,
+    author: p.author,
+    publishedAt: p.publishedAt,
+    image: p.image,
+  }))
+
   return (
     <div className="min-h-screen bg-gradient-dark">
+      {/* Structured Data */}
+      <CollectionPageSchema
+        posts={postItems}
+        pageTitle="Roofing Resources & Blog"
+        pageDescription={`Expert roofing advice, tips, and guides from ${BUSINESS_CONFIG.name}`}
+      />
+      <BreadcrumbSchema items={breadcrumbs} />
+
       <SiteHeader />
 
       {/* Hero */}

@@ -13,13 +13,46 @@ import {
   CheckCircle,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { ServicesListSchema, BreadcrumbSchema } from '@/components/seo/list-schema'
+import { BUSINESS_CONFIG } from '@/lib/config/business'
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
 
 export const metadata: Metadata = {
-  title: 'Roofing Services | Roof Repair, Replacement & More',
-  description: 'Professional roofing services in Tupelo, MS. Roof replacement, repair, storm damage restoration, inspections, and gutter services. Free estimates available.',
+  title: `Roofing Services | Roof Repair, Replacement & More | ${BUSINESS_CONFIG.name}`,
+  description: `Professional roofing services in ${BUSINESS_CONFIG.address.city}, ${BUSINESS_CONFIG.address.stateCode}. Roof replacement, repair, storm damage restoration, inspections, and gutter services. Free estimates available.`,
+  keywords: [
+    'roofing services',
+    'roof replacement',
+    'roof repair',
+    'roof inspection',
+    'gutter installation',
+    `${BUSINESS_CONFIG.address.city} roofing services`,
+    BUSINESS_CONFIG.serviceArea.region,
+  ],
   openGraph: {
-    title: 'Roofing Services | Farrell Roofing',
-    description: 'Complete roofing services for Northeast Mississippi homeowners. From repairs to full replacements.',
+    title: `Roofing Services | ${BUSINESS_CONFIG.name}`,
+    description: `Complete roofing services for ${BUSINESS_CONFIG.serviceArea.region} homeowners. From repairs to full replacements.`,
+    url: `${BASE_URL}/services`,
+    siteName: BUSINESS_CONFIG.name,
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: `${BASE_URL}/api/og?type=service&title=Our%20Roofing%20Services&subtitle=Repair%20%E2%80%A2%20Replacement%20%E2%80%A2%20Inspection%20%E2%80%A2%20Gutters`,
+        width: 1200,
+        height: 630,
+        alt: `${BUSINESS_CONFIG.name} Services`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Roofing Services | ${BUSINESS_CONFIG.name}`,
+    description: `Professional roofing services in ${BUSINESS_CONFIG.serviceArea.region}. Free estimates available.`,
+  },
+  alternates: {
+    canonical: `${BASE_URL}/services`,
   },
 }
 
@@ -33,8 +66,28 @@ const iconMap: Record<string, React.ReactNode> = {
 }
 
 export default function ServicesPage() {
+  const breadcrumbs = [
+    { name: 'Home', url: BASE_URL },
+    { name: 'Services', url: `${BASE_URL}/services` },
+  ]
+
+  const serviceItems = services.map(s => ({
+    name: s.name,
+    slug: s.slug,
+    description: s.shortDescription,
+    priceRange: s.priceRange,
+  }))
+
   return (
     <div className="min-h-screen bg-gradient-dark">
+      {/* Structured Data */}
+      <ServicesListSchema
+        services={serviceItems}
+        pageTitle="Roofing Services"
+        pageDescription={`Professional roofing services offered by ${BUSINESS_CONFIG.name} in ${BUSINESS_CONFIG.serviceArea.region}`}
+      />
+      <BreadcrumbSchema items={breadcrumbs} />
+
       <SiteHeader />
 
       {/* Hero */}

@@ -13,10 +13,13 @@ import {
   Tag,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { BlogPostingSchema, BlogBreadcrumbSchema } from '@/components/seo/blog-schema'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
 }
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params
@@ -26,16 +29,40 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     return { title: 'Article Not Found' }
   }
 
+  const canonicalUrl = `${BASE_URL}/blog/${slug}`
+  const ogImageUrl = post.image
+    ? `${BASE_URL}${post.image}`
+    : `${BASE_URL}/api/og?title=${encodeURIComponent(post.title)}&subtitle=${encodeURIComponent(post.category)}&type=blog`
+
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt,
+      url: canonicalUrl,
+      siteName: 'Farrell Roofing',
       type: 'article',
       publishedTime: post.publishedAt,
       authors: [post.author],
       tags: post.tags,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImageUrl],
     },
   }
 }
@@ -55,8 +82,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound()
   }
 
+  // Estimate word count for schema
+  const wordCount = post.content.split(/\s+/).length
+
   return (
     <div className="min-h-screen bg-gradient-dark">
+      <BlogPostingSchema
+        title={post.title}
+        description={post.excerpt}
+        slug={post.slug}
+        image={post.image}
+        datePublished={post.publishedAt}
+        author={post.author}
+        category={post.category}
+        tags={post.tags}
+        wordCount={wordCount}
+      />
+      <BlogBreadcrumbSchema title={post.title} slug={post.slug} />
       <SiteHeader />
 
       {/* Breadcrumb */}

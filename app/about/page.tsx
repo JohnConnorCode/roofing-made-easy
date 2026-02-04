@@ -11,19 +11,62 @@ import {
   Phone,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { OrganizationSchema, AboutPageSchema, BreadcrumbSchema } from '@/components/seo/list-schema'
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
 
 export const metadata: Metadata = {
-  title: 'About Us | Family-Owned Roofing Since 2010',
-  description: 'Learn about Farrell Roofing - a family-owned roofing company serving Tupelo and Northeast Mississippi since 2010. Licensed, insured, and committed to quality.',
+  title: `About Us | Family-Owned Roofing Since ${BUSINESS_CONFIG.foundedYear} | ${BUSINESS_CONFIG.name}`,
+  description: `Learn about ${BUSINESS_CONFIG.name} - a family-owned roofing company serving ${BUSINESS_CONFIG.address.city} and ${BUSINESS_CONFIG.serviceArea.region} since ${BUSINESS_CONFIG.foundedYear}. Licensed, insured, and committed to quality.`,
+  keywords: [
+    BUSINESS_CONFIG.name,
+    `${BUSINESS_CONFIG.address.city} roofing company`,
+    'family-owned roofer',
+    'local roofing contractor',
+    `${BUSINESS_CONFIG.serviceArea.region} roofer`,
+  ],
   openGraph: {
-    title: 'About Farrell Roofing | Tupelo MS',
-    description: 'Family-owned roofing company serving Northeast Mississippi since 2010.',
+    title: `About ${BUSINESS_CONFIG.name} | ${BUSINESS_CONFIG.address.city}, ${BUSINESS_CONFIG.address.stateCode}`,
+    description: `Family-owned roofing company serving ${BUSINESS_CONFIG.serviceArea.region} since ${BUSINESS_CONFIG.foundedYear}.`,
+    url: `${BASE_URL}/about`,
+    siteName: BUSINESS_CONFIG.name,
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: `${BASE_URL}/api/og?type=website&title=About%20${encodeURIComponent(BUSINESS_CONFIG.name)}&subtitle=Family-Owned%20Since%20${BUSINESS_CONFIG.foundedYear}`,
+        width: 1200,
+        height: 630,
+        alt: `About ${BUSINESS_CONFIG.name}`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `About ${BUSINESS_CONFIG.name}`,
+    description: `Family-owned roofing company in ${BUSINESS_CONFIG.serviceArea.region} since ${BUSINESS_CONFIG.foundedYear}.`,
+  },
+  alternates: {
+    canonical: `${BASE_URL}/about`,
   },
 }
 
 export default function AboutPage() {
+  const breadcrumbs = [
+    { name: 'Home', url: BASE_URL },
+    { name: 'About', url: `${BASE_URL}/about` },
+  ]
+
   return (
     <div className="min-h-screen bg-gradient-dark">
+      {/* Structured Data */}
+      <AboutPageSchema />
+      <OrganizationSchema
+        description={companyInfo.description}
+        numberOfEmployees="45+"
+      />
+      <BreadcrumbSchema items={breadcrumbs} />
+
       <SiteHeader />
 
       {/* Hero */}

@@ -1,6 +1,9 @@
+import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { PublicEstimateView } from './PublicEstimateView'
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
 
 interface Props {
   params: Promise<{ shareToken: string }>
@@ -162,21 +165,99 @@ export default async function SharedEstimatePage({ params }: Props) {
   )
 }
 
-// Generate metadata for SEO
-export async function generateMetadata({ params }: Props) {
-  const { shareToken } = await params
+// Type for metadata query result
+interface MetadataLeadData {
+  properties: Array<{ city: string | null }> | { city: string | null } | null
+  intakes: Array<{ job_type: string | null }> | { job_type: string | null } | null
+  estimates: Array<{ price_likely: number; is_superseded: boolean; created_at: string }> | null
+}
+
+// Helper to fetch estimate data for metadata
+async function getEstimateData(shareToken: string) {
+  const supabase = await createClient()
+
+  const { data } = await supabase
+    .from('leads')
+    .select(`
+      properties (city),
+      intakes (job_type),
+      estimates (price_likely, is_superseded, created_at)
+    `)
+    .eq('share_token' as never, shareToken)
+    .single()
+
+  if (!data) return null
+
+  const lead = data as unknown as MetadataLeadData
+
+  const property = Array.isArray(lead.properties) ? lead.properties[0] : lead.properties
+  const intake = Array.isArray(lead.intakes) ? lead.intakes[0] : lead.intakes
+  const estimates = lead.estimates
+
+  const estimate = estimates
+    ?.filter(e => !e.is_superseded)
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0]
 
   return {
-    title: 'Your Roofing Estimate | Farrell Roofing',
-    description: 'View your personalized roofing estimate from Farrell Roofing.',
+    city: property?.city || null,
+    jobType: intake?.job_type || null,
+    price: estimate?.price_likely || null,
+  }
+}
+
+// Generate metadata for SEO
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { shareToken } = await params
+  const estimateData = await getEstimateData(shareToken)
+
+  // Build dynamic OG image URL with estimate details
+  const ogParams = new URLSearchParams()
+  if (estimateData?.price) {
+    ogParams.set('price', String(Math.round(estimateData.price)))
+  }
+  if (estimateData?.city) {
+    ogParams.set('city', estimateData.city)
+  }
+  if (estimateData?.jobType) {
+    ogParams.set('jobType', estimateData.jobType)
+  }
+
+  const ogImageUrl = `${BASE_URL}/api/og/estimate?${ogParams.toString()}`
+
+  const title = estimateData?.city
+    ? `Your Roofing Estimate for ${estimateData.city} | Farrell Roofing`
+    : 'Your Roofing Estimate | Farrell Roofing'
+
+  const description = estimateData?.price
+    ? `View your personalized roofing estimate from Farrell Roofing. Get detailed pricing and schedule your free consultation.`
+    : 'View your personalized roofing estimate from Farrell Roofing.'
+
+  return {
+    title,
+    description,
     robots: {
-      index: false, // Don't index individual estimates
+      index: false, // Don't index individual estimates (privacy)
       follow: false,
     },
     openGraph: {
-      title: 'Your Roofing Estimate | Farrell Roofing',
-      description: 'View your personalized roofing estimate from Farrell Roofing.',
+      title,
+      description,
       type: 'website',
+      siteName: 'Farrell Roofing',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: 'Your Personalized Roofing Estimate',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImageUrl],
     },
   }
 }

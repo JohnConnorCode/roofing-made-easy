@@ -1,6 +1,5 @@
-'use client'
-
-import { useParams } from 'next/navigation'
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -13,29 +12,109 @@ import {
   DollarSign,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { ServiceSchemaBundle } from '@/components/seo/service-schema'
 
-export default function ServiceDetailPage() {
-  const params = useParams()
-  const slug = params.slug as string
-  const service = getServiceBySlug(slug)
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+
+interface ServiceDetailPageProps {
+  params: Promise<{
+    slug: string
+  }>
+}
+
+// Generate static params for all services
+export async function generateStaticParams() {
+  return services.map((service) => ({
+    slug: service.slug,
+  }))
+}
+
+// Generate metadata per service
+export async function generateMetadata({
+  params,
+}: ServiceDetailPageProps): Promise<Metadata> {
+  const resolvedParams = await params
+  const service = getServiceBySlug(resolvedParams.slug)
 
   if (!service) {
-    return (
-      <div className="min-h-screen bg-gradient-dark flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-slate-100 mb-4">Service Not Found</h1>
-          <Link href="/services">
-            <Button variant="outline" className="border-slate-600 text-slate-300">
-              View All Services
-            </Button>
-          </Link>
-        </div>
-      </div>
-    )
+    return { title: 'Service Not Found' }
+  }
+
+  const title = `${service.name} | Northeast Mississippi | Farrell Roofing`
+  const description = `${service.fullDescription.slice(0, 150)}... Get a free estimate for ${service.name.toLowerCase()} in Tupelo and surrounding areas.`
+  const url = `${BASE_URL}/services/${service.slug}`
+  const ogImageUrl = `${BASE_URL}/api/og?type=service&title=${encodeURIComponent(service.name)}&subtitle=${encodeURIComponent(service.shortDescription)}`
+
+  return {
+    title,
+    description,
+    metadataBase: new URL(BASE_URL),
+    alternates: {
+      canonical: url,
+    },
+    keywords: [
+      service.name.toLowerCase(),
+      `${service.name.toLowerCase()} Mississippi`,
+      `${service.name.toLowerCase()} Tupelo`,
+      `${service.name.toLowerCase()} service`,
+      `professional ${service.name.toLowerCase()}`,
+      'roofing contractor',
+      'Northeast Mississippi roofing',
+    ],
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'Farrell Roofing',
+      locale: 'en_US',
+      type: 'website',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${service.name} - Farrell Roofing`,
+          type: 'image/png',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImageUrl],
+      creator: '@farrellroofing',
+      site: '@farrellroofing',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+  }
+}
+
+export default async function ServiceDetailPage({
+  params,
+}: ServiceDetailPageProps) {
+  const resolvedParams = await params
+  const service = getServiceBySlug(resolvedParams.slug)
+
+  if (!service) {
+    notFound()
   }
 
   return (
     <div className="min-h-screen bg-gradient-dark">
+      {/* Schema Markup */}
+      <ServiceSchemaBundle service={service} />
+
       <SiteHeader />
 
       {/* Breadcrumb */}
@@ -100,7 +179,9 @@ export default function ServiceDetailPage() {
         <div className="mx-auto max-w-6xl px-4">
           <div className="grid md:grid-cols-2 gap-12">
             <div>
-              <h2 className="text-2xl font-bold text-slate-100 mb-6">What's Included</h2>
+              <h2 className="text-2xl font-bold text-slate-100 mb-6">
+                What&apos;s Included
+              </h2>
               <div className="space-y-3">
                 {service.features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
@@ -112,7 +193,9 @@ export default function ServiceDetailPage() {
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold text-slate-100 mb-6">Materials We Use</h2>
+              <h2 className="text-2xl font-bold text-slate-100 mb-6">
+                Materials We Use
+              </h2>
               <div className="space-y-3">
                 {service.materials.map((material, index) => (
                   <div
@@ -125,9 +208,12 @@ export default function ServiceDetailPage() {
               </div>
 
               <div className="mt-8 p-6 bg-gradient-to-br from-[#c9a25c]/20 to-transparent border border-[#c9a25c]/30 rounded-xl">
-                <h3 className="font-semibold text-slate-100 mb-2">Get a Personalized Estimate</h3>
+                <h3 className="font-semibold text-slate-100 mb-2">
+                  Get a Personalized Estimate
+                </h3>
                 <p className="text-slate-400 text-sm mb-4">
-                  Every roof is different. Get an accurate price range for your specific situation.
+                  Every roof is different. Get an accurate price range for your
+                  specific situation.
                 </p>
                 <Link href="/">
                   <Button
@@ -147,7 +233,9 @@ export default function ServiceDetailPage() {
       {/* Other Services */}
       <section className="py-16 md:py-24 bg-[#161a23]">
         <div className="mx-auto max-w-6xl px-4">
-          <h2 className="text-2xl font-bold text-slate-100 mb-8">Other Services</h2>
+          <h2 className="text-2xl font-bold text-slate-100 mb-8">
+            Other Services
+          </h2>
           <div className="grid md:grid-cols-3 gap-4">
             {services
               .filter((s) => s.id !== service.id)
@@ -158,7 +246,9 @@ export default function ServiceDetailPage() {
                   href={`/services/${s.slug}`}
                   className="bg-[#1a1f2e] border border-slate-700 rounded-xl p-4 hover:border-[#c9a25c]/50 transition-colors"
                 >
-                  <h3 className="font-semibold text-slate-100 mb-1">{s.name}</h3>
+                  <h3 className="font-semibold text-slate-100 mb-1">
+                    {s.name}
+                  </h3>
                   <p className="text-sm text-slate-400">{s.shortDescription}</p>
                 </Link>
               ))}

@@ -188,11 +188,14 @@ export function generateComparisonMeta({ city, path, image }: ComparisonMetaPara
   const title = `Best Roofing Companies in ${city.name}, ${city.stateCode} (${currentYear} Guide)`
   const description = `Looking for trusted roofers in ${city.name}? Compare the top roofing companies in ${city.county} County, read expert recommendations, and get a free estimate.`
 
+  // Use dynamic OG image for comparison pages
+  const ogImageUrl = image || `/api/og/compare?city=${encodeURIComponent(city.name)}&state=${city.stateCode}`
+
   const baseMeta = generateBaseMeta({
     title,
     description,
     path,
-    image: image || `/images/locations/${city.slug}-roofing.jpg`
+    image: ogImageUrl
   })
 
   const keywords = [
