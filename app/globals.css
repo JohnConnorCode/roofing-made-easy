@@ -19,6 +19,7 @@
   --color-gold: #b5893a;          /* Primary brand */
   --color-gold-muted: #9a7432;    /* Brand secondary */
   --color-gold-light: #c9a25c;    /* Brand accent/highlight */
+  --color-gold-hover: #d4b06c;    /* Hover state for gold */
   --color-success: #3d7a5a;       /* Success states */
 
   /* === TEXT ON DARK BACKGROUNDS ===
@@ -366,6 +367,15 @@ body {
   #printable-quote td {
     padding: 0.75rem 0;
   }
+}
+
+/* Hide scrollbar while keeping scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 /* Reduce motion for accessibility */

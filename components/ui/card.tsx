@@ -16,10 +16,10 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         'bg-white border-2 border-slate-200 cursor-pointer hover:border-amber-400 hover:shadow-md transition-all',
       selected: 'bg-white border-2 border-amber-500 shadow-md ring-2 ring-amber-500/20',
       // Dark theme (for customer portal / funnel)
-      dark: 'bg-[#1a1f2e] border border-slate-700',
+      dark: 'bg-slate-deep border border-slate-700',
       'dark-selectable':
-        'bg-[#1a1f2e] border-2 border-slate-700 cursor-pointer hover:border-[#9a7432] hover:shadow-lg transition-all',
-      'dark-selected': 'bg-[#1a1f2e] border-2 border-[#c9a25c] shadow-lg glow-gold',
+        'bg-slate-deep border-2 border-slate-700 cursor-pointer hover:border-gold-muted hover:shadow-lg transition-all',
+      'dark-selected': 'bg-slate-deep border-2 border-gold-light shadow-lg glow-gold',
     }
 
     return (

@@ -34,8 +34,8 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
                 <div
                   className={cn(
                     'relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 shrink-0',
-                    step.status === 'completed' && 'border-[#3d7a5a] bg-[#3d7a5a]',
-                    step.status === 'current' && 'border-[#c9a25c] bg-[#c9a25c]/10',
+                    step.status === 'completed' && 'border-success bg-success',
+                    step.status === 'current' && 'border-gold-light bg-gold-light/10',
                     step.status === 'upcoming' && 'border-slate-600 bg-slate-800'
                   )}
                 >
@@ -45,7 +45,7 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
                     <span
                       className={cn(
                         'text-sm font-semibold',
-                        step.status === 'current' ? 'text-[#c9a25c]' : 'text-slate-500'
+                        step.status === 'current' ? 'text-gold-light' : 'text-slate-500'
                       )}
                     >
                       {index + 1}
@@ -58,7 +58,7 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
                   <div
                     className={cn(
                       'h-0.5 flex-1',
-                      step.status === 'completed' ? 'bg-[#3d7a5a]' : 'bg-slate-700'
+                      step.status === 'completed' ? 'bg-success' : 'bg-slate-700'
                     )}
                   />
                 )}
@@ -69,7 +69,7 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
                 <p
                   className={cn(
                     'text-xs font-medium',
-                    step.status === 'current' ? 'text-[#c9a25c]' :
+                    step.status === 'current' ? 'text-gold-light' :
                     step.status === 'completed' ? 'text-slate-300' : 'text-slate-500'
                   )}
                 >
@@ -96,7 +96,7 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
             <div
               className={cn(
                 'absolute left-[19px] top-10 h-full w-0.5',
-                step.status === 'completed' ? 'bg-[#3d7a5a]' : 'bg-slate-700'
+                step.status === 'completed' ? 'bg-success' : 'bg-slate-700'
               )}
             />
           )}
@@ -105,8 +105,8 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
           <div
             className={cn(
               'relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 shrink-0',
-              step.status === 'completed' && 'border-[#3d7a5a] bg-[#3d7a5a]',
-              step.status === 'current' && 'border-[#c9a25c] bg-[#c9a25c]/10',
+              step.status === 'completed' && 'border-success bg-success',
+              step.status === 'current' && 'border-gold-light bg-gold-light/10',
               step.status === 'upcoming' && 'border-slate-600 bg-slate-800'
             )}
           >
@@ -116,7 +116,7 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
               <span
                 className={cn(
                   'text-sm font-semibold',
-                  step.status === 'current' ? 'text-[#c9a25c]' : 'text-slate-500'
+                  step.status === 'current' ? 'text-gold-light' : 'text-slate-500'
                 )}
               >
                 {index + 1}
@@ -130,7 +130,7 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
               <h4
                 className={cn(
                   'font-medium',
-                  step.status === 'current' ? 'text-[#c9a25c]' :
+                  step.status === 'current' ? 'text-gold-light' :
                   step.status === 'completed' ? 'text-slate-200' : 'text-slate-500'
                 )}
               >

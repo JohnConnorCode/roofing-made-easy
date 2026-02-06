@@ -9,6 +9,7 @@ import {
   DollarSign,
   Shield,
   HandHeart,
+  FileText,
   Settings,
   LogOut,
   Menu,
@@ -26,6 +27,7 @@ const NAV_ITEMS = [
   { href: '/portal/financing', label: 'Financing', icon: DollarSign },
   { href: '/portal/insurance', label: 'Insurance', icon: Shield },
   { href: '/portal/assistance', label: 'Programs', icon: HandHeart },
+  { href: '/portal/invoices', label: 'Invoices', icon: FileText },
   { href: '/portal/settings', label: 'Settings', icon: Settings },
 ]
 
@@ -86,9 +88,9 @@ export default function CustomerLayoutClient({
   }
 
   return (
-    <div className="min-h-screen bg-[#0c0f14]">
+    <div className="min-h-screen bg-ink">
       {/* Mobile header */}
-      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-slate-800 bg-[#0c0f14] px-4 md:hidden">
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-slate-800 bg-ink px-4 md:hidden">
         <Link href="/portal">
           <Logo size="sm" />
         </Link>
@@ -102,17 +104,17 @@ export default function CustomerLayoutClient({
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-16 z-40 bg-[#0c0f14] md:hidden">
+        <div className="fixed inset-0 top-16 z-40 bg-ink md:hidden">
           {/* Property selector */}
           {linkedLeads.length > 0 && (
             <div className="border-b border-slate-800 p-4">
               <p className="mb-2 text-xs text-slate-500 uppercase tracking-wider">Property</p>
               <button
                 onClick={() => setIsPropertyDropdownOpen(!isPropertyDropdownOpen)}
-                className="flex w-full items-center justify-between rounded-lg bg-[#1a1f2e] px-4 py-3 text-slate-100"
+                className="flex w-full items-center justify-between rounded-lg bg-slate-deep px-4 py-3 text-slate-100"
               >
                 <span className="flex items-center gap-2">
-                  <Home className="h-4 w-4 text-[#c9a25c]" />
+                  <Home className="h-4 w-4 text-gold-light" />
                   <span className="truncate">{propertyName}</span>
                 </span>
                 <ChevronDown className={cn(
@@ -132,7 +134,7 @@ export default function CustomerLayoutClient({
                       className={cn(
                         'w-full rounded-lg px-4 py-2 text-left text-sm',
                         lead.lead_id === selectedLeadId
-                          ? 'bg-[#c9a25c]/10 text-[#c9a25c]'
+                          ? 'bg-gold-light/10 text-gold-light'
                           : 'text-slate-400 hover:bg-slate-800'
                       )}
                     >
@@ -156,7 +158,7 @@ export default function CustomerLayoutClient({
                 className={cn(
                   'flex items-center gap-3 rounded-lg px-4 py-3 text-lg',
                   isActive(item.href, item.exact)
-                    ? 'bg-[#c9a25c]/10 text-[#c9a25c]'
+                    ? 'bg-gold-light/10 text-gold-light'
                     : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                 )}
               >
@@ -177,7 +179,7 @@ export default function CustomerLayoutClient({
 
       <div className="flex">
         {/* Desktop sidebar */}
-        <aside className="hidden w-64 shrink-0 border-r border-slate-800 bg-[#0c0f14] md:block">
+        <aside className="hidden w-64 shrink-0 border-r border-slate-800 bg-ink md:block">
           <div className="sticky top-0 flex h-screen flex-col">
             <div className="flex h-16 items-center border-b border-slate-800 px-6">
               <Link href="/portal">
@@ -191,10 +193,10 @@ export default function CustomerLayoutClient({
                 <p className="mb-2 text-xs text-slate-500 uppercase tracking-wider">Property</p>
                 <button
                   onClick={() => setIsPropertyDropdownOpen(!isPropertyDropdownOpen)}
-                  className="flex w-full items-center justify-between rounded-lg bg-[#1a1f2e] px-3 py-2 text-sm text-slate-100 hover:bg-[#242938]"
+                  className="flex w-full items-center justify-between rounded-lg bg-slate-deep px-3 py-2 text-sm text-slate-100 hover:bg-[#242938]"
                 >
                   <span className="flex items-center gap-2 truncate">
-                    <Home className="h-4 w-4 text-[#c9a25c] shrink-0" />
+                    <Home className="h-4 w-4 text-gold-light shrink-0" />
                     <span className="truncate">{propertyName}</span>
                   </span>
                   <ChevronDown className={cn(
@@ -214,7 +216,7 @@ export default function CustomerLayoutClient({
                         className={cn(
                           'w-full rounded-lg px-3 py-2 text-left text-sm',
                           lead.lead_id === selectedLeadId
-                            ? 'bg-[#c9a25c]/10 text-[#c9a25c]'
+                            ? 'bg-gold-light/10 text-gold-light'
                             : 'text-slate-400 hover:bg-slate-800'
                         )}
                       >
@@ -240,7 +242,7 @@ export default function CustomerLayoutClient({
                       className={cn(
                         'flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors',
                         isActive(item.href, item.exact)
-                          ? 'bg-[#c9a25c]/10 text-[#c9a25c]'
+                          ? 'bg-gold-light/10 text-gold-light'
                           : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                       )}
                     >

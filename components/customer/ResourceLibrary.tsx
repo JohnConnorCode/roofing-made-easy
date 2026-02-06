@@ -63,7 +63,7 @@ export function ResourceLibrary({ category, limit }: ResourceLibraryProps) {
             key={resource.id}
             className={cn(
               'border-slate-700 transition-all',
-              isExpanded && 'border-[#c9a25c]/30'
+              isExpanded && 'border-gold-light/30'
             )}
           >
             <CardHeader
@@ -73,7 +73,7 @@ export function ResourceLibrary({ category, limit }: ResourceLibraryProps) {
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 shrink-0">
-                    <Icon className="h-5 w-5 text-[#c9a25c]" />
+                    <Icon className="h-5 w-5 text-gold-light" />
                   </div>
                   <div>
                     <CardTitle className="text-base text-slate-100">{resource.title}</CardTitle>
@@ -110,7 +110,7 @@ export function ResourceLibrary({ category, limit }: ResourceLibraryProps) {
                         >
                           <input
                             type="checkbox"
-                            className="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-800 text-[#c9a25c] focus:ring-[#c9a25c]/20"
+                            className="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-800 text-gold-light focus:ring-gold-light/20"
                           />
                           <span className="text-sm text-slate-300 group-hover:text-slate-200">
                             {item}
@@ -142,7 +142,7 @@ export function ResourceLibrary({ category, limit }: ResourceLibraryProps) {
                         href={resource.videoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-[#c9a25c] hover:text-[#d4b06c]"
+                        className="flex items-center gap-2 text-gold-light hover:text-gold-hover"
                       >
                         <Video className="h-5 w-5" />
                         Watch Video
@@ -182,7 +182,7 @@ export function ResourceLibrary({ category, limit }: ResourceLibraryProps) {
                           if (line.startsWith('- ')) {
                             return (
                               <div key={i} className="flex items-start gap-2 ml-4 my-1">
-                                <span className="text-[#c9a25c]">•</span>
+                                <span className="text-gold-light">•</span>
                                 <span>{line.replace('- ', '')}</span>
                               </div>
                             )
@@ -190,7 +190,7 @@ export function ResourceLibrary({ category, limit }: ResourceLibraryProps) {
                           if (line.match(/^\d+\./)) {
                             return (
                               <div key={i} className="flex items-start gap-2 ml-4 my-1">
-                                <span className="text-[#c9a25c] font-medium">{line.match(/^\d+/)![0]}.</span>
+                                <span className="text-gold-light font-medium">{line.match(/^\d+/)![0]}.</span>
                                 <span>{line.replace(/^\d+\.\s*/, '')}</span>
                               </div>
                             )

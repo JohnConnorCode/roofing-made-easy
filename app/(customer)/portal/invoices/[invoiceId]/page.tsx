@@ -69,8 +69,8 @@ export default function CustomerInvoiceDetailPage() {
     return (
       <div className="p-6 max-w-3xl mx-auto">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-slate-200 rounded w-1/3" />
-          <div className="h-64 bg-slate-100 rounded" />
+          <div className="h-8 bg-slate-700 rounded w-1/3" />
+          <div className="h-64 bg-slate-800 rounded" />
         </div>
       </div>
     )
@@ -79,7 +79,7 @@ export default function CustomerInvoiceDetailPage() {
   if (error || !invoice) {
     return (
       <div className="p-6 max-w-3xl mx-auto">
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+        <div className="rounded-lg border border-red-800 bg-red-900/30 p-4 text-red-300">
           {error || 'Invoice not found'}
         </div>
       </div>
@@ -91,7 +91,7 @@ export default function CustomerInvoiceDetailPage() {
       <div className="max-w-3xl mx-auto">
         <button
           onClick={() => router.push('/portal/invoices')}
-          className="inline-flex items-center text-sm text-slate-500 hover:text-slate-700 mb-6"
+          className="inline-flex items-center text-sm text-slate-400 hover:text-slate-200 mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back to Invoices

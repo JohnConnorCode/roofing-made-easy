@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { useCustomerStore } from '@/stores/customerStore'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -12,6 +11,7 @@ import {
   EstimateSummary,
   ProgressTimeline,
   type TimelineStep,
+  Breadcrumbs,
 } from '@/components/customer'
 import {
   DollarSign,
@@ -20,7 +20,7 @@ import {
   XCircle,
   AlertCircle,
   Phone,
-  ArrowLeft,
+  Shield,
 } from 'lucide-react'
 import { cn, formatCurrency } from '@/lib/utils'
 import type { FinancingStatus } from '@/lib/supabase/types'
@@ -43,8 +43,8 @@ const STATUS_CONFIG: Record<FinancingStatus, { icon: typeof Clock; color: string
   },
   pre_qualified: {
     icon: CheckCircle,
-    color: 'text-[#c9a25c]',
-    bgColor: 'bg-[#c9a25c]/10',
+    color: 'text-gold-light',
+    bgColor: 'bg-gold-light/10',
     label: 'Pre-Qualified',
     description: "Great news! You've been pre-qualified. We're connecting you with lenders.",
   },
@@ -57,8 +57,8 @@ const STATUS_CONFIG: Record<FinancingStatus, { icon: typeof Clock; color: string
   },
   approved: {
     icon: CheckCircle,
-    color: 'text-[#3d7a5a]',
-    bgColor: 'bg-[#3d7a5a]/10',
+    color: 'text-success',
+    bgColor: 'bg-success/10',
     label: 'Approved!',
     description: 'Congratulations! Your financing has been approved.',
   },
@@ -79,7 +79,6 @@ const STATUS_CONFIG: Record<FinancingStatus, { icon: typeof Clock; color: string
 }
 
 export default function FinancingPage() {
-  const router = useRouter()
   const { showToast } = useToast()
   const {
     linkedLeads,
@@ -161,16 +160,11 @@ export default function FinancingPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-slate-400 hover:text-slate-200"
-          onClick={() => router.push('/portal')}
-          leftIcon={<ArrowLeft className="h-4 w-4" />}
-        >
-          Back
-        </Button>
+      <div className="space-y-2">
+        <Breadcrumbs items={[
+          { label: 'Dashboard', href: '/portal' },
+          { label: 'Financing' },
+        ]} />
         <div>
           <h1 className="text-2xl font-bold text-slate-100">Financing Options</h1>
           <p className="text-slate-400">Pre-qualify for financing for your roofing project</p>
@@ -258,12 +252,12 @@ export default function FinancingPage() {
 
             {/* Approval details */}
             {existingApplication.status === 'approved' && existingApplication.pre_approved_amount && (
-              <div className="rounded-lg bg-[#3d7a5a]/10 border border-[#3d7a5a]/30 p-4">
-                <p className="text-sm text-[#3d7a5a] font-medium mb-2">Approved Terms</p>
+              <div className="rounded-lg bg-success/10 border border-success/30 p-4">
+                <p className="text-sm text-success font-medium mb-2">Approved Terms</p>
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <p className="text-xs text-slate-500">Pre-Approved Amount</p>
-                    <p className="text-xl font-bold text-[#3d7a5a]">
+                    <p className="text-xl font-bold text-success">
                       {formatCurrency(existingApplication.pre_approved_amount)}
                     </p>
                   </div>
@@ -289,7 +283,7 @@ export default function FinancingPage() {
 
             {/* Lender info */}
             {existingApplication.lender_name && (
-              <div className="rounded-lg bg-[#1a1f2e] border border-slate-700 p-4">
+              <div className="rounded-lg bg-slate-deep border border-slate-700 p-4">
                 <p className="text-sm text-slate-500 mb-2">Your Lender</p>
                 <p className="text-slate-200 font-medium">{existingApplication.lender_name}</p>
                 {existingApplication.lender_contact && (
@@ -318,43 +312,30 @@ export default function FinancingPage() {
       {/* Financing form (only show if no existing application) */}
       {!existingApplication && (
         <>
+          {/* Compact benefits banner */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
+              <DollarSign className="h-5 w-5 text-gold-light mx-auto mb-1" />
+              <p className="text-sm font-medium text-slate-200">Affordable Payments</p>
+              <p className="text-xs text-slate-500">Fits your budget</p>
+            </div>
+            <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
+              <Shield className="h-5 w-5 text-gold-light mx-auto mb-1" />
+              <p className="text-sm font-medium text-slate-200">Protect Now</p>
+              <p className="text-xs text-slate-500">Don&apos;t wait for worse</p>
+            </div>
+            <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
+              <CheckCircle className="h-5 w-5 text-gold-light mx-auto mb-1" />
+              <p className="text-sm font-medium text-slate-200">Multiple Options</p>
+              <p className="text-xs text-slate-500">Best rates for you</p>
+            </div>
+          </div>
+
           <FinancingForm
             estimatedAmount={estimate?.price_likely}
             onSubmit={handleSubmit}
             isLoading={isSubmitting}
           />
-
-          {/* Benefits info */}
-          <Card variant="dark" className="border-slate-700">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-slate-100">
-                <DollarSign className="h-5 w-5 text-[#c9a25c]" />
-                Why Finance Your Roof?
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-3">
-                <div className="rounded-lg bg-[#1a1f2e] p-4">
-                  <h4 className="font-medium text-slate-200 mb-2">Affordable Payments</h4>
-                  <p className="text-sm text-slate-400">
-                    Spread the cost over time with monthly payments that fit your budget.
-                  </p>
-                </div>
-                <div className="rounded-lg bg-[#1a1f2e] p-4">
-                  <h4 className="font-medium text-slate-200 mb-2">Protect Your Home Now</h4>
-                  <p className="text-sm text-slate-400">
-                    Don&apos;t wait for damage to get worse. Fix your roof today and pay over time.
-                  </p>
-                </div>
-                <div className="rounded-lg bg-[#1a1f2e] p-4">
-                  <h4 className="font-medium text-slate-200 mb-2">Multiple Options</h4>
-                  <p className="text-sm text-slate-400">
-                    We work with several lenders to find the best rates and terms for you.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </>
       )}
     </div>

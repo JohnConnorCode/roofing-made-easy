@@ -37,6 +37,7 @@ export default function SettingsPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [activeSection, setActiveSection] = useState<'profile' | 'notifications' | 'password' | 'properties'>('profile')
+  const [nicknameEdits, setNicknameEdits] = useState<Record<string, string>>({})
 
   // Profile form
   const [profileData, setProfileData] = useState({
@@ -145,7 +146,7 @@ export default function SettingsPage() {
 
   const handleUpdatePropertyNickname = async (leadLinkId: string, nickname: string) => {
     try {
-      const response = await fetch(`/api/customer/leads/${leadLinkId}`, {
+      const response = await fetch(`/api/customer/lead-links/${leadLinkId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nickname }),
@@ -223,7 +224,7 @@ export default function SettingsPage() {
                   onClick={() => setActiveSection(section.id)}
                   className={`w-full flex items-center gap-3 rounded-lg px-4 py-2.5 text-left transition-colors ${
                     activeSection === section.id
-                      ? 'bg-[#c9a25c]/10 text-[#c9a25c]'
+                      ? 'bg-gold-light/10 text-gold-light'
                       : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                   }`}
                 >
@@ -277,7 +278,7 @@ export default function SettingsPage() {
                       type="submit"
                       variant="primary"
                       isLoading={isSubmitting}
-                      className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+                      className="bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
                       leftIcon={<Save className="h-4 w-4" />}
                     >
                       Save Changes
@@ -298,7 +299,7 @@ export default function SettingsPage() {
               <CardContent>
                 <form onSubmit={handleSaveNotifications} className="space-y-6">
                   <div className="space-y-4">
-                    <div className="flex items-start justify-between rounded-lg bg-[#1a1f2e] border border-slate-700 p-4">
+                    <div className="flex items-start justify-between rounded-lg bg-slate-deep border border-slate-700 p-4">
                       <div>
                         <p className="font-medium text-slate-200">Email Notifications</p>
                         <p className="text-sm text-slate-400">
@@ -312,7 +313,7 @@ export default function SettingsPage() {
                       />
                     </div>
 
-                    <div className="flex items-start justify-between rounded-lg bg-[#1a1f2e] border border-slate-700 p-4">
+                    <div className="flex items-start justify-between rounded-lg bg-slate-deep border border-slate-700 p-4">
                       <div>
                         <p className="font-medium text-slate-200">SMS Notifications</p>
                         <p className="text-sm text-slate-400">
@@ -332,7 +333,7 @@ export default function SettingsPage() {
                       type="submit"
                       variant="primary"
                       isLoading={isSubmitting}
-                      className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+                      className="bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
                       leftIcon={<Save className="h-4 w-4" />}
                     >
                       Save Preferences
@@ -374,7 +375,7 @@ export default function SettingsPage() {
                       variant="primary"
                       isLoading={isSubmitting}
                       disabled={!passwordData.newPassword || !passwordData.confirmPassword}
-                      className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+                      className="bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
                       leftIcon={<Lock className="h-4 w-4" />}
                     >
                       Change Password
@@ -411,7 +412,7 @@ export default function SettingsPage() {
                     {linkedLeads.map((lead) => (
                       <div
                         key={lead.id}
-                        className="flex items-center justify-between rounded-lg bg-[#1a1f2e] border border-slate-700 p-4"
+                        className="flex items-center justify-between rounded-lg bg-slate-deep border border-slate-700 p-4"
                       >
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
@@ -419,7 +420,7 @@ export default function SettingsPage() {
                               {lead.lead?.property?.street_address || 'Property'}
                             </p>
                             {lead.is_primary && (
-                              <span className="text-xs bg-[#c9a25c]/10 text-[#c9a25c] px-2 py-0.5 rounded">
+                              <span className="text-xs bg-gold-light/10 text-gold-light px-2 py-0.5 rounded">
                                 Primary
                               </span>
                             )}
@@ -429,11 +430,21 @@ export default function SettingsPage() {
                           </p>
                           <Input
                             placeholder="Add a nickname (e.g., Main House)"
-                            value={lead.nickname || ''}
+                            value={nicknameEdits[lead.id] ?? lead.nickname ?? ''}
                             onChange={(e) => {
-                              // Debounced update would be better here
+                              setNicknameEdits(prev => ({ ...prev, [lead.id]: e.target.value }))
                             }}
-                            onBlur={(e) => handleUpdatePropertyNickname(lead.id, e.target.value)}
+                            onBlur={(e) => {
+                              const newValue = e.target.value
+                              if (newValue !== (lead.nickname || '')) {
+                                handleUpdatePropertyNickname(lead.id, newValue)
+                              }
+                              setNicknameEdits(prev => {
+                                const next = { ...prev }
+                                delete next[lead.id]
+                                return next
+                              })
+                            }}
                             className="mt-2"
                           />
                         </div>

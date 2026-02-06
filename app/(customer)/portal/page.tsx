@@ -15,8 +15,10 @@ import {
   DocumentHub,
   QuoteViewer,
   ProjectUpdates,
-  type TimelineStep,
+  NextStepHero,
+  EmptyState,
 } from '@/components/customer'
+import { computeJourneySteps } from '@/lib/customer/journey'
 import {
   DollarSign,
   Shield,
@@ -188,6 +190,7 @@ export default function CustomerPortalPage() {
   const currentLead = linkedLeads.find((l) => l.lead_id === selectedLeadId)
   const estimate = currentLead?.lead?.estimate
   const property = currentLead?.lead?.property
+  const intake = currentLead?.lead?.intake
 
   // Get financing status for current lead
   const currentFinancing = financingApplications.find((f) => f.lead_id === selectedLeadId)
@@ -204,43 +207,77 @@ export default function CustomerPortalPage() {
   // Get program applications for current lead
   const currentPrograms = programApplications.filter((p) => p.lead_id === selectedLeadId)
 
-  // Build progress timeline
-  const progressSteps: TimelineStep[] = [
-    {
-      id: 'estimate',
-      label: 'Estimate Received',
-      description: estimate ? `$${estimate.price_likely?.toLocaleString()}` : 'Get your estimate',
-      status: estimate ? 'completed' : 'current',
-    },
-    {
-      id: 'financing',
-      label: 'Explore Financing',
-      description: currentFinancing ? financingStatus?.label : 'Pre-qualify for financing',
-      status: currentFinancing ? (currentFinancing.status === 'approved' ? 'completed' : 'current') : 'upcoming',
-    },
-    {
-      id: 'consultation',
-      label: 'Schedule Consultation',
-      description: 'Meet with our team',
-      status: 'upcoming',
-    },
-    {
-      id: 'project',
-      label: 'Start Project',
-      description: 'Begin your roofing project',
-      status: 'upcoming',
-    },
-  ]
+  // Check if quote was accepted
+  const quoteAccepted = !!(currentLead?.lead as Record<string, unknown>)?.quote_accepted
+
+  // Check for appointment
+  const hasAppointment = false // Derived from activities if available
+
+  // Check for storm damage from intake
+  const hasStormDamage = !!intake?.has_insurance_claim
+
+  // Build data-driven progress timeline
+  const progressSteps = computeJourneySteps({
+    hasEstimate: !!estimate,
+    estimatePrice: estimate?.price_likely,
+    quoteAccepted,
+    hasFinancingApp: !!currentFinancing,
+    financingStatus: currentFinancing?.status,
+    hasInsuranceClaim: !!currentClaim,
+    insuranceStatus: currentClaim?.status,
+    hasAppointment,
+    programCount: currentPrograms.length,
+    hasStormDamage,
+  })
+
+  // Scroll to section helper
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  // Contextual messages for StatusCards
+  const financingContext = currentFinancing
+    ? currentFinancing.status === 'interested' || currentFinancing.status === 'contacted'
+      ? 'Under review. Typically 1-2 business days.'
+      : undefined
+    : 'Most projects qualify. Check in 2 minutes.'
+
+  const insuranceContext = currentClaim
+    ? undefined
+    : hasStormDamage
+    ? 'We see you have storm damage. Let us help.'
+    : undefined
+
+  const insuranceBadge = !currentClaim && hasStormDamage
+    ? { label: 'Storm Damage Detected', variant: 'warning' as const }
+    : undefined
+
+  const programsContext = property?.state
+    ? `Programs available in ${property.state}`
+    : 'Find grants for your area'
 
   if (isInitializing) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-8 w-48" />
-        <Skeleton className="h-64 w-full" />
+        {/* Welcome header skeleton */}
+        <div>
+          <Skeleton className="h-8 w-48 mb-2" />
+          <Skeleton className="h-5 w-72" />
+        </div>
+        {/* Hero card skeleton */}
+        <Skeleton className="h-24 w-full rounded-xl" />
+        {/* Timeline skeleton */}
+        <Skeleton className="h-20 w-full rounded-xl" />
+        {/* Two-column grid skeleton */}
+        <div className="grid gap-4 lg:grid-cols-2">
+          <Skeleton className="h-64" />
+          <Skeleton className="h-64" />
+        </div>
+        {/* Three-column cards skeleton */}
         <div className="grid gap-4 md:grid-cols-3">
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
-          <Skeleton className="h-32" />
+          <Skeleton className="h-36" />
+          <Skeleton className="h-36" />
+          <Skeleton className="h-36" />
         </div>
       </div>
     )
@@ -258,29 +295,37 @@ export default function CustomerPortalPage() {
         </p>
       </div>
 
-      {/* No leads message */}
+      {/* No leads — encouraging empty state */}
       {linkedLeads.length === 0 && (
-        <Card className="border-[#c9a25c]/30 bg-[#c9a25c]/5">
-          <CardContent className="py-8 text-center">
-            <AlertTriangle className="h-12 w-12 text-[#c9a25c] mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-200 mb-2">No Estimate Found</h3>
-            <p className="text-slate-400 mb-4">
-              Get started by completing our quick assessment to receive your personalized estimate.
-            </p>
-            <Button
-              variant="primary"
-              className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
-              onClick={() => router.push('/')}
-            >
-              Get Your Estimate
-            </Button>
-          </CardContent>
-        </Card>
+        <EmptyState
+          icon={AlertTriangle}
+          title="Get Your Free Estimate"
+          description="Start your roofing journey with a quick assessment. In just a few minutes, you'll receive a personalized estimate for your project."
+          actionLabel="Get Your Estimate"
+          actionHref="/"
+          variant="encouraging"
+        />
       )}
 
       {/* Main content - show when leads exist */}
       {linkedLeads.length > 0 && (
         <>
+          {/* Next Step Hero */}
+          <NextStepHero
+            hasEstimate={!!estimate}
+            estimatePrice={estimate?.price_likely}
+            quoteAccepted={quoteAccepted}
+            hasFinancingApp={!!currentFinancing}
+            financingStatus={currentFinancing?.status}
+            hasInsuranceClaim={!!currentClaim}
+            insuranceStatus={currentClaim?.status}
+            hasAppointment={hasAppointment}
+            programCount={currentPrograms.length}
+            hasStormDamage={hasStormDamage}
+            onNavigate={(href) => router.push(href)}
+            onScrollTo={scrollToSection}
+          />
+
           {/* Progress tracker */}
           <Card variant="dark" className="border-slate-700">
             <CardHeader>
@@ -310,7 +355,7 @@ export default function CustomerPortalPage() {
           )}
 
           {/* Quote and Updates Grid */}
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div id="quote-section" className="grid gap-4 lg:grid-cols-2">
             {/* Quote Viewer */}
             {estimate && selectedLeadId && (
               <QuoteViewer
@@ -355,6 +400,7 @@ export default function CustomerPortalPage() {
               status={financingStatus}
               href="/portal/financing"
               variant={currentFinancing ? 'default' : 'highlight'}
+              contextMessage={financingContext}
             />
 
             <StatusCard
@@ -365,7 +411,9 @@ export default function CustomerPortalPage() {
               icon={Shield}
               status={claimStatus}
               href="/portal/insurance"
-              variant={currentClaim ? 'default' : 'default'}
+              variant={insuranceBadge ? 'warning' : 'default'}
+              contextMessage={insuranceContext}
+              badge={insuranceBadge}
             />
 
             <StatusCard
@@ -375,11 +423,12 @@ export default function CustomerPortalPage() {
                 : 'Find programs you may qualify for'}
               icon={HandHeart}
               href="/portal/assistance"
+              contextMessage={programsContext}
             />
           </div>
 
           {/* Next steps CTA */}
-          <Card className="border-[#c9a25c]/30 bg-gradient-to-r from-[#c9a25c]/10 to-transparent">
+          <Card className="border-gold-light/30 bg-gradient-to-r from-gold-light/10 to-transparent">
             <CardContent className="py-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
@@ -391,12 +440,14 @@ export default function CustomerPortalPage() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
                     variant="primary"
-                    className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+                    className="bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
                     leftIcon={<Calendar className="h-5 w-5" />}
                     rightIcon={CALENDLY_URL ? <ExternalLink className="h-4 w-4" /> : undefined}
                     onClick={() => {
                       if (CALENDLY_URL) {
                         window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
+                      } else {
+                        window.location.href = getPhoneLink()
                       }
                     }}
                   >

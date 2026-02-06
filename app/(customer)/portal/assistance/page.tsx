@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useMemo } from 'react'
 import { useCustomerStore } from '@/stores/customerStore'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -9,9 +8,9 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '@/components/ui/toast'
-import { ProgramCard, EstimateSummary } from '@/components/customer'
+import { ProgramCard, EstimateSummary, Breadcrumbs } from '@/components/customer'
+import { cn } from '@/lib/utils'
 import {
-  ArrowLeft,
   Search,
   Filter,
   HandHeart,
@@ -20,7 +19,6 @@ import {
 } from 'lucide-react'
 import {
   ALL_ASSISTANCE_PROGRAMS,
-  getProgramsByType,
   getEligiblePrograms,
   PROGRAM_TYPE_LABELS,
   type AssistanceProgramData,
@@ -39,15 +37,21 @@ const INCOME_OPTIONS = [
 
 const STATE_OPTIONS = [
   { value: '', label: 'Select state...' },
-  { value: 'TX', label: 'Texas' },
+  { value: 'AL', label: 'Alabama' },
+  { value: 'AR', label: 'Arkansas' },
   { value: 'CA', label: 'California' },
   { value: 'FL', label: 'Florida' },
+  { value: 'GA', label: 'Georgia' },
+  { value: 'LA', label: 'Louisiana' },
+  { value: 'MS', label: 'Mississippi' },
+  { value: 'NC', label: 'North Carolina' },
   { value: 'NY', label: 'New York' },
-  // Add more states as needed
+  { value: 'SC', label: 'South Carolina' },
+  { value: 'TN', label: 'Tennessee' },
+  { value: 'TX', label: 'Texas' },
 ]
 
 export default function AssistancePage() {
-  const router = useRouter()
   const { showToast } = useToast()
   const {
     linkedLeads,
@@ -80,11 +84,11 @@ export default function AssistancePage() {
   const property = currentLead?.lead?.property
 
   // Pre-fill state from property
-  useState(() => {
+  useEffect(() => {
     if (property?.state && !eligibilityData.state) {
       setEligibilityData((prev) => ({ ...prev, state: property.state || '' }))
     }
-  })
+  }, [property?.state])
 
   // Filter and search programs
   const filteredPrograms = useMemo(() => {
@@ -138,6 +142,13 @@ export default function AssistancePage() {
     })
   }, [filteredPrograms, eligibilityData, programApplications, selectedLeadId])
 
+  // Recommended programs: state-matched or eligible, sorted by benefit amount
+  const recommendedPrograms = useMemo(() => {
+    return programsWithEligibility
+      .filter((p) => p.eligibilityStatus?.eligible || (eligibilityData.state && p.program.state === eligibilityData.state))
+      .sort((a, b) => (b.program.maxBenefitAmount || 0) - (a.program.maxBenefitAmount || 0))
+  }, [programsWithEligibility, eligibilityData.state])
+
   const handleStartApplication = async (program: AssistanceProgramData) => {
     if (!selectedLeadId) {
       showToast('Please select a property first', 'error')
@@ -185,16 +196,11 @@ export default function AssistancePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-slate-400 hover:text-slate-200"
-          onClick={() => router.push('/portal')}
-          leftIcon={<ArrowLeft className="h-4 w-4" />}
-        >
-          Back
-        </Button>
+      <div className="space-y-2">
+        <Breadcrumbs items={[
+          { label: 'Dashboard', href: '/portal' },
+          { label: 'Programs' },
+        ]} />
         <div>
           <h1 className="text-2xl font-bold text-slate-100">Assistance Programs</h1>
           <p className="text-slate-400">Find programs that can help fund your roofing project</p>
@@ -219,144 +225,181 @@ export default function AssistancePage() {
         />
       )}
 
-      {/* Filters */}
-      <Card variant="dark" className="border-slate-700">
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-base text-slate-100">Find Programs</CardTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-slate-400 hover:text-slate-200"
-              onClick={() => setShowFilters(!showFilters)}
-              rightIcon={showFilters ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+      {/* Search + Type pills */}
+      <div className="space-y-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+          <Input
+            placeholder="Search programs..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+
+        {/* Horizontal type pills */}
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedType('')}
+            className={cn(
+              'px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
+              !selectedType
+                ? 'bg-gold-light/20 text-gold-light border border-gold-light/40'
+                : 'bg-slate-800 text-slate-400 border border-slate-700 hover:border-slate-600'
+            )}
+          >
+            All ({ALL_ASSISTANCE_PROGRAMS.length})
+          </button>
+          {Object.entries(PROGRAM_TYPE_LABELS).map(([value, info]) => (
+            <button
+              key={value}
+              onClick={() => setSelectedType(selectedType === value ? '' : value)}
+              className={cn(
+                'px-3 py-1.5 rounded-full text-sm font-medium transition-colors',
+                selectedType === value
+                  ? 'bg-gold-light/20 text-gold-light border border-gold-light/40'
+                  : 'bg-slate-800 text-slate-400 border border-slate-700 hover:border-slate-600'
+              )}
             >
-              <Filter className="h-4 w-4 mr-2" />
-              Eligibility Filters
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Search and type filter */}
-          <div className="flex gap-4 flex-col md:flex-row">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+              {info.icon} {info.label} ({typeCounts[value] || 0})
+            </button>
+          ))}
+        </div>
+
+        {/* Eligibility filters toggle */}
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="flex items-center gap-2 text-sm text-gold-light hover:text-gold-hover transition-colors"
+        >
+          <Filter className="h-3.5 w-3.5" />
+          {showFilters ? 'Hide eligibility filters' : 'Answer a few questions for personalized results'}
+          {showFilters ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+        </button>
+      </div>
+
+      {/* Eligibility filters */}
+      {showFilters && (
+        <Card variant="dark" className="border-slate-700">
+          <CardContent className="pt-4 pb-4 space-y-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <Select
+                value={eligibilityData.state || ''}
+                onChange={(value) => setEligibilityData({ ...eligibilityData, state: value })}
+                options={STATE_OPTIONS}
+              />
+
+              <Select
+                value={eligibilityData.income?.toString() || ''}
+                onChange={(value) => setEligibilityData({
+                  ...eligibilityData,
+                  income: value ? parseInt(value) : undefined,
+                  areaMedianIncome: value ? 80000 : undefined,
+                  povertyLevel: value ? 30000 : undefined,
+                })}
+                options={INCOME_OPTIONS}
+              />
+
               <Input
-                placeholder="Search programs..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                type="number"
+                placeholder="Age (optional)"
+                value={eligibilityData.age || ''}
+                onChange={(e) => setEligibilityData({
+                  ...eligibilityData,
+                  age: e.target.value ? parseInt(e.target.value) : undefined,
+                })}
               />
             </div>
-            <Select
-              value={selectedType}
-              onChange={setSelectedType}
-              options={[
-                { value: '', label: 'All Types' },
-                ...Object.entries(PROGRAM_TYPE_LABELS).map(([value, info]) => ({
-                  value,
-                  label: `${info.icon} ${info.label} (${typeCounts[value] || 0})`,
-                })),
-              ]}
-            />
-          </div>
 
-          {/* Eligibility filters */}
-          {showFilters && (
-            <div className="pt-4 border-t border-slate-700 space-y-4">
-              <p className="text-sm text-slate-400">
-                Answer these questions to see which programs you may qualify for:
-              </p>
-
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                <Select
-                  value={eligibilityData.state || ''}
-                  onChange={(value) => setEligibilityData({ ...eligibilityData, state: value })}
-                  options={STATE_OPTIONS}
-                />
-
-                <Select
-                  value={eligibilityData.income?.toString() || ''}
-                  onChange={(value) => setEligibilityData({
-                    ...eligibilityData,
-                    income: value ? parseInt(value) : undefined,
-                    areaMedianIncome: value ? 80000 : undefined,  // Simplified AMI
-                    povertyLevel: value ? 30000 : undefined,  // Simplified FPL
-                  })}
-                  options={INCOME_OPTIONS}
-                />
-
-                <Input
-                  type="number"
-                  placeholder="Age (optional)"
-                  value={eligibilityData.age || ''}
-                  onChange={(e) => setEligibilityData({
-                    ...eligibilityData,
-                    age: e.target.value ? parseInt(e.target.value) : undefined,
-                  })}
-                />
-              </div>
-
-              <div className="flex flex-wrap gap-4">
-                <Checkbox
-                  name="isHomeowner"
-                  label="I own my home"
-                  checked={eligibilityData.isHomeowner}
-                  onChange={(e) => setEligibilityData({
-                    ...eligibilityData,
-                    isHomeowner: e.target.checked,
-                  })}
-                />
-                <Checkbox
-                  name="isPrimaryResidence"
-                  label="Primary residence"
-                  checked={eligibilityData.isPrimaryResidence}
-                  onChange={(e) => setEligibilityData({
-                    ...eligibilityData,
-                    isPrimaryResidence: e.target.checked,
-                  })}
-                />
-                <Checkbox
-                  name="isVeteran"
-                  label="Veteran"
-                  checked={eligibilityData.isVeteran}
-                  onChange={(e) => setEligibilityData({
-                    ...eligibilityData,
-                    isVeteran: e.target.checked,
-                  })}
-                />
-                <Checkbox
-                  name="isDisabled"
-                  label="Disabled"
-                  checked={eligibilityData.isDisabled}
-                  onChange={(e) => setEligibilityData({
-                    ...eligibilityData,
-                    isDisabled: e.target.checked,
-                  })}
-                />
-                <Checkbox
-                  name="hasDisasterDeclaration"
-                  label="Disaster declared in my area"
-                  checked={eligibilityData.hasDisasterDeclaration}
-                  onChange={(e) => setEligibilityData({
-                    ...eligibilityData,
-                    hasDisasterDeclaration: e.target.checked,
-                  })}
-                />
-              </div>
+            <div className="flex flex-wrap gap-4">
+              <Checkbox
+                name="isHomeowner"
+                label="I own my home"
+                checked={eligibilityData.isHomeowner}
+                onChange={(e) => setEligibilityData({
+                  ...eligibilityData,
+                  isHomeowner: e.target.checked,
+                })}
+              />
+              <Checkbox
+                name="isPrimaryResidence"
+                label="Primary residence"
+                checked={eligibilityData.isPrimaryResidence}
+                onChange={(e) => setEligibilityData({
+                  ...eligibilityData,
+                  isPrimaryResidence: e.target.checked,
+                })}
+              />
+              <Checkbox
+                name="isVeteran"
+                label="Veteran"
+                checked={eligibilityData.isVeteran}
+                onChange={(e) => setEligibilityData({
+                  ...eligibilityData,
+                  isVeteran: e.target.checked,
+                })}
+              />
+              <Checkbox
+                name="isDisabled"
+                label="Disabled"
+                checked={eligibilityData.isDisabled}
+                onChange={(e) => setEligibilityData({
+                  ...eligibilityData,
+                  isDisabled: e.target.checked,
+                })}
+              />
+              <Checkbox
+                name="hasDisasterDeclaration"
+                label="Disaster declared in my area"
+                checked={eligibilityData.hasDisasterDeclaration}
+                onChange={(e) => setEligibilityData({
+                  ...eligibilityData,
+                  hasDisasterDeclaration: e.target.checked,
+                })}
+              />
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Recommended for You section */}
+      {recommendedPrograms.length > 0 && !searchQuery && !selectedType && (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold text-slate-100">Recommended for You</h2>
+            {filteredPrograms.length > 3 && (
+              <span className="text-sm text-gold-light">
+                See all {filteredPrograms.length} programs below
+              </span>
+            )}
+          </div>
+          <div className="grid gap-3 md:grid-cols-3">
+            {recommendedPrograms.slice(0, 3).map(({ program, eligibilityStatus, applicationStatus }) => (
+              <ProgramCard
+                key={program.id}
+                program={program}
+                eligibilityStatus={eligibilityStatus}
+                applicationStatus={applicationStatus}
+                onApply={() => handleStartApplication(program)}
+                onTrack={() => {
+                  if (program.applicationUrl) {
+                    window.open(program.applicationUrl, '_blank', 'noopener,noreferrer')
+                  }
+                }}
+                compact
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Results summary */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-slate-400">
-          Showing {filteredPrograms.length} program{filteredPrograms.length !== 1 ? 's' : ''}
+          {filteredPrograms.length} program{filteredPrograms.length !== 1 ? 's' : ''}
           {eligibilityData.state && ` for ${eligibilityData.state}`}
         </p>
         {programsWithEligibility.filter((p) => p.eligibilityStatus?.eligible).length > 0 && (
-          <span className="text-sm text-[#3d7a5a] font-medium">
+          <span className="text-sm text-success font-medium">
             {programsWithEligibility.filter((p) => p.eligibilityStatus?.eligible).length} may be eligible
           </span>
         )}
@@ -368,9 +411,23 @@ export default function AssistancePage() {
           <CardContent className="py-8 text-center">
             <HandHeart className="h-12 w-12 text-slate-600 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-slate-200 mb-2">No Programs Found</h3>
-            <p className="text-slate-400">
-              Try adjusting your filters or search query to find more programs.
+            <p className="text-slate-400 mb-3">
+              {searchQuery
+                ? `No matches for "${searchQuery}". Try "grant", "rebate", or "weatherization".`
+                : selectedType || eligibilityData.state
+                ? 'No matches with current filters.'
+                : 'Try adjusting your filters or search query to find more programs.'}
             </p>
+            {(searchQuery || selectedType) && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-slate-600 text-slate-300 hover:bg-slate-800"
+                onClick={() => { setSearchQuery(''); setSelectedType('') }}
+              >
+                Clear Filters
+              </Button>
+            )}
           </CardContent>
         </Card>
       ) : (

@@ -59,7 +59,7 @@ interface InvoiceViewerProps {
   onPaymentComplete?: () => void
 }
 
-// Inner payment form component that uses Stripe hooks
+// Inner payment form component that uses Stripe hooks (stays light-themed inside modal)
 function PaymentForm({
   invoiceId,
   amount,
@@ -147,7 +147,7 @@ function PaymentForm({
   )
 }
 
-// Payment modal with Stripe Elements
+// Payment modal with Stripe Elements (stays light-themed for Stripe compatibility)
 function PaymentModal({
   invoice,
   onSuccess,
@@ -320,17 +320,17 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
 
   function getStatusDisplay() {
     if (paymentSuccess) {
-      return { icon: CheckCircle, text: 'Payment Successful', className: 'text-green-600 bg-green-50' }
+      return { icon: CheckCircle, text: 'Payment Successful', className: 'text-green-400 bg-green-900/30' }
     }
     switch (invoice.status) {
       case 'paid':
-        return { icon: CheckCircle, text: 'Paid', className: 'text-green-600 bg-green-50' }
+        return { icon: CheckCircle, text: 'Paid', className: 'text-green-400 bg-green-900/30' }
       case 'overdue':
-        return { icon: AlertCircle, text: 'Overdue', className: 'text-red-600 bg-red-50' }
+        return { icon: AlertCircle, text: 'Overdue', className: 'text-red-400 bg-red-900/30' }
       case 'partially_paid':
-        return { icon: Clock, text: 'Partially Paid', className: 'text-amber-600 bg-amber-50' }
+        return { icon: Clock, text: 'Partially Paid', className: 'text-amber-400 bg-amber-900/30' }
       default:
-        return { icon: FileText, text: 'Pending', className: 'text-blue-600 bg-blue-50' }
+        return { icon: FileText, text: 'Pending', className: 'text-blue-400 bg-blue-900/30' }
     }
   }
 
@@ -349,21 +349,21 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
     <div className="max-w-3xl mx-auto">
       {/* Payment Success Banner */}
       {paymentSuccess && (
-        <div className="mb-6 p-4 rounded-lg bg-green-50 border border-green-200 flex items-center gap-3">
-          <CheckCircle className="h-6 w-6 text-green-600" />
+        <div className="mb-6 p-4 rounded-lg bg-green-900/30 border border-green-800 flex items-center gap-3">
+          <CheckCircle className="h-6 w-6 text-green-400" />
           <div>
-            <p className="font-medium text-green-800">Payment Successful!</p>
-            <p className="text-sm text-green-700">Thank you for your payment. A receipt has been sent to your email.</p>
+            <p className="font-medium text-green-300">Payment Successful!</p>
+            <p className="text-sm text-green-400/80">Thank you for your payment. A receipt has been sent to your email.</p>
           </div>
         </div>
       )}
 
       {/* Header */}
-      <div className="bg-white rounded-lg border border-slate-200 p-6 mb-6">
+      <div className="bg-slate-800/50 rounded-lg border border-slate-700 p-6 mb-6">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Invoice {invoice.invoice_number}</h1>
-            <p className="text-slate-500 mt-1">Issued: {formatDate(invoice.issue_date)}</p>
+            <h1 className="text-2xl font-bold text-slate-100">Invoice {invoice.invoice_number}</h1>
+            <p className="text-slate-400 mt-1">Issued: {formatDate(invoice.issue_date)}</p>
           </div>
           <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${statusDisplay.className}`}>
             <StatusIcon className="h-5 w-5" />
@@ -375,7 +375,7 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
         <div className="grid grid-cols-2 gap-8">
           <div>
             <h3 className="text-sm font-medium text-slate-500 uppercase mb-2">Bill To</h3>
-            <div className="text-slate-900">
+            <div className="text-slate-200">
               {invoice.bill_to_name && <p className="font-medium">{invoice.bill_to_name}</p>}
               {invoice.bill_to_email && <p>{invoice.bill_to_email}</p>}
               {invoice.bill_to_phone && <p>{invoice.bill_to_phone}</p>}
@@ -388,15 +388,15 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
             <div className="space-y-1">
               <div className="flex justify-between">
                 <span className="text-slate-500">Invoice Date:</span>
-                <span className="font-medium">{formatDate(invoice.issue_date)}</span>
+                <span className="font-medium text-slate-200">{formatDate(invoice.issue_date)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Due Date:</span>
-                <span className="font-medium">{formatDate(invoice.due_date)}</span>
+                <span className="font-medium text-slate-200">{formatDate(invoice.due_date)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Type:</span>
-                <span className="font-medium capitalize">{invoice.payment_type.replace('_', ' ')}</span>
+                <span className="font-medium text-slate-200 capitalize">{invoice.payment_type.replace('_', ' ')}</span>
               </div>
             </div>
           </div>
@@ -404,33 +404,33 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
       </div>
 
       {/* Line Items */}
-      <div className="bg-white rounded-lg border border-slate-200 overflow-hidden mb-6">
+      <div className="bg-slate-800/50 rounded-lg border border-slate-700 overflow-hidden mb-6">
         <table className="w-full">
-          <thead className="bg-slate-50">
+          <thead className="bg-slate-800">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase">
                 Description
               </th>
-              <th className="px-6 py-3 text-center text-xs font-semibold text-slate-600 uppercase">
+              <th className="px-6 py-3 text-center text-xs font-semibold text-slate-400 uppercase">
                 Qty
               </th>
-              <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 uppercase">
+              <th className="px-6 py-3 text-right text-xs font-semibold text-slate-400 uppercase">
                 Price
               </th>
-              <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 uppercase">
+              <th className="px-6 py-3 text-right text-xs font-semibold text-slate-400 uppercase">
                 Total
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-700">
             {invoice.invoice_line_items.map(item => (
               <tr key={item.id}>
-                <td className="px-6 py-4 text-slate-900">{item.description}</td>
-                <td className="px-6 py-4 text-center text-slate-600">{item.quantity}</td>
-                <td className="px-6 py-4 text-right text-slate-600">
+                <td className="px-6 py-4 text-slate-200">{item.description}</td>
+                <td className="px-6 py-4 text-center text-slate-400">{item.quantity}</td>
+                <td className="px-6 py-4 text-right text-slate-400">
                   {formatCurrency(item.unit_price)}
                 </td>
-                <td className="px-6 py-4 text-right font-medium text-slate-900">
+                <td className="px-6 py-4 text-right font-medium text-slate-200">
                   {formatCurrency(item.total)}
                 </td>
               </tr>
@@ -439,36 +439,36 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
         </table>
 
         {/* Totals */}
-        <div className="bg-slate-50 px-6 py-4">
+        <div className="bg-slate-800 px-6 py-4">
           <div className="max-w-xs ml-auto space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-slate-500">Subtotal</span>
-              <span className="text-slate-900">{formatCurrency(invoice.subtotal)}</span>
+              <span className="text-slate-200">{formatCurrency(invoice.subtotal)}</span>
             </div>
             {invoice.discount_amount > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-slate-500">Discount ({invoice.discount_percent}%)</span>
-                <span className="text-green-600">-{formatCurrency(invoice.discount_amount)}</span>
+                <span className="text-green-400">-{formatCurrency(invoice.discount_amount)}</span>
               </div>
             )}
             {invoice.tax_amount > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-slate-500">Tax ({(invoice.tax_rate * 100).toFixed(2)}%)</span>
-                <span className="text-slate-900">{formatCurrency(invoice.tax_amount)}</span>
+                <span className="text-slate-200">{formatCurrency(invoice.tax_amount)}</span>
               </div>
             )}
-            <div className="flex justify-between text-lg font-bold pt-2 border-t border-slate-200">
-              <span>Total</span>
-              <span>{formatCurrency(invoice.total)}</span>
+            <div className="flex justify-between text-lg font-bold pt-2 border-t border-slate-700">
+              <span className="text-slate-100">Total</span>
+              <span className="text-slate-100">{formatCurrency(invoice.total)}</span>
             </div>
             {invoice.amount_paid > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-slate-500">Amount Paid</span>
-                <span className="text-green-600">-{formatCurrency(invoice.amount_paid)}</span>
+                <span className="text-green-400">-{formatCurrency(invoice.amount_paid)}</span>
               </div>
             )}
             {invoice.balance_due > 0 && invoice.status !== 'paid' && !paymentSuccess && (
-              <div className="flex justify-between text-lg font-bold text-red-600 pt-2 border-t border-slate-200">
+              <div className="flex justify-between text-lg font-bold text-red-400 pt-2 border-t border-slate-700">
                 <span>Balance Due</span>
                 <span>{formatCurrency(invoice.balance_due)}</span>
               </div>
@@ -479,17 +479,17 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
 
       {/* Notes */}
       {invoice.notes && (
-        <div className="bg-white rounded-lg border border-slate-200 p-6 mb-6">
+        <div className="bg-slate-800/50 rounded-lg border border-slate-700 p-6 mb-6">
           <h3 className="text-sm font-medium text-slate-500 uppercase mb-2">Notes</h3>
-          <p className="text-slate-700 whitespace-pre-wrap">{invoice.notes}</p>
+          <p className="text-slate-300 whitespace-pre-wrap">{invoice.notes}</p>
         </div>
       )}
 
       {/* Terms */}
       {invoice.terms && (
-        <div className="bg-slate-50 rounded-lg border border-slate-200 p-6 mb-6">
+        <div className="bg-slate-800 rounded-lg border border-slate-700 p-6 mb-6">
           <h3 className="text-sm font-medium text-slate-500 uppercase mb-2">Terms & Conditions</h3>
-          <p className="text-slate-600 text-sm whitespace-pre-wrap">{invoice.terms}</p>
+          <p className="text-slate-400 text-sm whitespace-pre-wrap">{invoice.terms}</p>
         </div>
       )}
 
@@ -499,6 +499,7 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
           variant="outline"
           onClick={() => window.open(`/api/invoices/${invoice.id}/pdf`, '_blank')}
           leftIcon={<Download className="h-4 w-4" />}
+          className="border-slate-600 text-slate-300 hover:bg-slate-800"
         >
           Download PDF
         </Button>
@@ -507,6 +508,7 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
           <Button
             onClick={() => setShowPaymentModal(true)}
             leftIcon={<CreditCard className="h-4 w-4" />}
+            className="bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
           >
             Pay {formatCurrency(invoice.balance_due)}
           </Button>

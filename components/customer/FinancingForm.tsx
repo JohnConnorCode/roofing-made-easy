@@ -7,7 +7,10 @@ import { Select } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { formatCurrency } from '@/lib/utils'
-import { DollarSign, CheckCircle } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { DollarSign, CheckCircle, ChevronDown, Shield, Clock, ArrowRight } from 'lucide-react'
+import { Tooltip } from '@/components/ui/tooltip'
+import Link from 'next/link'
 import type { CreditRange, IncomeRange, EmploymentStatus } from '@/lib/supabase/types'
 
 interface FinancingFormProps {
@@ -51,6 +54,13 @@ const EMPLOYMENT_STATUSES: { value: EmploymentStatus; label: string }[] = [
   { value: 'other', label: 'Other' },
 ]
 
+const POST_SUBMIT_STEPS = [
+  { label: 'Submitted', completed: true },
+  { label: 'Under Review', completed: false },
+  { label: 'Pre-Qualified', completed: false },
+  { label: 'Connected with Lender', completed: false },
+]
+
 export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: FinancingFormProps) {
   const [formData, setFormData] = useState<FinancingFormData>({
     amountRequested: estimatedAmount || 10000,
@@ -62,6 +72,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
   })
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showMoreFields, setShowMoreFields] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -76,25 +87,67 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
 
   if (submitted) {
     return (
-      <Card variant="dark" className="border-[#3d7a5a]/30 bg-[#3d7a5a]/5">
-        <CardContent className="pt-6 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#3d7a5a]/20 border border-[#3d7a5a]">
-            <CheckCircle className="h-8 w-8 text-[#3d7a5a]" />
+      <Card variant="dark" className="border-success/30 bg-success/5">
+        <CardContent className="pt-6 pb-6">
+          <div className="text-center mb-6">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/20 border border-success">
+              <CheckCircle className="h-8 w-8 text-success" />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-100 mb-2">
+              Pre-Qualification Submitted
+            </h3>
           </div>
-          <h3 className="text-xl font-semibold text-slate-100 mb-2">
-            Pre-Qualification Submitted
-          </h3>
-          <p className="text-slate-400 mb-4">
-            Our team will review your information and connect you with financing options that match your needs.
-            We&apos;ll be in touch within 1-2 business days.
-          </p>
-          <Button
-            variant="outline"
-            onClick={() => setSubmitted(false)}
-            className="border-slate-600 text-slate-300 hover:bg-slate-800"
-          >
-            Submit Another Request
-          </Button>
+
+          {/* Mini timeline */}
+          <div className="flex items-center justify-between mb-6 px-4">
+            {POST_SUBMIT_STEPS.map((step, index) => (
+              <div key={step.label} className="flex items-center flex-1 last:flex-none">
+                <div className="flex flex-col items-center">
+                  <div className={cn(
+                    'flex h-6 w-6 items-center justify-center rounded-full text-xs',
+                    step.completed
+                      ? 'bg-success text-white'
+                      : 'bg-slate-700 text-slate-400 border border-slate-600'
+                  )}>
+                    {step.completed ? <CheckCircle className="h-3.5 w-3.5" /> : index + 1}
+                  </div>
+                  <span className={cn(
+                    'text-[10px] mt-1 whitespace-nowrap',
+                    step.completed ? 'text-success' : 'text-slate-500'
+                  )}>
+                    {step.label}
+                  </span>
+                </div>
+                {index < POST_SUBMIT_STEPS.length - 1 && (
+                  <div className={cn(
+                    'h-0.5 flex-1 mx-2',
+                    step.completed ? 'bg-success' : 'bg-slate-700'
+                  )} />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center space-y-3">
+            <div className="flex items-center justify-center gap-2 text-sm text-slate-400">
+              <Clock className="h-4 w-4" />
+              Typically 1-2 business days
+            </div>
+
+            <div className="rounded-lg bg-slate-800/50 border border-slate-700 p-3">
+              <p className="text-sm text-slate-400">
+                While you wait, explore insurance options to maximize your savings.
+              </p>
+              <Link
+                href="/portal/insurance"
+                className="inline-flex items-center gap-1 text-sm font-medium text-gold-light hover:text-gold-hover mt-1"
+              >
+                <Shield className="h-3.5 w-3.5" />
+                Check Insurance Options
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          </div>
         </CardContent>
       </Card>
     )
@@ -104,12 +157,11 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
     <Card variant="dark" className="border-slate-700">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-slate-100">
-          <DollarSign className="h-5 w-5 text-[#c9a25c]" />
+          <DollarSign className="h-5 w-5 text-gold-light" />
           Financing Pre-Qualification
         </CardTitle>
         <CardDescription>
-          Fill out this form to see if you qualify for financing. Our team will review your information
-          and connect you with lenders that match your needs.
+          Start with just 2 fields. Add more details for better results.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -121,7 +173,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
             </div>
           )}
 
-          {/* Amount requested */}
+          {/* Stage 1: Essential fields (always visible) */}
           <div>
             <Input
               type="number"
@@ -136,10 +188,10 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
             />
           </div>
 
-          {/* Credit range */}
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-300">
+            <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-slate-300">
               Estimated Credit Score Range
+              <Tooltip content="This is a soft inquiry and won't affect your credit score." />
             </label>
             <Select
               value={formData.creditRange}
@@ -154,65 +206,77 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
             </p>
           </div>
 
-          {/* Annual income */}
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-300">
-              Annual Household Income
-            </label>
-            <Select
-              value={formData.incomeRange}
-              onChange={(value) => setFormData({ ...formData, incomeRange: value as IncomeRange })}
-              options={INCOME_RANGES.map((r) => ({
-                value: r.value,
-                label: r.label,
-              }))}
-            />
-          </div>
+          {/* Stage 2: Additional fields (collapsed by default) */}
+          {!showMoreFields ? (
+            <button
+              type="button"
+              onClick={() => setShowMoreFields(true)}
+              className="flex items-center gap-2 text-sm text-gold-light hover:text-gold-hover transition-colors w-full justify-center py-2 rounded-lg border border-dashed border-slate-700 hover:border-gold-light/30"
+            >
+              <ChevronDown className="h-4 w-4" />
+              More details for better results
+            </button>
+          ) : (
+            <div className="space-y-6 pt-4 border-t border-slate-700">
+              <p className="text-xs text-slate-500">Additional details help us find better rates for you.</p>
 
-          {/* Employment status */}
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-300">
-              Employment Status
-            </label>
-            <Select
-              value={formData.employmentStatus}
-              onChange={(value) => setFormData({ ...formData, employmentStatus: value as EmploymentStatus })}
-              options={EMPLOYMENT_STATUSES.map((s) => ({
-                value: s.value,
-                label: s.label,
-              }))}
-            />
-          </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-300">
+                  Annual Household Income
+                </label>
+                <Select
+                  value={formData.incomeRange}
+                  onChange={(value) => setFormData({ ...formData, incomeRange: value as IncomeRange })}
+                  options={INCOME_RANGES.map((r) => ({
+                    value: r.value,
+                    label: r.label,
+                  }))}
+                />
+              </div>
 
-          {/* Monthly housing payment */}
-          <div>
-            <Input
-              type="number"
-              label="Monthly Housing Payment (optional)"
-              placeholder="1500"
-              value={formData.monthlyHousingPayment || ''}
-              onChange={(e) => setFormData({
-                ...formData,
-                monthlyHousingPayment: e.target.value ? parseInt(e.target.value) : undefined
-              })}
-              min={0}
-              step={50}
-              hint="Include mortgage/rent, property tax, and insurance"
-            />
-          </div>
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-slate-300">
+                  Employment Status
+                </label>
+                <Select
+                  value={formData.employmentStatus}
+                  onChange={(value) => setFormData({ ...formData, employmentStatus: value as EmploymentStatus })}
+                  options={EMPLOYMENT_STATUSES.map((s) => ({
+                    value: s.value,
+                    label: s.label,
+                  }))}
+                />
+              </div>
 
-          {/* Co-applicant */}
-          <div>
-            <Checkbox
-              name="coApplicant"
-              label="I have a co-applicant who will apply with me"
-              checked={formData.coApplicant}
-              onChange={(e) => setFormData({ ...formData, coApplicant: e.target.checked })}
-            />
-            <p className="mt-1 ml-6 text-sm text-slate-500">
-              Adding a co-applicant may improve your approval chances and rates
-            </p>
-          </div>
+              <div>
+                <Input
+                  type="number"
+                  label="Monthly Housing Payment (optional)"
+                  placeholder="1500"
+                  value={formData.monthlyHousingPayment || ''}
+                  onChange={(e) => setFormData({
+                    ...formData,
+                    monthlyHousingPayment: e.target.value ? parseInt(e.target.value) : undefined
+                  })}
+                  min={0}
+                  step={50}
+                  hint="Include mortgage/rent, property tax, and insurance"
+                />
+              </div>
+
+              <div>
+                <Checkbox
+                  name="coApplicant"
+                  label="I have a co-applicant who will apply with me"
+                  checked={formData.coApplicant}
+                  onChange={(e) => setFormData({ ...formData, coApplicant: e.target.checked })}
+                />
+                <p className="mt-1 ml-6 text-sm text-slate-500">
+                  Adding a co-applicant may improve your approval chances and rates
+                </p>
+              </div>
+            </div>
+          )}
 
           <div className="pt-4 border-t border-slate-700">
             <Button
@@ -220,7 +284,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
               variant="primary"
               size="lg"
               isLoading={isLoading}
-              className="w-full bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+              className="w-full bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
             >
               Check My Options
             </Button>

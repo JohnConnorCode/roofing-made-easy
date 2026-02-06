@@ -171,7 +171,7 @@ export function DocumentHub({
     <Card variant="dark" className="border-slate-700">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-slate-100">
-          <ImageIcon className="h-5 w-5 text-[#c9a25c]" />
+          <ImageIcon className="h-5 w-5 text-gold-light" />
           Your Photos
         </CardTitle>
         <CardDescription>
@@ -208,7 +208,7 @@ export function DocumentHub({
             className={cn(
               'relative border-2 border-dashed rounded-lg p-6 text-center transition-colors cursor-pointer',
               dragOver
-                ? 'border-[#c9a25c] bg-[#c9a25c]/5'
+                ? 'border-gold-light bg-gold-light/5'
                 : 'border-slate-600 hover:border-slate-500'
             )}
           >
@@ -222,14 +222,14 @@ export function DocumentHub({
             />
             {isUploading ? (
               <div className="flex flex-col items-center gap-2">
-                <Loader2 className="h-8 w-8 text-[#c9a25c] animate-spin" />
+                <Loader2 className="h-8 w-8 text-gold-light animate-spin" />
                 <p className="text-sm text-slate-400">Uploading...</p>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-2">
                 <Upload className="h-8 w-8 text-slate-400" />
                 <p className="text-sm text-slate-300">
-                  Drag photos here or <span className="text-[#c9a25c]">click to browse</span>
+                  Drag photos here or <span className="text-gold-light">click to browse</span>
                 </p>
                 <p className="text-xs text-slate-500">
                   JPEG, PNG, WebP, or HEIC. Max 10MB per file, up to 10 files.

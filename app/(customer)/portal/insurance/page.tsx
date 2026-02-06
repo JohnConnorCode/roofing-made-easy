@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import { useCustomerStore } from '@/stores/customerStore'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -9,18 +8,21 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/toast'
-import { ClaimTracker, ResourceLibrary, EstimateSummary } from '@/components/customer'
+import { ClaimTracker, ResourceLibrary, EstimateSummary, Breadcrumbs } from '@/components/customer'
 import {
   Shield,
-  ArrowLeft,
   Plus,
-  FileText,
-  Upload,
+  Mail,
   Phone,
+  CheckSquare,
+  ChevronDown,
+  Users,
+  Clock,
+  DollarSign,
 } from 'lucide-react'
 import { INSURANCE_COMPANIES, CLAIM_STATUS_LABELS } from '@/lib/data/insurance-resources'
 import type { InsuranceClaimStatus, InsuranceClaimTimelineEvent } from '@/lib/supabase/types'
-import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
+import { BUSINESS_CONFIG, getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
 
 const CAUSE_OPTIONS = [
   { value: 'hail', label: 'Hail Damage' },
@@ -34,7 +36,6 @@ const CAUSE_OPTIONS = [
 ]
 
 export default function InsurancePage() {
-  const router = useRouter()
   const { showToast } = useToast()
   const {
     linkedLeads,
@@ -46,6 +47,8 @@ export default function InsurancePage() {
 
   const [showForm, setShowForm] = useState(false)
   const [showStatusUpdate, setShowStatusUpdate] = useState(false)
+  const [showChecklist, setShowChecklist] = useState(false)
+  const [showOptionalFields, setShowOptionalFields] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [formData, setFormData] = useState({
@@ -72,7 +75,7 @@ export default function InsurancePage() {
   const existingClaim = insuranceClaims.find((c) => c.lead_id === selectedLeadId)
 
   // Pre-fill form from intake data
-  useState(() => {
+  useEffect(() => {
     if (intake && !existingClaim) {
       setFormData((prev) => ({
         ...prev,
@@ -80,7 +83,7 @@ export default function InsurancePage() {
         claimNumber: intake.claim_number || '',
       }))
     }
-  })
+  }, [intake, existingClaim])
 
   const handleCreateClaim = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -151,16 +154,11 @@ export default function InsurancePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-slate-400 hover:text-slate-200"
-          onClick={() => router.push('/portal')}
-          leftIcon={<ArrowLeft className="h-4 w-4" />}
-        >
-          Back
-        </Button>
+      <div className="space-y-2">
+        <Breadcrumbs items={[
+          { label: 'Dashboard', href: '/portal' },
+          { label: 'Insurance' },
+        ]} />
         <div>
           <h1 className="text-2xl font-bold text-slate-100">Insurance Assistance</h1>
           <p className="text-slate-400">Track your claim and access helpful resources</p>
@@ -213,49 +211,27 @@ export default function InsurancePage() {
               <CardHeader>
                 <CardTitle className="text-slate-100">Start Tracking Your Claim</CardTitle>
                 <CardDescription>
-                  Enter your insurance claim details to track progress and get helpful resources.
+                  Just 2 fields to get started. Add details later anytime.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleCreateClaim} className="space-y-4">
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div>
-                      <label className="mb-1.5 block text-sm font-medium text-slate-300">
-                        Insurance Company
-                      </label>
-                      <Select
-                        value={formData.insuranceCompany}
-                        onChange={(value) => setFormData({ ...formData, insuranceCompany: value })}
-                        options={[
-                          { value: '', label: 'Select company...' },
-                          ...INSURANCE_COMPANIES.map((c) => ({
-                            value: c.name,
-                            label: c.name,
-                          })),
-                          { value: 'other', label: 'Other' },
-                        ]}
-                      />
-                    </div>
-                    <Input
-                      label="Claim Number"
-                      placeholder="CLM-123456"
-                      value={formData.claimNumber}
-                      onChange={(e) => setFormData({ ...formData, claimNumber: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <Input
-                      label="Policy Number (optional)"
-                      placeholder="POL-789012"
-                      value={formData.policyNumber}
-                      onChange={(e) => setFormData({ ...formData, policyNumber: e.target.value })}
-                    />
-                    <Input
-                      type="date"
-                      label="Date of Loss"
-                      value={formData.dateOfLoss}
-                      onChange={(e) => setFormData({ ...formData, dateOfLoss: e.target.value })}
+                  {/* Required fields */}
+                  <div>
+                    <label className="mb-1.5 block text-sm font-medium text-slate-300">
+                      Insurance Company
+                    </label>
+                    <Select
+                      value={formData.insuranceCompany}
+                      onChange={(value) => setFormData({ ...formData, insuranceCompany: value })}
+                      options={[
+                        { value: '', label: 'Select company...' },
+                        ...INSURANCE_COMPANIES.map((c) => ({
+                          value: c.name,
+                          label: c.name,
+                        })),
+                        { value: 'other', label: 'Other' },
+                      ]}
                     />
                   </div>
 
@@ -273,13 +249,50 @@ export default function InsurancePage() {
                     />
                   </div>
 
-                  <Textarea
-                    label="Notes (optional)"
-                    placeholder="Any additional details about the damage or claim..."
-                    value={formData.customerNotes}
-                    onChange={(e) => setFormData({ ...formData, customerNotes: e.target.value })}
-                    rows={3}
-                  />
+                  {/* Optional fields toggle */}
+                  {!showOptionalFields ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowOptionalFields(true)}
+                      className="flex items-center gap-2 text-sm text-gold-light hover:text-gold-hover transition-colors w-full justify-center py-2 rounded-lg border border-dashed border-slate-700 hover:border-gold-light/30"
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                      Add claim details (optional)
+                    </button>
+                  ) : (
+                    <div className="space-y-4 pt-4 border-t border-slate-700">
+                      <Input
+                        label="Claim Number"
+                        placeholder="CLM-123456"
+                        value={formData.claimNumber}
+                        onChange={(e) => setFormData({ ...formData, claimNumber: e.target.value })}
+                        hint="Don't have this yet? You can add it later."
+                      />
+
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <Input
+                          label="Policy Number (optional)"
+                          placeholder="POL-789012"
+                          value={formData.policyNumber}
+                          onChange={(e) => setFormData({ ...formData, policyNumber: e.target.value })}
+                        />
+                        <Input
+                          type="date"
+                          label="Date of Loss"
+                          value={formData.dateOfLoss}
+                          onChange={(e) => setFormData({ ...formData, dateOfLoss: e.target.value })}
+                        />
+                      </div>
+
+                      <Textarea
+                        label="Notes (optional)"
+                        placeholder="Any additional details about the damage or claim..."
+                        value={formData.customerNotes}
+                        onChange={(e) => setFormData({ ...formData, customerNotes: e.target.value })}
+                        rows={3}
+                      />
+                    </div>
+                  )}
 
                   <div className="flex gap-3 pt-4">
                     <Button
@@ -294,7 +307,7 @@ export default function InsurancePage() {
                       type="submit"
                       variant="primary"
                       isLoading={isSubmitting}
-                      className="flex-1 bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+                      className="flex-1 bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
                     >
                       Start Tracking
                     </Button>
@@ -303,30 +316,65 @@ export default function InsurancePage() {
               </CardContent>
             </Card>
           ) : (
-            <Card variant="dark" className="border-slate-700">
-              <CardContent className="py-8 text-center">
-                <Shield className="h-12 w-12 text-slate-600 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-slate-200 mb-2">Track Your Insurance Claim</h3>
-                <p className="text-slate-400 mb-4 max-w-md mx-auto">
-                  {intake?.has_insurance_claim
-                    ? "We see you have an insurance claim. Let's track it together."
-                    : 'Filing an insurance claim? Track your progress and get helpful resources.'}
-                </p>
-                <Button
-                  variant="primary"
-                  className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
-                  leftIcon={<Plus className="h-4 w-4" />}
-                  onClick={() => setShowForm(true)}
-                >
-                  Start Tracking Claim
-                </Button>
-              </CardContent>
-            </Card>
+            <div className="space-y-4">
+              {/* Why file through us? */}
+              <div className="grid grid-cols-3 gap-3">
+                <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
+                  <Users className="h-5 w-5 text-gold-light mx-auto mb-1" />
+                  <p className="text-sm font-medium text-slate-200">Expert Guidance</p>
+                  <p className="text-xs text-slate-500">We handle the process</p>
+                </div>
+                <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
+                  <Clock className="h-5 w-5 text-gold-light mx-auto mb-1" />
+                  <p className="text-sm font-medium text-slate-200">Track Progress</p>
+                  <p className="text-xs text-slate-500">Real-time updates</p>
+                </div>
+                <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
+                  <DollarSign className="h-5 w-5 text-gold-light mx-auto mb-1" />
+                  <p className="text-sm font-medium text-slate-200">Maximize Payout</p>
+                  <p className="text-xs text-slate-500">Get what you deserve</p>
+                </div>
+              </div>
+
+              {/* Before you start checklist */}
+              <Card variant="dark" className="border-slate-700">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base text-slate-100 flex items-center gap-2">
+                    <CheckSquare className="h-4 w-4 text-gold-light" />
+                    Before You Start
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-sm text-slate-300 mb-4">
+                    <li className="flex gap-2"><span className="text-gold-light font-medium">1.</span> Document all damage with photos</li>
+                    <li className="flex gap-2"><span className="text-gold-light font-medium">2.</span> Note the date and cause of damage</li>
+                    <li className="flex gap-2"><span className="text-gold-light font-medium">3.</span> Contact your insurance company</li>
+                    <li className="flex gap-2"><span className="text-gold-light font-medium">4.</span> Get your claim number</li>
+                    <li className="flex gap-2"><span className="text-gold-light font-medium">5.</span> Schedule adjuster visit</li>
+                    <li className="flex gap-2"><span className="text-gold-light font-medium">6.</span> Get a roofing estimate</li>
+                    <li className="flex gap-2"><span className="text-gold-light font-medium">7.</span> Review adjuster report</li>
+                  </ul>
+                  <p className="text-xs text-slate-500 mb-4">
+                    {intake?.has_insurance_claim
+                      ? "We see you have an insurance claim. Let's track it together."
+                      : "Don't worry if you haven't completed all steps. Start tracking and we'll guide you."}
+                  </p>
+                  <Button
+                    variant="primary"
+                    className="w-full bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
+                    leftIcon={<Plus className="h-4 w-4" />}
+                    onClick={() => setShowForm(true)}
+                  >
+                    Start Tracking Claim
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           )}
 
           {/* Status update modal/form */}
           {showStatusUpdate && existingClaim && (
-            <Card className="border-[#c9a25c]/30">
+            <Card className="border-gold-light/30">
               <CardHeader>
                 <CardTitle className="text-slate-100">Update Claim Status</CardTitle>
               </CardHeader>
@@ -365,7 +413,7 @@ export default function InsurancePage() {
                       type="submit"
                       variant="primary"
                       isLoading={isSubmitting}
-                      className="flex-1 bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+                      className="flex-1 bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
                     >
                       Update Status
                     </Button>
@@ -388,18 +436,32 @@ export default function InsurancePage() {
                 variant="outline"
                 size="sm"
                 className="w-full justify-start border-slate-600 text-slate-300 hover:bg-slate-800"
-                leftIcon={<FileText className="h-4 w-4" />}
+                leftIcon={<CheckSquare className="h-4 w-4" />}
+                onClick={() => setShowChecklist(!showChecklist)}
               >
-                Download Claim Checklist
+                {showChecklist ? 'Hide' : 'View'} Claim Checklist
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full justify-start border-slate-600 text-slate-300 hover:bg-slate-800"
-                leftIcon={<Upload className="h-4 w-4" />}
+              {showChecklist && (
+                <div className="rounded-lg bg-slate-800 p-3 text-sm text-slate-300 space-y-2">
+                  <p className="font-medium text-slate-200 mb-2">Before filing your claim:</p>
+                  <ul className="space-y-1.5">
+                    <li className="flex gap-2"><span className="text-gold-light">1.</span> Document all damage with photos</li>
+                    <li className="flex gap-2"><span className="text-gold-light">2.</span> Note the date and cause of damage</li>
+                    <li className="flex gap-2"><span className="text-gold-light">3.</span> Contact your insurance company</li>
+                    <li className="flex gap-2"><span className="text-gold-light">4.</span> Get your claim number</li>
+                    <li className="flex gap-2"><span className="text-gold-light">5.</span> Schedule adjuster visit</li>
+                    <li className="flex gap-2"><span className="text-gold-light">6.</span> Get a roofing estimate</li>
+                    <li className="flex gap-2"><span className="text-gold-light">7.</span> Review adjuster report</li>
+                  </ul>
+                </div>
+              )}
+              <a
+                href={`mailto:${BUSINESS_CONFIG.email.primary}?subject=Insurance%20Claim%20Documents`}
+                className="flex w-full items-center gap-2 rounded-md border border-slate-600 px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 transition-colors"
               >
-                Upload Documents
-              </Button>
+                <Mail className="h-4 w-4" />
+                Email Documents
+              </a>
               <Button
                 variant="outline"
                 size="sm"

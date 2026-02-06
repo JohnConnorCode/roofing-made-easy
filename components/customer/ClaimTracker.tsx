@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { formatDate } from '@/lib/utils'
-import { Shield, ChevronRight, Phone, Calendar } from 'lucide-react'
+import { Shield, Phone, Calendar, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
 import type { InsuranceClaimStatus, InsuranceClaimTimelineEvent } from '@/lib/supabase/types'
 import { CLAIM_STATUS_LABELS, getInsuranceCompanyInfo } from '@/lib/data/insurance-resources'
 
@@ -37,6 +37,15 @@ const STATUS_ORDER: InsuranceClaimStatus[] = [
   'settled',
 ]
 
+const PROGRESS_STEPS = [
+  { id: 'filed', label: 'Filed' },
+  { id: 'adjuster_scheduled', label: 'Adjuster' },
+  { id: 'adjuster_visited', label: 'Inspected' },
+  { id: 'under_review', label: 'Review' },
+  { id: 'approved', label: 'Decision' },
+  { id: 'settled', label: 'Settled' },
+]
+
 export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerProps) {
   if (!claim) {
     return (
@@ -49,7 +58,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
           </p>
           <Button
             variant="primary"
-            className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+            className="bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
             onClick={onUpdateStatus}
           >
             Start Tracking Claim
@@ -86,34 +95,79 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
         <CardContent>
           <p className="text-sm text-slate-400 mb-4">{statusInfo.description}</p>
 
-          {/* Progress bar */}
+          {/* Progress steps */}
           <div className="mb-4">
-            <div className="flex justify-between mb-2">
-              {STATUS_ORDER.slice(0, -1).map((status, index) => (
-                <div
-                  key={status}
-                  className={cn(
-                    'h-2 flex-1 rounded-full mx-0.5 first:ml-0 last:mr-0',
-                    index <= currentStatusIndex
-                      ? claim.status === 'denied' || claim.status === 'appealing'
-                        ? 'bg-yellow-500'
-                        : 'bg-[#3d7a5a]'
-                      : 'bg-slate-700'
-                  )}
-                />
-              ))}
-            </div>
-            <div className="flex justify-between text-xs text-slate-500">
-              <span>Filed</span>
-              <span>Inspection</span>
-              <span>Review</span>
-              <span>Settled</span>
+            <div className="flex items-center">
+              {PROGRESS_STEPS.map((step, index) => {
+                const isDenied = claim.status === 'denied'
+                const isAppealing = claim.status === 'appealing'
+                const isBranched = isDenied || isAppealing
+
+                // For denied/appealing, show progress up to under_review then branch
+                const effectiveIndex = isBranched
+                  ? STATUS_ORDER.indexOf('under_review')
+                  : currentStatusIndex
+
+                const isCompleted = index < effectiveIndex
+                const isCurrent = index === effectiveIndex
+                const isDecisionStep = step.id === 'under_review'
+
+                // Special handling for decision step when denied/appealing
+                const showDenied = isDecisionStep && isDenied
+                const showAppealing = isDecisionStep && isAppealing
+
+                return (
+                  <div key={step.id} className="flex items-center flex-1 last:flex-none">
+                    {/* Step indicator */}
+                    <div className="flex flex-col items-center">
+                      <div className={cn(
+                        'flex h-7 w-7 items-center justify-center rounded-full border-2 text-xs font-medium',
+                        isCompleted
+                          ? 'border-success bg-success text-white'
+                          : showDenied
+                          ? 'border-red-500 bg-red-500/10 text-red-400'
+                          : showAppealing
+                          ? 'border-yellow-500 bg-yellow-500/10 text-yellow-400'
+                          : isCurrent
+                          ? 'border-gold-light bg-gold-light/10 text-gold-light'
+                          : 'border-slate-600 bg-slate-800 text-slate-500'
+                      )}>
+                        {isCompleted ? (
+                          <CheckCircle className="h-4 w-4" />
+                        ) : showDenied ? (
+                          <XCircle className="h-4 w-4" />
+                        ) : showAppealing ? (
+                          <AlertTriangle className="h-3.5 w-3.5" />
+                        ) : (
+                          index + 1
+                        )}
+                      </div>
+                      <span className={cn(
+                        'text-[10px] mt-1 whitespace-nowrap',
+                        isCompleted ? 'text-success' :
+                        showDenied ? 'text-red-400' :
+                        showAppealing ? 'text-yellow-400' :
+                        isCurrent ? 'text-gold-light' : 'text-slate-500'
+                      )}>
+                        {showDenied ? 'Denied' : showAppealing ? 'Appealing' : step.label}
+                      </span>
+                    </div>
+                    {/* Connecting line */}
+                    {index < PROGRESS_STEPS.length - 1 && (
+                      <div className={cn(
+                        'h-0.5 flex-1 mx-1',
+                        index < effectiveIndex ? 'bg-success' : 'bg-slate-700'
+                      )} />
+                    )}
+                  </div>
+                )
+              })}
             </div>
           </div>
 
           {/* Insurance company info */}
           {claim.insuranceCompany && (
-            <div className="rounded-lg bg-[#1a1f2e] border border-slate-700 p-4">
+            <div className="rounded-lg bg-slate-deep border border-slate-700 p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-slate-500">Insurance Company</p>
@@ -122,7 +176,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
                 {companyInfo && (
                   <a
                     href={`tel:${companyInfo.claimsPhone}`}
-                    className="flex items-center gap-2 text-[#c9a25c] hover:text-[#d4b06c]"
+                    className="flex items-center gap-2 text-gold-light hover:text-gold-hover"
                   >
                     <Phone className="h-4 w-4" />
                     <span className="text-sm">{companyInfo.claimsPhone}</span>
@@ -134,7 +188,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
 
           {/* Adjuster info */}
           {claim.adjusterName && (
-            <div className="mt-4 rounded-lg bg-[#1a1f2e] border border-slate-700 p-4">
+            <div className="mt-4 rounded-lg bg-slate-deep border border-slate-700 p-4">
               <p className="text-sm text-slate-500 mb-2">Adjuster Information</p>
               <div className="flex items-center justify-between">
                 <div>
@@ -142,7 +196,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
                   {claim.adjusterPhone && (
                     <a
                       href={`tel:${claim.adjusterPhone}`}
-                      className="text-sm text-[#c9a25c] hover:text-[#d4b06c]"
+                      className="text-sm text-gold-light hover:text-gold-hover"
                     >
                       {claim.adjusterPhone}
                     </a>
@@ -163,11 +217,11 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
 
           {/* Claim results */}
           {claim.claimAmountApproved !== null && claim.claimAmountApproved !== undefined && (
-            <div className="mt-4 rounded-lg bg-[#3d7a5a]/10 border border-[#3d7a5a]/30 p-4">
+            <div className="mt-4 rounded-lg bg-success/10 border border-success/30 p-4">
               <p className="text-sm text-slate-400 mb-2">Claim Approved</p>
               <div className="flex items-end justify-between">
                 <div>
-                  <p className="text-2xl font-bold text-[#3d7a5a]">
+                  <p className="text-2xl font-bold text-success">
                     ${claim.claimAmountApproved.toLocaleString()}
                   </p>
                   {claim.deductible !== null && claim.deductible !== undefined && (
@@ -221,7 +275,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
                   )}
 
                   {/* Dot */}
-                  <div className="relative z-10 h-4 w-4 rounded-full bg-[#c9a25c] shrink-0 mt-0.5" />
+                  <div className="relative z-10 h-4 w-4 rounded-full bg-gold-light shrink-0 mt-0.5" />
 
                   {/* Content */}
                   <div className="flex-1">

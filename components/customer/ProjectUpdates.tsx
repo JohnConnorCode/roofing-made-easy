@@ -59,20 +59,20 @@ const ACTIVITY_CONFIG: Record<string, { icon: typeof Bell; color: string; bgColo
   },
   status_change: {
     icon: RefreshCw,
-    color: 'text-[#c9a25c]',
-    bgColor: 'bg-[#c9a25c]/10',
+    color: 'text-gold-light',
+    bgColor: 'bg-gold-light/10',
     label: 'Status Update',
   },
   estimate_generated: {
     icon: DollarSign,
-    color: 'text-[#c9a25c]',
-    bgColor: 'bg-[#c9a25c]/10',
+    color: 'text-gold-light',
+    bgColor: 'bg-gold-light/10',
     label: 'Estimate',
   },
   quote_sent: {
     icon: FileText,
-    color: 'text-[#3d7a5a]',
-    bgColor: 'bg-[#3d7a5a]/10',
+    color: 'text-success',
+    bgColor: 'bg-success/10',
     label: 'Quote Sent',
   },
   appointment_scheduled: {
@@ -160,7 +160,7 @@ export function ProjectUpdates({ leadId, className }: ProjectUpdatesProps) {
     <Card variant="dark" className={cn('border-slate-700', className)}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-slate-100">
-          <Bell className="h-5 w-5 text-[#c9a25c]" />
+          <Bell className="h-5 w-5 text-gold-light" />
           Project Updates
         </CardTitle>
         <CardDescription>

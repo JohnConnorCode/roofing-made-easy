@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
@@ -62,6 +62,31 @@ export function QuoteViewer({
   const [acceptEmail, setAcceptEmail] = useState(customerEmail || '')
   const [rejectReason, setRejectReason] = useState('')
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [quoteIncludes, setQuoteIncludes] = useState<string[]>([
+    'Materials & labor',
+    'Workmanship warranty',
+    'Cleanup & disposal',
+    'Permit assistance',
+  ])
+
+  // Fetch dynamic estimate content for "What's Included"
+  useEffect(() => {
+    const controller = new AbortController()
+    async function fetchEstimateContent() {
+      try {
+        const res = await fetch('/api/customer/estimate-content', { signal: controller.signal })
+        if (!res.ok) return
+        const data = await res.json()
+        if (Array.isArray(data.items) && data.items.length > 0) {
+          setQuoteIncludes(data.items.map((item: { title: string }) => item.title))
+        }
+      } catch {
+        // Keep fallback defaults on error or abort
+      }
+    }
+    fetchEstimateContent()
+    return () => controller.abort()
+  }, [])
 
   const quoteStatus = estimate.estimate_status || 'draft'
   const isAccepted = quoteStatus === 'accepted' || !!estimate.accepted_at
@@ -194,7 +219,7 @@ export function QuoteViewer({
     <Card variant="dark" className={cn('border-slate-700', className)}>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-slate-100">
-          <FileText className="h-5 w-5 text-[#c9a25c]" />
+          <FileText className="h-5 w-5 text-gold-light" />
           Your Quote
         </CardTitle>
         <CardDescription>
@@ -203,7 +228,7 @@ export function QuoteViewer({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Quote Summary */}
-        <div className="rounded-lg bg-gradient-to-r from-[#c9a25c]/10 to-transparent border border-[#c9a25c]/20 p-4">
+        <div className="rounded-lg bg-gradient-to-r from-gold-light/10 to-transparent border border-gold-light/20 p-4">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Project Type</p>
@@ -213,7 +238,7 @@ export function QuoteViewer({
             </div>
             <div className="text-right">
               <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Estimated Cost</p>
-              <p className="text-2xl font-bold text-[#c9a25c]">
+              <p className="text-2xl font-bold text-gold-light">
                 {formatCurrency(displayPrice)}
               </p>
               {estimate.adjusted_price_likely && estimate.adjusted_price_likely !== estimate.price_likely && (
@@ -349,7 +374,7 @@ export function QuoteViewer({
           variant={canRespond ? 'ghost' : 'primary'}
           className={canRespond
             ? 'w-full text-slate-400 hover:text-slate-300'
-            : 'w-full bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0'
+            : 'w-full bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0'
           }
           onClick={handleDownload}
           disabled={isDownloading}
@@ -376,14 +401,9 @@ export function QuoteViewer({
         <div className="pt-4 border-t border-slate-700">
           <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Quote Includes</p>
           <div className="grid grid-cols-2 gap-2">
-            {[
-              'Materials & labor',
-              'Workmanship warranty',
-              'Cleanup & disposal',
-              'Permit assistance',
-            ].map((item) => (
+            {quoteIncludes.map((item) => (
               <div key={item} className="flex items-center gap-2 text-sm text-slate-300">
-                <CheckCircle className="h-3.5 w-3.5 text-[#3d7a5a]" />
+                <CheckCircle className="h-3.5 w-3.5 text-success" />
                 {item}
               </div>
             ))}
@@ -395,12 +415,12 @@ export function QuoteViewer({
       {showAcceptModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70" onClick={() => setShowAcceptModal(false)} />
-          <div className="relative bg-[#1a1f2e] rounded-xl shadow-xl max-w-md w-full border border-slate-700">
+          <div className="relative bg-slate-deep rounded-xl shadow-xl max-w-md w-full border border-slate-700">
             <div className="p-6">
               <h3 className="text-xl font-semibold text-slate-100 mb-2">Accept Quote</h3>
               <p className="text-sm text-slate-400 mb-6">
                 By accepting, you agree to proceed with this roofing project at the quoted price of{' '}
-                <span className="text-[#c9a25c] font-medium">{formatCurrency(displayPrice)}</span>.
+                <span className="text-gold-light font-medium">{formatCurrency(displayPrice)}</span>.
               </p>
 
               <form onSubmit={handleAcceptQuote} className="space-y-4">
@@ -416,7 +436,7 @@ export function QuoteViewer({
                     type="text"
                     value={acceptName}
                     onChange={e => setAcceptName(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c9a25c]"
+                    className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-gold-light"
                     placeholder="John Smith"
                     required
                   />
@@ -428,7 +448,7 @@ export function QuoteViewer({
                     type="email"
                     value={acceptEmail}
                     onChange={e => setAcceptEmail(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c9a25c]"
+                    className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-gold-light"
                     placeholder="john@example.com"
                     required
                   />
@@ -440,7 +460,7 @@ export function QuoteViewer({
                     type="text"
                     value={signature}
                     onChange={e => setSignature(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 italic font-serif text-lg focus:outline-none focus:ring-2 focus:ring-[#c9a25c]"
+                    className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 italic font-serif text-lg focus:outline-none focus:ring-2 focus:ring-gold-light"
                     placeholder="John Smith"
                     required
                   />
@@ -478,7 +498,7 @@ export function QuoteViewer({
       {showRejectModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70" onClick={() => setShowRejectModal(false)} />
-          <div className="relative bg-[#1a1f2e] rounded-xl shadow-xl max-w-md w-full border border-slate-700">
+          <div className="relative bg-slate-deep rounded-xl shadow-xl max-w-md w-full border border-slate-700">
             <div className="p-6">
               <h3 className="text-xl font-semibold text-slate-100 mb-2">Decline Quote</h3>
               <p className="text-sm text-slate-400 mb-6">
@@ -497,7 +517,7 @@ export function QuoteViewer({
                   <textarea
                     value={rejectReason}
                     onChange={e => setRejectReason(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-[#c9a25c] resize-none"
+                    className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-gold-light resize-none"
                     rows={3}
                     placeholder="Price too high, timing not right, went with another company, etc."
                     required

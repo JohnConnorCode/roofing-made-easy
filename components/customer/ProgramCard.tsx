@@ -1,10 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/lib/utils'
-import { ExternalLink, Phone, CheckCircle, XCircle, HelpCircle } from 'lucide-react'
+import { ExternalLink, Phone, CheckCircle, XCircle, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import type { AssistanceProgramData } from '@/lib/data/assistance-programs'
 import { PROGRAM_TYPE_LABELS, APPLICATION_STATUS_LABELS } from '@/lib/data/assistance-programs'
 import type { ApplicationStatus } from '@/lib/supabase/types'
@@ -19,6 +20,7 @@ interface ProgramCardProps {
   onApply?: () => void
   onTrack?: () => void
   compact?: boolean
+  expandable?: boolean
 }
 
 export function ProgramCard({
@@ -28,7 +30,9 @@ export function ProgramCard({
   onApply,
   onTrack,
   compact = false,
+  expandable = false,
 }: ProgramCardProps) {
+  const [expanded, setExpanded] = useState(false)
   const typeInfo = PROGRAM_TYPE_LABELS[program.programType]
   const appStatusInfo = applicationStatus ? APPLICATION_STATUS_LABELS[applicationStatus] : null
 
@@ -36,7 +40,7 @@ export function ProgramCard({
     return (
       <Card className={cn(
         'border-slate-700 transition-all hover:border-slate-600',
-        eligibilityStatus?.eligible === true && 'border-[#3d7a5a]/30',
+        eligibilityStatus?.eligible === true && 'border-success/30',
         eligibilityStatus?.eligible === false && 'border-red-500/20 opacity-60'
       )}>
         <CardContent className="p-4">
@@ -48,14 +52,14 @@ export function ProgramCard({
               </div>
               <p className="text-sm text-slate-400 line-clamp-2">{program.description}</p>
               {program.maxBenefitAmount && (
-                <p className="text-sm text-[#c9a25c] mt-1">
+                <p className="text-sm text-gold-light mt-1">
                   Up to {formatCurrency(program.maxBenefitAmount)}
                 </p>
               )}
             </div>
             <div className="shrink-0">
               {eligibilityStatus?.eligible === true && (
-                <CheckCircle className="h-5 w-5 text-[#3d7a5a]" />
+                <CheckCircle className="h-5 w-5 text-success" />
               )}
               {eligibilityStatus?.eligible === false && (
                 <XCircle className="h-5 w-5 text-red-400" />
@@ -70,10 +74,72 @@ export function ProgramCard({
     )
   }
 
+  // Expandable collapsed mode
+  if (expandable && !expanded) {
+    return (
+      <Card
+        className={cn(
+          'border-slate-700 transition-all hover:border-slate-600 cursor-pointer',
+          eligibilityStatus?.eligible === true && 'border-success/30',
+          eligibilityStatus?.eligible === false && 'border-red-500/20 opacity-60'
+        )}
+        onClick={() => setExpanded(true)}
+      >
+        <CardContent className="p-4">
+          <div className="flex items-center gap-3">
+            <span className="text-lg shrink-0">{typeInfo.icon}</span>
+            <div className="flex-1 min-w-0">
+              <h4 className="font-medium text-slate-100 truncate">{program.name}</h4>
+              <div className="flex items-center gap-3 mt-0.5">
+                {program.maxBenefitAmount && (
+                  <span className="text-sm text-gold-light">
+                    Up to {formatCurrency(program.maxBenefitAmount)}
+                  </span>
+                )}
+                {program.state && (
+                  <span className="text-xs text-slate-500">{program.state}</span>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              {eligibilityStatus?.eligible === true && (
+                <CheckCircle className="h-4 w-4 text-success" />
+              )}
+              {eligibilityStatus?.eligible === false && (
+                <XCircle className="h-4 w-4 text-red-400" />
+              )}
+              {applicationStatus ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-slate-600 text-slate-300 hover:bg-slate-800 text-xs"
+                  onClick={(e) => { e.stopPropagation(); onTrack?.() }}
+                >
+                  Track
+                </Button>
+              ) : (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0 text-xs"
+                  onClick={(e) => { e.stopPropagation(); onApply?.() }}
+                  disabled={eligibilityStatus?.eligible === false}
+                >
+                  Apply
+                </Button>
+              )}
+              <ChevronDown className="h-4 w-4 text-slate-500" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card className={cn(
       'border-slate-700',
-      eligibilityStatus?.eligible === true && 'border-[#3d7a5a]/30 bg-[#3d7a5a]/5',
+      eligibilityStatus?.eligible === true && 'border-success/30 bg-success/5',
       eligibilityStatus?.eligible === false && 'border-red-500/20'
     )}>
       <CardHeader className="pb-2">
@@ -97,11 +163,21 @@ export function ProgramCard({
               <p className="text-xs text-slate-500 font-mono">{program.programCode}</p>
             )}
           </div>
-          {appStatusInfo && (
-            <span className={cn('text-sm font-medium', appStatusInfo.color)}>
-              {appStatusInfo.label}
-            </span>
-          )}
+          <div className="flex items-center gap-2">
+            {appStatusInfo && (
+              <span className={cn('text-sm font-medium', appStatusInfo.color)}>
+                {appStatusInfo.label}
+              </span>
+            )}
+            {expandable && (
+              <button
+                onClick={() => setExpanded(false)}
+                className="text-slate-500 hover:text-slate-300 p-1"
+              >
+                <ChevronUp className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         </div>
       </CardHeader>
 
@@ -109,11 +185,11 @@ export function ProgramCard({
         <p className="text-sm text-slate-400">{program.description}</p>
 
         {/* Benefits */}
-        <div className="rounded-lg bg-[#1a1f2e] border border-slate-700 p-3">
+        <div className="rounded-lg bg-slate-deep border border-slate-700 p-3">
           <p className="text-xs text-slate-500 mb-1">Benefits</p>
           <p className="text-sm text-slate-300">{program.benefits}</p>
           {program.maxBenefitAmount && (
-            <p className="text-lg font-semibold text-[#c9a25c] mt-2">
+            <p className="text-lg font-semibold text-gold-light mt-2">
               Up to {formatCurrency(program.maxBenefitAmount)}
             </p>
           )}
@@ -124,18 +200,18 @@ export function ProgramCard({
           <div className={cn(
             'rounded-lg p-3 border',
             eligibilityStatus.eligible
-              ? 'bg-[#3d7a5a]/10 border-[#3d7a5a]/30'
+              ? 'bg-success/10 border-success/30'
               : 'bg-red-500/10 border-red-500/20'
           )}>
             <div className="flex items-center gap-2 mb-1">
               {eligibilityStatus.eligible ? (
-                <CheckCircle className="h-4 w-4 text-[#3d7a5a]" />
+                <CheckCircle className="h-4 w-4 text-success" />
               ) : (
                 <XCircle className="h-4 w-4 text-red-400" />
               )}
               <p className={cn(
                 'text-sm font-medium',
-                eligibilityStatus.eligible ? 'text-[#3d7a5a]' : 'text-red-400'
+                eligibilityStatus.eligible ? 'text-success' : 'text-red-400'
               )}>
                 {eligibilityStatus.eligible ? 'You may be eligible' : 'May not qualify'}
               </p>
@@ -157,7 +233,7 @@ export function ProgramCard({
             <ul className="text-sm text-slate-400 space-y-1">
               {program.requiredDocuments.slice(0, 4).map((doc, index) => (
                 <li key={index} className="flex items-start gap-2">
-                  <span className="text-[#c9a25c]">•</span>
+                  <span className="text-gold-light">&bull;</span>
                   {doc}
                 </li>
               ))}
@@ -172,8 +248,8 @@ export function ProgramCard({
 
         {/* Tips */}
         {program.tips && (
-          <div className="rounded-lg bg-[#c9a25c]/10 border border-[#c9a25c]/20 p-3">
-            <p className="text-xs text-[#c9a25c] font-medium mb-1">Tip</p>
+          <div className="rounded-lg bg-gold-light/10 border border-gold-light/20 p-3">
+            <p className="text-xs text-gold-light font-medium mb-1">Tip</p>
             <p className="text-sm text-slate-300">{program.tips}</p>
           </div>
         )}
@@ -195,7 +271,7 @@ export function ProgramCard({
                 href={program.applicationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-sm text-[#c9a25c] hover:text-[#d4b06c]"
+                className="flex items-center gap-2 text-sm text-gold-light hover:text-gold-hover"
               >
                 <ExternalLink className="h-4 w-4" />
                 Apply Online
@@ -219,7 +295,7 @@ export function ProgramCard({
             <Button
               variant="primary"
               size="sm"
-              className="flex-1 bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+              className="flex-1 bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
               onClick={onApply}
               disabled={eligibilityStatus?.eligible === false}
             >

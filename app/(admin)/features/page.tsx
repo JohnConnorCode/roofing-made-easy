@@ -41,6 +41,7 @@ const NAV_SECTIONS = [
   { id: 'estimates', label: 'Estimates & Quotes', icon: Calculator },
   { id: 'invoices', label: 'Invoices', icon: Receipt },
   { id: 'messages', label: 'Messages', icon: MessageSquare },
+  { id: 'communications', label: 'Communications', icon: Mail },
   { id: 'portal', label: 'Customer Portal', icon: Home },
   { id: 'team', label: 'Team', icon: UserPlus },
   { id: 'automations', label: 'Automations', icon: Workflow },
@@ -78,7 +79,7 @@ export default function AdminFeaturesPage() {
   }
 
   return (
-    <div className="-m-4 md:-m-8 min-h-screen bg-[#0c0f14]">
+    <div className="-m-4 md:-m-8 min-h-screen bg-[#0c0f14] overflow-x-hidden">
       {/* Sticky Navigation */}
       <nav className="sticky top-0 z-40 bg-[#161a23]/95 backdrop-blur border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4">
@@ -316,6 +317,39 @@ export default function AdminFeaturesPage() {
           </div>
         </section>
 
+        {/* COMMUNICATIONS */}
+        <section id="communications" className="mb-16 scroll-mt-20">
+          <SectionHeader
+            icon={Mail}
+            title="Communications"
+            subtitle="Control all outbound messaging"
+            link="/communications"
+          />
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <InfoCard title="Email & SMS Templates" link="/communications">
+              <p className="text-slate-400 text-sm mb-3">
+                Edit all system email and SMS templates from one place. Customize wording, preview emails, and reset to defaults.
+              </p>
+              <FeatureItem>Edit email subject lines and body content</FeatureItem>
+              <FeatureItem>SMS character counter with segment tracking</FeatureItem>
+              <FeatureItem>Preview emails before sending</FeatureItem>
+              <FeatureItem>Reset any template to its default</FeatureItem>
+            </InfoCard>
+            <InfoCard title="Estimate Content" link="/communications">
+              <p className="text-slate-400 text-sm mb-3">
+                Customize the text that appears on customer-facing estimates and quotes.
+              </p>
+              <FeatureItem>Edit warranty descriptions</FeatureItem>
+              <FeatureItem>Customize scope of work text</FeatureItem>
+              <FeatureItem>Update payment terms and conditions</FeatureItem>
+              <FeatureItem>Changes reflect instantly on quotes</FeatureItem>
+            </InfoCard>
+          </div>
+          <div className="bg-slate-800/30 rounded-lg p-4 text-sm text-slate-400">
+            <strong className="text-white">Variable System:</strong> Use placeholders like <code className="text-[#c9a25c]">{'{'}{'{'} customer_name {'}'}{'}'}</code> in templates. They get replaced with real values when messages are sent. See the Variables tab in Communications for the full reference.
+          </div>
+        </section>
+
         {/* CUSTOMER PORTAL */}
         <section id="portal" className="mb-16 scroll-mt-20">
           <SectionHeader
@@ -388,14 +422,18 @@ export default function AdminFeaturesPage() {
                 trigger="Quote sent + 3 days"
                 action="Send follow-up SMS"
               />
+              <AutomationExample
+                trigger="Invoice overdue + 7 days"
+                action="Send payment reminder"
+              />
             </InfoCard>
-            <InfoCard title="Templates" link="/templates">
+            <InfoCard title="Scheduled Messages" link="/messages">
               <p className="text-slate-400 text-sm mb-3">
-                Pre-written emails and SMS with variable substitution.
+                View and manage all scheduled and sent messages triggered by workflows.
               </p>
-              <FeatureItem>Email templates with branding</FeatureItem>
-              <FeatureItem>SMS templates for quick messages</FeatureItem>
-              <FeatureItem>Variables like {'{customer_name}'}</FeatureItem>
+              <FeatureItem>See pending, sent, and failed messages</FeatureItem>
+              <FeatureItem>Retry failed deliveries</FeatureItem>
+              <FeatureItem>Track email and SMS delivery status</FeatureItem>
             </InfoCard>
           </div>
         </section>
