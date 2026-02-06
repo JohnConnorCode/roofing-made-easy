@@ -78,6 +78,11 @@ interface LeadDetail {
     price_likely: number
     price_high: number
     ai_explanation: string
+    ai_explanation_status?: string
+    ai_explanation_provider?: string
+    estimate_status?: string
+    is_superseded?: boolean
+    sent_at?: string
     created_at: string
   }>
   // Customer hub data
@@ -221,6 +226,8 @@ export default function LeadDetailPage() {
         message += ' and SMS sent'
       }
       showToast(message, 'success')
+      // Re-fetch to update estimate status badge
+      fetchLead()
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to resend estimate'
       showToast(message, 'error')
@@ -524,6 +531,30 @@ export default function LeadDetailPage() {
           <CardContent>
             {estimate ? (
               <div className="space-y-4">
+                {/* Status badges */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                    estimate.estimate_status === 'accepted' ? 'bg-green-100 text-green-700' :
+                    estimate.estimate_status === 'sent' ? 'bg-blue-100 text-blue-700' :
+                    estimate.estimate_status === 'rejected' ? 'bg-red-100 text-red-700' :
+                    estimate.estimate_status === 'expired' ? 'bg-orange-100 text-orange-700' :
+                    'bg-slate-100 text-slate-600'
+                  }`}>
+                    {(estimate.estimate_status || 'draft').charAt(0).toUpperCase() + (estimate.estimate_status || 'draft').slice(1)}
+                  </span>
+                  {estimate.ai_explanation_status && estimate.ai_explanation_status !== 'success' && (
+                    <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                      estimate.ai_explanation_status === 'failed' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
+                    }`}>
+                      AI: {estimate.ai_explanation_status}
+                    </span>
+                  )}
+                  {estimate.ai_explanation_provider && (
+                    <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-slate-50 text-slate-500">
+                      via {estimate.ai_explanation_provider}
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-end justify-between">
                   <div>
                     <p className="text-sm text-slate-500">Range</p>
@@ -550,7 +581,10 @@ export default function LeadDetailPage() {
                   <div className="pt-2 border-t border-slate-200">
                     <p className="text-xs text-slate-500 flex items-center gap-1">
                       <Mail className="h-3 w-3" />
-                      Will be sent to: {contact.email}
+                      {estimate.sent_at
+                        ? `Sent to ${contact.email} on ${formatDate(estimate.sent_at)}`
+                        : `Will be sent to: ${contact.email}`
+                      }
                     </p>
                   </div>
                 )}

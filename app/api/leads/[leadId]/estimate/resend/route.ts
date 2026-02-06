@@ -134,6 +134,22 @@ export async function POST(
       )
     }
 
+    // Update estimate status to 'sent' and track sent_at
+    await supabase
+      .from('estimates')
+      .update({ estimate_status: 'sent', sent_at: new Date().toISOString() } as never)
+      .eq('id', estimate.id)
+
+    // Update lead status to estimate_sent if not already further in pipeline
+    const leadStatus = (lead as unknown as { status?: string })?.status
+    const preEstimateSentStatuses = ['new', 'intake_started', 'intake_complete', 'estimate_generated']
+    if (leadStatus && preEstimateSentStatuses.includes(leadStatus)) {
+      await supabase
+        .from('leads')
+        .update({ status: 'estimate_sent' } as never)
+        .eq('id', leadId)
+    }
+
     return NextResponse.json({
       success: true,
       message: 'Estimate resent successfully',

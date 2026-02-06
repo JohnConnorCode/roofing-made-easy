@@ -138,7 +138,9 @@ export async function GET(request: NextRequest) {
       .select(`
         *,
         contacts(*),
-        properties(*)
+        properties(*),
+        estimates(id, price_likely, is_superseded),
+        detailed_estimates(id, name, status, price_likely)
       `, { count: 'exact' })
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1)

@@ -24,7 +24,8 @@ export async function GET(
         properties(*),
         intakes(*),
         uploads(*),
-        estimates(*)
+        estimates(*),
+        detailed_estimates(*, estimate_line_items(*))
       `)
       .eq('id', leadId)
       .single()

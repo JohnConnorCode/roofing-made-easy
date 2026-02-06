@@ -18,12 +18,8 @@ export async function GET(request: NextRequest) {
 
     const leadIds = customerLeads?.map((cl: { lead_id: string }) => cl.lead_id) || []
 
-    if (leadIds.length === 0) {
-      return NextResponse.json({ invoices: [] })
-    }
-
     // Get invoices for these leads or directly linked to customer
-    const { data: invoices, error } = await supabase
+    let query = supabase
       .from('invoices')
       .select(`
         id,
@@ -35,7 +31,15 @@ export async function GET(request: NextRequest) {
         issue_date,
         due_date
       `)
-      .or(`lead_id.in.(${leadIds.join(',')}),customer_id.eq.${customerId}`)
+
+    // Build OR clause based on available identifiers
+    if (leadIds.length > 0) {
+      query = query.or(`lead_id.in.(${leadIds.join(',')}),customer_id.eq.${customerId}`)
+    } else {
+      query = query.eq('customer_id', customerId!)
+    }
+
+    const { data: invoices, error } = await query
       .not('status', 'eq', 'draft')
       .order('created_at', { ascending: false })
 

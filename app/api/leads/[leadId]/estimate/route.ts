@@ -70,6 +70,24 @@ export async function POST(
       )
     }
 
+    // Idempotency check: prevent duplicate estimates within 30 seconds
+    const { data: recentEstimate } = await supabase
+      .from('estimates')
+      .select('id, created_at')
+      .eq('lead_id', leadId)
+      .eq('is_superseded', false)
+      .gte('created_at', new Date(Date.now() - 30000).toISOString())
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    if (recentEstimate) {
+      return NextResponse.json(
+        { ...(recentEstimate as Record<string, unknown>), deduplicated: true },
+        { status: 200, headers: createRateLimitHeaders(rateLimitResult) }
+      )
+    }
+
     // Fetch pricing rules
     let pricingRules: PricingRule[]
     const { data: rules, error: rulesError } = await supabase
@@ -87,6 +105,16 @@ export async function POST(
     const intake = Array.isArray(lead.intakes) ? lead.intakes[0] : lead.intakes
     const property = Array.isArray(lead.properties) ? lead.properties[0] : lead.properties
     const contact = Array.isArray(lead.contacts) ? lead.contacts[0] : lead.contacts
+
+    // Validate required intake fields before running pricing engine
+    const requiredFields = ['roof_size_sqft', 'roof_material'] as const
+    const missing = requiredFields.filter(f => !intake?.[f])
+    if (missing.length > 0) {
+      return NextResponse.json(
+        { error: `Incomplete intake data. Missing: ${missing.join(', ')}` },
+        { status: 400 }
+      )
+    }
 
     const engine = new PricingEngine(pricingRules)
     const result = engine.calculateEstimate({
@@ -116,12 +144,23 @@ export async function POST(
       adjustments: result.adjustments,
     })
 
-    // Mark any previous estimates as superseded
-    await supabase
+    // Determine AI explanation status
+    const aiExplanationStatus = aiResult.success
+      ? 'success'
+      : aiResult.provider === 'fallback'
+        ? 'fallback'
+        : 'failed'
+
+    // Verify supersede update succeeded before inserting
+    const { error: supersedeError } = await supabase
       .from('estimates')
       .update({ is_superseded: true } as never)
       .eq('lead_id', leadId)
       .eq('is_superseded', false)
+
+    if (supersedeError) {
+      console.error('Failed to supersede previous estimates:', supersedeError)
+    }
 
     // Save estimate
     const { data: estimate, error: estimateError } = await supabase
@@ -139,6 +178,7 @@ export async function POST(
         pricing_rules_snapshot: result.rulesSnapshot,
         ai_explanation: aiResult.success ? aiResult.data : null,
         ai_explanation_provider: aiResult.provider,
+        ai_explanation_status: aiExplanationStatus,
         valid_until: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
       } as never)
       .select()
@@ -152,13 +192,85 @@ export async function POST(
       )
     }
 
+    // Prepare customer name
+    const customerName = contact?.first_name && contact?.last_name
+      ? `${contact.first_name} ${contact.last_name}`
+      : contact?.first_name || undefined
+
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+    const estimateRecord = estimate as { id: string; valid_until?: string }
+
+    // Critical operations: await with Promise.allSettled
+    const criticalOps: Array<{ name: string; promise: Promise<unknown> }> = []
+
+    // Customer account creation is critical (needed for portal access)
+    if (contact?.email) {
+      criticalOps.push({
+        name: 'customer_account',
+        promise: autoCreateCustomerAccount({
+          leadId,
+          email: contact.email,
+          firstName: contact.first_name || undefined,
+          lastName: contact.last_name || undefined,
+          phone: contact.phone || undefined,
+        }),
+      })
+    }
+
+    // Customer email is critical (primary delivery mechanism)
+    if (contact?.email && lead.share_token) {
+      criticalOps.push({
+        name: 'customer_email',
+        promise: sendCustomerEstimateEmail({
+          customerEmail: contact.email,
+          contactName: customerName,
+          address: property?.street_address || undefined,
+          city: property?.city || undefined,
+          state: property?.state || undefined,
+          jobType: intake?.job_type || undefined,
+          priceLow: result.priceLow,
+          priceLikely: result.priceLikely,
+          priceHigh: result.priceHigh,
+          shareToken: lead.share_token,
+          validUntil: estimateRecord.valid_until,
+        }),
+      })
+    }
+
+    // Await critical ops in parallel
+    const criticalResults = await Promise.allSettled(
+      criticalOps.map(op => op.promise)
+    )
+
+    // Track which critical ops succeeded/failed
+    const notificationResults: Record<string, string> = {}
+    criticalOps.forEach((op, i) => {
+      const opResult = criticalResults[i]
+      notificationResults[op.name] = opResult.status === 'fulfilled' ? 'success' : 'failed'
+      if (opResult.status === 'rejected') {
+        console.error(`[Estimate] ${op.name} failed:`, opResult.reason instanceof Error ? opResult.reason.message : 'Unknown error')
+      }
+    })
+
+    // Determine lead status: estimate_sent if email confirmed, otherwise estimate_generated
+    const emailSent = notificationResults['customer_email'] === 'success'
+    const newLeadStatus = emailSent ? 'estimate_sent' : 'estimate_generated'
+
     // Update lead status
     await supabase
       .from('leads')
-      .update({ status: 'estimate_generated' } as never)
+      .update({ status: newLeadStatus } as never)
       .eq('id', leadId)
 
-    // Trigger estimate_generated workflows (async, don't wait)
+    // Update estimate status to 'sent' if email was successfully delivered
+    if (emailSent) {
+      await supabase
+        .from('estimates')
+        .update({ estimate_status: 'sent', sent_at: new Date().toISOString() } as never)
+        .eq('id', estimateRecord.id)
+    }
+
+    // Non-critical operations: fire-and-forget with error logging
     triggerWorkflows('estimate_generated', {
       leadId,
       data: {
@@ -169,12 +281,6 @@ export async function POST(
       },
     }).catch(err => console.error('Failed to trigger estimate_generated workflows:', err))
 
-    // Prepare customer name
-    const customerName = contact?.first_name && contact?.last_name
-      ? `${contact.first_name} ${contact.last_name}`
-      : contact?.first_name || undefined
-
-    // Send admin notification (non-blocking)
     notifyEstimateGenerated({
       leadId,
       contactName: customerName,
@@ -193,28 +299,6 @@ export async function POST(
       console.error('[Estimate] Admin notification failed:', err instanceof Error ? err.message : 'Unknown error')
     })
 
-    // Send customer estimate email if they have an email (non-blocking)
-    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
-    if (contact?.email && lead.share_token) {
-      const estimateRecord = estimate as { valid_until?: string }
-      sendCustomerEstimateEmail({
-        customerEmail: contact.email,
-        contactName: customerName,
-        address: property?.street_address || undefined,
-        city: property?.city || undefined,
-        state: property?.state || undefined,
-        jobType: intake?.job_type || undefined,
-        priceLow: result.priceLow,
-        priceLikely: result.priceLikely,
-        priceHigh: result.priceHigh,
-        shareToken: lead.share_token,
-        validUntil: estimateRecord.valid_until,
-      }).catch((err) => {
-        console.error('[Estimate] Customer email failed:', err instanceof Error ? err.message : 'Unknown error')
-      })
-    }
-
-    // Send customer SMS if they have a phone and consented (non-blocking)
     if (contact?.phone && contact.consent_sms && lead.share_token) {
       const estimateUrl = `${BASE_URL}/estimate/${lead.share_token}`
       sendEstimateReadySms(
@@ -223,19 +307,6 @@ export async function POST(
         estimateUrl
       ).catch((err) => {
         console.error('[Estimate] SMS notification failed:', err instanceof Error ? err.message : 'Unknown error')
-      })
-    }
-
-    // Auto-create customer account if they have an email (non-blocking)
-    if (contact?.email) {
-      autoCreateCustomerAccount({
-        leadId,
-        email: contact.email,
-        firstName: contact.first_name || undefined,
-        lastName: contact.last_name || undefined,
-        phone: contact.phone || undefined,
-      }).catch((err) => {
-        console.error('[Estimate] Auto-create customer account failed:', err instanceof Error ? err.message : 'Unknown error')
       })
     }
 
@@ -258,7 +329,10 @@ export async function POST(
       } as never)
     }
 
-    return NextResponse.json(estimate, {
+    return NextResponse.json({
+      ...estimate as Record<string, unknown>,
+      notification_results: notificationResults,
+    }, {
       status: 201,
       headers: createRateLimitHeaders(rateLimitResult),
     })

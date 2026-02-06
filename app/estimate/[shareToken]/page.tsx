@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { PublicEstimateView } from './PublicEstimateView'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
@@ -63,6 +63,7 @@ interface LeadWithRelations {
     valid_until: string | null
     created_at: string
     is_superseded: boolean
+    view_count: number | null
   }>
 }
 
@@ -109,7 +110,8 @@ export default async function SharedEstimatePage({ params }: Props) {
         adjustments,
         valid_until,
         created_at,
-        is_superseded
+        is_superseded,
+        view_count
       )
     `)
     .eq('share_token' as never, shareToken)
@@ -131,6 +133,16 @@ export default async function SharedEstimatePage({ params }: Props) {
   if (!estimate) {
     notFound()
   }
+
+  // Track estimate view (non-blocking)
+  const viewClient = await createAdminClient()
+  await viewClient
+    .from('estimates')
+    .update({
+      viewed_at: new Date().toISOString(),
+      view_count: (estimate.view_count || 0) + 1,
+    } as never)
+    .eq('id', estimate.id)
 
   // Get contact and property info
   const contact = Array.isArray(lead.contacts) ? lead.contacts[0] : lead.contacts
