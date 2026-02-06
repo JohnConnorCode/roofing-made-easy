@@ -17,8 +17,9 @@ export async function register() {
  */
 function validateProductionEnv() {
   const errors: string[] = []
+  const warnings: string[] = []
 
-  // Supabase - Required for database access
+  // Supabase - Required for database access (fatal if missing)
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     errors.push('NEXT_PUBLIC_SUPABASE_URL is required')
   }
@@ -29,18 +30,13 @@ function validateProductionEnv() {
     errors.push('SUPABASE_SERVICE_ROLE_KEY is required for admin operations')
   }
 
-  // Cron job security
+  // Important but non-fatal vars (warn, don't crash)
   if (!process.env.CRON_SECRET) {
-    errors.push('CRON_SECRET is required to secure cron job endpoints')
+    warnings.push('CRON_SECRET not set - cron endpoints will be insecure')
   }
-
-  // Base URL for links in emails
   if (!process.env.NEXT_PUBLIC_BASE_URL) {
-    errors.push('NEXT_PUBLIC_BASE_URL is required for email links and webhooks')
+    warnings.push('NEXT_PUBLIC_BASE_URL not set - email links may be broken')
   }
-
-  // Warn about optional but important vars (don't fail)
-  const warnings: string[] = []
 
   if (!process.env.OPENAI_API_KEY) {
     warnings.push('OPENAI_API_KEY not set - AI features will be disabled')
