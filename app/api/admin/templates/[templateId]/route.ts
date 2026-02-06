@@ -10,6 +10,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requirePermission } from '@/lib/team/permissions'
 import { previewTemplate } from '@/lib/communication/template-renderer'
 import type { UpdateTemplateRequest, MessageTemplate } from '@/lib/communication/types'
+import { extractAllVariables } from '@/lib/communication/utils'
 import { z } from 'zod'
 
 const updateTemplateSchema = z.object({
@@ -117,16 +118,16 @@ export async function PATCH(
       )
     }
 
-    // Prevent editing system templates (except is_active)
+    // System templates: allow subject, body, is_active edits; block metadata changes
     if ((currentTemplate as MessageTemplate).is_system) {
-      const allowedUpdates = { is_active: updates.is_active }
-      if (Object.keys(updates).some(k => k !== 'is_active' && updates[k as keyof typeof updates] !== undefined)) {
+      const blockedFields: (keyof typeof updates)[] = ['name', 'description', 'category', 'tags']
+      const hasBlockedEdit = blockedFields.some(k => updates[k] !== undefined)
+      if (hasBlockedEdit) {
         return NextResponse.json(
-          { error: 'System templates cannot be modified' },
+          { error: 'System template metadata (name, description, category, tags) cannot be modified' },
           { status: 400 }
         )
       }
-      Object.assign(updates, allowedUpdates)
     }
 
     // Build update object
@@ -140,13 +141,11 @@ export async function PATCH(
     if (updates.tags !== undefined) templateUpdate.tags = updates.tags
     if (updates.is_active !== undefined) templateUpdate.is_active = updates.is_active
 
-    // Auto-extract variables if body changed
-    if (updates.body) {
-      const extractedVars = extractVariables(updates.body)
-      if (updates.subject) {
-        extractedVars.push(...extractVariables(updates.subject))
-      }
-      templateUpdate.variables = [...new Set(extractedVars)]
+    // Auto-extract variables if body or subject changed
+    if (updates.body || updates.subject) {
+      const finalBody = updates.body ?? (currentTemplate as MessageTemplate).body
+      const finalSubject = updates.subject ?? (currentTemplate as MessageTemplate).subject
+      templateUpdate.variables = extractAllVariables(finalBody, finalSubject)
     }
 
     const { error: updateError } = await supabase
@@ -249,7 +248,3 @@ export async function DELETE(
   }
 }
 
-function extractVariables(template: string): string[] {
-  const matches = template.match(/\{\{([^}]+)\}\}/g) || []
-  return matches.map(m => m.replace(/\{\{|\}\}/g, ''))
-}

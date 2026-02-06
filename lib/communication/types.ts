@@ -31,17 +31,31 @@ export interface MessageTemplate {
   type: MessageChannel
   subject: string | null
   body: string
-  variables: string[]
-  category: string
-  tags: string[]
+  variables: string[] | null
+  category: string | null
+  tags: string[] | null
   is_system: boolean
   is_active: boolean
+  default_body: string | null
+  default_subject: string | null
   usage_count: number
   last_used_at: string | null
   created_by: string | null
   created_at: string
   updated_at: string
 }
+
+// Category options for template forms/filters
+export const TEMPLATE_CATEGORY_OPTIONS = [
+  { value: 'welcome', label: 'Welcome' },
+  { value: 'follow_up', label: 'Follow Up' },
+  { value: 'reminder', label: 'Reminder' },
+  { value: 'estimate', label: 'Estimate' },
+  { value: 'appointment', label: 'Appointment' },
+  { value: 'payment', label: 'Payment' },
+  { value: 'review', label: 'Review' },
+  { value: 'general', label: 'General' },
+]
 
 // Automation workflow
 export interface AutomationWorkflow {
@@ -278,33 +292,53 @@ export interface TemplateVariables {
   [key: string]: string | undefined
 }
 
-// Helper to get available variables by category
-export const TEMPLATE_VARIABLES: Record<string, { label: string; variables: string[] }> = {
-  customer: {
-    label: 'Customer',
-    variables: ['customer_name', 'customer_first_name', 'customer_last_name', 'customer_email', 'customer_phone'],
-  },
-  property: {
-    label: 'Property',
-    variables: ['property_address', 'property_city', 'property_state', 'property_zip'],
-  },
-  estimate: {
-    label: 'Estimate',
-    variables: ['estimate_total', 'estimate_low', 'estimate_high', 'estimate_link'],
-  },
-  appointment: {
-    label: 'Appointment',
-    variables: ['appointment_date', 'appointment_time'],
-  },
-  company: {
-    label: 'Company',
-    variables: ['company_name', 'company_phone', 'company_email', 'company_address'],
-  },
-  links: {
-    label: 'Links',
-    variables: ['review_link', 'portal_link'],
-  },
-}
+// Canonical list of all template variables with metadata
+export const TEMPLATE_VARIABLE_DEFINITIONS: {
+  variable: string
+  description: string
+  example: string
+  category: string
+}[] = [
+  // Customer
+  { variable: 'customer_name', description: 'Full customer name', example: 'John Smith', category: 'Customer' },
+  { variable: 'customer_first_name', description: 'First name only', example: 'John', category: 'Customer' },
+  { variable: 'customer_last_name', description: 'Last name only', example: 'Smith', category: 'Customer' },
+  { variable: 'customer_email', description: 'Customer email address', example: 'john@example.com', category: 'Customer' },
+  { variable: 'customer_phone', description: 'Customer phone number', example: '(555) 123-4567', category: 'Customer' },
+  // Property
+  { variable: 'property_address', description: 'Property street address', example: '123 Main St', category: 'Property' },
+  { variable: 'property_city', description: 'Property city', example: 'Tupelo', category: 'Property' },
+  { variable: 'property_state', description: 'Property state', example: 'MS', category: 'Property' },
+  { variable: 'property_zip', description: 'Property ZIP code', example: '38801', category: 'Property' },
+  // Estimate & Payment
+  { variable: 'estimate_total', description: 'Estimate total amount', example: '$12,500.00', category: 'Estimate' },
+  { variable: 'estimate_low', description: 'Low estimate range', example: '$10,000.00', category: 'Estimate' },
+  { variable: 'estimate_high', description: 'High estimate range', example: '$15,000.00', category: 'Estimate' },
+  { variable: 'amount', description: 'Dollar amount', example: '$5,000.00', category: 'Estimate' },
+  // Links
+  { variable: 'estimate_link', description: 'Link to view estimate', example: 'https://.../estimate/abc123', category: 'Links' },
+  { variable: 'quote_url', description: 'Link to view quote', example: 'https://.../quote/abc123', category: 'Links' },
+  { variable: 'invoice_url', description: 'Link to pay invoice', example: 'https://.../invoice/xyz789', category: 'Links' },
+  { variable: 'review_link', description: 'Link to leave a review', example: 'https://.../review/abc123', category: 'Links' },
+  { variable: 'portal_link', description: 'Link to customer portal', example: 'https://.../portal', category: 'Links' },
+  // Appointment
+  { variable: 'appointment_date', description: 'Appointment date', example: 'February 15, 2026', category: 'Appointment' },
+  { variable: 'appointment_time', description: 'Formatted appointment time', example: '10:00 AM', category: 'Appointment' },
+  // Company
+  { variable: 'company_name', description: 'Business name', example: 'ABC Roofing', category: 'Company' },
+  { variable: 'company_phone', description: 'Business phone number', example: '(555) 987-6543', category: 'Company' },
+  { variable: 'company_email', description: 'Business email address', example: 'info@abcroofing.com', category: 'Company' },
+  { variable: 'company_address', description: 'Business address', example: '456 Commerce Dr', category: 'Company' },
+]
+
+// Helper to get available variables by category (derived from canonical list)
+export const TEMPLATE_VARIABLES: Record<string, { label: string; variables: string[] }> =
+  TEMPLATE_VARIABLE_DEFINITIONS.reduce((acc, v) => {
+    const key = v.category.toLowerCase()
+    if (!acc[key]) acc[key] = { label: v.category, variables: [] }
+    acc[key].variables.push(v.variable)
+    return acc
+  }, {} as Record<string, { label: string; variables: string[] }>)
 
 // Trigger event labels and descriptions
 export const WORKFLOW_TRIGGERS: Record<WorkflowTrigger, { label: string; description: string }> = {

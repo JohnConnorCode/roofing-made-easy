@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requirePermission } from '@/lib/team/permissions'
 import type { MessageChannel, CreateTemplateRequest } from '@/lib/communication/types'
+import { extractAllVariables } from '@/lib/communication/utils'
 import { z } from 'zod'
 
 const createTemplateSchema = z.object({
@@ -34,6 +35,9 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category')
     const search = searchParams.get('search')
     const includeInactive = searchParams.get('include_inactive') === 'true'
+    const isSystem = searchParams.get('is_system')
+    const limit = parseInt(searchParams.get('limit') || '100', 10)
+    const offset = parseInt(searchParams.get('offset') || '0', 10)
 
     let query = supabase
       .from('message_templates')
@@ -49,12 +53,22 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`)
+      // Sanitize: strip chars that could break PostgREST filter syntax
+      const sanitized = search.replace(/[%_\\(),."'*!&|,]/g, '').trim()
+      if (sanitized) {
+        query = query.or(`name.ilike.%${sanitized}%,description.ilike.%${sanitized}%`)
+      }
     }
 
     if (!includeInactive) {
       query = query.eq('is_active', true)
     }
+
+    if (isSystem === 'true') {
+      query = query.eq('is_system', true)
+    }
+
+    query = query.range(offset, offset + limit - 1)
 
     const { data: templates, error, count } = await query
 
@@ -127,12 +141,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Extract variables from body
-    const extractedVars = extractVariables(templateData.body)
-    if (templateData.subject) {
-      extractedVars.push(...extractVariables(templateData.subject))
-    }
-    const uniqueVars = [...new Set(extractedVars)]
+    // Extract variables from body and subject
+    const uniqueVars = extractAllVariables(templateData.body, templateData.subject)
 
     const { data: template, error: createError } = await supabase
       .from('message_templates')
@@ -168,7 +178,3 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function extractVariables(template: string): string[] {
-  const matches = template.match(/\{\{([^}]+)\}\}/g) || []
-  return matches.map(m => m.replace(/\{\{|\}\}/g, ''))
-}

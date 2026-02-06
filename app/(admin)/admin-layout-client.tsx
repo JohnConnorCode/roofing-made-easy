@@ -68,7 +68,7 @@ const NAV_ITEMS: NavItem[] = [
     icon: Zap,
     children: [
       { href: '/workflows', label: 'Workflows', icon: Zap },
-      { href: '/templates', label: 'Templates', icon: Mail },
+      { href: '/communications', label: 'Communications', icon: Mail },
     ],
   },
   {
