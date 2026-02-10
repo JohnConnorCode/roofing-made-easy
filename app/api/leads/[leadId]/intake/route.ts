@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { notifyNewLead } from '@/lib/email'
 import { triggerWorkflows } from '@/lib/communication/workflow-engine'
 import { z } from 'zod'
@@ -73,7 +73,8 @@ export async function PATCH(
     }
     const body = parseResult.data
 
-    const supabase = await createClient()
+    // Use admin client - anon RLS no longer allows reads/updates
+    const supabase = await createAdminClient()
 
     // Security: Verify lead exists and is in a valid status for updates
     const { data: existingLead, error: leadError } = await supabase
@@ -136,6 +137,10 @@ export async function PATCH(
 
       if (propertyError) {
         console.error('Property update failed:', propertyError)
+        return NextResponse.json(
+          { error: 'Failed to save property data' },
+          { status: 500 }
+        )
       }
     }
 
@@ -169,6 +174,10 @@ export async function PATCH(
 
       if (intakeError) {
         console.error('Intake update failed:', intakeError)
+        return NextResponse.json(
+          { error: 'Failed to save intake data' },
+          { status: 500 }
+        )
       }
     }
 

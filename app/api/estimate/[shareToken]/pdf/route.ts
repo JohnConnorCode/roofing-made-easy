@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { renderToBuffer } from '@react-pdf/renderer'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { EstimatePDF, type EstimatePDFData } from '@/lib/pdf/estimate-pdf'
 import {
   checkRateLimit,
@@ -48,7 +48,7 @@ export async function GET(
     }
 
     const { shareToken } = await params
-    const supabase = await createClient()
+    const supabase = await createAdminClient()
 
     // Fetch lead by share token
     const { data: leadData, error: leadError } = await supabase

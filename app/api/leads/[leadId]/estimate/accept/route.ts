@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { sendEmail } from '@/lib/email'
 
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const supabase = await createClient()
+    const supabase = await createAdminClient()
 
     // Get the estimate to accept
     let estimateQuery = supabase
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
 // Helper to send admin notification
 async function sendAdminNotification(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: Awaited<ReturnType<typeof createAdminClient>>,
   leadId: string,
   customerName: string,
   quotePrice: number

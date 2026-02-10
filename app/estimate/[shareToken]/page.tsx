@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { PublicEstimateView } from './PublicEstimateView'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
@@ -70,7 +70,7 @@ interface LeadWithRelations {
 // This is a server component that fetches data and passes to client
 export default async function SharedEstimatePage({ params }: Props) {
   const { shareToken } = await params
-  const supabase = await createClient()
+  const supabase = await createAdminClient()
 
   // Fetch lead by share token (no auth required)
   // Note: share_token column is new and may not be in generated types
@@ -186,7 +186,7 @@ interface MetadataLeadData {
 
 // Helper to fetch estimate data for metadata
 async function getEstimateData(shareToken: string) {
-  const supabase = await createClient()
+  const supabase = await createAdminClient()
 
   const { data } = await supabase
     .from('leads')

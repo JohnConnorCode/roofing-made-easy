@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { createLeadSchema } from '@/lib/validation/schemas'
 import {
   checkRateLimit,
@@ -45,7 +45,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = await createClient()
+    // Use admin client to bypass RLS (anon no longer has INSERT on related tables)
+    const supabase = await createAdminClient()
 
     // Create the lead
     const { data: lead, error: leadError } = await supabase
