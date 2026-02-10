@@ -163,10 +163,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...comparisonPages,
   ]
 }
-
-// Also export a separate sitemap for images (optional enhancement)
-export async function generateSitemaps() {
-  // Return array of sitemap IDs if you want to split into multiple sitemaps
-  // This is useful for very large sites (>50,000 URLs)
-  return [{ id: 0 }]
-}
