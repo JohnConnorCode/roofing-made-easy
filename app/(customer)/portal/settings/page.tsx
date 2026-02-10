@@ -115,6 +115,11 @@ export default function SettingsPage() {
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    if (!passwordData.currentPassword) {
+      showToast('Please enter your current password', 'error')
+      return
+    }
+
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       showToast('Passwords do not match', 'error')
       return
@@ -129,6 +134,19 @@ export default function SettingsPage() {
 
     try {
       const supabase = createClient()
+
+      // Verify current password first
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: customer?.email || '',
+        password: passwordData.currentPassword,
+      })
+
+      if (signInError) {
+        showToast('Current password is incorrect', 'error')
+        setIsSubmitting(false)
+        return
+      }
+
       const { error } = await supabase.auth.updateUser({
         password: passwordData.newPassword,
       })
@@ -137,7 +155,7 @@ export default function SettingsPage() {
 
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' })
       showToast('Password changed successfully', 'success')
-    } catch (error) {
+    } catch {
       showToast('Failed to change password', 'error')
     } finally {
       setIsSubmitting(false)
@@ -265,7 +283,7 @@ export default function SettingsPage() {
                     value={profileData.email}
                     onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
                     disabled
-                    hint="Contact support to change your email address"
+                    hint="Email changes require support. Contact support@farrellroofing.com"
                   />
                   <Input
                     type="tel"
@@ -355,6 +373,14 @@ export default function SettingsPage() {
                 <form onSubmit={handleChangePassword} className="space-y-4">
                   <Input
                     type="password"
+                    label="Current Password"
+                    placeholder="Enter your current password"
+                    value={passwordData.currentPassword}
+                    onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                    autoComplete="current-password"
+                  />
+                  <Input
+                    type="password"
                     label="New Password"
                     placeholder="At least 8 characters"
                     value={passwordData.newPassword}
@@ -374,7 +400,7 @@ export default function SettingsPage() {
                       type="submit"
                       variant="primary"
                       isLoading={isSubmitting}
-                      disabled={!passwordData.newPassword || !passwordData.confirmPassword}
+                      disabled={!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword}
                       className="bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
                       leftIcon={<Lock className="h-4 w-4" />}
                     >

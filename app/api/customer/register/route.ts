@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient, createClient } from '@/lib/supabase/server'
+import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { z } from 'zod'
 
 // Validation schema for customer registration
@@ -15,6 +16,12 @@ const registerSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'auth')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     const body = await request.json()
     const validation = registerSchema.safeParse(body)
 

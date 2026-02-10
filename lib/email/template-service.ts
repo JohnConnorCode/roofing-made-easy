@@ -164,13 +164,13 @@ export async function renderEmailTemplate(
   if (dbTemplate) {
     const variables = buildVariables(data)
 
-    // Render subject
+    // Render subject (plain text, no escaping needed)
     const renderedSubject = dbTemplate.subject
       ? renderTemplate(dbTemplate.subject, variables)
       : 'Notification'
 
-    // Render body
-    const renderedBody = renderTemplate(dbTemplate.body, variables)
+    // Render body (HTML context, escape user-supplied values)
+    const renderedBody = renderTemplate(dbTemplate.body, variables, { escapeValues: true })
 
     // Check if body is full HTML or just content
     const isFullHtml = renderedBody.toLowerCase().includes('<!doctype') ||

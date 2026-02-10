@@ -4,6 +4,7 @@ import { useState, useCallback, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useFunnelStore, type RoofIssue, type UploadedPhoto } from '@/stores/funnelStore'
 import { StepContainer } from '@/components/funnel/step-container'
+import { useToast } from '@/components/ui/toast'
 import { OptionCard } from '@/components/funnel/option-card'
 import { CollapsibleSection } from '@/components/funnel/collapsible-section'
 import { MultiSelectCard } from '@/components/funnel/multi-select-card'
@@ -121,6 +122,8 @@ export default function DetailsPage() {
     setCurrentStep,
   } = useFunnelStore()
 
+  const { showToast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -158,10 +161,10 @@ export default function DetailsPage() {
             const data = await response.json()
             updatePhoto(id, { status: 'uploaded', storagePath: data.storagePath, progress: 100 })
           } else {
-            updatePhoto(id, { status: 'uploaded' })
+            updatePhoto(id, { status: 'failed' })
           }
         } catch {
-          updatePhoto(id, { status: 'uploaded' })
+          updatePhoto(id, { status: 'failed' })
         }
       }
     },
@@ -180,9 +183,9 @@ export default function DetailsPage() {
   const handleNext = async () => {
     setIsLoading(true)
     try {
-      // API save - proceed even if fails, but log errors
+      // API save - proceed even if fails, but warn user
       try {
-        await fetch(`/api/leads/${leadId}/intake`, {
+        const response = await fetch(`/api/leads/${leadId}/intake`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -205,8 +208,12 @@ export default function DetailsPage() {
             current_step: 3,
           }),
         })
+        if (!response.ok) {
+          showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
+        }
       } catch (err) {
         console.error('Failed to save details data:', err)
+        showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
       }
 
       setCurrentStep(3)
@@ -417,9 +424,16 @@ export default function DetailsPage() {
                         <Loader2 className="h-6 w-6 animate-spin text-white" />
                       </div>
                     )}
+                    {photo.status === 'failed' && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60">
+                        <AlertCircle className="h-5 w-5 text-red-400" />
+                        <span className="mt-1 text-xs text-red-400">Failed</span>
+                      </div>
+                    )}
                     <button
                       onClick={() => removePhoto(photo.id)}
-                      className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                      aria-label="Remove photo"
+                      className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white opacity-100 sm:opacity-0 transition-opacity sm:group-hover:opacity-100"
                     >
                       <X className="h-3 w-3" />
                     </button>

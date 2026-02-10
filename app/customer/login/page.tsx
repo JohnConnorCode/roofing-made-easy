@@ -137,6 +137,15 @@ function CustomerLoginForm() {
               </Button>
             </form>
 
+            <div className="mt-3 text-center">
+              <Link
+                href="/customer/forgot-password"
+                className="text-sm text-[#c9a25c] hover:text-[#d4b06c]"
+              >
+                Forgot your password?
+              </Link>
+            </div>
+
             <div className="mt-6 text-center">
               <p className="text-sm text-slate-500">
                 Don&apos;t have an account?{' '}

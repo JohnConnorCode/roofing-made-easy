@@ -3,6 +3,7 @@
 import { useRouter, useParams } from 'next/navigation'
 import { useFunnelStore } from '@/stores/funnelStore'
 import { StepContainer } from '@/components/funnel/step-container'
+import { useToast } from '@/components/ui/toast'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -34,7 +35,10 @@ export default function ContactPage() {
     setCurrentStep,
   } = useFunnelStore()
 
+  const { showToast } = useToast()
+
   const [isLoading, setIsLoading] = useState(false)
+  const [estimateFailed, setEstimateFailed] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const formRef = useRef<HTMLDivElement>(null)
 
@@ -75,16 +79,20 @@ export default function ContactPage() {
     if (!validateForm()) {
       setTimeout(() => {
         const firstError = formRef.current?.querySelector('[data-error="true"]')
-        firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          const input = firstError.querySelector('input, select, textarea') as HTMLElement | null
+          input?.focus()
+        }
       }, 0)
       return
     }
 
     setIsLoading(true)
     try {
-      // API save - proceed even if fails, but log errors
+      // Save contact data - warn but don't block if it fails
       try {
-        await fetch(`/api/leads/${leadId}/intake`, {
+        const saveResponse = await fetch(`/api/leads/${leadId}/intake`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -101,13 +109,32 @@ export default function ContactPage() {
             current_step: 4,
           }),
         })
-
-        // Generate estimate
-        await fetch(`/api/leads/${leadId}/estimate`, {
-          method: 'POST',
-        })
+        if (!saveResponse.ok) {
+          showToast('Your contact info may not have saved. You can continue, but please double-check your info later.', 'info')
+        }
       } catch (err) {
         console.error('Failed to save contact data:', err)
+        showToast('Your contact info may not have saved. You can continue, but please double-check your info later.', 'info')
+      }
+
+      // Generate estimate - BLOCK if this fails since the next page needs it
+      setEstimateFailed(false)
+      try {
+        const estimateResponse = await fetch(`/api/leads/${leadId}/estimate`, {
+          method: 'POST',
+        })
+        if (!estimateResponse.ok) {
+          setEstimateFailed(true)
+          showToast('We couldn\'t generate your estimate. Please try again.', 'error')
+          setIsLoading(false)
+          return
+        }
+      } catch (err) {
+        console.error('Failed to generate estimate:', err)
+        setEstimateFailed(true)
+        showToast('We couldn\'t generate your estimate. Please try again.', 'error')
+        setIsLoading(false)
+        return
       }
 
       setCurrentStep(4)
@@ -143,9 +170,16 @@ export default function ContactPage() {
       onBack={handleBack}
       isNextDisabled={!isValid}
       isLoading={isLoading}
-      nextLabel="Get My Estimate"
+      nextLabel={estimateFailed ? 'Retry Estimate' : 'Get My Estimate'}
     >
       <div className="space-y-6" ref={formRef}>
+        {estimateFailed && (
+          <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-center">
+            <p className="text-sm text-red-400">
+              Estimate generation failed. Your info has been saved. Please click &quot;Retry Estimate&quot; to try again.
+            </p>
+          </div>
+        )}
         {/* Name fields - side by side */}
         <div className="grid gap-4 sm:grid-cols-2">
           <div data-error={!!errors.firstName}>

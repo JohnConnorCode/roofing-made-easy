@@ -11,6 +11,7 @@ import {
   ServiceAreaGeoSchema,
 } from "@/components/seo/regional-schema";
 import { MinimalNAPSchema } from "@/components/seo/nap-schema";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -164,6 +165,7 @@ export default function RootLayout({
         <MinimalNAPSchema />
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
+        <GoogleAnalytics />
         <Providers>{children}</Providers>
       </body>
     </html>

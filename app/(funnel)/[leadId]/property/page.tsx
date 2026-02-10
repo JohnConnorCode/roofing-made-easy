@@ -4,6 +4,7 @@ import { useCallback, useState, useRef } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useFunnelStore } from '@/stores/funnelStore'
 import { StepContainer } from '@/components/funnel/step-container'
+import { useToast } from '@/components/ui/toast'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { OptionCard } from '@/components/funnel/option-card'
@@ -130,6 +131,8 @@ export default function PropertyPage() {
   const params = useParams()
   const leadId = params.leadId as string
 
+  const { showToast } = useToast()
+
   const {
     address,
     setAddress,
@@ -161,6 +164,9 @@ export default function PropertyPage() {
 
   const handleJobSelect = (type: JobType) => {
     setJobType(type)
+    if (type !== 'other') {
+      setJobDescription('')
+    }
     if (errors.jobType) {
       setErrors({ ...errors, jobType: '' })
     }
@@ -198,7 +204,11 @@ export default function PropertyPage() {
     if (!validateForm()) {
       setTimeout(() => {
         const firstError = formRef.current?.querySelector('[data-error="true"]')
-        firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          const input = firstError.querySelector('input, select, textarea') as HTMLElement | null
+          input?.focus()
+        }
       }, 0)
       return
     }
@@ -215,9 +225,9 @@ export default function PropertyPage() {
       })
       setLeadId(leadId)
 
-      // API save - proceed even if fails, but log errors
+      // API save - proceed even if fails, but warn user
       try {
-        await fetch(`/api/leads/${leadId}/intake`, {
+        const response = await fetch(`/api/leads/${leadId}/intake`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -234,8 +244,12 @@ export default function PropertyPage() {
             current_step: 2,
           }),
         })
+        if (!response.ok) {
+          showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
+        }
       } catch (err) {
         console.error('Failed to save property data:', err)
+        showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
       }
 
       setCurrentStep(2)

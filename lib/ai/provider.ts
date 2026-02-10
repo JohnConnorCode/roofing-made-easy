@@ -106,17 +106,23 @@ export interface AiProvider {
 
 export async function withFallback<T>(
   providers: AiProvider[],
-  operation: (provider: AiProvider) => Promise<AiResult<T>>
+  operation: (provider: AiProvider) => Promise<AiResult<T>>,
+  timeoutMs = 30000
 ): Promise<AiResult<T>> {
   for (const provider of providers) {
     try {
-      const result = await operation(provider)
+      const result = await Promise.race([
+        operation(provider),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error(`Provider ${provider.name} timed out after ${timeoutMs}ms`)), timeoutMs)
+        ),
+      ])
       if (result.success) {
         return result
       }
       // Provider failed, try next
     } catch {
-      // Provider threw error, try next
+      // Provider threw error or timed out, try next
     }
   }
 

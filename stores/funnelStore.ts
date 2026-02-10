@@ -275,9 +275,13 @@ export const useFunnelStore = create<FunnelState & FunnelActions>()(
           p.id === id ? { ...p, ...updates } : p
         ),
       })),
-      removePhoto: (id) => set((state) => ({
-        photos: state.photos.filter((p) => p.id !== id),
-      })),
+      removePhoto: (id) => set((state) => {
+        const photo = state.photos.find((p) => p.id === id)
+        if (photo?.previewUrl?.startsWith('blob:')) {
+          URL.revokeObjectURL(photo.previewUrl)
+        }
+        return { photos: state.photos.filter((p) => p.id !== id) }
+      }),
       reorderPhotos: (photos) => set({ photos }),
 
       // Step 6

@@ -227,8 +227,31 @@ export function EstimateDocument({
   // Check if we have any project details to show
   const hasProjectDetails = roofSizeSqft || roofAgeYears || stories > 1 || hasSkylights || hasChimneys || hasSolarPanels || issues.length > 0 || timelineUrgency || hasInsuranceClaim || photos.length > 0
 
+  // Check estimate expiration status
+  const validityDateObj = validUntil ? new Date(validUntil) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+  const now = new Date()
+  const daysUntilExpiry = Math.ceil((validityDateObj.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+  const isExpired = daysUntilExpiry < 0
+  const isExpiringSoon = !isExpired && daysUntilExpiry <= 7
+
   return (
     <div className="space-y-6">
+      {/* Expiration warnings */}
+      {isExpired && (
+        <div className="rounded-lg bg-red-500/10 border border-red-500/30 p-4 text-center">
+          <p className="text-sm font-medium text-red-400">
+            This estimate expired on {validityDateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}. Contact us for updated pricing.
+          </p>
+        </div>
+      )}
+      {isExpiringSoon && (
+        <div className="rounded-lg bg-amber-500/10 border border-amber-500/30 p-4 text-center">
+          <p className="text-sm font-medium text-amber-400">
+            This estimate expires in {daysUntilExpiry} {daysUntilExpiry === 1 ? 'day' : 'days'}. Schedule your consultation soon to lock in this pricing.
+          </p>
+        </div>
+      )}
+
       {/* Estimate Header with number and date */}
       <div className="flex items-center justify-between text-sm text-slate-500">
         <div className="flex items-center gap-2">

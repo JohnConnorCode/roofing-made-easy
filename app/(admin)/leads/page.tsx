@@ -83,6 +83,8 @@ export default function LeadsPage() {
       const params = new URLSearchParams({
         limit: LIMIT.toString(),
         offset: offset.toString(),
+        sort: sortField,
+        direction: sortDirection,
       })
       if (status) params.set('status', status)
 
@@ -101,7 +103,7 @@ export default function LeadsPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [status, offset])
+  }, [status, offset, sortField, sortDirection])
 
   useEffect(() => {
     fetchLeads()
@@ -384,10 +386,10 @@ export default function LeadsPage() {
                         />
                       </th>
                       <SortHeader field="name">Name</SortHeader>
-                      <th className="pb-3 pr-4">Contact</th>
-                      <th className="pb-3 pr-4">Location</th>
+                      <th className="hidden pb-3 pr-4 md:table-cell">Contact</th>
+                      <th className="hidden pb-3 pr-4 lg:table-cell">Location</th>
                       <SortHeader field="status">Status</SortHeader>
-                      <th className="pb-3 pr-4">Score</th>
+                      <th className="hidden pb-3 pr-4 sm:table-cell">Score</th>
                       <SortHeader field="step">Step</SortHeader>
                       <SortHeader field="created_at">Date</SortHeader>
                     </tr>
@@ -431,7 +433,7 @@ export default function LeadsPage() {
                                 : 'Unknown'}
                             </Link>
                           </td>
-                          <td className="py-3 pr-4 text-sm text-slate-600">
+                          <td className="hidden py-3 pr-4 text-sm text-slate-600 md:table-cell">
                             {contact?.email && (
                               <div>{contact.email}</div>
                             )}
@@ -439,7 +441,7 @@ export default function LeadsPage() {
                               <div>{formatPhone(contact.phone)}</div>
                             )}
                           </td>
-                          <td className="py-3 pr-4 text-slate-600">
+                          <td className="hidden py-3 pr-4 text-slate-600 lg:table-cell">
                             {property?.city && property?.state
                               ? `${property.city}, ${property.state}`
                               : 'N/A'}
@@ -452,7 +454,7 @@ export default function LeadsPage() {
                               compact
                             />
                           </td>
-                          <td className="py-3 pr-4">
+                          <td className="hidden py-3 pr-4 sm:table-cell">
                             <span
                               className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ${scoreTier.className}`}
                               title={`Score: ${leadScore.score}`}

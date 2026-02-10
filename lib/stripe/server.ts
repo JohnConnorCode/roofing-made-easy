@@ -19,6 +19,7 @@ async function getStripeClient(): Promise<Stripe | null> {
   cachedStripe = new Stripe(credentials.secretKey, {
     apiVersion: '2026-01-28.clover',
     typescript: true,
+    timeout: 30000,
   })
 
   cachedWebhookSecret = credentials.webhookSecret
@@ -39,6 +40,7 @@ export const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY, {
       apiVersion: '2026-01-28.clover',
       typescript: true,
+      timeout: 30000,
     })
   : null
 

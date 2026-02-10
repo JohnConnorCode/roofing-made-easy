@@ -7,7 +7,7 @@ import { EMAIL_COLORS, EMAIL_FONTS, getEmailCompanyInfo } from './brand-config'
 const BRAND_COLORS = EMAIL_COLORS
 
 // Shared email wrapper with centralized brand config
-export function emailWrapper(content: string, previewText: string): string {
+export function emailWrapper(content: string, previewText: string, options?: { unsubscribeUrl?: string }): string {
   const company = getEmailCompanyInfo()
 
   return `
@@ -72,7 +72,8 @@ export function emailWrapper(content: string, previewText: string): string {
                   <td style="color: ${BRAND_COLORS.textLight}; font-size: 12px; line-height: 1.5;">
                     <p style="margin: 0 0 8px;">${company.legalName}</p>
                     <p style="margin: 0 0 8px;">${company.fullAddress}</p>
-                    <p style="margin: 0;">${company.phone}</p>
+                    <p style="margin: 0 0 8px;">${company.phone}</p>
+                    ${options?.unsubscribeUrl ? `<p style="margin: 0;"><a href="${options.unsubscribeUrl}" style="color: ${BRAND_COLORS.textLight}; text-decoration: underline;">Unsubscribe</a> from these emails</p>` : `<p style="margin: 0;">To stop receiving these emails, reply with "unsubscribe" or update your <a href="${company.website}/portal/settings" style="color: ${BRAND_COLORS.textLight}; text-decoration: underline;">notification preferences</a>.</p>`}
                   </td>
                 </tr>
               </table>

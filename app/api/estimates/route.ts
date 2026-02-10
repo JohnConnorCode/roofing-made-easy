@@ -109,24 +109,21 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Get aggregate stats using parallel count queries with head: true
-  // This is more efficient than fetching all estimates to count in JS
-  const [totalRes, draftRes, sentRes, acceptedRes, expiredRes] = await Promise.all([
-    supabase.from('estimates' as never).select('*', { count: 'exact', head: true }),
-    supabase.from('estimates' as never).select('*', { count: 'exact', head: true }).eq('status', 'draft'),
-    supabase.from('estimates' as never).select('*', { count: 'exact', head: true }).eq('status', 'sent'),
-    supabase.from('estimates' as never).select('*', { count: 'exact', head: true }).eq('status', 'accepted'),
-    supabase.from('estimates' as never).select('*', { count: 'exact', head: true }).eq('status', 'expired'),
-  ])
+  // Get aggregate stats using a single RPC call instead of 5 separate queries
+  const { data: statusCounts } = await supabase.rpc('get_estimate_status_counts')
+
+  const counts = (statusCounts as { total: number; draft: number; sent: number; accepted: number; expired: number; total_value: number } | null) || {
+    total: 0, draft: 0, sent: 0, accepted: 0, expired: 0, total_value: 0
+  }
 
   const aggregates = {
-    total: totalRes.count || 0,
-    totalValue: 0, // Computing sum would require an RPC function for efficiency
+    total: counts.total,
+    totalValue: counts.total_value,
     byStatus: {
-      draft: draftRes.count || 0,
-      sent: sentRes.count || 0,
-      accepted: acceptedRes.count || 0,
-      expired: expiredRes.count || 0
+      draft: counts.draft,
+      sent: counts.sent,
+      accepted: counts.accepted,
+      expired: counts.expired,
     }
   }
 

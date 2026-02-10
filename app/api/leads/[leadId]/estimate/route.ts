@@ -160,6 +160,10 @@ export async function POST(
 
     if (supersedeError) {
       console.error('Failed to supersede previous estimates:', supersedeError)
+      return NextResponse.json(
+        { error: 'Failed to prepare estimate. Please try again.' },
+        { status: 500 }
+      )
     }
 
     // Save estimate
@@ -242,15 +246,33 @@ export async function POST(
       criticalOps.map(op => op.promise)
     )
 
-    // Track which critical ops succeeded/failed
+    // Track which critical ops succeeded/failed, retry once on failure
     const notificationResults: Record<string, string> = {}
+    const retryOps: Array<{ name: string; promise: Promise<unknown> }> = []
+
     criticalOps.forEach((op, i) => {
       const opResult = criticalResults[i]
-      notificationResults[op.name] = opResult.status === 'fulfilled' ? 'success' : 'failed'
-      if (opResult.status === 'rejected') {
-        console.error(`[Estimate] ${op.name} failed:`, opResult.reason instanceof Error ? opResult.reason.message : 'Unknown error')
+      if (opResult.status === 'fulfilled') {
+        notificationResults[op.name] = 'success'
+      } else {
+        console.error(`[Estimate] ${op.name} failed (will retry):`, opResult.reason instanceof Error ? opResult.reason.message : 'Unknown error')
+        retryOps.push(op)
       }
     })
+
+    // Single retry for failed critical ops
+    if (retryOps.length > 0) {
+      const retryResults = await Promise.allSettled(
+        retryOps.map(op => op.promise)
+      )
+      retryOps.forEach((op, i) => {
+        const retryResult = retryResults[i]
+        notificationResults[op.name] = retryResult.status === 'fulfilled' ? 'success' : 'failed'
+        if (retryResult.status === 'rejected') {
+          console.error(`[Estimate] ${op.name} retry failed:`, retryResult.reason instanceof Error ? retryResult.reason.message : 'Unknown error')
+        }
+      })
+    }
 
     // Determine lead status: estimate_sent if email confirmed, otherwise estimate_generated
     const emailSent = notificationResults['customer_email'] === 'success'

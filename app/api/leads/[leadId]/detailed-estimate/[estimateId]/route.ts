@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
 
 const updateEstimateSchema = z.object({
@@ -18,6 +19,9 @@ export async function GET(
   { params }: { params: Promise<{ leadId: string; estimateId: string }> }
 ) {
   try {
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
+
     const { leadId, estimateId } = await params
     const supabase = await createClient()
 
@@ -63,6 +67,9 @@ export async function PATCH(
   { params }: { params: Promise<{ leadId: string; estimateId: string }> }
 ) {
   try {
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
+
     const { leadId, estimateId } = await params
     const body = await request.json()
     const parsed = updateEstimateSchema.safeParse(body)
@@ -147,6 +154,9 @@ export async function DELETE(
   { params }: { params: Promise<{ leadId: string; estimateId: string }> }
 ) {
   try {
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
+
     const { leadId, estimateId } = await params
     const supabase = await createClient()
 

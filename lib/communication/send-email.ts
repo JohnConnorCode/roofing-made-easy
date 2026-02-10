@@ -52,14 +52,19 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendEmailRes
     const fromEmail = options.from || config.email.primary || 'noreply@example.com'
     const fromName = config.name || 'Roofing Company'
 
-    const { data, error } = await resend.emails.send({
-      from: `${fromName} <${fromEmail}>`,
-      to: options.to,
-      subject: options.subject,
-      text: options.body,
-      html: options.html || convertToHtml(options.body),
-      replyTo: options.replyTo || config.email.primary,
-    })
+    const { data, error } = await Promise.race([
+      resend.emails.send({
+        from: `${fromName} <${fromEmail}>`,
+        to: options.to,
+        subject: options.subject,
+        text: options.body,
+        html: options.html || convertToHtml(options.body),
+        replyTo: options.replyTo || config.email.primary,
+      }),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Email send timed out after 15s')), 15000)
+      ),
+    ])
 
     if (error) {
       // Log the communication attempt
@@ -125,8 +130,7 @@ async function getResendApiKey(): Promise<string | null> {
 
     const credData = credential as { encrypted_key: string } | null
     if (credData?.encrypted_key) {
-      // Decrypt the key (simplified - in production use proper decryption)
-      // For now, assume it's stored as plain text or use the encryption module
+      console.warn('[Security] API credential loaded from DB without encryption')
       return credData.encrypted_key
     }
   } catch {

@@ -62,11 +62,14 @@ export default function CustomerPortalPage() {
       if (response.ok) {
         const data = await response.json()
         setLinkedLeads(data.linkedLeads || [])
+        setFinancingApplications(data.financingApplications || [])
+        setInsuranceClaims(data.insuranceClaims || [])
+        setProgramApplications(data.programApplications || [])
       }
     } catch {
       // Refetch failed silently
     }
-  }, [setLinkedLeads])
+  }, [setLinkedLeads, setFinancingApplications, setInsuranceClaims, setProgramApplications])
 
   // Handle photo upload
   const handlePhotoUpload = useCallback(async (files: FileList) => {
@@ -139,7 +142,7 @@ export default function CustomerPortalPage() {
     }
   }, [selectedLeadId, showToast, refetchData])
 
-  // Fetch customer data on mount
+  // Fetch customer data on mount (runs once)
   useEffect(() => {
     async function fetchCustomerData() {
       setLoading(true)
@@ -170,10 +173,13 @@ export default function CustomerPortalPage() {
         setInsuranceClaims(data.insuranceClaims || [])
         setProgramApplications(data.programApplications || [])
 
-        // Set selected lead to primary or first lead
-        if (data.linkedLeads?.length > 0 && !selectedLeadId) {
-          const primaryLead = data.linkedLeads.find((l: { is_primary: boolean }) => l.is_primary)
-          setSelectedLeadId(primaryLead?.lead_id || data.linkedLeads[0].lead_id)
+        // Set selected lead to primary or first lead (only on initial load)
+        if (data.linkedLeads?.length > 0) {
+          const currentSelection = useCustomerStore.getState().selectedLeadId
+          if (!currentSelection) {
+            const primaryLead = data.linkedLeads.find((l: { is_primary: boolean }) => l.is_primary)
+            setSelectedLeadId(primaryLead?.lead_id || data.linkedLeads[0].lead_id)
+          }
         }
       } catch {
         // Failed to fetch customer data
@@ -184,7 +190,8 @@ export default function CustomerPortalPage() {
     }
 
     fetchCustomerData()
-  }, [router, setCustomer, setLinkedLeads, setSelectedLeadId, setFinancingApplications, setInsuranceClaims, setProgramApplications, setLoading, selectedLeadId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Run once on mount; selectedLeadId read from store directly to avoid re-fetch loop
+  }, [router, setCustomer, setLinkedLeads, setSelectedLeadId, setFinancingApplications, setInsuranceClaims, setProgramApplications, setLoading])
 
   // Get current lead data
   const currentLead = linkedLeads.find((l) => l.lead_id === selectedLeadId)
@@ -297,19 +304,47 @@ export default function CustomerPortalPage() {
 
       {/* No leads — encouraging empty state */}
       {linkedLeads.length === 0 && (
-        <EmptyState
-          icon={AlertTriangle}
-          title="Get Your Free Estimate"
-          description="Start your roofing journey with a quick assessment. In just a few minutes, you'll receive a personalized estimate for your project."
-          actionLabel="Get Your Estimate"
-          actionHref="/"
-          variant="encouraging"
-        />
+        <div className="space-y-4">
+          <EmptyState
+            icon={AlertTriangle}
+            title="Get Your Free Estimate"
+            description="Start your roofing journey with a quick assessment. In just a few minutes, you'll receive a personalized estimate for your project."
+            actionLabel="Get Your Estimate"
+            actionHref="/"
+            variant="encouraging"
+          />
+          <p className="text-center text-sm text-slate-500">
+            Already have an estimate?{' '}
+            <a href="/customer/login" className="text-[#c9a25c] hover:underline">
+              Check your email
+            </a>{' '}
+            for the estimate link to connect it to your account.
+          </p>
+        </div>
       )}
 
       {/* Main content - show when leads exist */}
       {linkedLeads.length > 0 && (
         <>
+          {/* Property switcher - only show when multiple properties */}
+          {linkedLeads.length > 1 && (
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-slate-400">Property:</span>
+              <select
+                value={selectedLeadId || ''}
+                onChange={(e) => setSelectedLeadId(e.target.value)}
+                className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm text-slate-200 focus:border-[#c9a25c] focus:outline-none focus:ring-1 focus:ring-[#c9a25c]"
+              >
+                {linkedLeads.map((lead) => (
+                  <option key={lead.lead_id} value={lead.lead_id}>
+                    {lead.nickname || lead.lead?.property?.street_address || 'Property'}{' '}
+                    {lead.is_primary ? '(Primary)' : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {/* Next Step Hero */}
           <NextStepHero
             hasEstimate={!!estimate}

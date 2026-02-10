@@ -9,7 +9,7 @@ import { requireAuth } from '@/lib/api/auth'
 const createIntentSchema = z.object({
   leadId: z.string().uuid(),
   estimateId: z.string().uuid().optional(),
-  amount: z.number().positive().min(100), // minimum $1.00 (100 cents)
+  amount: z.number().positive().min(100).max(10000000), // $1.00 - $100,000.00 (in cents)
   description: z.string().max(500).optional(),
 })
 

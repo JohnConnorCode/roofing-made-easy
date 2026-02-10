@@ -12,6 +12,8 @@ const paymentMetadataSchema = z.object({
   estimate_id: z.string().uuid().optional(),
   customer_name: z.string().optional(),
   payment_type: z.enum(['deposit', 'progress', 'final']).optional(),
+  invoice_id: z.string().uuid().optional(),
+  invoice_number: z.string().optional(),
 })
 
 // Disable body parsing for webhooks (we need raw body)
@@ -98,10 +100,23 @@ async function handlePaymentSuccess(
     // Continue with defaults - don't fail the webhook
   }
   const metadata = metadataResult.success ? metadataResult.data : {}
-  const { lead_id, customer_name, payment_type } = metadata
+  const { lead_id, customer_name, payment_type, invoice_id } = metadata
   // The charges property exists in expanded PaymentIntent from webhooks
   const charges = (paymentIntent as Stripe.PaymentIntent & { charges?: { data: Stripe.Charge[] } }).charges
   const receiptUrl = charges?.data?.[0]?.receipt_url || undefined
+
+  // Idempotency check: skip if already processed
+  const { data: existingPayment } = await supabase
+    .from('payments')
+    .select('id, status')
+    .eq('stripe_payment_intent_id', paymentIntent.id)
+    .eq('status', 'succeeded')
+    .maybeSingle()
+
+  if (existingPayment) {
+    console.log(`[Payment Webhook] Already processed payment intent ${paymentIntent.id}, skipping`)
+    return
+  }
 
   // Update payment record
   await supabase
@@ -112,6 +127,45 @@ async function handlePaymentSuccess(
       receipt_url: receiptUrl || null,
     } as never)
     .eq('stripe_payment_intent_id', paymentIntent.id)
+
+  // Update invoice_payments and invoice balance if this is an invoice payment
+  if (invoice_id) {
+    await supabase
+      .from('invoice_payments')
+      .update({
+        status: 'succeeded',
+        paid_at: new Date().toISOString(),
+      } as never)
+      .eq('stripe_payment_intent_id', paymentIntent.id)
+
+    // Recalculate balance_due from all succeeded payments
+    const { data: payments } = await supabase
+      .from('invoice_payments')
+      .select('amount')
+      .eq('invoice_id', invoice_id)
+      .eq('status', 'succeeded')
+
+    const totalPaid = (payments || []).reduce((sum, p) => sum + ((p as { amount: number }).amount || 0), 0)
+
+    const { data: invoice } = await supabase
+      .from('invoices')
+      .select('total')
+      .eq('id', invoice_id)
+      .single()
+
+    if (invoice) {
+      const newBalance = Math.max(0, (invoice as { total: number }).total - totalPaid)
+      const newStatus = newBalance <= 0 ? 'paid' : 'partially_paid'
+      await supabase
+        .from('invoices')
+        .update({
+          balance_due: newBalance,
+          status: newStatus,
+          paid_at: newBalance <= 0 ? new Date().toISOString() : null,
+        } as never)
+        .eq('id', invoice_id)
+    }
+  }
 
   // Update lead status if this is a deposit
   if (lead_id) {

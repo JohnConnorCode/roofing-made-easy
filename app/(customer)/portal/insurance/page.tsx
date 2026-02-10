@@ -74,16 +74,31 @@ export default function InsurancePage() {
   // Get existing claim for this lead
   const existingClaim = insuranceClaims.find((c) => c.lead_id === selectedLeadId)
 
-  // Pre-fill form from intake data
+  // Reset form and pre-fill from intake data when property changes
   useEffect(() => {
+    setShowForm(false)
+    setShowStatusUpdate(false)
+    setShowOptionalFields(false)
     if (intake && !existingClaim) {
-      setFormData((prev) => ({
-        ...prev,
+      setFormData({
         insuranceCompany: intake.insurance_company || '',
+        policyNumber: '',
         claimNumber: intake.claim_number || '',
-      }))
+        dateOfLoss: '',
+        causeOfLoss: '',
+        customerNotes: '',
+      })
+    } else {
+      setFormData({
+        insuranceCompany: '',
+        policyNumber: '',
+        claimNumber: '',
+        dateOfLoss: '',
+        causeOfLoss: '',
+        customerNotes: '',
+      })
     }
-  }, [intake, existingClaim])
+  }, [selectedLeadId, intake, existingClaim])
 
   const handleCreateClaim = async (e: React.FormEvent) => {
     e.preventDefault()

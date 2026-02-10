@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
 
 const variablesSchema = z.object({
@@ -46,6 +47,9 @@ export async function GET(
   { params }: { params: Promise<{ leadId: string }> }
 ) {
   try {
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
+
     const { leadId } = await params
     const supabase = await createClient()
     const { searchParams } = new URL(request.url)
@@ -90,6 +94,9 @@ export async function POST(
   { params }: { params: Promise<{ leadId: string }> }
 ) {
   try {
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
+
     const { leadId } = await params
     const body = await request.json()
     const parsed = createEstimateSchema.safeParse(body)

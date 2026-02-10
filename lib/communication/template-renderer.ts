@@ -7,14 +7,31 @@ import type { TemplateVariables, MessageTemplate } from './types'
 import { getBusinessConfig, getFullAddress, getPhoneDisplay } from '@/lib/config/business'
 
 /**
+ * Escape HTML special characters to prevent XSS
+ */
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+/**
  * Render a template by replacing {{variable}} placeholders
  */
-export function renderTemplate(template: string, variables: TemplateVariables): string {
+export function renderTemplate(
+  template: string,
+  variables: TemplateVariables,
+  options?: { escapeValues?: boolean }
+): string {
   let result = template
 
   for (const [key, value] of Object.entries(variables)) {
     const placeholder = `{{${key}}}`
-    result = result.split(placeholder).join(value || '')
+    const replacement = options?.escapeValues ? escapeHtml(value || '') : (value || '')
+    result = result.split(placeholder).join(replacement)
   }
 
   // Clean up any remaining unresolved variables

@@ -22,6 +22,7 @@ const rateLimitStore = new Map<string, RateLimitEntry>()
 
 // Cleanup old entries every 5 minutes
 const CLEANUP_INTERVAL = 5 * 60 * 1000
+const MAX_STORE_SIZE = 10000
 let lastCleanup = Date.now()
 
 function cleanup() {
@@ -155,6 +156,19 @@ function checkRateLimitInMemory(
   limitType: RateLimitType
 ): RateLimitResult {
   cleanup()
+
+  // Prevent memory exhaustion from many unique IPs
+  if (rateLimitStore.size >= MAX_STORE_SIZE) {
+    const now = Date.now()
+    for (const [k, entry] of rateLimitStore.entries()) {
+      if (entry.resetTime < now) {
+        rateLimitStore.delete(k)
+      }
+    }
+    if (rateLimitStore.size >= MAX_STORE_SIZE) {
+      rateLimitStore.clear()
+    }
+  }
 
   const config = RATE_LIMITS[limitType]
   const key = `${limitType}:${identifier}`

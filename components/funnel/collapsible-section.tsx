@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useId } from 'react'
 import { ChevronDown, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -25,6 +25,7 @@ export function CollapsibleSection({
 }: CollapsibleSectionProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const contentRef = useRef<HTMLDivElement>(null)
+  const panelId = useId()
   const [contentHeight, setContentHeight] = useState<number | undefined>(
     defaultOpen ? undefined : 0
   )
@@ -61,6 +62,7 @@ export function CollapsibleSection({
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-slate-700/30"
         aria-expanded={isOpen}
+        aria-controls={panelId}
       >
         <div className="flex items-center gap-3">
           {icon && (
@@ -91,6 +93,8 @@ export function CollapsibleSection({
         />
       </button>
       <div
+        id={panelId}
+        role="region"
         style={{ height: contentHeight }}
         className="overflow-hidden transition-all duration-300 ease-in-out"
       >

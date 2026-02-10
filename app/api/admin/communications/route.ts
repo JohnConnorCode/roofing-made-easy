@@ -158,8 +158,8 @@ export async function POST(request: NextRequest) {
       variables = await getLeadVariables(messageData.lead_id)
     }
 
-    // Render the message
-    const renderedBody = renderTemplate(messageData.body, variables)
+    // Render the message (escape values for HTML email context)
+    const renderedBody = renderTemplate(messageData.body, variables, { escapeValues: true })
     const renderedSubject = messageData.subject
       ? renderTemplate(messageData.subject, variables)
       : undefined

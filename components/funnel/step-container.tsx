@@ -63,17 +63,20 @@ export function StepContainer({
         )}
 
         {onNext && (
-          <Button
-            variant="primary"
-            size="xl"
-            onClick={onNext}
-            disabled={isNextDisabled}
-            isLoading={isLoading}
-            rightIcon={!isLoading ? <ArrowRight className="h-5 w-5" /> : undefined}
-            className="min-w-[160px] btn-press shadow-lg glow-gold bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
-          >
-            {nextLabel}
-          </Button>
+          <div aria-live="polite">
+            <Button
+              variant="primary"
+              size="xl"
+              onClick={onNext}
+              disabled={isNextDisabled}
+              isLoading={isLoading}
+              rightIcon={!isLoading ? <ArrowRight className="h-5 w-5" /> : undefined}
+              className="min-w-[160px] btn-press shadow-lg glow-gold bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+            >
+              {nextLabel}
+            </Button>
+            {isLoading && <span className="sr-only">Loading, please wait...</span>}
+          </div>
         )}
       </div>
     </div>

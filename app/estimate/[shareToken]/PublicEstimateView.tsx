@@ -1,10 +1,15 @@
 'use client'
 
 import { useCallback } from 'react'
+import Link from 'next/link'
 import { useToast } from '@/components/ui/toast'
 import { formatCurrency } from '@/lib/utils'
 import { EstimateDocument } from '@/components/estimate'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import type { JobType, RoofMaterial } from '@/lib/supabase/types'
+import { UserPlus } from 'lucide-react'
+import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
 
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || ''
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
@@ -54,7 +59,7 @@ export function PublicEstimateView({
     if (CALENDLY_URL) {
       window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
     } else {
-      showToast('Call us at (662) 555-0123 to schedule your free consultation', 'info')
+      showToast(`Call us at ${getPhoneDisplay()} to schedule your free consultation`, 'info')
     }
   }, [showToast])
 
@@ -123,10 +128,10 @@ export function PublicEstimateView({
             <span className="text-[#c9a25c]">Farrell</span> Roofing
           </a>
           <a
-            href="tel:6625550123"
+            href={getPhoneLink()}
             className="text-sm text-slate-400 hover:text-[#c9a25c] transition-colors"
           >
-            (662) 555-0123
+            {getPhoneDisplay()}
           </a>
         </div>
       </header>
@@ -155,6 +160,30 @@ export function PublicEstimateView({
           isPublicView
         />
       </main>
+
+      {/* Portal CTA */}
+      <div className="mx-auto max-w-4xl px-4 py-6 print:hidden">
+        <Card className="border-[#c9a25c]/20 bg-[#1a1f2e]/80">
+          <CardContent className="p-6 text-center">
+            <UserPlus className="h-8 w-8 text-[#c9a25c] mx-auto mb-3" />
+            <h3 className="text-lg font-semibold text-slate-100 mb-2">
+              Track Your Project Online
+            </h3>
+            <p className="text-sm text-slate-400 mb-4 max-w-md mx-auto">
+              Create your free account to track your project, view financing options, and manage your estimate.
+            </p>
+            <Link href={`/customer/register?leadId=${leadId}`}>
+              <Button
+                variant="primary"
+                size="lg"
+                className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+              >
+                Create Free Account
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Simple footer */}
       <footer className="border-t border-slate-800 py-8">

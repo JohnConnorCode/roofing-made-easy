@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { z } from 'zod'
 
 const claimSchema = z.object({
@@ -19,6 +20,12 @@ interface CustomerRecord {
 
 export async function POST(request: NextRequest) {
   try {
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'general')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     const supabase = await createClient()
 
     // Get authenticated user
@@ -136,8 +143,14 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'general')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     const supabase = await createClient()
 
     // Get authenticated user

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createPaymentIntent, isStripeConfiguredAsync } from '@/lib/stripe/server'
+import { requireAuth } from '@/lib/api/auth'
+import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { z } from 'zod'
 
 interface RouteParams {
@@ -17,6 +19,16 @@ const paymentSchema = z.object({
 // POST - Create a payment intent for an invoice
 export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
+    // Require authentication - only logged-in users can pay invoices
+    const { error: authError } = await requireAuth()
+    if (authError) return authError
+
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'general')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     // Check if Stripe is configured
     const stripeConfigured = await isStripeConfiguredAsync()
     if (!stripeConfigured) {

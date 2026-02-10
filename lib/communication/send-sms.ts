@@ -59,11 +59,16 @@ export async function sendSMS(options: SendSMSOptions): Promise<SendSMSResult> {
       }
     }
 
-    const message = await client.messages.create({
-      to: formattedPhone,
-      from: credentials.fromNumber,
-      body: options.body,
-    })
+    const message = await Promise.race([
+      client.messages.create({
+        to: formattedPhone,
+        from: credentials.fromNumber,
+        body: options.body,
+      }),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('SMS send timed out after 15s')), 15000)
+      ),
+    ])
 
     // Log successful communication
     await logCommunication({

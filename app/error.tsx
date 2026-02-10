@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import * as Sentry from '@sentry/nextjs'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 
 export default function Error({
@@ -12,6 +13,7 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error('Application error:', error)
+    Sentry.captureException(error)
   }, [error])
 
   return (

@@ -153,8 +153,8 @@ async function executeWorkflow(
       ? await getLeadVariables(context.leadId)
       : {}
 
-    // Render template
-    const renderedBody = renderTemplate(workflow.template.body, variables)
+    // Render template (escape values for HTML email context)
+    const renderedBody = renderTemplate(workflow.template.body, variables, { escapeValues: true })
     const renderedSubject = workflow.template.subject
       ? renderTemplate(workflow.template.subject, variables)
       : null
