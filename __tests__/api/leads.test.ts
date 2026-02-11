@@ -242,6 +242,9 @@ vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(() => ({
     from: (table: string) => createMockQueryBuilder(table),
   })),
+  createAdminClient: vi.fn(() => ({
+    from: (table: string) => createMockQueryBuilder(table),
+  })),
 }))
 
 // Mock auth module

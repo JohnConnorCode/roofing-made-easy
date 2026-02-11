@@ -13,6 +13,18 @@ import {
 } from './test-utils'
 import { sampleVariables } from '@/__tests__/fixtures/estimation'
 
+// Mock the auth module to simulate admin user
+vi.mock('@/lib/api/auth', () => ({
+  requireAdmin: vi.fn(() => Promise.resolve({
+    user: {
+      id: 'test-admin-123',
+      email: 'admin@test.com',
+      user_metadata: { role: 'admin' }
+    },
+    error: null
+  })),
+}))
+
 // Mock the Supabase server client
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(() => ({

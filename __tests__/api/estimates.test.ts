@@ -15,6 +15,23 @@ import {
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(() => ({
     from: (table: string) => createMockQueryBuilder(table),
+    rpc: vi.fn((name: string) => {
+      if (name === 'get_estimate_status_counts') {
+        const estimates = Array.from(estimatesStore.values())
+        return Promise.resolve({
+          data: {
+            total: estimates.length,
+            draft: estimates.filter(e => e.status === 'draft').length,
+            sent: estimates.filter(e => e.status === 'sent').length,
+            accepted: estimates.filter(e => e.status === 'accepted').length,
+            expired: estimates.filter(e => e.status === 'expired').length,
+            total_value: estimates.reduce((sum, e) => sum + (e.price_likely || 0), 0),
+          },
+          error: null,
+        })
+      }
+      return Promise.resolve({ data: null, error: null })
+    }),
   })),
 }))
 

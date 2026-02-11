@@ -157,12 +157,20 @@ function createMockQueryBuilder(table: string) {
       filters.push({ column, value, operator: 'eq' })
       return builder
     },
+    gte: (column: string, value: unknown) => {
+      filters.push({ column, value, operator: 'gte' })
+      return builder
+    },
     order: (column: string, opts?: { ascending?: boolean }) => builder,
     limit: (n: number) => {
       limitCount = n
       return builder
     },
     single: () => {
+      isSingle = true
+      return builder
+    },
+    maybeSingle: () => {
       isSingle = true
       return builder
     },
