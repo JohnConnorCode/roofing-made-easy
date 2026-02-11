@@ -242,8 +242,28 @@ function enrichMeasurementResult(parsed: Partial<PhotoMeasurementResult>): Photo
   const pitch = parsed.detectedPitch || 5
   const pitchMultiplier = getPitchMultiplier(pitch)
 
-  // Calculate total squares
+  // Calculate total squares — require actual data from AI
   const totalSqFt = parsed.estimatedTotalSqFt || 0
+  if (totalSqFt === 0) {
+    // AI couldn't determine square footage — return result with warning
+    return {
+      success: true,
+      confidence: 0.1,
+      estimatedTotalSqFt: 0,
+      estimatedTotalSquares: 0,
+      estimatedFootprintLengthFt: 0,
+      estimatedFootprintWidthFt: 0,
+      detectedMaterial: parsed.detectedMaterial || null,
+      detectedPitch: pitch,
+      pitchCategory: 'standard',
+      roofStyle: parsed.roofStyle || 'gable',
+      detectedPlanes: parsed.detectedPlanes || [],
+      detectedFeatures: parsed.detectedFeatures || [],
+      suggestedVariables: getEmptyVariables(),
+      notes: [...(parsed.notes || []), 'Could not determine roof dimensions from photo. Manual measurements required.'],
+      limitationsWarning: 'Photo did not provide enough information for dimension estimates. Please provide measurements manually.',
+    }
+  }
   const totalSquares = totalSqFt / 100
 
   // Determine pitch category
@@ -266,8 +286,12 @@ function enrichMeasurementResult(parsed: Partial<PhotoMeasurementResult>): Photo
   const gutterFeature = features.find(f => f.type === 'gutter')
 
   // Build roof variables from detected data
-  const lengthFt = parsed.estimatedFootprintLengthFt || 50
-  const widthFt = parsed.estimatedFootprintWidthFt || 30
+  // If AI didn't provide dimensions, estimate from total sqft assuming 1.3:1 aspect ratio
+  const footprintSqFt = totalSqFt / pitchMultiplier
+  const fallbackLength = Math.round(Math.sqrt(footprintSqFt * 1.3))
+  const fallbackWidth = Math.round(footprintSqFt / fallbackLength)
+  const lengthFt = parsed.estimatedFootprintLengthFt || fallbackLength
+  const widthFt = parsed.estimatedFootprintWidthFt || fallbackWidth
   const perimeter = 2 * (lengthFt + widthFt)
 
   // Estimate linear footage based on roof style
@@ -355,6 +379,8 @@ function enrichMeasurementResult(parsed: Partial<PhotoMeasurementResult>): Photo
 /**
  * Analyze multiple photos and merge results for better accuracy
  */
+const MULTI_PHOTO_TIMEOUT_MS = 180_000 // 3 minute overall timeout for multiple photos
+
 export async function analyzeMultiplePhotos(
   inputs: PhotoMeasurementInput[]
 ): Promise<AiResult<PhotoMeasurementResult>> {
@@ -369,9 +395,12 @@ export async function analyzeMultiplePhotos(
     }
   }
 
-  // Analyze each photo
+  // Analyze each photo with overall timeout protection
   const results: PhotoMeasurementResult[] = []
   for (const input of inputs) {
+    if (Date.now() - startTime > MULTI_PHOTO_TIMEOUT_MS) {
+      break // Stop processing if we've exceeded the timeout
+    }
     const result = await analyzePhotoForMeasurements(input)
     if (result.success && result.data) {
       results.push(result.data)
@@ -462,7 +491,7 @@ function mergePhotoResults(results: PhotoMeasurementResult[]): PhotoMeasurementR
   // Create merged result
   const merged: PhotoMeasurementResult = {
     success: true,
-    confidence: Math.min(...results.map(r => r.confidence)) * 1.1, // Slight boost for multiple sources
+    confidence: Math.min(results.reduce((sum, r) => sum + r.confidence, 0) / results.length + 0.05, 1), // Weighted average with small multi-source boost
     estimatedTotalSqFt: Math.round(mergedSqFt),
     estimatedTotalSquares: Math.round(mergedSqFt) / 100,
     estimatedFootprintLengthFt: Math.round(weightedAvg(r => r.estimatedFootprintLengthFt)),

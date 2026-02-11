@@ -10,6 +10,25 @@ import type {
   AiResult,
 } from '../provider'
 
+/**
+ * Extract the first balanced JSON object from a string.
+ * Handles cases where the model returns text before/after the JSON.
+ */
+function extractJson(text: string): string | null {
+  const start = text.indexOf('{')
+  if (start === -1) return null
+
+  let depth = 0
+  for (let i = start; i < text.length; i++) {
+    if (text[i] === '{') depth++
+    else if (text[i] === '}') depth--
+    if (depth === 0) {
+      return text.slice(start, i + 1)
+    }
+  }
+  return null
+}
+
 const PHOTO_ANALYSIS_PROMPT = `You are analyzing a photo that may be of a roof. Analyze the image and provide a structured assessment.
 
 Return your analysis as JSON with this exact structure:
@@ -36,14 +55,21 @@ const AI_TIMEOUT_MS = 60_000
 
 export class AnthropicProvider implements AiProvider {
   name = 'anthropic' as const
-  private client: Anthropic
+  private client: Anthropic | null = null
 
-  constructor() {
-    this.client = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY,
-      timeout: AI_TIMEOUT_MS,
-      maxRetries: 2,
-    })
+  private getClient(): Anthropic {
+    if (!this.client) {
+      const apiKey = process.env.ANTHROPIC_API_KEY
+      if (!apiKey) {
+        throw new Error('ANTHROPIC_API_KEY is not configured')
+      }
+      this.client = new Anthropic({
+        apiKey,
+        timeout: AI_TIMEOUT_MS,
+        maxRetries: 2,
+      })
+    }
+    return this.client
   }
 
   async analyzePhoto(input: PhotoAnalysisInput): Promise<AiResult<PhotoAnalysisResult>> {
@@ -74,7 +100,8 @@ export class AnthropicProvider implements AiProvider {
 
       content.push({ type: 'text', text: PHOTO_ANALYSIS_PROMPT })
 
-      const response = await this.client.messages.create({
+      const client = this.getClient()
+      const response = await client.messages.create({
         model,
         max_tokens: 1000,
         messages: [{ role: 'user', content }],
@@ -95,7 +122,7 @@ export class AnthropicProvider implements AiProvider {
       }
 
       // Extract JSON from response (Claude might include extra text)
-      const jsonMatch = content_text.match(/\{[\s\S]*\}/)
+      const jsonMatch = extractJson(content_text)
       if (!jsonMatch) {
         return {
           success: false,
@@ -106,7 +133,7 @@ export class AnthropicProvider implements AiProvider {
         }
       }
 
-      const parsed = JSON.parse(jsonMatch[0]) as PhotoAnalysisResult
+      const parsed = JSON.parse(jsonMatch) as PhotoAnalysisResult
 
       return {
         success: true,
@@ -158,7 +185,8 @@ Write a warm, professional explanation that:
 
 Keep it under 200 words. Don't use phrases like "I understand" or "I can see". Be direct and informative.`
 
-      const response = await this.client.messages.create({
+      const client = this.getClient()
+      const response = await client.messages.create({
         model,
         max_tokens: 500,
         messages: [{ role: 'user', content: prompt }],
@@ -235,7 +263,8 @@ Consider:
 - Large roof or premium materials = higher value
 - Solar panels = complexity flag`
 
-      const response = await this.client.messages.create({
+      const client = this.getClient()
+      const response = await client.messages.create({
         model,
         max_tokens: 500,
         messages: [{ role: 'user', content: prompt }],
@@ -255,8 +284,8 @@ Consider:
         }
       }
 
-      const jsonMatch = content.match(/\{[\s\S]*\}/)
-      if (!jsonMatch) {
+      const jsonStr = extractJson(content)
+      if (!jsonStr) {
         return {
           success: false,
           error: 'Could not parse JSON from response',
@@ -266,7 +295,7 @@ Consider:
         }
       }
 
-      const parsed = JSON.parse(jsonMatch[0]) as IntakeAnalysisResult
+      const parsed = JSON.parse(jsonStr) as IntakeAnalysisResult
 
       return {
         success: true,
@@ -320,7 +349,8 @@ Write 3-5 bullet points for the sales team including:
 
 Keep it brief and actionable. Use bullet points.`
 
-      const response = await this.client.messages.create({
+      const client = this.getClient()
+      const response = await client.messages.create({
         model,
         max_tokens: 400,
         messages: [{ role: 'user', content: prompt }],

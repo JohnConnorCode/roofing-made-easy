@@ -225,13 +225,14 @@ export async function suggestLineItems(
       latencyMs,
       model,
     }
-  } catch (error) {
-    // Fall back to rule-based on error
+  } catch {
+    // AI unavailable — return rule-based suggestions with fallback indicator
     return {
       success: true,
       data: ruleBasedSuggestions,
       provider: 'fallback',
       latencyMs: Date.now() - startTime,
+      model: 'rule-based',
     }
   }
 }
