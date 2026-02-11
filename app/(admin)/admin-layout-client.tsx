@@ -28,6 +28,7 @@ import {
   BookOpen,
   Receipt,
   MessageSquare,
+  TrendingUp,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -83,6 +84,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { href: '/settings', label: 'Settings', icon: Settings },
+  { href: '/content-strategy', label: 'Content Strategy', icon: TrendingUp },
   { href: '/features', label: 'Platform Guide', icon: BookOpen },
 ]
 
