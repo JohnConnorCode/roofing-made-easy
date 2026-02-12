@@ -61,51 +61,103 @@ body {
   }
 }
 
-/* Slide up and fade */
+/* Slide up with blur reveal */
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    filter: blur(4px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
+    filter: blur(0);
     transform: translateY(0);
   }
 }
 
-/* Slide in from right */
+/* Slide in from right with blur */
 @keyframes slideInRight {
   from {
     opacity: 0;
+    filter: blur(4px);
     transform: translateX(30px);
   }
   to {
     opacity: 1;
+    filter: blur(0);
     transform: translateX(0);
   }
 }
 
-/* Slide in from left */
+/* Slide in from left with blur */
 @keyframes slideInLeft {
   from {
     opacity: 0;
+    filter: blur(4px);
     transform: translateX(-30px);
   }
   to {
     opacity: 1;
+    filter: blur(0);
     transform: translateX(0);
   }
 }
 
-/* Scale in */
+/* Scale in with blur */
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    filter: blur(4px);
+    transform: scale(0.92);
   }
   to {
     opacity: 1;
+    filter: blur(0);
     transform: scale(1);
+  }
+}
+
+/* ===== HERO ENTRANCE ANIMATIONS ===== */
+
+/* Hero badge — blur + scale in */
+@keyframes heroBlurIn {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hero title — dramatic blur reveal */
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+/* Hero subtitle + CTA — softer blur fade-up */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
   }
 }
 
@@ -129,14 +181,16 @@ body {
   }
 }
 
-/* Stagger children animation */
+/* Stagger children — blur reveal */
 @keyframes staggerFadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    filter: blur(4px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
+    filter: blur(0);
     transform: translateY(0);
   }
 }
@@ -149,22 +203,43 @@ body {
 /* Elements with slide-up start hidden and animate in */
 .animate-slide-up {
   opacity: 0;
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-slide-in-right {
   opacity: 0;
-  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-slide-in-left {
   opacity: 0;
-  animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-scale-in {
   opacity: 0;
-  animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hero-specific entrance classes */
+.animate-hero-badge {
+  opacity: 0;
+  animation: heroBlurIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-hero-title {
+  opacity: 0;
+  animation: heroReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-hero-subtitle {
+  opacity: 0;
+  animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-hero-cta {
+  opacity: 0;
+  animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-logo-pulse {
@@ -183,43 +258,49 @@ body {
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }
 .delay-400 { animation-delay: 400ms; }
+.delay-450 { animation-delay: 450ms; }
 .delay-500 { animation-delay: 500ms; }
 .delay-600 { animation-delay: 600ms; }
 .delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+.delay-900 { animation-delay: 900ms; }
 
-/* Staggered children - faster, smoother timing */
+/* Staggered children - visible cascade with blur */
 .stagger-children > * {
   opacity: 0;
-  animation: staggerFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: staggerFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity, filter;
 }
 
 .stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
-.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
-.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
-.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
-.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
-.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
-.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
-.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.45s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.55s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.65s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.75s; }
 
 /* Hidden state for scroll-triggered stagger */
 .stagger-children-hidden > * {
   opacity: 0;
+  filter: blur(4px);
+  will-change: transform, opacity, filter;
 }
 
 /* Page transition wrapper */
 .page-transition {
-  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Card hover lift effect */
 .card-hover {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
 }
 
 /* Smooth button press */
@@ -376,6 +457,31 @@ body {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Gold accent line — reusable short divider */
+.accent-line-gold {
+  height: 2px;
+  width: 4rem;
+  background: linear-gradient(90deg, #c9a25c, #9a7432);
+  border-radius: 1px;
+}
+
+/* Full-width subtle section divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 92, 0.2), transparent);
+}
+
+/* Testimonial middle-card emphasis on desktop */
+@media (min-width: 768px) {
+  .testimonial-featured {
+    transform: scale(1.02);
+    box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.3);
+    border-color: rgba(201, 162, 92, 0.2);
+    z-index: 10;
+    position: relative;
+  }
 }
 
 /* Reduce motion for accessibility */
