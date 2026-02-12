@@ -29,6 +29,7 @@ import {
   Receipt,
   MessageSquare,
   TrendingUp,
+  Globe,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -73,18 +74,19 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    href: '/pricing',
+    href: '/rate-management',
     label: 'Pricing',
     icon: DollarSign,
     children: [
-      { href: '/pricing', label: 'Base Rates', icon: DollarSign },
-      { href: '/pricing/geographic', label: 'Geographic', icon: Map },
+      { href: '/rate-management', label: 'Base Rates', icon: DollarSign },
+      { href: '/rate-management/geographic', label: 'Geographic', icon: Map },
       { href: '/line-items', label: 'Line Items', icon: Tag },
       { href: '/macros', label: 'Estimate Templates', icon: FileText },
     ],
   },
   { href: '/settings', label: 'Settings', icon: Settings },
   { href: '/content-strategy', label: 'Content Strategy', icon: TrendingUp },
+  { href: '/seo-strategy', label: 'SEO Strategy', icon: Globe },
   { href: '/features', label: 'Platform Guide', icon: BookOpen },
 ]
 
@@ -163,8 +165,8 @@ export default function AdminLayoutClient({
     const hasChildren = item.children && item.children.length > 0
     const isExpanded = expandedItems.has(item.href)
     const isItemActive = hasChildren
-      ? item.children!.some((child) => isActive(child.href, child.href === '/leads' || child.href === '/pricing'))
-      : isActive(item.href, item.href === '/leads' || item.href === '/pricing')
+      ? item.children!.some((child) => isActive(child.href, child.href === '/leads' || child.href === '/rate-management'))
+      : isActive(item.href, item.href === '/leads' || item.href === '/rate-management')
 
     if (hasChildren) {
       return (
@@ -196,7 +198,7 @@ export default function AdminLayoutClient({
                     className={cn(
                       'flex items-center gap-3 rounded-lg px-4 py-2 transition-colors',
                       getChildNavClasses(
-                        isActive(child.href, child.href === '/leads' || child.href === '/pricing'),
+                        isActive(child.href, child.href === '/leads' || child.href === '/rate-management'),
                         isMobile
                       )
                     )}

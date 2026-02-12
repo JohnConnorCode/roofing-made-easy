@@ -81,7 +81,7 @@ export default function AdminFeaturesPage() {
   return (
     <div className="-m-4 md:-m-8 min-h-screen bg-[#0c0f14] overflow-x-hidden">
       {/* Sticky Navigation */}
-      <nav className="sticky top-0 z-40 bg-[#161a23]/95 backdrop-blur border-b border-slate-800">
+      <nav className="sticky top-16 md:top-0 z-40 bg-[#161a23]/95 backdrop-blur border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center gap-2 py-3 overflow-x-auto scrollbar-hide">
             {NAV_SECTIONS.map((section) => (
@@ -95,7 +95,7 @@ export default function AdminFeaturesPage() {
                 }`}
               >
                 <section.icon className="h-4 w-4" />
-                <span className="hidden sm:inline">{section.label}</span>
+                <span>{section.label}</span>
               </a>
             ))}
           </div>
@@ -124,7 +124,7 @@ export default function AdminFeaturesPage() {
       <main className="max-w-5xl mx-auto px-4 py-8">
 
         {/* DASHBOARD */}
-        <section id="dashboard" className="mb-16 scroll-mt-20">
+        <section id="dashboard" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={BarChart3}
             title="Dashboard"
@@ -154,7 +154,7 @@ export default function AdminFeaturesPage() {
         </section>
 
         {/* LEADS */}
-        <section id="leads" className="mb-16 scroll-mt-20">
+        <section id="leads" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Users}
             title="Leads & Pipeline"
@@ -206,7 +206,7 @@ export default function AdminFeaturesPage() {
         </section>
 
         {/* ESTIMATES & QUOTES */}
-        <section id="estimates" className="mb-16 scroll-mt-20">
+        <section id="estimates" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Calculator}
             title="Estimates & Quotes"
@@ -259,7 +259,7 @@ export default function AdminFeaturesPage() {
                 Pre-built bundles for common jobs. Apply with one click.
               </p>
             </InfoCard>
-            <InfoCard title="Geographic Pricing" link="/pricing/geographic" small>
+            <InfoCard title="Geographic Pricing" link="/rate-management/geographic" small>
               <p className="text-slate-400 text-sm">
                 Auto-adjust prices by region with multipliers.
               </p>
@@ -268,7 +268,7 @@ export default function AdminFeaturesPage() {
         </section>
 
         {/* INVOICES */}
-        <section id="invoices" className="mb-16 scroll-mt-20">
+        <section id="invoices" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Receipt}
             title="Invoices"
@@ -297,7 +297,7 @@ export default function AdminFeaturesPage() {
         </section>
 
         {/* MESSAGES */}
-        <section id="messages" className="mb-16 scroll-mt-20">
+        <section id="messages" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={MessageSquare}
             title="Messages"
@@ -318,7 +318,7 @@ export default function AdminFeaturesPage() {
         </section>
 
         {/* COMMUNICATIONS */}
-        <section id="communications" className="mb-16 scroll-mt-20">
+        <section id="communications" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Mail}
             title="Communications"
@@ -351,7 +351,7 @@ export default function AdminFeaturesPage() {
         </section>
 
         {/* CUSTOMER PORTAL */}
-        <section id="portal" className="mb-16 scroll-mt-20">
+        <section id="portal" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Home}
             title="Customer Portal"
@@ -372,7 +372,7 @@ export default function AdminFeaturesPage() {
         </section>
 
         {/* TEAM */}
-        <section id="team" className="mb-16 scroll-mt-20">
+        <section id="team" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={UserPlus}
             title="Team Management"
@@ -402,7 +402,7 @@ export default function AdminFeaturesPage() {
         </section>
 
         {/* AUTOMATIONS */}
-        <section id="automations" className="mb-16 scroll-mt-20">
+        <section id="automations" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Workflow}
             title="Automations"
@@ -439,7 +439,7 @@ export default function AdminFeaturesPage() {
         </section>
 
         {/* SETTINGS */}
-        <section id="settings" className="mb-16 scroll-mt-20">
+        <section id="settings" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Settings}
             title="Settings"
@@ -451,13 +451,13 @@ export default function AdminFeaturesPage() {
             <SettingsCard title="Business Hours" desc="Operating schedule" />
             <SettingsCard title="Notifications" desc="Email/SMS preferences" />
             <SettingsCard title="Integrations" desc="Stripe, Twilio, etc." />
-            <SettingsCard title="Pricing" desc="Base rates, markups" link="/pricing" />
+            <SettingsCard title="Pricing" desc="Base rates, markups" link="/rate-management" />
             <SettingsCard title="Security" desc="Passwords, sessions" />
           </div>
         </section>
 
         {/* FAQ */}
-        <section id="faq" className="mb-16 scroll-mt-20">
+        <section id="faq" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={HelpCircle}
             title="Common Questions"

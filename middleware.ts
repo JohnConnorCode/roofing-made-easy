@@ -19,7 +19,7 @@ function isAdminRoute(pathname: string): boolean {
   return pathname.startsWith('/dashboard') ||
          pathname.startsWith('/leads') ||
          pathname.startsWith('/estimates') ||
-         pathname.startsWith('/pricing') ||
+         pathname.startsWith('/rate-management') ||
          pathname.startsWith('/macros') ||
          pathname.startsWith('/customers') ||
          pathname.startsWith('/settings') ||
@@ -27,7 +27,13 @@ function isAdminRoute(pathname: string): boolean {
          pathname.startsWith('/team') ||
          pathname.startsWith('/tasks') ||
          pathname.startsWith('/templates') ||
-         pathname.startsWith('/workflows')
+         pathname.startsWith('/workflows') ||
+         pathname.startsWith('/seo-strategy') ||
+         pathname.startsWith('/content-strategy') ||
+         pathname.startsWith('/features') ||
+         pathname.startsWith('/communications') ||
+         pathname.startsWith('/invoices') ||
+         pathname.startsWith('/messages')
 }
 
 // Check if path is a customer portal route
@@ -194,7 +200,7 @@ export const config = {
     '/dashboard/:path*',
     '/leads/:path*',
     '/estimates/:path*',
-    '/pricing/:path*',
+    '/rate-management/:path*',
     '/macros/:path*',
     '/customers/:path*',
     '/settings/:path*',
@@ -203,6 +209,12 @@ export const config = {
     '/tasks/:path*',
     '/templates/:path*',
     '/workflows/:path*',
+    '/seo-strategy/:path*',
+    '/content-strategy/:path*',
+    '/features/:path*',
+    '/communications/:path*',
+    '/invoices/:path*',
+    '/messages/:path*',
     '/login',
     // Customer portal routes
     '/portal/:path*',

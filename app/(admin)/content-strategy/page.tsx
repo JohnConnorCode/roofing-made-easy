@@ -85,7 +85,7 @@ export default function ContentStrategyPage() {
   return (
     <div className="-m-4 md:-m-8 min-h-screen bg-[#0c0f14] overflow-x-hidden">
       {/* Sticky Navigation */}
-      <nav className="sticky top-0 z-40 bg-[#161a23]/95 backdrop-blur border-b border-slate-800">
+      <nav className="sticky top-16 md:top-0 z-40 bg-[#161a23]/95 backdrop-blur border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center gap-2 py-3 overflow-x-auto scrollbar-hide">
             {NAV_SECTIONS.map((section) => (
@@ -99,7 +99,7 @@ export default function ContentStrategyPage() {
                 }`}
               >
                 <section.icon className="h-4 w-4" />
-                <span className="hidden sm:inline">{section.label}</span>
+                <span>{section.label}</span>
               </a>
             ))}
           </div>
@@ -129,7 +129,7 @@ export default function ContentStrategyPage() {
       <main className="max-w-5xl mx-auto px-4 py-8">
 
         {/* OVERVIEW */}
-        <section id="overview" className="mb-16 scroll-mt-20">
+        <section id="overview" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Target}
             title="Strategy Overview"
@@ -186,7 +186,7 @@ export default function ContentStrategyPage() {
         </section>
 
         {/* CONTENT TYPES */}
-        <section id="content-types" className="mb-16 scroll-mt-20">
+        <section id="content-types" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={FileText}
             title="Content Types That Drive Traffic"
@@ -275,7 +275,7 @@ export default function ContentStrategyPage() {
         </section>
 
         {/* CITY PAGES */}
-        <section id="city-pages" className="mb-16 scroll-mt-20">
+        <section id="city-pages" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={MapPin}
             title="City Page Expansion Plan"
@@ -332,7 +332,7 @@ export default function ContentStrategyPage() {
         </section>
 
         {/* BLOG STRATEGY */}
-        <section id="blog-strategy" className="mb-16 scroll-mt-20">
+        <section id="blog-strategy" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={PenTool}
             title="Blog Content Strategy"
@@ -401,7 +401,7 @@ export default function ContentStrategyPage() {
         </section>
 
         {/* AI PROMPTS */}
-        <section id="prompts" className="mb-16 scroll-mt-20">
+        <section id="prompts" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Lightbulb}
             title="AI Content Prompts"
@@ -595,7 +595,7 @@ Rules:
         </section>
 
         {/* CONTENT CALENDAR */}
-        <section id="calendar" className="mb-16 scroll-mt-20">
+        <section id="calendar" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Calendar}
             title="Content Calendar"
@@ -656,7 +656,7 @@ Rules:
         </section>
 
         {/* SEO CHECKLIST */}
-        <section id="seo-checklist" className="mb-16 scroll-mt-20">
+        <section id="seo-checklist" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Search}
             title="On-Page SEO Checklist"
@@ -729,7 +729,7 @@ Rules:
         </section>
 
         {/* LINK BUILDING */}
-        <section id="link-building" className="mb-16 scroll-mt-20">
+        <section id="link-building" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={Link2}
             title="Link Building Strategy"
@@ -771,7 +771,7 @@ Rules:
         </section>
 
         {/* CONTENT REFRESH */}
-        <section id="refresh" className="mb-16 scroll-mt-20">
+        <section id="refresh" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={RefreshCw}
             title="Content Refresh Strategy"
@@ -832,7 +832,7 @@ Rules:
         </section>
 
         {/* TRACKING */}
-        <section id="tracking" className="mb-16 scroll-mt-20">
+        <section id="tracking" className="mb-16 scroll-mt-[7.5rem] md:scroll-mt-20">
           <SectionHeader
             icon={BarChart3}
             title="Tracking Progress"
