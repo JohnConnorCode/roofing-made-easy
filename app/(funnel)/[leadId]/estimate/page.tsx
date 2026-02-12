@@ -1,13 +1,14 @@
 'use client'
 
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useFunnelStore } from '@/stores/funnelStore'
 import { useToast } from '@/components/ui/toast'
 import { formatCurrency } from '@/lib/utils'
 import { EstimateDocument } from '@/components/estimate'
-import { Loader2, AlertTriangle } from 'lucide-react'
+import { Loader2, AlertTriangle, Phone, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
 
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || ''
 
@@ -16,131 +17,12 @@ interface EstimateData {
   priceLikely: number
   priceHigh: number
   explanation?: string
+  aiExplanationStatus?: 'success' | 'fallback' | 'failed'
   factors: Array<{
     name: string
     impact: number
     description: string
   }>
-}
-
-// Generate demo estimate based on funnel data
-function generateDemoEstimate(funnelData: {
-  jobType: string | null
-  roofSizeSqft: number | null
-  roofMaterial: string | null
-  stories: number
-  hasSkylights: boolean
-  hasChimneys: boolean
-  hasSolarPanels: boolean
-}): EstimateData {
-  const jobType = funnelData.jobType
-  const factors: EstimateData['factors'] = []
-
-  // Fixed-price services (don't scale with roof size)
-  if (jobType === 'inspection') {
-    return {
-      priceLow: 0,
-      priceLikely: 0,
-      priceHigh: 250,
-      explanation: 'Our comprehensive roof inspection includes a detailed assessment of your roof condition, identification of any issues, and a written report with recommendations. Many homeowners qualify for a free inspection.',
-      factors: [],
-    }
-  }
-
-  if (jobType === 'maintenance') {
-    return {
-      priceLow: 250,
-      priceLikely: 400,
-      priceHigh: 600,
-      explanation: 'Routine maintenance includes gutter cleaning, debris removal, minor sealant repairs, and a condition assessment. Regular maintenance extends your roof life and prevents costly repairs.',
-      factors: [],
-    }
-  }
-
-  // Size-based pricing for replacement/repair
-  const roofSize = funnelData.roofSizeSqft || 2000
-  const material = funnelData.roofMaterial || 'asphalt_shingle'
-
-  // Base price per sqft by material (for full replacement)
-  const basePricePerSqft: Record<string, number> = {
-    asphalt_shingle: 4.5,
-    metal: 8.5,
-    tile: 12.0,
-    slate: 18.0,
-    wood_shake: 9.0,
-    flat_membrane: 7.0,
-    unknown: 5.5,
-  }
-
-  const pricePerSqft = basePricePerSqft[material] || 5.5
-  let basePrice = roofSize * pricePerSqft
-
-  // Repairs are typically $500-$3,000 for common issues
-  if (jobType === 'repair') {
-    const repairBase = 800
-    const repairMax = 2500
-    return {
-      priceLow: 350,
-      priceLikely: repairBase,
-      priceHigh: repairMax,
-      explanation: 'Repair costs depend on the extent of damage and materials needed. Common repairs like fixing leaks, replacing damaged shingles, or resealing flashing typically fall within this range. We\'ll provide an exact quote after inspection.',
-      factors: [],
-    }
-  }
-
-  // Full replacement - add adjustments
-  if (funnelData.stories >= 2) {
-    const storyAdjust = Math.round(basePrice * 0.12 * (funnelData.stories - 1))
-    factors.push({
-      name: `${funnelData.stories}-Story Home`,
-      impact: storyAdjust,
-      description: 'Additional labor and safety equipment',
-    })
-    basePrice += storyAdjust
-  }
-
-  if (funnelData.hasSkylights) {
-    factors.push({
-      name: 'Skylights',
-      impact: 400,
-      description: 'Flashing and sealing around skylights',
-    })
-    basePrice += 400
-  }
-
-  if (funnelData.hasChimneys) {
-    factors.push({
-      name: 'Chimney Flashing',
-      impact: 500,
-      description: 'New chimney flashing installation',
-    })
-    basePrice += 500
-  }
-
-  if (funnelData.hasSolarPanels) {
-    factors.push({
-      name: 'Solar Panel Coordination',
-      impact: 1800,
-      description: 'Removal and reinstallation by solar provider',
-    })
-    basePrice += 1800
-  }
-
-  // Calculate realistic range (±15%)
-  const priceLow = Math.round(basePrice * 0.85)
-  const priceLikely = Math.round(basePrice)
-  const priceHigh = Math.round(basePrice * 1.15)
-
-  const materialName = material.replace(/_/g, ' ')
-  const explanation = `Based on your ${roofSize.toLocaleString()} sq ft ${materialName} roof, a full replacement typically costs ${formatCurrency(priceLow)} to ${formatCurrency(priceHigh)}. This includes tear-off, new underlayment, materials, installation, and cleanup. Final pricing confirmed after on-site inspection.`
-
-  return {
-    priceLow,
-    priceLikely,
-    priceHigh,
-    explanation,
-    factors,
-  }
 }
 
 export default function EstimatePage() {
@@ -174,19 +56,6 @@ export default function EstimatePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [estimate, setEstimateData] = useState<EstimateData | null>(null)
-
-  // Generate demo estimate from funnel data
-  const demoEstimate = useMemo(() => {
-    return generateDemoEstimate({
-      jobType,
-      roofSizeSqft,
-      roofMaterial,
-      stories,
-      hasSkylights,
-      hasChimneys,
-      hasSolarPanels,
-    })
-  }, [jobType, roofSizeSqft, roofMaterial, stories, hasSkylights, hasChimneys, hasSolarPanels])
 
   const handleScheduleConsultation = useCallback(() => {
     if (CALENDLY_URL) {
@@ -278,23 +147,21 @@ export default function EstimatePage() {
           priceLikely: data.price_likely,
           priceHigh: data.price_high,
           explanation: data.ai_explanation,
+          aiExplanationStatus: data.ai_explanation_status,
           factors: data.adjustments || [],
         }
 
         setEstimateData(estimateData)
         setEstimate(estimateData)
-      } catch (err) {
-        // Fallback to locally generated estimate on error
-        console.error('Failed to fetch estimate from server:', err)
-        setEstimateData(demoEstimate)
-        setEstimate(demoEstimate)
+      } catch {
+        setError('We\'re having trouble loading your estimate. Your information has been saved \u2014 please try refreshing, or call us for immediate help.')
       } finally {
         setIsLoading(false)
       }
     }
 
     fetchEstimate()
-  }, [leadId, demoEstimate, setEstimate])
+  }, [leadId, setEstimate])
 
   if (isLoading) {
     return (
@@ -308,16 +175,29 @@ export default function EstimatePage() {
 
   if (error || !estimate) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center">
+      <div className="flex min-h-[60vh] flex-col items-center justify-center px-4">
         <AlertTriangle className="h-12 w-12 text-[#c9a25c]" />
-        <p className="mt-4 text-lg text-slate-100">{error || 'Something went wrong'}</p>
-        <Button
-          variant="outline"
-          className="mt-4 border-slate-600 text-slate-300 hover:bg-slate-800"
-          onClick={() => router.refresh()}
-        >
-          Try Again
-        </Button>
+        <p className="mt-4 text-lg text-slate-100 text-center max-w-md">
+          {error || 'Something went wrong'}
+        </p>
+        <div className="mt-6 flex flex-col gap-3 w-full max-w-xs">
+          <Button
+            variant="outline"
+            className="w-full border-slate-600 text-slate-300 hover:bg-slate-800"
+            leftIcon={<RefreshCw className="h-4 w-4" />}
+            onClick={() => window.location.reload()}
+          >
+            Refresh Page
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full border-slate-600 text-slate-300 hover:bg-slate-800"
+            leftIcon={<Phone className="h-4 w-4" />}
+            onClick={() => { window.location.href = getPhoneLink() }}
+          >
+            Call Us: {getPhoneDisplay()}
+          </Button>
+        </div>
       </div>
     )
   }
@@ -342,6 +222,7 @@ export default function EstimatePage() {
       priceLikely={estimate.priceLikely}
       priceHigh={estimate.priceHigh}
       explanation={estimate.explanation}
+      aiExplanationStatus={estimate.aiExplanationStatus}
       factors={estimate.factors}
       onScheduleConsultation={handleScheduleConsultation}
       onShare={handleShare}

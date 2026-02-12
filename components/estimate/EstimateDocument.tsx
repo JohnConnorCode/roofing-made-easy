@@ -11,6 +11,7 @@ import { COMPANY_INFO } from '@/lib/data/estimate-content'
 import type { JobType, RoofMaterial } from '@/lib/supabase/types'
 import {
   CheckCircle,
+  ClipboardCheck,
   Phone,
   Calendar,
   Download,
@@ -94,6 +95,7 @@ export interface EstimateDocumentProps {
   priceLikely: number
   priceHigh: number
   explanation?: string
+  aiExplanationStatus?: 'success' | 'fallback' | 'failed'
   factors?: Array<{
     name: string
     impact: number
@@ -170,6 +172,7 @@ export function EstimateDocument({
   priceLikely,
   priceHigh,
   explanation,
+  aiExplanationStatus,
   factors,
   validUntil,
   onScheduleConsultation,
@@ -342,11 +345,16 @@ export function EstimateDocument({
           )}
 
           {/* Explanation */}
-          {explanation && (
-            <div className="rounded-lg bg-[#1a1f2e] border border-slate-700 p-4">
+          <div className="rounded-lg bg-[#1a1f2e] border border-slate-700 p-4">
+            {explanation ? (
               <p className="text-sm text-slate-300 leading-relaxed">{explanation}</p>
-            </div>
-          )}
+            ) : (
+              <p className="text-sm text-slate-400 leading-relaxed italic">
+                This estimate is calculated using current market rates for your area, roof specifications, and
+                material costs. A personalized analysis will be provided during your free consultation.
+              </p>
+            )}
+          </div>
         </CardContent>
       </Card>
 
@@ -358,6 +366,38 @@ export function EstimateDocument({
             {getIncludedItems(jobType).map((item, index) => (
               <div key={index} className="flex items-center gap-2 text-sm">
                 <CheckCircle className="h-4 w-4 text-[#3d7a5a] shrink-0" />
+                <span className="text-slate-300">{item}</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Roofing Estimate Checklist */}
+      <Card className="border-slate-700/50 bg-[#161a23]">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-2 mb-2">
+            <ClipboardCheck className="h-5 w-5 text-[#c9a25c]" />
+            <h3 className="font-semibold text-slate-100">Before You Accept Any Roofing Bid</h3>
+          </div>
+          <p className="text-sm text-slate-400 mb-4">
+            Protect yourself and your investment. Use this checklist when comparing estimates.
+          </p>
+          <div className="grid gap-3 md:grid-cols-2">
+            {[
+              'Verify the contractor is licensed and insured in your state',
+              'Ask for proof of workers\' compensation insurance',
+              'Get at least 3 written estimates for comparison',
+              'Check online reviews and ask for local references',
+              'Confirm the exact materials and brands to be used',
+              'Ensure the contract includes a start and completion date',
+              'Ask about the warranty \u2014 workmanship AND manufacturer',
+              'Understand the payment schedule (never pay 100% upfront)',
+              'Ask if they pull the necessary building permits',
+              'Check for a lien waiver clause protecting your property',
+            ].map((item, index) => (
+              <div key={index} className="flex items-start gap-2 text-sm">
+                <CheckCircle className="h-4 w-4 text-[#3d7a5a] shrink-0 mt-0.5" />
                 <span className="text-slate-300">{item}</span>
               </div>
             ))}

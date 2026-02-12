@@ -28,6 +28,7 @@ interface PublicEstimateViewProps {
   priceLikely: number
   priceHigh: number
   explanation?: string
+  aiExplanationStatus?: 'success' | 'fallback' | 'failed'
   factors: Array<{
     name: string
     impact: number
@@ -50,6 +51,7 @@ export function PublicEstimateView({
   priceLikely,
   priceHigh,
   explanation,
+  aiExplanationStatus,
   factors,
   validUntil,
 }: PublicEstimateViewProps) {
@@ -150,6 +152,7 @@ export function PublicEstimateView({
           priceLikely={priceLikely}
           priceHigh={priceHigh}
           explanation={explanation}
+          aiExplanationStatus={aiExplanationStatus}
           factors={factors}
           validUntil={validUntil}
           onScheduleConsultation={handleScheduleConsultation}

@@ -145,10 +145,10 @@ export async function POST(
     })
 
     // Determine AI explanation status
-    const aiExplanationStatus = aiResult.success
-      ? 'success'
-      : aiResult.provider === 'fallback'
-        ? 'fallback'
+    const aiExplanationStatus = aiResult.provider === 'fallback'
+      ? 'fallback'
+      : aiResult.success
+        ? 'success'
         : 'failed'
 
     // Verify supersede update succeeded before inserting

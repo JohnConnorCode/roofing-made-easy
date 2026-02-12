@@ -59,6 +59,7 @@ interface LeadWithRelations {
     price_likely: number
     price_high: number
     ai_explanation: string | null
+    ai_explanation_status: string | null
     adjustments: Array<{ name: string; impact: number; description: string }> | null
     valid_until: string | null
     created_at: string
@@ -107,6 +108,7 @@ export default async function SharedEstimatePage({ params }: Props) {
         price_likely,
         price_high,
         ai_explanation,
+        ai_explanation_status,
         adjustments,
         valid_until,
         created_at,
@@ -171,6 +173,7 @@ export default async function SharedEstimatePage({ params }: Props) {
       priceLikely={estimate.price_likely}
       priceHigh={estimate.price_high}
       explanation={estimate.ai_explanation ?? undefined}
+      aiExplanationStatus={(estimate.ai_explanation_status as 'success' | 'fallback' | 'failed') ?? undefined}
       factors={estimate.adjustments || []}
       validUntil={estimate.valid_until ?? undefined}
     />
