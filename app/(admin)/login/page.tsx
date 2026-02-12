@@ -146,7 +146,7 @@ export default function LoginPage() {
 
       <p className="mt-8 text-center text-sm text-slate-500 animate-slide-up delay-200">
         Having trouble?{' '}
-        <a href="mailto:support@farrellroofing.com" className="text-gold-light hover:text-gold-light/90 hover:underline transition-colors">
+        <a href="mailto:support@smartroofpricing.com" className="text-gold-light hover:text-gold-light/90 hover:underline transition-colors">
           Contact support
         </a>
       </p>

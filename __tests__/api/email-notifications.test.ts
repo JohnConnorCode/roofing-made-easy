@@ -47,7 +47,7 @@ describe('Email Templates', () => {
     })
 
     it('includes the estimate URL', () => {
-      const estimateUrl = 'https://farrellroofing.com/estimate/test-token-123'
+      const estimateUrl = 'https://smartroofpricing.com/estimate/test-token-123'
       const result = customerEstimateEmail({
         priceLow: 8000,
         priceLikely: 10000,
@@ -256,7 +256,7 @@ describe('Email Templates', () => {
     })
 
     it('includes portal URL when provided', () => {
-      const portalUrl = 'https://farrellroofing.com/portal'
+      const portalUrl = 'https://smartroofpricing.com/portal'
       const result = paymentReceivedEmail({
         amount: 2500,
         paymentType: 'deposit',
@@ -342,7 +342,7 @@ describe('Email Templates', () => {
     })
 
     it('includes admin URL', () => {
-      const adminUrl = 'https://farrellroofing.com/admin/contacts/abc'
+      const adminUrl = 'https://smartroofpricing.com/admin/contacts/abc'
       const result = contactAdminNotificationEmail({
         name: 'Test',
         email: 'test@example.com',

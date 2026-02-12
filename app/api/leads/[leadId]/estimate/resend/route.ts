@@ -117,7 +117,7 @@ export async function POST(
     const includeSms = body.includeSms !== false // Default to true
 
     if (includeSms && contact?.phone && contact.consent_sms && lead.share_token) {
-      const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+      const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
       const estimateUrl = `${BASE_URL}/estimate/${lead.share_token}`
       const smsResult = await sendEstimateReadySms(
         contact.phone,

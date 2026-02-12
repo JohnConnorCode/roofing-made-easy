@@ -4,7 +4,7 @@ import { ContactPageNAPSchema, NAPSchema } from '@/components/seo/nap-schema'
 import { BreadcrumbSchema } from '@/components/seo/list-schema'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: `Contact Us | ${BUSINESS_CONFIG.name} - ${BUSINESS_CONFIG.address.city}, ${BUSINESS_CONFIG.address.stateCode}`,

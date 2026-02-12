@@ -257,19 +257,19 @@ describe('PDF Filename Generation', () => {
     const datePart = '2026-02-02'
 
     const customerPart = customerName.replace(/\s+/g, '-').toLowerCase()
-    const filename = `farrell-roofing-estimate-${customerPart}-${datePart}.pdf`
+    const filename = `smart-roof-pricing-estimate-${customerPart}-${datePart}.pdf`
 
-    expect(filename).toBe('farrell-roofing-estimate-john-smith-2026-02-02.pdf')
+    expect(filename).toBe('smart-roof-pricing-estimate-john-smith-2026-02-02.pdf')
   })
 
   it('generates fallback filename without customer name', () => {
     const getFilename = (customerName: string | undefined) => {
       const datePart = '2026-02-02'
       const customerPart = customerName?.replace(/\s+/g, '-').toLowerCase() || 'estimate'
-      return `farrell-roofing-estimate-${customerPart}-${datePart}.pdf`
+      return `smart-roof-pricing-estimate-${customerPart}-${datePart}.pdf`
     }
 
-    expect(getFilename(undefined)).toBe('farrell-roofing-estimate-estimate-2026-02-02.pdf')
+    expect(getFilename(undefined)).toBe('smart-roof-pricing-estimate-estimate-2026-02-02.pdf')
   })
 
   it('handles special characters in customer name', () => {

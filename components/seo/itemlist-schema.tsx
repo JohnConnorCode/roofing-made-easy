@@ -23,7 +23,7 @@ export function ItemListSchema({
   cityName,
   citySlug,
   stateCode,
-  baseUrl = 'https://farrellroofing.com'
+  baseUrl = 'https://smartroofpricing.com'
 }: ItemListSchemaProps) {
   const contractorTypes = getContractorTypesForCity(citySlug)
 

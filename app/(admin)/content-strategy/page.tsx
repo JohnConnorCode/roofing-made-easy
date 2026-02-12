@@ -200,7 +200,7 @@ export default function ContentStrategyPage() {
               impact="Very High"
               impactColor="text-emerald-400"
               description="Dedicated pages for each service in each city you serve. These capture 'roof replacement [city] MS' searches — the highest-intent local queries."
-              example="farrellroofing.com/roof-replacement-tupelo-ms"
+              example="smartroofpricing.com/roof-replacement-tupelo-ms"
               existing="You already have these! The sitemap generates service+city combos. Add more cities and services to expand coverage."
               tips={[
                 'Each page needs unique local content — not just city-name swaps',
@@ -246,7 +246,7 @@ export default function ContentStrategyPage() {
               impact="High"
               impactColor="text-blue-400"
               description="You already generate these! They target the exact search query homeowners use when comparing contractors. Extremely high conversion intent."
-              example="farrellroofing.com/best-roofers-in-tupelo-ms"
+              example="smartroofpricing.com/best-roofers-in-tupelo-ms"
               existing="Already live in your sitemap. Keep them updated with fresh reviews and current info."
               tips={[
                 'Update quarterly with latest reviews and ratings',

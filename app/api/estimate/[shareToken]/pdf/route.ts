@@ -119,7 +119,7 @@ export async function GET(
     // Create filename
     const customerPart = pdfData.customerName?.replace(/\s+/g, '-').toLowerCase() || 'estimate'
     const datePart = new Date().toISOString().split('T')[0]
-    const filename = `farrell-roofing-estimate-${customerPart}-${datePart}.pdf`
+    const filename = `smart-roof-pricing-estimate-${customerPart}-${datePart}.pdf`
 
     return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,

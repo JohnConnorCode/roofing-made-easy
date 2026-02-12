@@ -7,7 +7,7 @@
 
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 interface BlogPostingSchemaProps {
   title: string
@@ -65,7 +65,7 @@ export function BlogPostingSchema({
       url: BASE_URL,
       logo: {
         '@type': 'ImageObject',
-        url: `${BASE_URL}/images/farrell-roofing-logo.png`,
+        url: `${BASE_URL}/images/smart-roof-pricing-logo.png`,
         width: 200,
         height: 60,
       },

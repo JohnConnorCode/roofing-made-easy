@@ -5,7 +5,7 @@ import { getAllBlogPosts } from '@/lib/data/blog'
 import { getAllServiceSlugs } from '@/lib/data/ms-services'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
   const currentDate = new Date()
 
   // Get all dynamic content

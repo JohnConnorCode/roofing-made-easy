@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Farrell Roofing',

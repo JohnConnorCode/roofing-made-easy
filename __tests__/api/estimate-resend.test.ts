@@ -124,11 +124,11 @@ describe('Estimate Resend API', () => {
 
   describe('Email Sending', () => {
     it('builds correct estimate URL with share token', () => {
-      const baseUrl = 'https://farrellroofing.com'
+      const baseUrl = 'https://smartroofpricing.com'
       const shareToken = 'abc-123-def-456'
       const expectedUrl = `${baseUrl}/estimate/${shareToken}`
 
-      expect(expectedUrl).toBe('https://farrellroofing.com/estimate/abc-123-def-456')
+      expect(expectedUrl).toBe('https://smartroofpricing.com/estimate/abc-123-def-456')
     })
 
     it('includes all required email data', () => {

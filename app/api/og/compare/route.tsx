@@ -189,7 +189,7 @@ export async function GET(request: NextRequest) {
                 color: '#64748b',
               }}
             >
-              farrellroofing.com
+              smartroofpricing.com
             </span>
             <div
               style={{

@@ -21,7 +21,7 @@ interface LocationSchemaProps {
  * NOTE: Returns null in production if real contact info is not configured.
  * This prevents Google penalties for fabricated structured data.
  */
-export function CityLocationSchema({ city, baseUrl = 'https://farrellroofing.com' }: LocationSchemaProps) {
+export function CityLocationSchema({ city, baseUrl = 'https://smartroofpricing.com' }: LocationSchemaProps) {
   // SAFETY: Don't render LocalBusiness schema with fake contact info in production
   if (process.env.NODE_ENV === 'production' && !hasRealContactInfo()) {
     return null
@@ -35,7 +35,7 @@ export function CityLocationSchema({ city, baseUrl = 'https://farrellroofing.com
     '@type': 'LocalBusiness',
     '@id': `${baseUrl}/${city.slug}-roofing/#localbusiness`,
     name: `${BUSINESS_CONFIG.name} - ${city.name}`,
-    image: `${baseUrl}/images/farrell-roofing-${city.slug}.jpg`,
+    image: `${baseUrl}/images/smart-roof-pricing-${city.slug}.jpg`,
     url: `${baseUrl}/${city.slug}-roofing`,
     telephone: BUSINESS_CONFIG.phone.raw,
     priceRange: '$$',
@@ -134,7 +134,7 @@ interface CountySchemaProps {
  * NOTE: Returns null in production if real contact info is not configured.
  * This prevents Google penalties for fabricated structured data.
  */
-export function CountyLocationSchema({ county, baseUrl = 'https://farrellroofing.com' }: CountySchemaProps) {
+export function CountyLocationSchema({ county, baseUrl = 'https://smartroofpricing.com' }: CountySchemaProps) {
   // SAFETY: Don't render LocalBusiness schema with fake contact info in production
   if (process.env.NODE_ENV === 'production' && !hasRealContactInfo()) {
     return null
@@ -192,7 +192,7 @@ export function ServiceLocationSchema({
   city,
   serviceName,
   serviceDescription,
-  baseUrl = 'https://farrellroofing.com'
+  baseUrl = 'https://smartroofpricing.com'
 }: ServiceLocationSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
@@ -262,7 +262,7 @@ interface BreadcrumbSchemaProps {
   baseUrl?: string
 }
 
-export function BreadcrumbSchema({ items, baseUrl = 'https://farrellroofing.com' }: BreadcrumbSchemaProps) {
+export function BreadcrumbSchema({ items, baseUrl = 'https://smartroofpricing.com' }: BreadcrumbSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

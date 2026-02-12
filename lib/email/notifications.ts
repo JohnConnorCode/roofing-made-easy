@@ -22,7 +22,7 @@ import {
 import { renderEmailTemplate, TEMPLATE_SLUGS } from './template-service'
 import { createClient } from '@/lib/supabase/server'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 interface NotificationSettings {
   newLeadEmail: boolean

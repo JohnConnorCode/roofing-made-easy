@@ -2,7 +2,7 @@ import { Resend } from 'resend'
 import { getResendCredentials } from '@/lib/credentials/loader'
 
 // From address configuration
-const FROM_EMAIL = process.env.EMAIL_FROM || 'notifications@farrellroofing.com'
+const FROM_EMAIL = process.env.EMAIL_FROM || 'notifications@smartroofpricing.com'
 const FROM_NAME = process.env.EMAIL_FROM_NAME || 'Farrell Roofing'
 
 export interface SendEmailOptions {

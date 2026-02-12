@@ -176,7 +176,7 @@ describe('Customer Quote PDF API', () => {
     })
 
     it('includes content disposition header for download', () => {
-      const filename = 'farrell-roofing-quote-john-smith.pdf'
+      const filename = 'smart-roof-pricing-quote-john-smith.pdf'
       const disposition = `attachment; filename="${filename}"`
 
       expect(disposition).toContain('attachment')

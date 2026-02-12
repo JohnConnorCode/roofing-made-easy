@@ -283,7 +283,7 @@ export default function SettingsPage() {
                     value={profileData.email}
                     onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
                     disabled
-                    hint="Email changes require support. Contact support@farrellroofing.com"
+                    hint="Email changes require support. Contact support@smartroofpricing.com"
                   />
                   <Input
                     type="tel"

@@ -13,7 +13,7 @@ import {
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: 'Service Areas | Farrell Roofing | Northeast Mississippi',

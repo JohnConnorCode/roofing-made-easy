@@ -1,4 +1,4 @@
-Contact: mailto:info@farrellroofing.com
+Contact: mailto:info@smartroofpricing.com
 Expires: 2027-02-04T00:00:00.000Z
 Preferred-Languages: en
-Canonical: https://farrellroofing.com/.well-known/security.txt
+Canonical: https://smartroofpricing.com/.well-known/security.txt

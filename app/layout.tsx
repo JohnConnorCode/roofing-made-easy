@@ -19,7 +19,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://farrellroofing.com";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://smartroofpricing.com";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -85,8 +85,8 @@ export const metadata: Metadata = {
     title: "Farrell Roofing | Tupelo MS Roofing Contractor",
     description:
       "Trusted roofing contractor serving Northeast Mississippi. Free estimates available.",
-    site: "@farrellroofing",
-    creator: "@farrellroofing",
+    site: "@smartroofpricing",
+    creator: "@smartroofpricing",
     images: ["/images/og-default.jpg"],
   },
   robots: {

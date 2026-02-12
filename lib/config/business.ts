@@ -28,8 +28,8 @@ export const BUSINESS_CONFIG = {
   },
 
   email: {
-    primary: 'info@farrellroofing.com',
-    support: 'support@farrellroofing.com',
+    primary: 'info@smartroofpricing.com',
+    support: 'support@smartroofpricing.com',
   },
 
   // -------------------------------------------------------------------------
@@ -73,13 +73,13 @@ export const BUSINESS_CONFIG = {
   // -------------------------------------------------------------------------
   social: {
     // TODO: Replace with actual profile URLs or set to null if not applicable
-    facebook: null as string | null,      // e.g., 'https://www.facebook.com/farrellroofing'
-    instagram: null as string | null,     // e.g., 'https://www.instagram.com/farrellroofing'
-    twitter: null as string | null,       // e.g., 'https://twitter.com/farrellroofing'
-    linkedin: null as string | null,      // e.g., 'https://www.linkedin.com/company/farrellroofing'
-    youtube: null as string | null,       // e.g., 'https://www.youtube.com/@farrellroofing'
+    facebook: null as string | null,      // e.g., 'https://www.facebook.com/smartroofpricing'
+    instagram: null as string | null,     // e.g., 'https://www.instagram.com/smartroofpricing'
+    twitter: null as string | null,       // e.g., 'https://twitter.com/smartroofpricing'
+    linkedin: null as string | null,      // e.g., 'https://www.linkedin.com/company/smartroofpricing'
+    youtube: null as string | null,       // e.g., 'https://www.youtube.com/@smartroofpricing'
     pinterest: null as string | null,
-    yelp: null as string | null,          // e.g., 'https://www.yelp.com/biz/farrell-roofing-tupelo'
+    yelp: null as string | null,          // e.g., 'https://www.yelp.com/biz/smart-roof-pricing-tupelo'
     bbb: null as string | null,           // e.g., 'https://www.bbb.org/...'
     googleBusiness: null as string | null, // e.g., 'https://www.google.com/maps?cid=YOUR_CID'
     houzz: null as string | null,

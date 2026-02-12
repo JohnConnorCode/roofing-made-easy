@@ -32,7 +32,7 @@ interface LocalBusinessSchemaProps {
 export function LocalBusinessSchema({
   name = BUSINESS_CONFIG.name,
   description = 'Trusted roofing contractor serving Tupelo and Northeast Mississippi. Professional roof repair, replacement, and storm damage restoration with free estimates.',
-  url = 'https://farrellroofing.com',
+  url = 'https://smartroofpricing.com',
   priceRange = '$$',
 }: LocalBusinessSchemaProps) {
   // SAFETY: Don't render LocalBusiness schema with fake contact info in production
@@ -51,8 +51,8 @@ export function LocalBusinessSchema({
     '@id': `${url}/#organization`,
     url,
     priceRange,
-    image: `${url}/images/farrell-roofing-logo.png`,
-    logo: `${url}/images/farrell-roofing-logo.png`,
+    image: `${url}/images/smart-roof-pricing-logo.png`,
+    logo: `${url}/images/smart-roof-pricing-logo.png`,
     telephone: BUSINESS_CONFIG.phone.raw,
     address: {
       '@type': 'PostalAddress',
@@ -145,7 +145,7 @@ export function ServiceSchema({
   name = 'Free Roofing Estimate',
   description = 'Get an instant, accurate roofing estimate for your Northeast Mississippi home. No contractors calling, no pressure. Just honest pricing for roof repair or replacement.',
   provider = BUSINESS_CONFIG.name,
-  url = 'https://farrellroofing.com',
+  url = 'https://smartroofpricing.com',
 }: ServiceSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
@@ -238,7 +238,7 @@ export function WebPageSchema({ name, description, url }: WebPageSchemaProps) {
     isPartOf: {
       '@type': 'WebSite',
       name: BUSINESS_CONFIG.name,
-      url: 'https://farrellroofing.com',
+      url: 'https://smartroofpricing.com',
     },
   }
 

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/server'
 import { PublicEstimateView } from './PublicEstimateView'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 interface Props {
   params: Promise<{ shareToken: string }>

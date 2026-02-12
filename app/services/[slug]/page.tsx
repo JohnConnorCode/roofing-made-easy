@@ -14,7 +14,7 @@ import {
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { ServiceSchemaBundle } from '@/components/seo/service-schema'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 interface ServiceDetailPageProps {
   params: Promise<{
@@ -83,8 +83,8 @@ export async function generateMetadata({
       title,
       description,
       images: [ogImageUrl],
-      creator: '@farrellroofing',
-      site: '@farrellroofing',
+      creator: '@smartroofpricing',
+      site: '@smartroofpricing',
     },
     robots: {
       index: true,

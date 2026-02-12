@@ -80,14 +80,14 @@ describe('SMS Templates', () => {
     it('includes customer name', () => {
       const message = SMS_TEMPLATES.estimateReady(
         'Sarah',
-        'https://farrellroofing.com/estimate/abc'
+        'https://smartroofpricing.com/estimate/abc'
       )
 
       expect(message).toContain('Sarah')
     })
 
     it('includes the estimate URL', () => {
-      const url = 'https://farrellroofing.com/estimate/test-token'
+      const url = 'https://smartroofpricing.com/estimate/test-token'
       const message = SMS_TEMPLATES.estimateReady('Customer', url)
 
       expect(message).toContain(url)

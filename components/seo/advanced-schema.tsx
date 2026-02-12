@@ -9,7 +9,7 @@ import {
   hasVerifiedReviews,
 } from '@/lib/config/business'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 // Organization Schema - Use on homepage/layout
 export function OrganizationSchema() {

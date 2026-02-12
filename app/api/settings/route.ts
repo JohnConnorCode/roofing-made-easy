@@ -124,7 +124,7 @@ const defaultSettings = {
     legalName: 'Farrell Roofing LLC',
     tagline: "Northeast Mississippi's Trusted Roofing Experts",
     phone: '(662) 555-0123',
-    email: 'info@farrellroofing.com',
+    email: 'info@smartroofpricing.com',
   },
   address: {
     street: '123 Main Street',
@@ -150,7 +150,7 @@ const defaultSettings = {
     newLeadEmail: true,
     estimateEmail: true,
     dailyDigest: false,
-    emailRecipients: ['admin@farrellroofing.com'],
+    emailRecipients: ['admin@smartroofpricing.com'],
   },
   leadSources: [
     { id: 'web_funnel', name: 'Web Funnel', enabled: true },

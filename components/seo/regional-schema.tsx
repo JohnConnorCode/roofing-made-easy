@@ -9,7 +9,7 @@ import {
   hasVerifiedReviews,
 } from '@/lib/config/business'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 // Complete Service Area Schema - Lists ALL served locations
 export function ServiceAreaSchema() {

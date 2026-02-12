@@ -10,7 +10,7 @@ import {
   hasRealContactInfo,
 } from '@/lib/config/business'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 // Re-export for backwards compatibility
 export const BUSINESS_INFO = {

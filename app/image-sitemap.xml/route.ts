@@ -2,7 +2,7 @@ import { getAllCities, getAllCounties } from '@/lib/data/ms-locations'
 import { getAllBlogPosts } from '@/lib/data/blog'
 import { getAllServices } from '@/lib/data/services'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 interface ImageEntry {
   loc: string

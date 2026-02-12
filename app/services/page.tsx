@@ -16,7 +16,7 @@ import { SiteHeader, SiteFooter } from '@/components/layout'
 import { ServicesListSchema, BreadcrumbSchema } from '@/components/seo/list-schema'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: `Roofing Services | Roof Repair, Replacement & More | ${BUSINESS_CONFIG.name}`,

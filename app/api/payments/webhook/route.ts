@@ -197,7 +197,7 @@ async function handlePaymentSuccess(
   }
 
   const amount = paymentIntent.amount / 100
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://farrellroofing.com'
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
 
   // Send professional payment confirmation email
   if (paymentIntent.receipt_email) {
