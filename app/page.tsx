@@ -4,7 +4,7 @@ import { ServiceSchema, FAQSchema } from '@/components/seo/json-ld'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 import { HOMEPAGE_FAQ_ITEMS } from '@/lib/data/homepage-faq'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: `${BUSINESS_CONFIG.name} | Free Instant Roofing Estimates - ${BUSINESS_CONFIG.address.city}, ${BUSINESS_CONFIG.address.stateCode}`,

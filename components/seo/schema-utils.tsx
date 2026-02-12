@@ -34,7 +34,7 @@ interface BreadcrumbSchemaProps {
   baseUrl?: string
 }
 
-export function BreadcrumbSchema({ items, baseUrl = 'https://smartroofpricing.com' }: BreadcrumbSchemaProps) {
+export function BreadcrumbSchema({ items, baseUrl = 'https://www.smartroofpricing.com' }: BreadcrumbSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

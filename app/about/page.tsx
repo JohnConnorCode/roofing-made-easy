@@ -13,7 +13,7 @@ import {
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { OrganizationSchema, AboutPageSchema, BreadcrumbSchema } from '@/components/seo/list-schema'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: `About Us | Family-Owned Roofing Since ${BUSINESS_CONFIG.foundedYear} | ${BUSINESS_CONFIG.name}`,

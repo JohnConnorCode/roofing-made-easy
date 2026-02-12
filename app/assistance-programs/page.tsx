@@ -3,7 +3,7 @@ import { BUSINESS_CONFIG } from '@/lib/config/business'
 import { BreadcrumbSchema } from '@/components/seo/list-schema'
 import AssistanceContent from '@/components/assistance/assistance-content'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: `Roof Assistance Programs | Grants & Financial Help | ${BUSINESS_CONFIG.name}`,

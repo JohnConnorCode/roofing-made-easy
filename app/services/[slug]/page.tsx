@@ -14,7 +14,7 @@ import {
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { ServiceSchemaBundle } from '@/components/seo/service-schema'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 interface ServiceDetailPageProps {
   params: Promise<{

@@ -12,7 +12,7 @@ import { UserPlus } from 'lucide-react'
 import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
 
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || ''
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 interface PublicEstimateViewProps {
   leadId: string

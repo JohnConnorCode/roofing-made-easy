@@ -5,7 +5,7 @@ import { Metadata } from 'next'
 import { MSCity, MSCounty } from '@/lib/data/ms-locations'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 const SITE_NAME = 'Farrell Roofing'
 const DEFAULT_IMAGE = '/images/og-default.jpg'
 

@@ -3,7 +3,7 @@ import { BUSINESS_CONFIG } from '@/lib/config/business'
 import { BreadcrumbSchema } from '@/components/seo/list-schema'
 import FinancingContent from '@/components/financing/financing-content'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: `Roofing Financing Calculator | Monthly Payment Estimator | ${BUSINESS_CONFIG.name}`,

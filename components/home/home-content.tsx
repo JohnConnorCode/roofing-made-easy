@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { SiteHeader, SiteFooter } from '@/components/layout'
+import { SiteHeader, SiteFooter, MobileCTABar } from '@/components/layout'
 import {
   Loader2,
   Shield,
@@ -68,9 +68,10 @@ export function HomePageContent() {
     <div className="min-h-screen bg-gradient-dark">
       {/* Header */}
       <SiteHeader />
+      <MobileCTABar />
 
       {/* HERO - Problem → Solution */}
-      <section className="relative overflow-hidden min-h-[700px] flex items-center">
+      <section className="relative overflow-hidden min-h-[600px] md:min-h-[700px] flex items-center">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -84,23 +85,26 @@ export function HomePageContent() {
         </div>
         <div className="absolute inset-0 bg-texture-dark opacity-50" />
 
-        <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
+        <div className="relative mx-auto max-w-6xl px-4 py-14 md:py-28">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f2e] border border-[#c9a25c]/40 px-4 py-2 text-sm text-[#c9a25c] mb-6 animate-slide-up delay-100">
-              <Zap className="h-4 w-4" />
-              Powered by AI analysis of 50,000+ roofing projects
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f2e] border border-[#c9a25c]/40 px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 text-[#c9a25c] mb-5 md:mb-6 animate-slide-up delay-100">
+              <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+              AI-powered from 50,000+ roofing projects
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-slate-100 md:text-5xl lg:text-6xl animate-slide-up delay-200">
-              Know Your Roof Cost in{' '}
-              <span className="text-[#c9a25c]">2 Minutes</span>, Not 2 Weeks
+            <h1 className="text-[1.75rem] leading-tight font-bold tracking-tight text-slate-100 sm:text-4xl md:text-5xl lg:text-6xl animate-slide-up delay-200">
+              Know Your Roof Cost
+              <br className="sm:hidden" />
+              {' '}in <span className="text-[#c9a25c]">2 Minutes</span>
+              <span className="hidden sm:inline">, Not 2 Weeks</span>
+              <span className="sm:hidden block text-slate-400 text-xl mt-1 font-semibold">Not 2 Weeks</span>
             </h1>
 
-            <p className="mt-6 text-xl text-slate-300 leading-relaxed animate-slide-up delay-300 max-w-3xl mx-auto">
-              Stop scheduling appointments, waiting for callbacks, and wondering if you're being overcharged. Get a real estimate based on your actual roof and local market prices—instantly.
+            <p className="mt-4 md:mt-6 text-base md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-300 max-w-3xl mx-auto">
+              Stop guessing what your roof costs. Get a real estimate based on your actual roof and local prices—instantly.
             </p>
 
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-slide-up delay-400">
+            <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-slide-up delay-400">
               <Button
                 variant="primary"
                 size="xl"
@@ -138,21 +142,21 @@ export function HomePageContent() {
       {/* Trust Bar - Real Metrics */}
       <section className="border-y border-slate-800 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4 py-8">
-          <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             <div className="text-center">
-              <div className="text-3xl font-bold text-slate-100">50,000+</div>
+              <div className="text-2xl sm:text-3xl font-bold text-slate-100">50,000+</div>
               <div className="text-sm text-slate-500 mt-1">Estimates Generated</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-slate-100">92%</div>
+              <div className="text-2xl sm:text-3xl font-bold text-slate-100">92%</div>
               <div className="text-sm text-slate-500 mt-1">Within 15% of Final Quote</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-slate-100">2 min</div>
+              <div className="text-2xl sm:text-3xl font-bold text-slate-100">2 min</div>
               <div className="text-sm text-slate-500 mt-1">Average Time to Estimate</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-slate-100">20+ yrs</div>
+              <div className="text-2xl sm:text-3xl font-bold text-slate-100">20+ yrs</div>
               <div className="text-sm text-slate-500 mt-1">Roofing Experience</div>
             </div>
           </ScrollStagger>
@@ -299,8 +303,8 @@ export function HomePageContent() {
             </p>
           </ScrollAnimate>
 
-          <ScrollStagger className="grid md:grid-cols-4 gap-6 mb-12">
-            <div className="text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-6">
+          <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
+            <div className="text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] mx-auto mb-4 shadow-lg">
                 <MapPin className="h-7 w-7 text-[#0c0f14]" />
               </div>
@@ -310,7 +314,7 @@ export function HomePageContent() {
               </p>
             </div>
 
-            <div className="text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-6">
+            <div className="text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] mx-auto mb-4 shadow-lg">
                 <BarChart3 className="h-7 w-7 text-[#0c0f14]" />
               </div>
@@ -320,7 +324,7 @@ export function HomePageContent() {
               </p>
             </div>
 
-            <div className="text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-6">
+            <div className="text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] mx-auto mb-4 shadow-lg">
                 <Users className="h-7 w-7 text-[#0c0f14]" />
               </div>
@@ -330,7 +334,7 @@ export function HomePageContent() {
               </p>
             </div>
 
-            <div className="text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-6">
+            <div className="text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] mx-auto mb-4 shadow-lg">
                 <Calculator className="h-7 w-7 text-[#0c0f14]" />
               </div>

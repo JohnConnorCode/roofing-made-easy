@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/api/auth'
 
 const INDEXNOW_KEY = 'e77cc4f3ce62757d9fcbf2d1e621c803'
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export async function POST() {
   const { error } = await requireAdmin()

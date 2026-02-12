@@ -21,7 +21,7 @@ interface LocationSchemaProps {
  * NOTE: Returns null in production if real contact info is not configured.
  * This prevents Google penalties for fabricated structured data.
  */
-export function CityLocationSchema({ city, baseUrl = 'https://smartroofpricing.com' }: LocationSchemaProps) {
+export function CityLocationSchema({ city, baseUrl = 'https://www.smartroofpricing.com' }: LocationSchemaProps) {
   // SAFETY: Don't render LocalBusiness schema with fake contact info in production
   if (process.env.NODE_ENV === 'production' && !hasRealContactInfo()) {
     return null
@@ -134,7 +134,7 @@ interface CountySchemaProps {
  * NOTE: Returns null in production if real contact info is not configured.
  * This prevents Google penalties for fabricated structured data.
  */
-export function CountyLocationSchema({ county, baseUrl = 'https://smartroofpricing.com' }: CountySchemaProps) {
+export function CountyLocationSchema({ county, baseUrl = 'https://www.smartroofpricing.com' }: CountySchemaProps) {
   // SAFETY: Don't render LocalBusiness schema with fake contact info in production
   if (process.env.NODE_ENV === 'production' && !hasRealContactInfo()) {
     return null
@@ -192,7 +192,7 @@ export function ServiceLocationSchema({
   city,
   serviceName,
   serviceDescription,
-  baseUrl = 'https://smartroofpricing.com'
+  baseUrl = 'https://www.smartroofpricing.com'
 }: ServiceLocationSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
@@ -262,7 +262,7 @@ interface BreadcrumbSchemaProps {
   baseUrl?: string
 }
 
-export function BreadcrumbSchema({ items, baseUrl = 'https://smartroofpricing.com' }: BreadcrumbSchemaProps) {
+export function BreadcrumbSchema({ items, baseUrl = 'https://www.smartroofpricing.com' }: BreadcrumbSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

@@ -201,7 +201,7 @@ export async function POST(
       ? `${contact.first_name} ${contact.last_name}`
       : contact?.first_name || undefined
 
-    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+    const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
     const estimateRecord = estimate as { id: string; valid_until?: string }
 
     // Critical operations: await with Promise.allSettled

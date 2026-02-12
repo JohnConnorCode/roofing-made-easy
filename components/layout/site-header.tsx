@@ -40,7 +40,7 @@ export function SiteHeader() {
   }, [])
 
   return (
-    <header className="border-b border-slate-800 bg-ink/90 backdrop-blur-md sticky top-0 z-50">
+    <header className="border-b border-slate-800 bg-ink/90 backdrop-blur-md sticky top-0 z-50 safe-top">
       {/* Top Bar */}
       <div className="bg-slate-deep border-b border-slate-800 py-2 hidden md:block">
         <div className="mx-auto max-w-6xl px-4 flex items-center justify-between text-sm">
@@ -124,8 +124,9 @@ export function SiteHeader() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-slate-400 hover:text-white"
+            className="lg:hidden min-h-[48px] min-w-[48px] flex items-center justify-center text-slate-400 hover:text-white"
             aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -135,12 +136,12 @@ export function SiteHeader() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-slate-800 bg-ink">
-          <nav className="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-2">
+          <nav className="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-1">
             {navLinks.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-slate-300 hover:text-gold py-2 transition-colors"
+                className="text-slate-300 hover:text-gold py-3.5 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {link.label}
@@ -154,7 +155,7 @@ export function SiteHeader() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="flex items-center gap-3 text-slate-300 hover:text-gold py-2 transition-colors"
+                  className="flex items-center gap-3 text-slate-300 hover:text-gold py-3.5 transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <link.icon className="w-4 h-4 text-gold" />

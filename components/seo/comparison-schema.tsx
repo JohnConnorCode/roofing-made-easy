@@ -27,7 +27,7 @@ interface ComparisonSchemaProps {
 export function ComparisonSchemaBundle({
   city,
   faqs,
-  baseUrl = 'https://smartroofpricing.com'
+  baseUrl = 'https://www.smartroofpricing.com'
 }: ComparisonSchemaProps) {
   const pageUrl = `${baseUrl}/best-roofers-in-${city.slug}-${city.stateCode.toLowerCase()}`
 
@@ -148,14 +148,14 @@ export function ComparisonArticleSchema({ city, pageUrl }: ComparisonArticleSche
     author: {
       '@type': 'Organization',
       name: BUSINESS_CONFIG.name,
-      url: 'https://smartroofpricing.com'
+      url: 'https://www.smartroofpricing.com'
     },
     publisher: {
       '@type': 'Organization',
       name: BUSINESS_CONFIG.name,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://smartroofpricing.com/images/smart-roof-pricing-logo.png'
+        url: 'https://www.smartroofpricing.com/images/smart-roof-pricing-logo.png'
       }
     },
     // Only use dateModified - don't claim publication date without real date
@@ -184,7 +184,7 @@ export function FeaturedCompanySchema({ city }: { city: MSCity }) {
     '@type': 'RoofingContractor',
     name: BUSINESS_CONFIG.name,
     description: `${BUSINESS_CONFIG.tagline}. Serving ${city.name} and ${city.county} County with professional roofing services.`,
-    url: 'https://smartroofpricing.com',
+    url: 'https://www.smartroofpricing.com',
     telephone: BUSINESS_CONFIG.phone.raw,
     address: {
       '@type': 'PostalAddress',

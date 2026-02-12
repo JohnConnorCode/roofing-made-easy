@@ -12,7 +12,7 @@ import {
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: 'Our Work | Roofing Projects Portfolio | Farrell Roofing',

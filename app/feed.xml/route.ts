@@ -1,7 +1,7 @@
 import { getAllBlogPosts } from '@/lib/data/blog'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 function escapeXml(str: string): string {
   return str

@@ -19,12 +19,13 @@ const inter = Inter({
   display: "swap",
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://smartroofpricing.com";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://www.smartroofpricing.com";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#c9a25c" },
     { media: "(prefers-color-scheme: dark)", color: "#0c0f14" },

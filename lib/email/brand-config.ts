@@ -54,7 +54,7 @@ export function getEmailCompanyInfo() {
       zip: BUSINESS_CONFIG.address.zip,
     },
     fullAddress: `${BUSINESS_CONFIG.address.street}, ${BUSINESS_CONFIG.address.city}, ${BUSINESS_CONFIG.address.stateCode} ${BUSINESS_CONFIG.address.zip}`,
-    website: process.env.NEXT_PUBLIC_APP_URL || 'https://smartroofpricing.com',
+    website: process.env.NEXT_PUBLIC_APP_URL || 'https://www.smartroofpricing.com',
   }
 }
 

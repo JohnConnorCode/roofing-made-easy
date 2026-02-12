@@ -3,7 +3,7 @@ import { BUSINESS_CONFIG } from '@/lib/config/business'
 import { BreadcrumbSchema } from '@/components/seo/list-schema'
 import ReferralContent from '@/components/referral/referral-content'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://smartroofpricing.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
   title: `Referral Program | Earn Rewards | ${BUSINESS_CONFIG.name}`,
