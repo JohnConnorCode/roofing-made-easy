@@ -2,6 +2,7 @@
 
 @theme inline {
   --font-sans: var(--font-inter);
+  --font-display: var(--font-display);
 
   /* ============================================================
    * COLOR SYSTEM - Design Tokens
@@ -21,6 +22,11 @@
   --color-gold-light: #c9a25c;    /* Brand accent/highlight */
   --color-gold-hover: #d4b06c;    /* Hover state for gold */
   --color-success: #3d7a5a;       /* Success states */
+
+  /* === BLUE ACCENT (tech/trust feel) === */
+  --color-blue-accent: #5b7fa4;        /* AA 5.1:1 on #0c0f14 */
+  --color-blue-accent-muted: #4a6b8a;
+  --color-blue-accent-light: #7b9fbc;
 
   /* === TEXT ON DARK BACKGROUNDS ===
    * Use these instead of gray-400/500/600 on dark backgrounds!
@@ -47,6 +53,163 @@
 
 body {
   font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* ===== DISPLAY FONT ===== */
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+/* ===== SECTION BACKGROUNDS ===== */
+
+.bg-glow-warm {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 80%, rgba(181,137,58,0.06), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(201,162,92,0.04), transparent 70%),
+    #0c0f14;
+}
+
+.bg-glow-cool {
+  background:
+    radial-gradient(ellipse 80% 50% at 80% 80%, rgba(91,127,164,0.06), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 20% 20%, rgba(91,127,164,0.04), transparent 70%),
+    #0c0f14;
+}
+
+.bg-mesh-dark {
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(181,137,58,0.05), transparent 50%),
+    radial-gradient(ellipse at 100% 100%, rgba(91,127,164,0.05), transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(26,31,46,0.8), transparent 80%),
+    #161a23;
+}
+
+.bg-diagonal-dark {
+  background: linear-gradient(135deg, #0c0f14, #161a23 50%, #0c0f14);
+}
+
+/* ===== CARD SHADOW SYSTEM ===== */
+
+.shadow-card {
+  box-shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 8px -2px rgba(0,0,0,.2);
+}
+
+.shadow-card-md {
+  box-shadow: 0 2px 4px rgba(0,0,0,.3), 0 8px 20px -4px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.03);
+}
+
+.shadow-card-lg {
+  box-shadow: 0 4px 6px rgba(0,0,0,.3), 0 16px 40px -8px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.05);
+}
+
+.shadow-gold-glow {
+  box-shadow: 0 4px 6px rgba(0,0,0,.3), 0 12px 30px -6px rgba(0,0,0,.35), 0 0 40px -15px rgba(201,162,92,.2);
+}
+
+.shadow-blue-glow {
+  box-shadow: 0 4px 6px rgba(0,0,0,.3), 0 12px 30px -6px rgba(0,0,0,.35), 0 0 40px -15px rgba(91,127,164,.2);
+}
+
+/* ===== GLASS CARD EFFECTS ===== */
+
+.glass-card {
+  background: rgba(26,31,46,0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+.glass-card-elevated {
+  background: rgba(26,31,46,0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+/* ===== CARD INNER GLOW (premium shine) ===== */
+
+.card-inner-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-inner-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.1) 30%, rgba(255,255,255,.06) 70%, transparent);
+  pointer-events: none;
+}
+
+/* ===== PREMIUM HOVER ===== */
+
+.card-hover-premium {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover-premium:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 16px rgba(0,0,0,.4), 0 20px 50px -10px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.06);
+}
+
+/* ===== BUTTON SHIMMER ===== */
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.btn-shimmer {
+  background-size: 200% 100%;
+  background-image: linear-gradient(90deg, #b5893a 0%, #d4b06c 25%, #c9a25c 50%, #d4b06c 75%, #b5893a 100%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* ===== NAV LINK UNDERLINE ===== */
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #c9a25c, transparent);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ===== BORDER GLOW TOP ===== */
+
+.border-glow-top {
+  border-top: 1px solid rgba(201,162,92,0.15);
+  box-shadow: 0 -1px 20px -5px rgba(201,162,92,0.08);
+}
+
+/* ===== STAR GLOW ===== */
+
+.star-glow {
+  filter: drop-shadow(0 0 3px rgba(201,162,92,0.4));
+}
+
+/* ===== ICON PULSE RING ===== */
+
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(201,162,92,0.3); }
+  70% { box-shadow: 0 0 0 12px rgba(201,162,92,0); }
+  100% { box-shadow: 0 0 0 0 rgba(201,162,92,0); }
+}
+
+.icon-pulse-ring {
+  animation: pulseRing 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* ===== ANIMATIONS ===== */
@@ -114,6 +277,30 @@ body {
     opacity: 1;
     filter: blur(0);
     transform: scale(1);
+  }
+}
+
+/* Rise up (no blur, cleaner feel) */
+@keyframes riseUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reveal with subtle rotation */
+@keyframes revealRotate {
+  from {
+    opacity: 0;
+    transform: translateY(20px) rotate(-1deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
   }
 }
 
@@ -219,6 +406,16 @@ body {
 .animate-scale-in {
   opacity: 0;
   animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-rise-up {
+  opacity: 0;
+  animation: riseUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-reveal-rotate {
+  opacity: 0;
+  animation: revealRotate 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* Hero-specific entrance classes */
@@ -476,9 +673,9 @@ body {
 /* Testimonial middle-card emphasis on desktop */
 @media (min-width: 768px) {
   .testimonial-featured {
-    transform: scale(1.02);
-    box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.3);
-    border-color: rgba(201, 162, 92, 0.2);
+    transform: scale(1.04);
+    box-shadow: 0 8px 16px rgba(0,0,0,.4), 0 24px 60px -15px rgba(0,0,0,.4), 0 0 40px -15px rgba(201,162,92,.15);
+    border-color: rgba(201, 162, 92, 0.25);
     z-index: 10;
     position: relative;
   }

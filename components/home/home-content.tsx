@@ -83,21 +83,21 @@ export function HomePageContent() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/95 via-[#0c0f14]/85 to-[#0c0f14]/98" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/90 via-[#0c0f14]/75 to-[#0c0f14]/95" />
         </div>
         <div className="absolute inset-0 bg-texture-dark opacity-50" />
 
         <div className="relative mx-auto max-w-6xl px-4 py-14 md:py-28">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f2e] border border-[#c9a25c]/40 px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 text-[#c9a25c] mb-5 md:mb-6 animate-hero-badge">
+            <div className="inline-flex items-center gap-2 rounded-full glass-card border-[#c9a25c]/40 px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 text-[#c9a25c] mb-5 md:mb-6 animate-hero-badge">
               <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
               AI-powered from 50,000+ roofing projects
             </div>
 
-            <h1 className="text-[1.75rem] leading-tight font-bold tracking-tight text-slate-100 sm:text-4xl md:text-5xl lg:text-6xl animate-hero-title delay-200">
+            <h1 className="font-display text-[1.75rem] leading-tight font-bold tracking-tight text-slate-100 sm:text-4xl md:text-5xl lg:text-6xl animate-hero-title delay-200">
               Know Your Roof Cost
               <br className="sm:hidden" />
-              {' '}in <span className="text-[#c9a25c]">2 Minutes</span>
+              {' '}in <span className="bg-gradient-to-r from-[#d4b06c] to-[#c9a25c] bg-clip-text text-transparent">2 Minutes</span>
               <span className="hidden sm:inline">, Not 2 Weeks</span>
               <span className="sm:hidden block text-slate-400 text-xl mt-1 font-semibold">Not 2 Weeks</span>
             </h1>
@@ -112,7 +112,7 @@ export function HomePageContent() {
                 size="xl"
                 onClick={handleGetStarted}
                 disabled={isCreating}
-                className="text-lg btn-press shadow-lg glow-gold bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+                className="text-lg btn-press shadow-lg glow-gold btn-shimmer text-[#0c0f14] border-0"
               >
                 {isCreating ? (
                   <>
@@ -145,34 +145,34 @@ export function HomePageContent() {
       </section>
 
       {/* Trust Bar - Left-aligned metrics with gold accent bars */}
-      <section className="border-y border-slate-800 bg-[#0c0f14]">
+      <section className="border-y border-slate-800 bg-[#0c0f14]" style={{ background: 'radial-gradient(ellipse 50% 80% at 50% 100%, rgba(181,137,58,0.04), transparent 70%), #0c0f14' }}>
         <div className="mx-auto max-w-6xl px-4 py-8">
           <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0">
             <div className="flex items-center gap-4 md:first:pl-0 md:pl-8">
-              <div className="h-12 w-1 rounded-full bg-gradient-to-b from-gold to-gold-muted flex-shrink-0" />
+              <div className="h-10 w-1 rounded-full bg-gradient-to-b from-gold to-gold-muted flex-shrink-0" />
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-slate-100">50,000+</div>
+                <div className="text-3xl sm:text-4xl font-bold text-slate-100">50,000+</div>
                 <div className="text-sm text-slate-500 mt-0.5">Estimates Generated</div>
               </div>
             </div>
             <div className="flex items-center gap-4 md:pl-8 md:border-l md:border-slate-800/50">
-              <div className="h-12 w-1 rounded-full bg-gradient-to-b from-gold to-gold-muted flex-shrink-0" />
+              <div className="h-14 w-1 rounded-full bg-gradient-to-b from-gold to-gold-muted flex-shrink-0" />
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-slate-100">92%</div>
+                <div className="text-3xl sm:text-4xl font-bold text-slate-100">92%</div>
                 <div className="text-sm text-slate-500 mt-0.5">Within 15% of Final Quote</div>
               </div>
             </div>
             <div className="flex items-center gap-4 md:pl-8 md:border-l md:border-slate-800/50">
-              <div className="h-12 w-1 rounded-full bg-gradient-to-b from-gold to-gold-muted flex-shrink-0" />
+              <div className="h-10 w-1 rounded-full bg-gradient-to-b from-gold to-gold-muted flex-shrink-0" />
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-slate-100">2 min</div>
+                <div className="text-3xl sm:text-4xl font-bold text-slate-100">2 min</div>
                 <div className="text-sm text-slate-500 mt-0.5">Average Time to Estimate</div>
               </div>
             </div>
             <div className="flex items-center gap-4 md:pl-8 md:border-l md:border-slate-800/50">
-              <div className="h-12 w-1 rounded-full bg-gradient-to-b from-gold to-gold-muted flex-shrink-0" />
+              <div className="h-14 w-1 rounded-full bg-gradient-to-b from-gold to-gold-muted flex-shrink-0" />
               <div>
-                <div className="text-2xl sm:text-3xl font-bold text-slate-100">20+ yrs</div>
+                <div className="text-3xl sm:text-4xl font-bold text-slate-100">20+ yrs</div>
                 <div className="text-sm text-slate-500 mt-0.5">Roofing Experience</div>
               </div>
             </div>
@@ -181,10 +181,10 @@ export function HomePageContent() {
       </section>
 
       {/* THE PROBLEM - Why Traditional Quoting Sucks */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-16 md:py-24 bg-mesh-dark">
         <div className="mx-auto max-w-6xl px-4">
-          <ScrollAnimate className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+          <ScrollAnimate animation="rise-up" className="text-center mb-12">
+            <h2 className="font-display text-3xl font-bold text-slate-100 md:text-4xl">
               Sound Familiar?
             </h2>
             <p className="mt-4 text-xl text-slate-400 max-w-2xl mx-auto">
@@ -193,9 +193,9 @@ export function HomePageContent() {
           </ScrollAnimate>
 
           <div className="grid md:grid-cols-2 gap-12 items-center relative">
-            <ScrollAnimate animation="slide-up">
+            <ScrollAnimate animation="slide-in-left">
               {/* The Problem Side */}
-              <div className="bg-ink/80 border border-red-900/30 border-t-2 border-t-red-900/40 rounded-2xl p-5 md:p-8">
+              <div className="bg-ink/80 border border-red-900/30 border-t-2 border-t-red-900/40 rounded-2xl p-5 md:p-8 shadow-card-md" style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(127,29,29,0.06), transparent 60%), rgba(12,15,20,0.8)' }}>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-900/20 border border-red-900/30">
                     <AlertTriangle className="h-6 w-6 text-red-400" />
@@ -248,13 +248,13 @@ export function HomePageContent() {
             </ScrollAnimate>
 
             {/* Arrow connector between cards on desktop */}
-            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-ink border-2 border-slate-700 items-center justify-center">
-              <ArrowRight className="w-5 h-5 text-gold" />
+            <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-14 h-14 rounded-full bg-ink border-2 border-gold/30 items-center justify-center shadow-card-md">
+              <ArrowRight className="w-6 h-6 text-gold" />
             </div>
 
-            <ScrollAnimate animation="slide-up" delay={100}>
+            <ScrollAnimate animation="slide-in-right" delay={100}>
               {/* The Solution Side */}
-              <div className="bg-[#1a1f2e]/50 border border-[#3d7a5a]/30 border-t-2 border-t-success/40 rounded-2xl p-5 md:p-8 shadow-[0_0_40px_-15px_rgba(61,122,90,0.12)]">
+              <div className="bg-[#1a1f2e]/50 border border-[#3d7a5a]/30 border-t-2 border-t-success/40 rounded-2xl p-5 md:p-8 shadow-[0_0_50px_-15px_rgba(61,122,90,0.18)]">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#3d7a5a]/20 border border-[#3d7a5a]/30">
                     <CheckCircle className="h-6 w-6 text-[#3d7a5a]" />
@@ -310,14 +310,14 @@ export function HomePageContent() {
       </section>
 
       {/* HOW IT WORKS - Technology Explanation */}
-      <section className="py-16 md:py-24 bg-[#0c0f14]">
+      <section className="py-16 md:py-24 bg-glow-cool">
         <div className="mx-auto max-w-6xl px-4">
-          <ScrollAnimate className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f2e] border border-slate-700 px-4 py-2 text-sm text-[#c9a25c] mb-4">
+          <ScrollAnimate animation="rise-up" className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 rounded-full bg-blue-accent/10 border border-blue-accent/30 px-4 py-2 text-sm text-blue-accent-light mb-4">
               <Brain className="h-4 w-4" />
               AI-Powered Technology
             </div>
-            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+            <h2 className="font-display text-3xl font-bold text-slate-100 md:text-4xl">
               How We Calculate Your Estimate
             </h2>
             <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
@@ -327,9 +327,9 @@ export function HomePageContent() {
 
           <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12 relative">
             {/* Connecting line behind steps on desktop */}
-            <div className="hidden md:block absolute top-[3.5rem] left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-gold/5 via-gold/25 to-gold/5" />
+            <div className="hidden md:block absolute top-[3.5rem] left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-blue-accent/5 via-blue-accent/25 to-blue-accent/5" />
 
-            <div className="relative text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6">
+            <div className="relative text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6 shadow-card">
               <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center shadow-lg z-10">
                 1
               </div>
@@ -342,11 +342,11 @@ export function HomePageContent() {
               </p>
             </div>
 
-            <div className="relative text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6">
-              <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center shadow-lg z-10">
+            <div className="relative text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6 shadow-card">
+              <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-blue-accent text-white text-xs font-bold flex items-center justify-center shadow-lg z-10">
                 2
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] mx-auto mb-4 shadow-lg">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-accent-light to-blue-accent-muted mx-auto mb-4 shadow-lg">
                 <BarChart3 className="h-7 w-7 text-[#0c0f14]" />
               </div>
               <h3 className="text-lg font-bold text-slate-100 mb-2">2. Material Costs</h3>
@@ -355,7 +355,7 @@ export function HomePageContent() {
               </p>
             </div>
 
-            <div className="relative text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6">
+            <div className="relative text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6 shadow-card">
               <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center shadow-lg z-10">
                 3
               </div>
@@ -368,11 +368,11 @@ export function HomePageContent() {
               </p>
             </div>
 
-            <div className="relative text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6">
-              <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center shadow-lg z-10">
+            <div className="relative text-center bg-[#1a1f2e] border border-slate-800 rounded-2xl p-4 md:p-6 shadow-card">
+              <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-blue-accent text-white text-xs font-bold flex items-center justify-center shadow-lg z-10">
                 4
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#c9a25c] to-[#9a7432] mx-auto mb-4 shadow-lg">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-accent-light to-blue-accent-muted mx-auto mb-4 shadow-lg">
                 <Calculator className="h-7 w-7 text-[#0c0f14]" />
               </div>
               <h3 className="text-lg font-bold text-slate-100 mb-2">4. Similar Projects</h3>
@@ -383,9 +383,9 @@ export function HomePageContent() {
           </ScrollStagger>
 
           {/* Sample Estimate Card */}
-          <ScrollAnimate animation="slide-up" delay={100}>
+          <ScrollAnimate animation="scale-in" delay={100}>
             <div className="max-w-2xl mx-auto">
-              <div className="bg-gradient-card border border-slate-700 border-t-2 border-t-gold/30 rounded-2xl p-8 shadow-xl">
+              <div className="glass-card-elevated card-inner-glow shadow-blue-glow border-t-2 border-t-blue-accent/30 rounded-2xl p-8">
                 <div className="text-center mb-6">
                   <div className="inline-flex items-center gap-2 text-[#c9a25c] font-semibold">
                     <Target className="h-5 w-5" />
@@ -453,10 +453,10 @@ export function HomePageContent() {
       <div className="section-divider" />
 
       {/* PROOF POINTS - Why Trust Us */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-16 md:py-24 bg-diagonal-dark">
         <div className="mx-auto max-w-6xl px-4">
           <ScrollAnimate className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+            <h2 className="font-display text-3xl font-bold text-slate-100 md:text-4xl">
               Why Mississippi Homeowners Trust Us
             </h2>
             <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
@@ -466,7 +466,7 @@ export function HomePageContent() {
 
           <ScrollStagger className="grid md:grid-cols-3 gap-8 mb-16">
             {/* Card 1: Accuracy — left gold accent */}
-            <div className="bg-[#1a1f2e] border border-slate-800 border-l-2 border-l-gold rounded-2xl p-8">
+            <div className="glass-card-elevated card-hover-premium card-inner-glow shadow-card-md border-l-2 border-l-gold rounded-2xl p-8">
               <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#3d7a5a]/20 border border-[#3d7a5a]/30 mb-6">
                 <Target className="h-7 w-7 text-[#3d7a5a]" />
               </div>
@@ -479,9 +479,9 @@ export function HomePageContent() {
               </div>
             </div>
 
-            {/* Card 2: Local — circle icon container */}
-            <div className="bg-[#1a1f2e] border border-slate-800 rounded-2xl p-8">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#c9a25c]/20 border border-[#c9a25c]/30 mb-6">
+            {/* Card 2: Local — rounded icon container */}
+            <div className="glass-card-elevated card-hover-premium card-inner-glow shadow-card-md border-t border-t-gold/20 rounded-2xl p-8">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#c9a25c]/20 border border-[#c9a25c]/30 mb-6">
                 <ShieldCheck className="h-7 w-7 text-[#c9a25c]" />
               </div>
               <h3 className="text-xl font-bold text-slate-100 mb-3">Local Expertise</h3>
@@ -493,10 +493,10 @@ export function HomePageContent() {
               </div>
             </div>
 
-            {/* Card 3: Privacy — dashed border */}
-            <div className="bg-[#1a1f2e] border border-dashed border-slate-700 rounded-2xl p-8">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-slate-700/50 border border-slate-600 mb-6">
-                <Shield className="h-7 w-7 text-slate-400" />
+            {/* Card 3: Privacy — blue accent */}
+            <div className="glass-card-elevated card-hover-premium card-inner-glow shadow-card-md rounded-2xl p-8">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-accent/10 border border-blue-accent/20 mb-6">
+                <Shield className="h-7 w-7 text-blue-accent" />
               </div>
               <h3 className="text-xl font-bold text-slate-100 mb-3">Privacy Protected</h3>
               <p className="text-slate-400 mb-4">
@@ -511,8 +511,8 @@ export function HomePageContent() {
           {/* Testimonials */}
           <ScrollAnimate className="text-center mb-8 relative">
             {/* Decorative quote mark */}
-            <div className="absolute -top-4 left-4 text-[100px] leading-none text-gold/[0.04] font-serif select-none pointer-events-none">&ldquo;</div>
-            <h3 className="text-2xl font-bold text-slate-100 relative">
+            <div className="absolute -top-4 left-4 text-[100px] leading-none text-gold/[0.06] font-serif select-none pointer-events-none">&ldquo;</div>
+            <h3 className="font-display text-2xl font-bold text-slate-100 relative">
               What Homeowners Say
             </h3>
           </ScrollAnimate>
@@ -521,7 +521,7 @@ export function HomePageContent() {
             {testimonials.map((testimonial, index) => (
               <div
                 key={testimonial.id}
-                className={`min-w-[85vw] snap-center sm:min-w-0 bg-[#1a1f2e] border border-slate-700 border-t-2 border-t-gold/20 rounded-2xl p-6 ${index === 1 ? 'testimonial-featured' : ''}`}
+                className={`min-w-[85vw] snap-center sm:min-w-0 glass-card-elevated shadow-card card-hover-premium border-t-2 border-t-gold/20 rounded-2xl p-6 ${index === 1 ? 'testimonial-featured' : ''}`}
               >
                 <Quote className="h-8 w-8 text-[#c9a25c]/50 mb-4" />
                 <p className="text-slate-300 mb-4 leading-relaxed">
@@ -529,7 +529,7 @@ export function HomePageContent() {
                 </p>
                 <div className="flex items-center gap-1 mb-3">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-[#c9a25c] text-[#c9a25c]" />
+                    <Star key={i} className="h-4 w-4 fill-[#c9a25c] text-[#c9a25c] star-glow" />
                   ))}
                 </div>
                 <div>
@@ -543,10 +543,10 @@ export function HomePageContent() {
       </section>
 
       {/* BEYOND THE ESTIMATE - Connected Journey */}
-      <section className="py-16 md:py-24 bg-[#0c0f14]">
+      <section className="py-16 md:py-24 bg-glow-warm">
         <div className="mx-auto max-w-6xl px-4">
           <ScrollAnimate className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+            <h2 className="font-display text-3xl font-bold text-slate-100 md:text-4xl">
               Your Estimate Is Just the Beginning
             </h2>
             <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
@@ -556,8 +556,8 @@ export function HomePageContent() {
 
           <ScrollStagger className="grid md:grid-cols-3 gap-8">
             {/* Financing — Gold accent */}
-            <Link href="/financing" className="block">
-              <div className="md:text-left card-hover bg-[#1a1f2e] border border-slate-800 border-t-2 border-t-gold/40 rounded-2xl p-5 md:p-8 h-full transition-all hover:border-[#c9a25c]/50">
+            <Link href="/financing" className="block group">
+              <div className="md:text-left glass-card-elevated card-inner-glow shadow-gold-glow border-t-2 border-t-gold/40 rounded-2xl p-5 md:p-8 h-full transition-all hover:border-[#c9a25c]/50 card-hover-premium">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c]/20 to-[#c9a25c]/5 md:mx-0 mx-auto mb-6 border border-[#c9a25c]/30">
                   <CreditCard className="h-8 w-8 text-[#c9a25c]" />
                 </div>
@@ -568,14 +568,14 @@ export function HomePageContent() {
                   Pre-qualify for affordable monthly payments with no impact to your credit score. Options from $89/month.
                 </p>
                 <span className="text-[#c9a25c] text-sm font-medium inline-flex items-center gap-1 md:justify-start justify-center w-full md:w-auto">
-                  Check Your Options <ArrowRight className="h-4 w-4" />
+                  Check Your Options <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </div>
             </Link>
 
             {/* Insurance — Blue accent */}
-            <Link href="/insurance-help" className="block">
-              <div className="md:text-left card-hover bg-[#1a1f2e] border border-slate-800 border-t-2 border-t-blue-400/30 rounded-2xl p-5 md:p-8 h-full transition-all hover:border-blue-400/50">
+            <Link href="/insurance-help" className="block group">
+              <div className="md:text-left glass-card-elevated shadow-blue-glow border-t-2 border-t-blue-400/30 rounded-2xl p-5 md:p-8 h-full transition-all hover:border-blue-400/50 card-hover-premium">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-500/10 md:mx-0 mx-auto mb-6 border border-blue-500/20">
                   <FileText className="h-8 w-8 text-blue-400" />
                 </div>
@@ -586,14 +586,14 @@ export function HomePageContent() {
                   Storm damage? We&apos;ll guide you through the claims process step by step. Know what to say and what to document.
                 </p>
                 <span className="text-blue-400 text-sm font-medium inline-flex items-center gap-1 md:justify-start justify-center w-full md:w-auto">
-                  Get Help <ArrowRight className="h-4 w-4" />
+                  Get Help <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </div>
             </Link>
 
             {/* Assistance — Green accent */}
-            <Link href="/assistance-programs" className="block">
-              <div className="md:text-left card-hover bg-[#1a1f2e] border border-slate-800 border-t-2 border-t-emerald-500/30 rounded-2xl p-5 md:p-8 h-full transition-all hover:border-emerald-500/50">
+            <Link href="/assistance-programs" className="block group">
+              <div className="md:text-left glass-card-elevated shadow-card-md border-t-2 border-t-emerald-500/30 rounded-2xl p-5 md:p-8 h-full transition-all hover:border-emerald-500/50 card-hover-premium">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 md:mx-0 mx-auto mb-6 border border-emerald-500/20">
                   <HandHeart className="h-8 w-8 text-emerald-400" />
                 </div>
@@ -604,7 +604,7 @@ export function HomePageContent() {
                   You may qualify for federal, state, or local programs you didn&apos;t know existed. Check your eligibility.
                 </p>
                 <span className="text-emerald-400 text-sm font-medium inline-flex items-center gap-1 md:justify-start justify-center w-full md:w-auto">
-                  See Programs <ArrowRight className="h-4 w-4" />
+                  See Programs <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </span>
               </div>
             </Link>
@@ -613,13 +613,13 @@ export function HomePageContent() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-16 md:py-24 bg-[#161a23] bg-texture-dark">
         <div className="mx-auto max-w-3xl px-4">
-          <ScrollAnimate className="text-center mb-12">
-            <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-[#1a1f2e] border border-slate-700 mb-6">
+          <ScrollAnimate animation="rise-up" className="text-center mb-12">
+            <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-[#c9a25c]/20 to-[#9a7432]/10 border border-gold/20 mb-6 shadow-card">
               <HelpCircle className="h-7 w-7 text-[#c9a25c]" />
             </div>
-            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+            <h2 className="font-display text-3xl font-bold text-slate-100 md:text-4xl">
               Common Questions
             </h2>
             <p className="mt-4 text-lg text-slate-400">
@@ -637,21 +637,21 @@ export function HomePageContent() {
       <div className="section-divider" />
 
       {/* FINAL CTA */}
-      <section className="py-16 md:py-24 bg-[#0c0f14] border-y border-slate-800 relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-mesh-dark border-y border-slate-800 relative overflow-hidden">
         <Image
           src="/images/services/completed-roof.jpg"
           alt=""
           fill
-          className="object-cover opacity-[0.04] pointer-events-none"
+          className="object-cover opacity-[0.06] pointer-events-none"
         />
         <div className="relative mx-auto max-w-4xl px-4 text-center">
-          <ScrollAnimate>
+          <ScrollAnimate animation="scale-in">
             <div className="flex justify-center mb-6">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg glow-gold animate-float">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg glow-gold animate-float icon-pulse-ring">
                 <Home className="h-8 w-8 text-[#0c0f14]" />
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
+            <h2 className="font-display text-3xl font-bold text-slate-100 md:text-4xl">
               Stop Guessing. Start Knowing.
             </h2>
             <p className="mt-4 text-xl text-slate-400 max-w-2xl mx-auto">
@@ -663,7 +663,7 @@ export function HomePageContent() {
                 size="xl"
                 onClick={handleGetStarted}
                 disabled={isCreating}
-                className="text-lg btn-press shadow-lg glow-gold bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0"
+                className="text-lg btn-press shadow-lg glow-gold btn-shimmer text-[#0c0f14] border-0"
               >
                 {isCreating ? 'Starting...' : 'Get My Free Estimate Now'}
               </Button>

@@ -33,7 +33,7 @@ const company = [
 function FooterColumnHeading({ title }: { title: string }) {
   return (
     <h3 className="hidden lg:flex items-center gap-2 text-xs font-semibold text-slate-300 uppercase tracking-widest mb-5">
-      <span className="w-1.5 h-1.5 rounded-full bg-gold" />
+      <span className="w-4 h-0.5 rounded-full bg-gradient-to-r from-gold to-transparent" />
       {title}
     </h3>
   )
@@ -85,7 +85,7 @@ export function SiteFooter() {
   }))
 
   return (
-    <footer className="bg-ink border-t border-slate-800 relative overflow-hidden">
+    <footer className="bg-ink border-glow-top relative overflow-hidden">
       {/* Subtle roof pattern background */}
       <div
         className="absolute inset-0 opacity-[0.015] pointer-events-none"
@@ -101,7 +101,7 @@ export function SiteFooter() {
               <div className="mb-3">
                 <Logo size="sm" showText={true} />
               </div>
-              <div className="h-0.5 w-16 bg-gradient-to-r from-gold to-gold-muted rounded-full mt-3 mb-4" />
+              <div className="h-[2px] w-20 bg-gradient-to-r from-transparent via-gold to-transparent rounded-full mt-3 mb-4" />
               <p className="text-slate-300 text-sm leading-relaxed mb-4 max-w-sm">
                 Northeast Mississippi&apos;s trusted roofing contractor. Proudly serving Tupelo and surrounding communities since 2010.
               </p>
@@ -125,12 +125,12 @@ export function SiteFooter() {
               {(config.social.facebook || config.social.instagram) && (
               <div className="flex gap-3 mt-4">
                 {config.social.facebook && (
-                <a href={config.social.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold transition-colors" aria-label="Facebook">
+                <a href={config.social.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold hover:-translate-y-0.5 transition-all" aria-label="Facebook">
                   <Facebook className="w-5 h-5" />
                 </a>
                 )}
                 {config.social.instagram && (
-                <a href={config.social.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold transition-colors" aria-label="Instagram">
+                <a href={config.social.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold hover:-translate-y-0.5 transition-all" aria-label="Instagram">
                   <Instagram className="w-5 h-5" />
                 </a>
                 )}

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, ReactNode } from 'react'
 interface ScrollAnimateProps {
   children: ReactNode
   className?: string
-  animation?: 'slide-up' | 'slide-in-right' | 'slide-in-left' | 'scale-in' | 'fade-in'
+  animation?: 'slide-up' | 'slide-in-right' | 'slide-in-left' | 'scale-in' | 'fade-in' | 'rise-up' | 'reveal-rotate'
   delay?: number
   threshold?: number
   once?: boolean
@@ -50,6 +50,8 @@ export function ScrollAnimate({
     'slide-in-left': 'animate-slide-in-left',
     'scale-in': 'animate-scale-in',
     'fade-in': 'animate-fade-in',
+    'rise-up': 'animate-rise-up',
+    'reveal-rotate': 'animate-reveal-rotate',
   }[animation]
 
   const hiddenStyle: React.CSSProperties = {

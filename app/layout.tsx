@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { LocalBusinessSchema } from "@/components/seo/json-ld";
@@ -16,6 +16,13 @@ import { getBusinessConfigFromDB } from "@/lib/config/business-loader";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const dmSerif = DM_Serif_Display({
+  weight: "400",
+  variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
 });
@@ -168,7 +175,7 @@ export default async function RootLayout({
         <BrandSameAsSchema />
         <MinimalNAPSchema />
       </head>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${dmSerif.variable} font-sans antialiased`}>
         <GoogleAnalytics />
         <Providers businessConfig={config}>
           {children}
