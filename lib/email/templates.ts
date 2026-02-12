@@ -7,8 +7,8 @@ import { EMAIL_COLORS, EMAIL_FONTS, getEmailCompanyInfo } from './brand-config'
 const BRAND_COLORS = EMAIL_COLORS
 
 // Shared email wrapper with centralized brand config
-export function emailWrapper(content: string, previewText: string, options?: { unsubscribeUrl?: string }): string {
-  const company = getEmailCompanyInfo()
+export async function emailWrapper(content: string, previewText: string, options?: { unsubscribeUrl?: string }): Promise<string> {
+  const company = await getEmailCompanyInfo()
 
   return `
 <!DOCTYPE html>
@@ -136,7 +136,7 @@ export interface NewLeadEmailData {
   adminUrl: string
 }
 
-export function newLeadEmail(data: NewLeadEmailData): { subject: string; html: string; text: string } {
+export async function newLeadEmail(data: NewLeadEmailData): Promise<{ subject: string; html: string; text: string }> {
   const subject = data.contactName
     ? `New Lead: ${data.contactName}`
     : `New Lead from ${data.source || 'Website'}`
@@ -216,7 +216,7 @@ View lead: ${data.adminUrl}
 
   return {
     subject,
-    html: emailWrapper(content, previewText),
+    html: await emailWrapper(content, previewText),
     text,
   }
 }
@@ -242,7 +242,7 @@ export interface EstimateEmailData {
   adminUrl: string
 }
 
-export function estimateGeneratedEmail(data: EstimateEmailData): { subject: string; html: string; text: string } {
+export async function estimateGeneratedEmail(data: EstimateEmailData): Promise<{ subject: string; html: string; text: string }> {
   const formatCurrency = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
 
   const subject = data.contactName
@@ -330,7 +330,7 @@ View full details: ${data.adminUrl}
 
   return {
     subject,
-    html: emailWrapper(content, previewText),
+    html: await emailWrapper(content, previewText),
     text,
   }
 }
@@ -371,12 +371,14 @@ export interface CustomerEstimateEmailData {
   validUntil?: string
 }
 
-export function customerEstimateEmail(data: CustomerEstimateEmailData): { subject: string; html: string; text: string } {
+export async function customerEstimateEmail(data: CustomerEstimateEmailData): Promise<{ subject: string; html: string; text: string }> {
   const formatCurrency = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
   const firstName = data.contactName?.split(' ')[0] || 'there'
 
   const subject = `Your Roofing Estimate: ${formatCurrency(data.priceLikely)}`
   const previewText = `Hi ${firstName}! Your free roofing estimate is ready. View it online anytime.`
+
+  const company = await getEmailCompanyInfo()
 
   const validUntilText = data.validUntil
     ? new Date(data.validUntil).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -479,14 +481,13 @@ export function customerEstimateEmail(data: CustomerEstimateEmailData): { subjec
       <tr>
         <td style="padding: 24px 0 0;">
           <p style="margin: 0; color: ${BRAND_COLORS.textLight}; font-size: 14px; line-height: 1.6;">
-            Questions? Just reply to this email or call us at <strong style="color: ${BRAND_COLORS.text};">${getEmailCompanyInfo().phone}</strong>. We're here to help!
+            Questions? Just reply to this email or call us at <strong style="color: ${BRAND_COLORS.text};">${company.phone}</strong>. We're here to help!
           </p>
         </td>
       </tr>
     </table>
   `
 
-  const company = getEmailCompanyInfo()
   const text = `
 Hi ${firstName}!
 
@@ -519,7 +520,7 @@ The ${company.name} Team
 
   return {
     subject,
-    html: emailWrapper(content, previewText),
+    html: await emailWrapper(content, previewText),
     text,
   }
 }
@@ -534,8 +535,8 @@ export interface ContactConfirmationEmailData {
   message: string
 }
 
-export function contactConfirmationEmail(data: ContactConfirmationEmailData): { subject: string; html: string; text: string } {
-  const company = getEmailCompanyInfo()
+export async function contactConfirmationEmail(data: ContactConfirmationEmailData): Promise<{ subject: string; html: string; text: string }> {
+  const company = await getEmailCompanyInfo()
   const firstName = data.name?.split(' ')[0] || 'there'
 
   const subject = `We received your message - ${company.name}`
@@ -599,7 +600,7 @@ The ${company.name} Team
 
   return {
     subject,
-    html: emailWrapper(content, previewText),
+    html: await emailWrapper(content, previewText),
     text,
   }
 }
@@ -618,7 +619,7 @@ export interface ContactAdminNotificationData {
   adminUrl: string
 }
 
-export function contactAdminNotificationEmail(data: ContactAdminNotificationData): { subject: string; html: string; text: string } {
+export async function contactAdminNotificationEmail(data: ContactAdminNotificationData): Promise<{ subject: string; html: string; text: string }> {
   const subject = data.subject
     ? `Contact Form: ${data.subject}`
     : `Contact Form: ${data.name}`
@@ -694,7 +695,7 @@ View in admin: ${data.adminUrl}
 
   return {
     subject,
-    html: emailWrapper(content, previewText),
+    html: await emailWrapper(content, previewText),
     text,
   }
 }
@@ -703,7 +704,7 @@ View in admin: ${data.adminUrl}
 // DAILY DIGEST
 // ============================================================================
 
-export function dailyDigestEmail(data: DailyDigestEmailData): { subject: string; html: string; text: string } {
+export async function dailyDigestEmail(data: DailyDigestEmailData): Promise<{ subject: string; html: string; text: string }> {
   const formatCurrency = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
 
   const subject = `Daily Digest: ${data.newLeadsCount} new leads, ${formatCurrency(data.pipelineValue)} pipeline`
@@ -799,7 +800,7 @@ View dashboard: ${data.adminUrl}
 
   return {
     subject,
-    html: emailWrapper(content, previewText),
+    html: await emailWrapper(content, previewText),
     text,
   }
 }
@@ -820,8 +821,8 @@ export interface ConsultationReminderEmailData {
   rescheduleUrl?: string
 }
 
-export function consultationReminderEmail(data: ConsultationReminderEmailData): { subject: string; html: string; text: string } {
-  const company = getEmailCompanyInfo()
+export async function consultationReminderEmail(data: ConsultationReminderEmailData): Promise<{ subject: string; html: string; text: string }> {
+  const company = await getEmailCompanyInfo()
   const customerName = data.customerName || 'there'
   const subject = `Reminder: Your Roofing Consultation Tomorrow at ${data.consultationTime}`
   const previewText = `We'll see you tomorrow at ${data.consultationTime} for your free roof evaluation.`
@@ -952,7 +953,7 @@ We look forward to seeing you!
 
   return {
     subject,
-    html: emailWrapper(content, previewText),
+    html: await emailWrapper(content, previewText),
     text,
   }
 }
@@ -985,8 +986,8 @@ export interface WelcomeEmailData {
   magicLinkUrl?: string
 }
 
-export function welcomeEmail(data: WelcomeEmailData): { subject: string; html: string; text: string } {
-  const company = getEmailCompanyInfo()
+export async function welcomeEmail(data: WelcomeEmailData): Promise<{ subject: string; html: string; text: string }> {
+  const company = await getEmailCompanyInfo()
   const firstName = data.firstName || 'there'
   const subject = `Welcome to ${company.name} - Your Account is Ready`
   const previewText = `Hi ${firstName}! Your customer portal is ready. Track your project, view estimates, and more.`
@@ -1091,13 +1092,13 @@ Questions? Reply to this email or call us at ${company.phone}.
 
   return {
     subject,
-    html: emailWrapper(content, previewText),
+    html: await emailWrapper(content, previewText),
     text,
   }
 }
 
-export function paymentReceivedEmail(data: PaymentReceivedEmailData): { subject: string; html: string; text: string } {
-  const company = getEmailCompanyInfo()
+export async function paymentReceivedEmail(data: PaymentReceivedEmailData): Promise<{ subject: string; html: string; text: string }> {
+  const company = await getEmailCompanyInfo()
   const formatCurrency = (n: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
   const customerName = data.customerName || 'there'
   const paymentTypeLabels = {
@@ -1255,7 +1256,7 @@ Thank you for choosing ${company.name}!
 
   return {
     subject,
-    html: emailWrapper(content, previewText),
+    html: await emailWrapper(content, previewText),
     text,
   }
 }

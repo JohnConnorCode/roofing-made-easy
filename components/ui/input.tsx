@@ -28,7 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           className={cn(
             // Base styles with min-height for touch targets
-            'flex h-11 min-h-[44px] w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-base text-slate-900',
+            'flex h-12 min-h-[48px] w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-base text-slate-900',
             'placeholder:text-slate-400',
             // Focus states
             'focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20',

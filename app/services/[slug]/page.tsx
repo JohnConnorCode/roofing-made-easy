@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { getServiceBySlug, services } from '@/lib/data/services'
 import {
-  ArrowLeft,
   ArrowRight,
   CheckCircle,
   Clock,
@@ -13,6 +12,7 @@ import {
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { ServiceSchemaBundle } from '@/components/seo/service-schema'
+import { Breadcrumbs } from '@/components/location/breadcrumbs'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
@@ -117,18 +117,10 @@ export default async function ServiceDetailPage({
 
       <SiteHeader />
 
-      {/* Breadcrumb */}
-      <div className="bg-[#161a23] border-b border-slate-800">
-        <div className="mx-auto max-w-6xl px-4 py-3">
-          <Link
-            href="/services"
-            className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-[#c9a25c]"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            All Services
-          </Link>
-        </div>
-      </div>
+      <Breadcrumbs items={[
+        { name: 'Services', href: '/services' },
+        { name: service.name, href: `/services/${service.slug}` },
+      ]} />
 
       {/* Hero */}
       <section className="py-16 md:py-24 bg-[#161a23]">

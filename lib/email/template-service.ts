@@ -55,9 +55,9 @@ async function fetchTemplateBySlug(slug: string): Promise<DBTemplate | null> {
 /**
  * Build email variables from data
  */
-function buildVariables(data: Record<string, unknown>): TemplateVariables {
-  const company = getEmailCompanyInfo()
-  const companyVars = getCompanyVariables()
+async function buildVariables(data: Record<string, unknown>): Promise<TemplateVariables> {
+  const company = await getEmailCompanyInfo()
+  const companyVars = await getCompanyVariables()
 
   const formatCurrency = (n: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n)
@@ -156,13 +156,13 @@ function htmlToText(html: string): string {
 export async function renderEmailTemplate(
   slug: string,
   data: Record<string, unknown>,
-  fallbackFn?: () => { subject: string; html: string; text: string }
+  fallbackFn?: () => Promise<{ subject: string; html: string; text: string }>
 ): Promise<RenderedEmail> {
   // Try to fetch from database
   const dbTemplate = await fetchTemplateBySlug(slug)
 
   if (dbTemplate) {
-    const variables = buildVariables(data)
+    const variables = await buildVariables(data)
 
     // Render subject (plain text, no escaping needed)
     const renderedSubject = dbTemplate.subject
@@ -178,7 +178,7 @@ export async function renderEmailTemplate(
 
     const html = isFullHtml
       ? renderedBody
-      : emailWrapper(renderedBody, renderedSubject)
+      : await emailWrapper(renderedBody, renderedSubject)
 
     const text = htmlToText(renderedBody)
 
@@ -193,7 +193,7 @@ export async function renderEmailTemplate(
 
   // Fall back to hardcoded template
   if (fallbackFn) {
-    const fallback = fallbackFn()
+    const fallback = await fallbackFn()
     return {
       ...fallback,
       source: 'hardcoded',

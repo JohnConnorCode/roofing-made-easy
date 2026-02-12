@@ -1,11 +1,12 @@
 // Site Header Component
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
-import { getPhoneLink, getPhoneDisplay } from '@/lib/config/business'
+import { useContact } from '@/lib/hooks/use-contact'
+import { useBusinessConfig, useHoursText } from '@/lib/config/business-provider'
 import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
 
 const navLinks = [
@@ -27,6 +28,19 @@ export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [resourcesOpen, setResourcesOpen] = useState(false)
   const resourcesRef = useRef<HTMLDivElement>(null)
+  const { phoneDisplay, phoneLink } = useContact()
+  const config = useBusinessConfig()
+  const hoursText = useHoursText()
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [mobileMenuOpen])
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -39,23 +53,25 @@ export function SiteHeader() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), [])
+
   return (
     <header className="border-b border-slate-800 bg-ink/90 backdrop-blur-md sticky top-0 z-50 safe-top">
       {/* Top Bar */}
       <div className="bg-slate-deep border-b border-slate-800 py-2 hidden md:block">
         <div className="mx-auto max-w-6xl px-4 flex items-center justify-between text-sm">
           <div className="flex items-center gap-6 text-slate-400">
-            <a href={getPhoneLink()} className="flex items-center gap-2 hover:text-gold transition-colors">
+            <a href={phoneLink} className="flex items-center gap-2 hover:text-gold transition-colors">
               <Phone className="w-4 h-4" />
-              <span>{getPhoneDisplay()}</span>
+              <span>{phoneDisplay}</span>
             </a>
             <span className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-gold" />
-              <span>Tupelo, MS & Surrounding Areas</span>
+              <span>{config.address.city}, {config.address.stateCode} &amp; Surrounding Areas</span>
             </span>
           </div>
           <div className="text-slate-500">
-            Mon-Fri 7am-6pm | Sat 8am-2pm
+            {hoursText}
           </div>
         </div>
       </div>
@@ -82,6 +98,8 @@ export function SiteHeader() {
               <button
                 onClick={() => setResourcesOpen(!resourcesOpen)}
                 className="text-sm text-slate-400 hover:text-gold transition-colors flex items-center gap-1"
+                aria-expanded={resourcesOpen}
+                aria-haspopup="true"
               >
                 Resources
                 <ChevronDown className={`w-4 h-4 transition-transform ${resourcesOpen ? 'rotate-180' : ''}`} />
@@ -124,62 +142,96 @@ export function SiteHeader() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden min-h-[48px] min-w-[48px] flex items-center justify-center text-slate-400 hover:text-white"
+            className="lg:hidden min-h-[48px] min-w-[48px] flex items-center justify-center text-slate-400 hover:text-white transition-colors"
             aria-label="Toggle menu"
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <div className="relative w-6 h-6">
+              <Menu className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${mobileMenuOpen ? 'opacity-0 rotate-90 scale-75' : 'opacity-100 rotate-0 scale-100'}`} />
+              <X className={`w-6 h-6 absolute inset-0 transition-all duration-300 ${mobileMenuOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-75'}`} />
+            </div>
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-800 bg-ink">
-          <nav className="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-1">
-            {navLinks.map(link => (
+      {/* Mobile Menu - always in DOM, animated with CSS */}
+      <div
+        className={`lg:hidden overflow-hidden transition-all duration-300 ease-out ${
+          mobileMenuOpen
+            ? 'max-h-[calc(100dvh-80px)] opacity-100'
+            : 'max-h-0 opacity-0'
+        }`}
+      >
+        <nav className="mx-auto max-w-6xl px-4 pt-2 pb-6 flex flex-col gap-1 border-t border-slate-800">
+          {navLinks.map((link, i) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-slate-300 hover:text-gold py-3.5 transition-all"
+              style={{
+                transitionDelay: mobileMenuOpen ? `${50 + i * 30}ms` : '0ms',
+                opacity: mobileMenuOpen ? 1 : 0,
+                transform: mobileMenuOpen ? 'translateX(0)' : 'translateX(-12px)',
+                transitionProperty: 'opacity, transform, color',
+                transitionDuration: '250ms',
+              }}
+              onClick={closeMobileMenu}
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          {/* Resources Section */}
+          <div
+            className="border-t border-slate-800 pt-2 mt-2"
+            style={{
+              transitionDelay: mobileMenuOpen ? `${50 + navLinks.length * 30}ms` : '0ms',
+              opacity: mobileMenuOpen ? 1 : 0,
+              transform: mobileMenuOpen ? 'translateX(0)' : 'translateX(-12px)',
+              transitionProperty: 'opacity, transform',
+              transitionDuration: '250ms',
+            }}
+          >
+            <div className="text-xs text-slate-500 uppercase tracking-wider py-2">Resources</div>
+            {resourceLinks.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-slate-300 hover:text-gold py-3.5 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-3 text-slate-300 hover:text-gold py-3.5 transition-colors"
+                onClick={closeMobileMenu}
               >
+                <link.icon className="w-4 h-4 text-gold" />
                 {link.label}
               </Link>
             ))}
+          </div>
 
-            {/* Resources Section */}
-            <div className="border-t border-slate-800 pt-2 mt-2">
-              <div className="text-xs text-slate-500 uppercase tracking-wider py-2">Resources</div>
-              {resourceLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="flex items-center gap-3 text-slate-300 hover:text-gold py-3.5 transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <link.icon className="w-4 h-4 text-gold" />
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
+          <div
+            className="mt-3 space-y-3"
+            style={{
+              transitionDelay: mobileMenuOpen ? `${50 + (navLinks.length + 1) * 30}ms` : '0ms',
+              opacity: mobileMenuOpen ? 1 : 0,
+              transform: mobileMenuOpen ? 'translateY(0)' : 'translateY(8px)',
+              transitionProperty: 'opacity, transform',
+              transitionDuration: '300ms',
+            }}
+          >
             <StartFunnelButton
-              className="bg-gold hover:bg-gold-light text-ink font-semibold px-5 py-3 rounded-lg transition-all text-center mt-2 w-full"
-              onClick={() => setMobileMenuOpen(false)}
+              className="bg-gold hover:bg-gold-light text-ink font-semibold px-5 py-3.5 rounded-lg transition-all text-center w-full"
+              onClick={closeMobileMenu}
             >
               Get Free Estimate
             </StartFunnelButton>
             <a
-              href={getPhoneLink()}
-              className="flex items-center justify-center gap-2 text-slate-400 py-3 border-t border-slate-800 mt-2"
+              href={phoneLink}
+              className="flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200 py-3 border border-slate-800 rounded-lg transition-colors"
             >
               <Phone className="w-4 h-4" />
-              <span>{getPhoneDisplay()}</span>
+              <span>{phoneDisplay}</span>
             </a>
-          </nav>
-        </div>
-      )}
+          </div>
+        </nav>
+      </div>
     </header>
   )
 }

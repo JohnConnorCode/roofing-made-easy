@@ -151,7 +151,7 @@ async function processScheduledMessages(
       let sendResult: { success: boolean; error?: string; externalId?: string }
 
       if (msg.channel === 'email' && msg.recipient_email) {
-        const wrappedHtml = emailWrapper(msg.body, msg.subject || 'Notification')
+        const wrappedHtml = await emailWrapper(msg.body, msg.subject || 'Notification')
         sendResult = await sendEmail({
           to: msg.recipient_email,
           subject: msg.subject || 'Notification',

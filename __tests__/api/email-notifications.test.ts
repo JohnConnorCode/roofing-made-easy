@@ -9,8 +9,8 @@ import {
 
 describe('Email Templates', () => {
   describe('customerEstimateEmail', () => {
-    it('generates correct subject line with price', () => {
-      const result = customerEstimateEmail({
+    it('generates correct subject line with price', async () => {
+      const result = await customerEstimateEmail({
         priceLow: 8000,
         priceLikely: 10000,
         priceHigh: 12000,
@@ -20,8 +20,8 @@ describe('Email Templates', () => {
       expect(result.subject).toBe('Your Roofing Estimate: $10,000')
     })
 
-    it('includes customer name when provided', () => {
-      const result = customerEstimateEmail({
+    it('includes customer name when provided', async () => {
+      const result = await customerEstimateEmail({
         contactName: 'John Smith',
         priceLow: 8000,
         priceLikely: 10000,
@@ -34,8 +34,8 @@ describe('Email Templates', () => {
       expect(result.text).toContain('John')
     })
 
-    it('uses default greeting when no name provided', () => {
-      const result = customerEstimateEmail({
+    it('uses default greeting when no name provided', async () => {
+      const result = await customerEstimateEmail({
         priceLow: 8000,
         priceLikely: 10000,
         priceHigh: 12000,
@@ -46,9 +46,9 @@ describe('Email Templates', () => {
       expect(result.text).toContain('Hi there')
     })
 
-    it('includes the estimate URL', () => {
+    it('includes the estimate URL', async () => {
       const estimateUrl = 'https://smartroofpricing.com/estimate/test-token-123'
-      const result = customerEstimateEmail({
+      const result = await customerEstimateEmail({
         priceLow: 8000,
         priceLikely: 10000,
         priceHigh: 12000,
@@ -59,8 +59,8 @@ describe('Email Templates', () => {
       expect(result.text).toContain(estimateUrl)
     })
 
-    it('includes price range in email', () => {
-      const result = customerEstimateEmail({
+    it('includes price range in email', async () => {
+      const result = await customerEstimateEmail({
         priceLow: 8000,
         priceLikely: 10000,
         priceHigh: 12000,
@@ -72,9 +72,9 @@ describe('Email Templates', () => {
       expect(result.html).toContain('$12,000')
     })
 
-    it('includes valid until date when provided', () => {
+    it('includes valid until date when provided', async () => {
       const validUntil = '2026-03-15T12:00:00Z' // Use noon UTC to avoid timezone edge cases
-      const result = customerEstimateEmail({
+      const result = await customerEstimateEmail({
         priceLow: 8000,
         priceLikely: 10000,
         priceHigh: 12000,
@@ -87,8 +87,8 @@ describe('Email Templates', () => {
       expect(result.text).toMatch(/March 1[45], 2026/)
     })
 
-    it('includes job type when provided', () => {
-      const result = customerEstimateEmail({
+    it('includes job type when provided', async () => {
+      const result = await customerEstimateEmail({
         jobType: 'full_replacement',
         priceLow: 8000,
         priceLikely: 10000,
@@ -100,8 +100,8 @@ describe('Email Templates', () => {
       expect(result.html.toLowerCase()).toMatch(/full.?replacement|roofing project/i)
     })
 
-    it('includes address when provided', () => {
-      const result = customerEstimateEmail({
+    it('includes address when provided', async () => {
+      const result = await customerEstimateEmail({
         address: '123 Main St',
         city: 'Tupelo',
         state: 'MS',
@@ -117,8 +117,8 @@ describe('Email Templates', () => {
   })
 
   describe('consultationReminderEmail', () => {
-    it('generates correct subject with time', () => {
-      const result = consultationReminderEmail({
+    it('generates correct subject with time', async () => {
+      const result = await consultationReminderEmail({
         consultationDate: 'January 15, 2026',
         consultationTime: '10:00 AM',
       })
@@ -127,8 +127,8 @@ describe('Email Templates', () => {
       expect(result.subject).toContain('Tomorrow')
     })
 
-    it('includes all consultation details', () => {
-      const result = consultationReminderEmail({
+    it('includes all consultation details', async () => {
+      const result = await consultationReminderEmail({
         customerName: 'Jane Doe',
         consultationDate: 'January 15, 2026',
         consultationTime: '10:00 AM',
@@ -143,8 +143,8 @@ describe('Email Templates', () => {
       expect(result.html).toContain('456 Oak St')
     })
 
-    it('includes consultant info when provided', () => {
-      const result = consultationReminderEmail({
+    it('includes consultant info when provided', async () => {
+      const result = await consultationReminderEmail({
         consultationDate: 'January 15, 2026',
         consultationTime: '10:00 AM',
         consultantName: 'Mike Johnson',
@@ -155,9 +155,9 @@ describe('Email Templates', () => {
       expect(result.html).toContain('(662) 555-1234')
     })
 
-    it('includes reschedule URL when provided', () => {
+    it('includes reschedule URL when provided', async () => {
       const rescheduleUrl = 'https://calendly.com/reschedule/abc'
-      const result = consultationReminderEmail({
+      const result = await consultationReminderEmail({
         consultationDate: 'January 15, 2026',
         consultationTime: '10:00 AM',
         rescheduleUrl,
@@ -166,8 +166,8 @@ describe('Email Templates', () => {
       expect(result.html).toContain(rescheduleUrl)
     })
 
-    it('includes what to expect section', () => {
-      const result = consultationReminderEmail({
+    it('includes what to expect section', async () => {
+      const result = await consultationReminderEmail({
         consultationDate: 'January 15, 2026',
         consultationTime: '10:00 AM',
       })
@@ -178,8 +178,8 @@ describe('Email Templates', () => {
   })
 
   describe('paymentReceivedEmail', () => {
-    it('generates correct subject for deposit', () => {
-      const result = paymentReceivedEmail({
+    it('generates correct subject for deposit', async () => {
+      const result = await paymentReceivedEmail({
         amount: 2500,
         paymentType: 'deposit',
       })
@@ -188,8 +188,8 @@ describe('Email Templates', () => {
       expect(result.subject).toContain('Deposit')
     })
 
-    it('generates correct subject for final payment', () => {
-      const result = paymentReceivedEmail({
+    it('generates correct subject for final payment', async () => {
+      const result = await paymentReceivedEmail({
         amount: 15000,
         paymentType: 'final',
       })
@@ -197,8 +197,8 @@ describe('Email Templates', () => {
       expect(result.subject).toContain('Final Payment')
     })
 
-    it('includes customer name', () => {
-      const result = paymentReceivedEmail({
+    it('includes customer name', async () => {
+      const result = await paymentReceivedEmail({
         customerName: 'Bob Wilson',
         amount: 2500,
         paymentType: 'deposit',
@@ -208,8 +208,8 @@ describe('Email Templates', () => {
       expect(result.text).toContain('Bob Wilson')
     })
 
-    it('shows remaining balance when provided', () => {
-      const result = paymentReceivedEmail({
+    it('shows remaining balance when provided', async () => {
+      const result = await paymentReceivedEmail({
         amount: 2500,
         paymentType: 'deposit',
         remainingBalance: 12500,
@@ -219,8 +219,8 @@ describe('Email Templates', () => {
       expect(result.html).toContain('Remaining Balance')
     })
 
-    it('does not show remaining balance for final payment', () => {
-      const result = paymentReceivedEmail({
+    it('does not show remaining balance for final payment', async () => {
+      const result = await paymentReceivedEmail({
         amount: 15000,
         paymentType: 'final',
         remainingBalance: 0,
@@ -230,8 +230,8 @@ describe('Email Templates', () => {
       expect(result.html).not.toContain('Remaining Balance')
     })
 
-    it('includes project address when provided', () => {
-      const result = paymentReceivedEmail({
+    it('includes project address when provided', async () => {
+      const result = await paymentReceivedEmail({
         amount: 2500,
         paymentType: 'deposit',
         address: '789 Elm St',
@@ -243,9 +243,9 @@ describe('Email Templates', () => {
       expect(result.html).toContain('Pontotoc')
     })
 
-    it('includes receipt URL when provided', () => {
+    it('includes receipt URL when provided', async () => {
       const receiptUrl = 'https://stripe.com/receipt/abc123'
-      const result = paymentReceivedEmail({
+      const result = await paymentReceivedEmail({
         amount: 2500,
         paymentType: 'deposit',
         receiptUrl,
@@ -255,9 +255,9 @@ describe('Email Templates', () => {
       expect(result.html).toContain('Download Receipt')
     })
 
-    it('includes portal URL when provided', () => {
+    it('includes portal URL when provided', async () => {
       const portalUrl = 'https://smartroofpricing.com/portal'
-      const result = paymentReceivedEmail({
+      const result = await paymentReceivedEmail({
         amount: 2500,
         paymentType: 'deposit',
         portalUrl,
@@ -266,8 +266,8 @@ describe('Email Templates', () => {
       expect(result.html).toContain(portalUrl)
     })
 
-    it('has appropriate next steps for deposit', () => {
-      const result = paymentReceivedEmail({
+    it('has appropriate next steps for deposit', async () => {
+      const result = await paymentReceivedEmail({
         amount: 2500,
         paymentType: 'deposit',
       })
@@ -276,8 +276,8 @@ describe('Email Templates', () => {
       expect(result.html).toContain('schedule')
     })
 
-    it('has appropriate next steps for final payment', () => {
-      const result = paymentReceivedEmail({
+    it('has appropriate next steps for final payment', async () => {
+      const result = await paymentReceivedEmail({
         amount: 15000,
         paymentType: 'final',
       })
@@ -288,8 +288,8 @@ describe('Email Templates', () => {
   })
 
   describe('contactConfirmationEmail', () => {
-    it('includes customer name', () => {
-      const result = contactConfirmationEmail({
+    it('includes customer name', async () => {
+      const result = await contactConfirmationEmail({
         name: 'Sarah Johnson',
         message: 'I need a roof inspection',
       })
@@ -299,9 +299,9 @@ describe('Email Templates', () => {
       expect(result.subject.toLowerCase()).toMatch(/thank|received|contact/)
     })
 
-    it('includes the original message', () => {
+    it('includes the original message', async () => {
       const message = 'My roof has been leaking and I need help'
-      const result = contactConfirmationEmail({
+      const result = await contactConfirmationEmail({
         name: 'Test User',
         message,
       })
@@ -310,8 +310,8 @@ describe('Email Templates', () => {
       expect(result.text).toContain(message)
     })
 
-    it('includes response timeframe', () => {
-      const result = contactConfirmationEmail({
+    it('includes response timeframe', async () => {
+      const result = await contactConfirmationEmail({
         name: 'Test User',
         message: 'Test message',
       })
@@ -322,8 +322,8 @@ describe('Email Templates', () => {
   })
 
   describe('contactAdminNotificationEmail', () => {
-    it('includes all submission details', () => {
-      const result = contactAdminNotificationEmail({
+    it('includes all submission details', async () => {
+      const result = await contactAdminNotificationEmail({
         name: 'New Lead',
         email: 'newlead@example.com',
         phone: '(662) 555-9999',
@@ -341,9 +341,9 @@ describe('Email Templates', () => {
       expect(result.subject).toContain('Contact Form')
     })
 
-    it('includes admin URL', () => {
+    it('includes admin URL', async () => {
       const adminUrl = 'https://smartroofpricing.com/admin/contacts/abc'
-      const result = contactAdminNotificationEmail({
+      const result = await contactAdminNotificationEmail({
         name: 'Test',
         email: 'test@example.com',
         message: 'Test message',
@@ -357,8 +357,8 @@ describe('Email Templates', () => {
 })
 
 describe('Email Template Structure', () => {
-  it('all templates return required fields', () => {
-    const templates = [
+  it('all templates return required fields', async () => {
+    const templates = await Promise.all([
       customerEstimateEmail({
         priceLow: 1000,
         priceLikely: 1500,
@@ -384,7 +384,7 @@ describe('Email Template Structure', () => {
         submittedAt: new Date().toISOString(),
         adminUrl: 'https://example.com',
       }),
-    ]
+    ])
 
     templates.forEach((template) => {
       expect(template).toHaveProperty('subject')
@@ -399,8 +399,8 @@ describe('Email Template Structure', () => {
     })
   })
 
-  it('HTML templates include DOCTYPE and proper structure', () => {
-    const result = customerEstimateEmail({
+  it('HTML templates include DOCTYPE and proper structure', async () => {
+    const result = await customerEstimateEmail({
       priceLow: 1000,
       priceLikely: 1500,
       priceHigh: 2000,
@@ -414,8 +414,8 @@ describe('Email Template Structure', () => {
     expect(result.html).toContain('</body>')
   })
 
-  it('HTML templates include brand styling', () => {
-    const result = customerEstimateEmail({
+  it('HTML templates include brand styling', async () => {
+    const result = await customerEstimateEmail({
       priceLow: 1000,
       priceLikely: 1500,
       priceHigh: 2000,
@@ -428,8 +428,8 @@ describe('Email Template Structure', () => {
     expect(result.html).toContain('Roofing')
   })
 
-  it('text versions are plain text without HTML', () => {
-    const result = customerEstimateEmail({
+  it('text versions are plain text without HTML', async () => {
+    const result = await customerEstimateEmail({
       priceLow: 1000,
       priceLikely: 1500,
       priceHigh: 2000,

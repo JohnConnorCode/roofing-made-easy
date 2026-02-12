@@ -36,7 +36,7 @@ test.describe('Admin Estimation Flow', () => {
 
   test.describe('Geographic Pricing', () => {
     test('should protect geographic pricing page', async ({ page }) => {
-      await page.goto('/pricing/geographic')
+      await page.goto('/rate-management/geographic')
 
       // Should redirect to login in mock mode
       await expect(page).toHaveURL(/login/)

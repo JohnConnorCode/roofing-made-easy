@@ -37,7 +37,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             id={selectId}
             className={cn(
               // Base styles with min-height for touch targets
-              'flex h-11 min-h-[44px] w-full appearance-none rounded-lg border border-slate-300 bg-white px-4 py-2 pr-10 text-base text-slate-900',
+              'flex h-12 min-h-[48px] w-full appearance-none rounded-lg border border-slate-300 bg-white px-4 py-2 pr-10 text-base text-slate-900',
               // Focus states
               'focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20',
               // Disabled states
@@ -64,7 +64,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
         </div>
         {error && (
-          <p id={`${selectId}-error`} className="mt-1.5 text-sm text-red-600 dark:text-red-400">
+          <p id={`${selectId}-error`} role="alert" className="mt-1.5 text-sm text-red-600 dark:text-red-400">
             {error}
           </p>
         )}

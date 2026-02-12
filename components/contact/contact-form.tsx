@@ -16,13 +16,13 @@ import {
   CheckCircle,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
-import { BUSINESS_CONFIG, getFullAddress, getPhoneDisplay } from '@/lib/config/business'
-
-const PHONE_NUMBER = getPhoneDisplay()
-const EMAIL = BUSINESS_CONFIG.email.primary
-const ADDRESS = getFullAddress()
+import { useBusinessConfig, useContact } from '@/lib/config/business-provider'
 
 export function ContactPageContent() {
+  const config = useBusinessConfig()
+  const { phoneDisplay: PHONE_NUMBER, phoneLink } = useContact()
+  const EMAIL = config.email.primary
+  const ADDRESS = `${config.address.street}, ${config.address.city}, ${config.address.stateCode} ${config.address.zip}`
   const { showToast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -111,7 +111,7 @@ export function ContactPageContent() {
 
               <div className="space-y-6">
                 <a
-                  href={`tel:${PHONE_NUMBER.replace(/\D/g, '')}`}
+                  href={phoneLink}
                   className="flex items-start gap-4 p-4 bg-[#1a1f2e] border border-slate-700 rounded-xl hover:border-[#c9a25c] transition-colors"
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#c9a25c]/20">

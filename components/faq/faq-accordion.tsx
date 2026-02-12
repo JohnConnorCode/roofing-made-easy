@@ -70,8 +70,8 @@ function FAQAccordionItem({ question, answer, isOpen, onToggle }: FAQAccordionIt
       <div
         id={`faq-answer-${question.slice(0, 20).replace(/\s/g, '-')}`}
         className={cn(
-          'overflow-hidden transition-all duration-200 ease-out',
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          'overflow-hidden transition-all duration-200 ease-out motion-reduce:transition-none',
+          isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
         )}
         role="region"
         aria-hidden={!isOpen}

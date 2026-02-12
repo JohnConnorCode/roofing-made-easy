@@ -12,6 +12,7 @@ import {
 } from "@/components/seo/regional-schema";
 import { MinimalNAPSchema } from "@/components/seo/nap-schema";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { getBusinessConfigFromDB } from "@/lib/config/business-loader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -134,11 +135,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const config = await getBusinessConfigFromDB();
+
   return (
     <html lang="en-US" dir="ltr">
       <head>
@@ -167,7 +170,9 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <GoogleAnalytics />
-        <Providers>{children}</Providers>
+        <Providers businessConfig={config}>
+          {children}
+        </Providers>
       </body>
     </html>
   );

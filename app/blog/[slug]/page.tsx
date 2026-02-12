@@ -5,7 +5,6 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/data/blog'
 import {
-  ArrowLeft,
   ArrowRight,
   Clock,
   User,
@@ -13,7 +12,8 @@ import {
   Tag,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
-import { BlogPostingSchema, BlogBreadcrumbSchema } from '@/components/seo/blog-schema'
+import { BlogPostingSchema } from '@/components/seo/blog-schema'
+import { Breadcrumbs } from '@/components/location/breadcrumbs'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -98,21 +98,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         tags={post.tags}
         wordCount={wordCount}
       />
-      <BlogBreadcrumbSchema title={post.title} slug={post.slug} />
       <SiteHeader />
 
-      {/* Breadcrumb */}
-      <div className="bg-[#161a23] border-b border-slate-800">
-        <div className="mx-auto max-w-4xl px-4 py-3">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-[#c9a25c]"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            All Resources
-          </Link>
-        </div>
-      </div>
+      <Breadcrumbs items={[
+        { name: 'Blog', href: '/blog' },
+        { name: post.title, href: `/blog/${post.slug}` },
+      ]} />
 
       {/* Article */}
       <article className="py-16 md:py-24 bg-[#161a23]">

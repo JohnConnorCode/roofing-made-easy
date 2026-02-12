@@ -21,6 +21,14 @@ export async function POST() {
     `${BASE_URL}/insurance-help`,
     `${BASE_URL}/assistance-programs`,
     `${BASE_URL}/pricing`,
+    `${BASE_URL}/pricing/roof-replacement-cost`,
+    `${BASE_URL}/pricing/metal-roof-cost`,
+    `${BASE_URL}/pricing/roof-repair-cost`,
+    `${BASE_URL}/blog/new-roof-cost-mississippi-2026`,
+    `${BASE_URL}/blog/metal-roof-vs-shingles-cost`,
+    `${BASE_URL}/blog/roof-replacement-cost-factors`,
+    `${BASE_URL}/blog/free-roof-inspection-what-to-expect`,
+    `${BASE_URL}/blog/mississippi-storm-damage-insurance-coverage`,
   ]
 
   try {

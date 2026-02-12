@@ -20,7 +20,7 @@ test.describe('Pricing Configuration', () => {
 
   test.describe('Pricing Rules Page', () => {
     test('Pricing page loads successfully', async ({ page }) => {
-      await page.goto('/pricing')
+      await page.goto('/rate-management')
 
       // Wait for page to load
       await page.waitForTimeout(1000)
@@ -33,7 +33,7 @@ test.describe('Pricing Configuration', () => {
     })
 
     test('Displays pricing rules list', async ({ page }) => {
-      await page.goto('/pricing')
+      await page.goto('/rate-management')
       await page.waitForResponse(/\/api\/pricing/).catch(() => {})
 
       // Should show pricing rules or empty state
@@ -46,7 +46,7 @@ test.describe('Pricing Configuration', () => {
     })
 
     test('Pricing rules have required fields', async ({ page }) => {
-      await page.goto('/pricing')
+      await page.goto('/rate-management')
       await page.waitForResponse(/\/api\/pricing/).catch(() => {})
 
       const table = page.locator('table')

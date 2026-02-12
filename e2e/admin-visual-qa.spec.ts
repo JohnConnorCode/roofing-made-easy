@@ -89,13 +89,13 @@ test.describe('Admin Visual QA', () => {
 
   // Pricing pages
   test('Pricing - Base Rates page', async ({ page }) => {
-    await page.goto('/pricing')
+    await page.goto('/rate-management')
     await page.waitForLoadState('networkidle')
     await page.screenshot({ path: 'playwright-report/screenshots/admin-pricing.png', fullPage: true })
   })
 
   test('Pricing - Geographic page', async ({ page }) => {
-    await page.goto('/pricing/geographic')
+    await page.goto('/rate-management/geographic')
     await page.waitForLoadState('networkidle')
     await page.screenshot({ path: 'playwright-report/screenshots/admin-pricing-geographic.png', fullPage: true })
   })

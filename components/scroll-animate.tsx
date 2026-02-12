@@ -37,7 +37,7 @@ export function ScrollAnimate({
           setIsVisible(false)
         }
       },
-      { threshold, rootMargin: '0px 0px -50px 0px' }
+      { threshold, rootMargin: '0px 0px -30px 0px' }
     )
 
     observer.observe(element)
@@ -52,13 +52,17 @@ export function ScrollAnimate({
     'fade-in': 'animate-fade-in',
   }[animation]
 
-  const delayStyle = delay > 0 ? { animationDelay: `${delay}ms` } : undefined
+  const hiddenStyle: React.CSSProperties = {
+    willChange: 'transform, opacity, filter',
+    ...(delay > 0 ? { animationDelay: `${delay}ms` } : {}),
+  }
+  const visibleStyle: React.CSSProperties = delay > 0 ? { animationDelay: `${delay}ms` } : {}
 
   return (
     <div
       ref={ref}
       className={`${className} ${isVisible ? animationClass : 'opacity-0'}`}
-      style={delayStyle}
+      style={isVisible ? visibleStyle : hiddenStyle}
     >
       {children}
     </div>
@@ -98,7 +102,7 @@ export function ScrollStagger({
           setIsVisible(false)
         }
       },
-      { threshold, rootMargin: '0px 0px -50px 0px' }
+      { threshold, rootMargin: '0px 0px -30px 0px' }
     )
 
     observer.observe(element)

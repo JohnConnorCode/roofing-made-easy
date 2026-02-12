@@ -3,7 +3,7 @@
  * Single source of truth for email styling and company info
  */
 
-import { BUSINESS_CONFIG } from '@/lib/config/business'
+import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 
 // Brand colors for email templates
 export const EMAIL_COLORS = {
@@ -40,20 +40,21 @@ export const EMAIL_FONTS = {
 }
 
 // Company info for emails (derived from business config)
-export function getEmailCompanyInfo() {
+export async function getEmailCompanyInfo() {
+  const config = await getBusinessConfigFromDB()
   return {
-    name: BUSINESS_CONFIG.name,
-    legalName: BUSINESS_CONFIG.legalName,
-    phone: BUSINESS_CONFIG.phone.display,
-    phoneRaw: BUSINESS_CONFIG.phone.raw,
-    email: BUSINESS_CONFIG.email.primary,
+    name: config.name,
+    legalName: config.legalName,
+    phone: config.phone.display,
+    phoneRaw: config.phone.raw,
+    email: config.email.primary,
     address: {
-      street: BUSINESS_CONFIG.address.street,
-      city: BUSINESS_CONFIG.address.city,
-      state: BUSINESS_CONFIG.address.stateCode,
-      zip: BUSINESS_CONFIG.address.zip,
+      street: config.address.street,
+      city: config.address.city,
+      state: config.address.stateCode,
+      zip: config.address.zip,
     },
-    fullAddress: `${BUSINESS_CONFIG.address.street}, ${BUSINESS_CONFIG.address.city}, ${BUSINESS_CONFIG.address.stateCode} ${BUSINESS_CONFIG.address.zip}`,
+    fullAddress: `${config.address.street}, ${config.address.city}, ${config.address.stateCode} ${config.address.zip}`,
     website: process.env.NEXT_PUBLIC_APP_URL || 'https://www.smartroofpricing.com',
   }
 }
@@ -62,15 +63,15 @@ export function getEmailCompanyInfo() {
 export interface EmailBrandConfig {
   colors: typeof EMAIL_COLORS
   fonts: typeof EMAIL_FONTS
-  company: ReturnType<typeof getEmailCompanyInfo>
+  company: Awaited<ReturnType<typeof getEmailCompanyInfo>>
 }
 
 // Get complete brand config
-export function getEmailBrandConfig(): EmailBrandConfig {
+export async function getEmailBrandConfig(): Promise<EmailBrandConfig> {
   return {
     colors: EMAIL_COLORS,
     fonts: EMAIL_FONTS,
-    company: getEmailCompanyInfo(),
+    company: await getEmailCompanyInfo(),
   }
 }
 

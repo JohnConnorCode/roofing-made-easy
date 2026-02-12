@@ -6,7 +6,7 @@ test.describe('Geographic Pricing', () => {
 
   test.beforeEach(async ({ page }) => {
     await loginAsAdmin(page)
-    await page.goto('/pricing/geographic')
+    await page.goto('/rate-management/geographic')
   })
 
   test.describe('Page Load', () => {

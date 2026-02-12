@@ -1,6 +1,8 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import { BUSINESS_CONFIG, getShortAddress } from '@/lib/config/business'
+import { useBusinessConfig } from '@/lib/config/business-provider'
 
 interface LogoProps {
   size?: 'xs' | 'sm' | 'md' | 'lg'
@@ -29,12 +31,14 @@ export function Logo({
   className = '',
   linkToHome = true,
 }: LogoProps) {
+  const config = useBusinessConfig()
+
   const content = (
     <div className={`flex items-center gap-3 ${className}`}>
       <div className={`relative ${sizeMap[size]} rounded-xl overflow-hidden shadow-lg glow-gold`}>
         <Image
           src="/logo.svg"
-          alt={BUSINESS_CONFIG.name}
+          alt={config.name}
           fill
           className="object-contain"
           priority
@@ -43,9 +47,9 @@ export function Logo({
       {showText && (
         <div>
           <h1 className={`${textSizeMap[size]} font-bold text-slate-100 tracking-tight`}>
-            {BUSINESS_CONFIG.name}
+            {config.name}
           </h1>
-          <p className="text-xs text-slate-500">{getShortAddress()}</p>
+          <p className="text-xs text-slate-500">{config.address.city}, {config.address.stateCode}</p>
         </div>
       )}
     </div>

@@ -6,7 +6,7 @@ test.describe('Pricing Configuration', () => {
 
   test.beforeEach(async ({ page }) => {
     await loginAsAdmin(page)
-    await page.goto('/pricing')
+    await page.goto('/rate-management')
   })
 
   test.describe('Page Load', () => {

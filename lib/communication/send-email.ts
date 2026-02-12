@@ -4,7 +4,7 @@
 
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
-import { getBusinessConfig, getFullAddress, getPhoneDisplay } from '@/lib/config/business'
+import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 import type { MessageStatus } from './types'
 
 interface SendEmailOptions {
@@ -33,7 +33,7 @@ interface SendEmailResult {
  * Send an email via Resend
  */
 export async function sendEmail(options: SendEmailOptions): Promise<SendEmailResult> {
-  const config = getBusinessConfig()
+  const config = await getBusinessConfigFromDB()
 
   // Get Resend API key from credentials
   const apiKey = await getResendApiKey()
@@ -58,7 +58,7 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendEmailRes
         to: options.to,
         subject: options.subject,
         text: options.body,
-        html: options.html || convertToHtml(options.body),
+        html: options.html || await convertToHtml(options.body),
         replyTo: options.replyTo || config.email.primary,
       }),
       new Promise<never>((_, reject) =>
@@ -143,8 +143,8 @@ async function getResendApiKey(): Promise<string | null> {
 /**
  * Convert plain text to basic HTML
  */
-function convertToHtml(text: string): string {
-  const config = getBusinessConfig()
+async function convertToHtml(text: string): Promise<string> {
+  const config = await getBusinessConfigFromDB()
 
   // Escape HTML entities
   const escaped = text
@@ -181,8 +181,8 @@ function convertToHtml(text: string): string {
   <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
   <div style="font-size: 12px; color: #666;">
     ${config.name}<br>
-    ${getFullAddress()}<br>
-    ${getPhoneDisplay()}
+    ${config.address.street}, ${config.address.city}, ${config.address.stateCode} ${config.address.zip}<br>
+    ${config.phone.display}
   </div>
 </body>
 </html>
@@ -208,7 +208,7 @@ async function logCommunication(options: SendEmailOptions & {
       recipient_email: options.to,
       subject: options.subject,
       body: options.body,
-      body_html: options.html || convertToHtml(options.body),
+      body_html: options.html || await convertToHtml(options.body),
       workflow_id: options.workflowId || null,
       template_id: options.templateId || null,
       scheduled_message_id: options.scheduledMessageId || null,

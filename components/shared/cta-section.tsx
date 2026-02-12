@@ -1,9 +1,10 @@
 // Shared CTA Section Component
 // Reusable call-to-action sections used across pages
+'use client'
 
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
+import { useContact } from '@/lib/hooks/use-contact'
 
 interface CTASectionProps {
   title: string
@@ -22,6 +23,8 @@ export function CTASection({
   showPhone = true,
   variant = 'default'
 }: CTASectionProps) {
+  const { phoneDisplay, phoneLink } = useContact()
+
   const bgClass = variant === 'gradient'
     ? 'bg-gradient-to-br from-gold/20 to-gold/10 border border-gold/30 rounded-2xl'
     : variant === 'card'
@@ -50,10 +53,10 @@ export function CTASection({
             </Link>
             {showPhone && (
               <a
-                href={getPhoneLink()}
+                href={phoneLink}
                 className="inline-flex items-center justify-center bg-transparent border-2 border-gold/50 hover:border-gold text-white font-semibold px-8 py-4 rounded-lg transition-all"
               >
-                Call {getPhoneDisplay()}
+                Call {phoneDisplay}
               </a>
             )}
           </div>

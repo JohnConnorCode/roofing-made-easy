@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Logo } from '@/components/ui/logo'
 import { formatCurrency } from '@/lib/utils'
 import { cn } from '@/lib/utils'
-import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
+import { useContact } from '@/lib/hooks/use-contact'
+import { useBusinessConfig } from '@/lib/config/business-provider'
 import { COMPANY_INFO } from '@/lib/data/estimate-content'
 import type { JobType, RoofMaterial } from '@/lib/supabase/types'
 import {
@@ -27,6 +28,9 @@ import {
   AlertTriangle,
   FileText,
   Image,
+  Search,
+  MessageSquare,
+  Handshake,
 } from 'lucide-react'
 import type { RoofPitch, TimelineUrgency } from '@/lib/supabase/types'
 
@@ -132,6 +136,50 @@ function formatIssue(issue: string): string {
     .replace(/\b\w/g, (l) => l.toUpperCase())
 }
 
+// Helper to render AI explanation with proper formatting
+function FormattedExplanation({ text }: { text: string }) {
+  const blocks = text.split(/\n{2,}/).filter(Boolean)
+
+  return (
+    <div className="space-y-3">
+      {blocks.map((block, i) => {
+        const trimmed = block.trim()
+        const lines = trimmed.split('\n')
+        const isList = lines.every(
+          (line) => /^\s*[-*]\s/.test(line) || /^\s*\d+[.)]\s/.test(line) || line.trim() === ''
+        )
+
+        if (isList) {
+          return (
+            <ul key={i} className="space-y-1.5 pl-1">
+              {lines
+                .filter((line) => line.trim())
+                .map((line, j) => (
+                  <li key={j} className="flex items-start gap-2 text-sm text-slate-300 leading-relaxed">
+                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#c9a25c] shrink-0" />
+                    <span>{line.replace(/^\s*[-*]\s*/, '').replace(/^\s*\d+[.)]\s*/, '')}</span>
+                  </li>
+                ))}
+            </ul>
+          )
+        }
+
+        const inlineLines = trimmed.split('\n')
+        return (
+          <p key={i} className="text-sm text-slate-300 leading-relaxed">
+            {inlineLines.map((line, j) => (
+              <span key={j}>
+                {j > 0 && <br />}
+                {line}
+              </span>
+            ))}
+          </p>
+        )
+      })}
+    </div>
+  )
+}
+
 // Helper to format timeline urgency
 function formatTimeline(urgency: TimelineUrgency | null): string {
   if (!urgency) return 'Not specified'
@@ -158,6 +206,43 @@ function formatPitch(pitch: RoofPitch | null): string {
     unknown: 'Unknown',
   }
   return labels[pitch] || pitch
+}
+
+// Shared CTA block used in two places
+function CTABlock({
+  onScheduleConsultation,
+  handleCallNow,
+  phoneNumber,
+  calendlyUrl,
+}: {
+  onScheduleConsultation: () => void
+  handleCallNow: () => void
+  phoneNumber: string
+  calendlyUrl?: string
+}) {
+  return (
+    <div className="space-y-3 print:hidden">
+      <Button
+        variant="primary"
+        size="xl"
+        className="w-full bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0 shadow-lg shadow-[#c9a25c]/20"
+        leftIcon={<Calendar className="h-5 w-5" />}
+        rightIcon={calendlyUrl ? <ExternalLink className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
+        onClick={onScheduleConsultation}
+      >
+        Schedule Free Consultation
+      </Button>
+      <Button
+        variant="secondary"
+        size="lg"
+        className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700"
+        leftIcon={<Phone className="h-5 w-5" />}
+        onClick={handleCallNow}
+      >
+        Call Us: {phoneNumber}
+      </Button>
+    </div>
+  )
 }
 
 export function EstimateDocument({
@@ -197,11 +282,12 @@ export function EstimateDocument({
   estimateNumber,
   estimateDate,
 }: EstimateDocumentProps) {
-  const phoneNumber = getPhoneDisplay()
+  const { phoneDisplay, phoneLink } = useContact()
+  const businessConfig = useBusinessConfig()
 
   const handleCallNow = useCallback(() => {
-    window.location.href = getPhoneLink()
-  }, [])
+    window.location.href = phoneLink
+  }, [phoneLink])
 
   const fullAddress = propertyAddress
     ? city && state
@@ -212,7 +298,6 @@ export function EstimateDocument({
   const jobTypeLabel = jobType?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()) || 'Roofing Project'
   const materialLabel = roofMaterial?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()) || 'Not specified'
 
-  // Generate estimate number if not provided
   const displayEstimateNumber = estimateNumber || `EST-${Date.now().toString(36).toUpperCase()}`
   const displayEstimateDate = estimateDate || new Date().toLocaleDateString('en-US', {
     month: 'long',
@@ -220,17 +305,14 @@ export function EstimateDocument({
     year: 'numeric',
   })
 
-  // Calculate validity (30 days from now)
   const validityDate = validUntil || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
   })
 
-  // Check if we have any project details to show
   const hasProjectDetails = roofSizeSqft || roofAgeYears || stories > 1 || hasSkylights || hasChimneys || hasSolarPanels || issues.length > 0 || timelineUrgency || hasInsuranceClaim || photos.length > 0
 
-  // Check estimate expiration status
   const validityDateObj = validUntil ? new Date(validUntil) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
   const now = new Date()
   const daysUntilExpiry = Math.ceil((validityDateObj.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
@@ -238,8 +320,10 @@ export function EstimateDocument({
   const isExpiringSoon = !isExpired && daysUntilExpiry <= 7
 
   return (
-    <div className="space-y-6">
-      {/* Expiration warnings */}
+    <div className="space-y-8">
+      {/* ================================================================
+          SECTION 1: EXPIRATION WARNINGS (conditional)
+          ================================================================ */}
       {isExpired && (
         <div className="rounded-lg bg-red-500/10 border border-red-500/30 p-4 text-center">
           <p className="text-sm font-medium text-red-400">
@@ -255,86 +339,86 @@ export function EstimateDocument({
         </div>
       )}
 
-      {/* Estimate Header with number and date */}
-      <div className="flex items-center justify-between text-sm text-slate-500">
-        <div className="flex items-center gap-2">
-          <FileText className="h-4 w-4" />
-          <span>{displayEstimateNumber}</span>
+      {/* ================================================================
+          SECTION 2: HEADER - Emotional win + context
+          ================================================================ */}
+      <div className="text-center pt-2">
+        <div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-[#3d7a5a]/15 border-2 border-[#3d7a5a]/40 shadow-[0_0_30px_rgba(61,122,90,0.15)]">
+          <CheckCircle className="h-11 w-11 text-[#3d7a5a]" />
         </div>
-        <div>{displayEstimateDate}</div>
-      </div>
-
-      {/* Header with success message */}
-      <div className="text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#1a1f2e] border border-[#3d7a5a]">
-          <CheckCircle className="h-10 w-10 text-[#3d7a5a]" />
-        </div>
-        <h1 className="text-2xl font-bold text-slate-100 md:text-3xl">
-          {customerName ? `${customerName}, Your Estimate is Ready!` : 'Your Estimate is Ready!'}
+        <h1 className="text-3xl font-bold text-slate-100 md:text-4xl tracking-tight">
+          {customerName ? `${customerName}, Your Estimate is Ready` : 'Your Estimate is Ready'}
         </h1>
         {fullAddress && (
-          <p className="mt-2 text-slate-400 flex items-center justify-center gap-1">
-            <MapPin className="h-4 w-4" />
+          <p className="mt-3 text-slate-400 flex items-center justify-center gap-1.5 text-base">
+            <MapPin className="h-4 w-4 text-slate-500" />
             {fullAddress}
           </p>
         )}
+        <div className="mt-3 flex items-center justify-center gap-4 text-xs text-slate-500">
+          <span className="flex items-center gap-1.5">
+            <FileText className="h-3.5 w-3.5" />
+            {displayEstimateNumber}
+          </span>
+          <span className="h-3 w-px bg-slate-700" />
+          <span>{displayEstimateDate}</span>
+        </div>
       </div>
 
-      {/* Main price card */}
-      <Card className="overflow-hidden border-0 shadow-xl">
-        <CardHeader className="bg-gradient-to-r from-[#c9a25c] to-[#9a7432] text-[#0c0f14] py-4">
-          <CardTitle className="text-center text-lg text-[#0c0f14]">
-            Estimated Investment for {jobTypeLabel}
+      {/* ================================================================
+          SECTION 3: PRICE CARD - The hero number
+          ================================================================ */}
+      <Card className="overflow-hidden border-0 shadow-xl shadow-black/20">
+        <CardHeader className="bg-gradient-to-r from-[#c9a25c] to-[#9a7432] text-[#0c0f14] py-3 px-6">
+          <CardTitle className="text-center text-sm font-semibold text-[#0c0f14] uppercase tracking-wider">
+            Estimated Investment &mdash; {jobTypeLabel}
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6 bg-[#161a23]">
-          {/* Price display */}
-          <div className="flex items-end justify-center gap-8 mb-6">
-            <div className="text-center">
-              <p className="text-sm text-slate-500">Low</p>
-              <p className="text-xl font-semibold text-slate-300">
-                {formatCurrency(priceLow)}
-              </p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm font-medium text-[#c9a25c]">Most Likely</p>
-              <p className="text-4xl font-bold text-[#c9a25c]">
+        <CardContent className="p-0 bg-[#161a23]">
+          {/* Hero price */}
+          <div className="px-6 pt-8 pb-6">
+            <div className="text-center mb-6">
+              <p className="text-xs font-medium text-[#c9a25c] uppercase tracking-widest mb-2">Your Estimated Cost</p>
+              <p className="text-5xl font-bold text-[#c9a25c] tracking-tight md:text-6xl">
                 {formatCurrency(priceLikely)}
               </p>
             </div>
-            <div className="text-center">
-              <p className="text-sm text-slate-500">High</p>
-              <p className="text-xl font-semibold text-slate-300">
-                {formatCurrency(priceHigh)}
-              </p>
-            </div>
-          </div>
 
-          {/* Visual range bar */}
-          <div className="mb-6">
-            <div className="relative h-3 rounded-full bg-gradient-to-r from-[#3d7a5a] via-[#c9a25c] to-red-700">
-              <div
-                className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#0c0f14] bg-[#c9a25c] shadow-lg"
-                style={{
-                  left: `${((priceLikely - priceLow) / (priceHigh - priceLow)) * 100}%`,
-                }}
-              />
-            </div>
-            <div className="mt-2 flex justify-between text-xs text-slate-500">
-              <span>{formatCurrency(priceLow)}</span>
-              <span>{formatCurrency(priceHigh)}</span>
+            {/* Range bar */}
+            <div className="max-w-sm mx-auto">
+              <div className="relative h-2.5 rounded-full bg-gradient-to-r from-[#3d7a5a] via-[#c9a25c] to-red-700/80">
+                <div
+                  className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[#0c0f14] bg-[#c9a25c] shadow-[0_0_10px_rgba(201,162,92,0.4)]"
+                  style={{
+                    left: `${((priceLikely - priceLow) / (priceHigh - priceLow)) * 100}%`,
+                  }}
+                />
+              </div>
+              <div className="mt-2 flex justify-between text-xs">
+                <div className="text-slate-500">
+                  <span className="block text-[10px] uppercase tracking-wide">Low</span>
+                  <span className="font-medium text-slate-400">{formatCurrency(priceLow)}</span>
+                </div>
+                <div className="text-slate-500 text-right">
+                  <span className="block text-[10px] uppercase tracking-wide">High</span>
+                  <span className="font-medium text-slate-400">{formatCurrency(priceHigh)}</span>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Price factors */}
           {factors && factors.length > 0 && (
-            <div className="border-t border-slate-700 pt-4 mb-4">
-              <p className="text-sm font-medium text-slate-400 mb-3">What affects your price:</p>
+            <div className="border-t border-slate-700/50 mx-6 pt-4 pb-2">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Price Factors</p>
               <div className="space-y-2">
                 {factors.map((factor, index) => (
                   <div key={index} className="flex items-center justify-between text-sm">
                     <span className="text-slate-300">{factor.name}</span>
-                    <span className={factor.impact > 0 ? 'text-[#c9a25c]' : 'text-[#3d7a5a]'}>
+                    <span className={cn(
+                      'font-medium tabular-nums',
+                      factor.impact > 0 ? 'text-[#c9a25c]' : 'text-[#3d7a5a]'
+                    )}>
                       {factor.impact > 0 ? '+' : ''}
                       {formatCurrency(factor.impact)}
                     </span>
@@ -344,10 +428,11 @@ export function EstimateDocument({
             </div>
           )}
 
-          {/* Explanation */}
-          <div className="rounded-lg bg-[#1a1f2e] border border-slate-700 p-4">
+          {/* AI Explanation */}
+          <div className="m-4 rounded-lg bg-[#0c0f14]/60 border border-slate-700/50 p-5">
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Estimate Summary</p>
             {explanation ? (
-              <p className="text-sm text-slate-300 leading-relaxed">{explanation}</p>
+              <FormattedExplanation text={explanation} />
             ) : (
               <p className="text-sm text-slate-400 leading-relaxed italic">
                 This estimate is calculated using current market rates for your area, roof specifications, and
@@ -358,13 +443,18 @@ export function EstimateDocument({
         </CardContent>
       </Card>
 
-      {/* What's included - job-type specific */}
+      {/* ================================================================
+          SECTION 4: WHAT'S INCLUDED - Justify the price
+          ================================================================ */}
       <Card className="border-slate-700/50 bg-[#161a23]">
         <CardContent className="p-6">
-          <h3 className="font-semibold text-slate-100 mb-4">What&apos;s Included</h3>
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="flex items-center gap-2 mb-4">
+            <Layers className="h-5 w-5 text-[#3d7a5a]" />
+            <h3 className="font-semibold text-slate-100">What&apos;s Included</h3>
+          </div>
+          <div className="grid gap-2.5 md:grid-cols-2">
             {getIncludedItems(jobType).map((item, index) => (
-              <div key={index} className="flex items-center gap-2 text-sm">
+              <div key={index} className="flex items-center gap-2.5 text-sm rounded-md px-3 py-2 bg-[#1a1f2e]/60">
                 <CheckCircle className="h-4 w-4 text-[#3d7a5a] shrink-0" />
                 <span className="text-slate-300">{item}</span>
               </div>
@@ -373,39 +463,70 @@ export function EstimateDocument({
         </CardContent>
       </Card>
 
-      {/* Roofing Estimate Checklist */}
-      <Card className="border-slate-700/50 bg-[#161a23]">
-        <CardContent className="p-6">
-          <div className="flex items-center gap-2 mb-2">
-            <ClipboardCheck className="h-5 w-5 text-[#c9a25c]" />
-            <h3 className="font-semibold text-slate-100">Before You Accept Any Roofing Bid</h3>
-          </div>
-          <p className="text-sm text-slate-400 mb-4">
-            Protect yourself and your investment. Use this checklist when comparing estimates.
+      {/* ================================================================
+          SECTION 5: PRIMARY CTA - Don't make them scroll further
+          ================================================================ */}
+      <div className="space-y-4">
+        <div className="text-center">
+          <p className="text-sm text-slate-400">
+            Ready to move forward? Your free consultation confirms exact pricing.
           </p>
-          <div className="grid gap-3 md:grid-cols-2">
+        </div>
+        <CTABlock
+          onScheduleConsultation={onScheduleConsultation}
+          handleCallNow={handleCallNow}
+          phoneNumber={phoneDisplay}
+          calendlyUrl={calendlyUrl}
+        />
+      </div>
+
+      {/* ================================================================
+          SECTION 6: WHAT HAPPENS NEXT - Reduce anxiety, show the path
+          ================================================================ */}
+      <Card className="border-[#c9a25c]/20 bg-[#161a23]">
+        <CardContent className="p-6">
+          <h3 className="font-semibold text-slate-100 text-center mb-6">What Happens Next</h3>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              'Verify the contractor is licensed and insured in your state',
-              'Ask for proof of workers\' compensation insurance',
-              'Get at least 3 written estimates for comparison',
-              'Check online reviews and ask for local references',
-              'Confirm the exact materials and brands to be used',
-              'Ensure the contract includes a start and completion date',
-              'Ask about the warranty \u2014 workmanship AND manufacturer',
-              'Understand the payment schedule (never pay 100% upfront)',
-              'Ask if they pull the necessary building permits',
-              'Check for a lien waiver clause protecting your property',
-            ].map((item, index) => (
-              <div key={index} className="flex items-start gap-2 text-sm">
-                <CheckCircle className="h-4 w-4 text-[#3d7a5a] shrink-0 mt-0.5" />
-                <span className="text-slate-300">{item}</span>
+              { step: 1, icon: Search, title: 'Review Estimate', desc: 'Take your time reviewing the details above' },
+              { step: 2, icon: Calendar, title: 'Free Consultation', desc: 'We visit your property at no cost' },
+              { step: 3, icon: MessageSquare, title: 'Finalize Details', desc: 'Confirm scope, materials & exact price' },
+              { step: 4, icon: Handshake, title: 'Project Begins', desc: 'We handle everything from start to finish' },
+            ].map(({ step, icon: Icon, title, desc }) => (
+              <div key={step} className="text-center">
+                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#c9a25c]/10 border border-[#c9a25c]/30">
+                  <Icon className="h-5 w-5 text-[#c9a25c]" />
+                </div>
+                <p className="text-xs font-bold text-[#c9a25c] uppercase tracking-wider mb-1">Step {step}</p>
+                <p className="text-sm font-semibold text-slate-200">{title}</p>
+                <p className="text-xs text-slate-500 mt-1">{desc}</p>
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Project Summary - Show collected data */}
+      {/* ================================================================
+          SECTION 7: TRUST SIGNALS - Build confidence
+          ================================================================ */}
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        <div className="flex flex-col items-center p-3 sm:p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
+          <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d7a5a] mb-1.5" />
+          <p className="text-xs sm:text-sm font-medium text-slate-200">Licensed & Insured</p>
+        </div>
+        <div className="flex flex-col items-center p-3 sm:p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
+          <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d7a5a] mb-1.5" />
+          <p className="text-xs sm:text-sm font-medium text-slate-200">Since {businessConfig.foundedYear}</p>
+        </div>
+        <div className="flex flex-col items-center p-3 sm:p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
+          <Star className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d7a5a] mb-1.5" />
+          <p className="text-xs sm:text-sm font-medium text-slate-200">Local Experts</p>
+        </div>
+      </div>
+
+      {/* ================================================================
+          SECTION 8: PROJECT DETAILS - For detail-oriented customers
+          ================================================================ */}
       {hasProjectDetails && (
         <Card className="border-slate-700/50 bg-[#161a23]">
           <CardContent className="p-6">
@@ -414,7 +535,6 @@ export function EstimateDocument({
               <h3 className="font-semibold text-slate-100">Your Project Details</h3>
             </div>
 
-            {/* Property Info Grid */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-4">
               {roofSizeSqft && (
                 <div>
@@ -437,7 +557,7 @@ export function EstimateDocument({
               {stories > 1 && (
                 <div>
                   <p className="text-xs text-slate-500 uppercase tracking-wide">Stories</p>
-                  <p className="text-slate-200 font-medium">{stories} {stories === 1 ? 'Story' : 'Stories'}</p>
+                  <p className="text-slate-200 font-medium">{stories} Stories</p>
                 </div>
               )}
               {roofPitch && roofPitch !== 'unknown' && (
@@ -454,40 +574,32 @@ export function EstimateDocument({
               )}
             </div>
 
-            {/* Roof Features */}
             {(hasSkylights || hasChimneys || hasSolarPanels) && (
-              <div className="border-t border-slate-700 pt-4 mb-4">
+              <div className="border-t border-slate-700/50 pt-4 mb-4">
                 <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Roof Features</p>
                 <div className="flex flex-wrap gap-2">
                   {hasSkylights && (
-                    <span className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded">
-                      Skylights
-                    </span>
+                    <span className="px-2.5 py-1 bg-slate-800 text-slate-300 text-xs rounded-md">Skylights</span>
                   )}
                   {hasChimneys && (
-                    <span className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded">
-                      Chimneys
-                    </span>
+                    <span className="px-2.5 py-1 bg-slate-800 text-slate-300 text-xs rounded-md">Chimneys</span>
                   )}
                   {hasSolarPanels && (
-                    <span className="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded">
-                      Solar Panels
-                    </span>
+                    <span className="px-2.5 py-1 bg-slate-800 text-slate-300 text-xs rounded-md">Solar Panels</span>
                   )}
                 </div>
               </div>
             )}
 
-            {/* Issues Identified */}
             {issues.length > 0 && (
-              <div className="border-t border-slate-700 pt-4 mb-4">
+              <div className="border-t border-slate-700/50 pt-4 mb-4">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertTriangle className="h-4 w-4 text-red-400" />
                   <p className="text-xs text-slate-500 uppercase tracking-wide">Issues Identified</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {issues.map((issue) => (
-                    <span key={issue} className="px-2 py-1 bg-red-900/30 text-red-300 text-xs rounded">
+                    <span key={issue} className="px-2.5 py-1 bg-red-900/30 text-red-300 text-xs rounded-md">
                       {formatIssue(issue)}
                     </span>
                   ))}
@@ -495,22 +607,20 @@ export function EstimateDocument({
               </div>
             )}
 
-            {/* Insurance Claim */}
             {hasInsuranceClaim && (
-              <div className="border-t border-slate-700 pt-4 mb-4">
+              <div className="border-t border-slate-700/50 pt-4 mb-4">
                 <div className="flex items-center gap-2 mb-2">
                   <FileText className="h-4 w-4 text-blue-400" />
                   <p className="text-xs text-slate-500 uppercase tracking-wide">Insurance Claim</p>
                 </div>
                 <p className="text-slate-200 text-sm">
-                  {insuranceCompany ? `${insuranceCompany}` : 'Insurance claim in progress'}
+                  {insuranceCompany || 'Insurance claim in progress'}
                 </p>
               </div>
             )}
 
-            {/* Photos */}
             {photos.length > 0 && (
-              <div className="border-t border-slate-700 pt-4">
+              <div className="border-t border-slate-700/50 pt-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Image className="h-4 w-4 text-[#c9a25c]" />
                   <p className="text-xs text-slate-500 uppercase tracking-wide">
@@ -537,47 +647,63 @@ export function EstimateDocument({
         </Card>
       )}
 
-      {/* Trust signals - compact */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="flex flex-col items-center p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
-          <Shield className="h-6 w-6 text-[#3d7a5a] mb-2" />
-          <p className="text-sm font-medium text-slate-100">Licensed & Insured</p>
-        </div>
-        <div className="flex flex-col items-center p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
-          <Clock className="h-6 w-6 text-[#3d7a5a] mb-2" />
-          <p className="text-sm font-medium text-slate-100">Since {COMPANY_INFO.foundedYear}</p>
-        </div>
-        <div className="flex flex-col items-center p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
-          <Star className="h-6 w-6 text-[#3d7a5a] mb-2" />
-          <p className="text-sm font-medium text-slate-100">Local Experts</p>
-        </div>
-      </div>
+      {/* ================================================================
+          SECTION 9: CHECKLIST - Educational, lower priority
+          ================================================================ */}
+      <Card className="border-slate-700/50 bg-[#161a23]">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-2 mb-1">
+            <ClipboardCheck className="h-5 w-5 text-[#c9a25c]" />
+            <h3 className="font-semibold text-slate-100">Before You Accept Any Roofing Bid</h3>
+          </div>
+          <p className="text-sm text-slate-500 mb-4">
+            Protect yourself and your investment. Use this checklist when comparing estimates.
+          </p>
+          <div className="grid gap-2 md:grid-cols-2">
+            {[
+              'Verify the contractor is licensed and insured in your state',
+              'Ask for proof of workers\' compensation insurance',
+              'Get at least 3 written estimates for comparison',
+              'Check online reviews and ask for local references',
+              'Confirm the exact materials and brands to be used',
+              'Ensure the contract includes a start and completion date',
+              'Ask about the warranty \u2014 workmanship AND manufacturer',
+              'Understand the payment schedule (never pay 100% upfront)',
+              'Ask if they pull the necessary building permits',
+              'Check for a lien waiver clause protecting your property',
+            ].map((item, index) => (
+              <div key={index} className="flex items-start gap-2.5 text-sm rounded-md px-3 py-2 bg-[#1a1f2e]/40">
+                <CheckCircle className="h-4 w-4 text-[#3d7a5a] shrink-0 mt-0.5" />
+                <span className="text-slate-400">{item}</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-      {/* Primary CTAs */}
-      <div className="space-y-3 print:hidden">
-        <Button
-          variant="primary"
-          size="xl"
-          className="w-full bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0 shadow-lg"
-          leftIcon={<Calendar className="h-5 w-5" />}
-          rightIcon={calendlyUrl ? <ExternalLink className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-          onClick={onScheduleConsultation}
-        >
-          Schedule Free Consultation
-        </Button>
+      {/* ================================================================
+          SECTION 10: SECOND CTA - For people who scrolled through everything
+          ================================================================ */}
+      <Card className="border-[#c9a25c]/20 bg-gradient-to-b from-[#161a23] to-[#1a1f2e]">
+        <CardContent className="p-6 text-center">
+          <h3 className="text-lg font-semibold text-slate-100 mb-2">
+            Ready to Get Started?
+          </h3>
+          <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto">
+            Your free on-site consultation confirms exact pricing with no obligation. We handle everything from permits to cleanup.
+          </p>
+          <CTABlock
+            onScheduleConsultation={onScheduleConsultation}
+            handleCallNow={handleCallNow}
+            phoneNumber={phoneDisplay}
+            calendlyUrl={calendlyUrl}
+          />
+        </CardContent>
+      </Card>
 
-        <Button
-          variant="secondary"
-          size="lg"
-          className="w-full bg-slate-800 hover:bg-slate-700 text-slate-100"
-          leftIcon={<Phone className="h-5 w-5" />}
-          onClick={handleCallNow}
-        >
-          Call Us: {phoneNumber}
-        </Button>
-      </div>
-
-      {/* Secondary actions */}
+      {/* ================================================================
+          SECTION 11: UTILITY ACTIONS - PDF, Share
+          ================================================================ */}
       <div className="flex gap-3 print:hidden">
         <Button
           variant="ghost"
@@ -599,20 +725,20 @@ export function EstimateDocument({
         </Button>
       </div>
 
-      {/* Disclaimer */}
-      <div className="rounded-lg bg-[#1a1f2e] border border-slate-700 p-4 text-center text-xs text-slate-500">
+      {/* ================================================================
+          SECTION 12: DISCLAIMER + FOOTER
+          ================================================================ */}
+      <div className="rounded-lg bg-[#1a1f2e]/60 border border-slate-700/50 px-5 py-4 text-center text-xs text-slate-500 space-y-1">
         <p>
           This is a preliminary estimate based on the information you provided.
-          Final pricing confirmed after free on-site inspection.
-          No obligation - just honest pricing.
+          Final pricing confirmed after free on-site inspection. No obligation.
         </p>
-        <p className="mt-2 text-slate-400">
-          Estimate valid until {validityDate}
+        <p className="text-slate-400 font-medium">
+          Valid until {validityDate}
         </p>
       </div>
 
-      {/* Footer with logo */}
-      <div className="flex items-center justify-center pt-4 border-t border-slate-700/50">
+      <div className="flex items-center justify-center pt-4 pb-2 border-t border-slate-700/50">
         <Logo size="sm" showText={true} linkToHome={false} />
       </div>
     </div>

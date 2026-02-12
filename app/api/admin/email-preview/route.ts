@@ -10,8 +10,8 @@ import { getEmailCompanyInfo } from '@/lib/email/brand-config'
 import { createClient } from '@/lib/supabase/server'
 
 // Sample data for template preview
-function getSampleData() {
-  const company = getEmailCompanyInfo()
+async function getSampleData() {
+  const company = await getEmailCompanyInfo()
 
   return {
     // Customer info
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { templateId, templateSlug, subject, htmlBody, customData } = body
 
-    const sampleData = { ...getSampleData(), ...customData }
+    const sampleData = { ...(await getSampleData()), ...customData }
     let templateSubject = subject
     let templateBody = htmlBody
 
@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
     // Wrap in email wrapper unless it's already complete HTML
     const fullHtml = hasFullHtml
       ? renderedBody
-      : emailWrapper(renderedBody, renderedSubject || 'Email Preview')
+      : await emailWrapper(renderedBody, renderedSubject || 'Email Preview')
 
     // Generate plain text version
     const plainText = renderedBody

@@ -153,7 +153,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get variables for template rendering (if lead_id provided)
-    let variables = getCompanyVariables()
+    let variables = await getCompanyVariables()
     if (messageData.lead_id) {
       variables = await getLeadVariables(messageData.lead_id)
     }

@@ -344,7 +344,7 @@ export async function sendContactFormEmails(data: ContactFormData): Promise<{ cu
     adminUrl,
   }
 
-  const { subject: adminSubject, html: adminHtml, text: adminText } = contactAdminNotificationEmail(adminData)
+  const { subject: adminSubject, html: adminHtml, text: adminText } = await contactAdminNotificationEmail(adminData)
 
   const adminResult = await sendEmail({
     to: settings.emailRecipients,

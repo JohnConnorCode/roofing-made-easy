@@ -4,7 +4,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import type { TemplateVariables, MessageTemplate } from './types'
-import { getBusinessConfig, getFullAddress, getPhoneDisplay } from '@/lib/config/business'
+import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 
 /**
  * Escape HTML special characters to prevent XSS
@@ -45,7 +45,7 @@ export function renderTemplate(
  */
 export async function getLeadVariables(leadId: string): Promise<TemplateVariables> {
   const supabase = await createClient()
-  const config = getBusinessConfig()
+  const config = await getBusinessConfigFromDB()
 
   // Fetch lead with related data
   const { data: lead } = await supabase
@@ -76,7 +76,7 @@ export async function getLeadVariables(leadId: string): Promise<TemplateVariable
     .single()
 
   if (!lead) {
-    return getCompanyVariables()
+    return await getCompanyVariables()
   }
 
   // Cast the lead data to access nested relations
@@ -136,7 +136,7 @@ export async function getLeadVariables(leadId: string): Promise<TemplateVariable
     estimate_link: estimate?.share_token ? `${appUrl}/estimate/${estimate.share_token}` : '',
 
     // Company info
-    ...getCompanyVariables(),
+    ...(await getCompanyVariables()),
 
     // Links
     portal_link: `${appUrl}/portal`,
@@ -149,14 +149,14 @@ export async function getLeadVariables(leadId: string): Promise<TemplateVariable
 /**
  * Get company variables from config
  */
-export function getCompanyVariables(): TemplateVariables {
-  const config = getBusinessConfig()
+export async function getCompanyVariables(): Promise<TemplateVariables> {
+  const config = await getBusinessConfigFromDB()
 
   return {
     company_name: config.name,
-    company_phone: getPhoneDisplay(),
+    company_phone: config.phone.display,
     company_email: config.email.primary,
-    company_address: getFullAddress(),
+    company_address: `${config.address.street}, ${config.address.city}, ${config.address.stateCode} ${config.address.zip}`,
   }
 }
 

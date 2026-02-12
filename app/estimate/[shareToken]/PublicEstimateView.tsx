@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import type { JobType, RoofMaterial } from '@/lib/supabase/types'
 import { UserPlus } from 'lucide-react'
-import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
+import { useContact } from '@/lib/hooks/use-contact'
 
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || ''
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
@@ -56,14 +56,15 @@ export function PublicEstimateView({
   validUntil,
 }: PublicEstimateViewProps) {
   const { showToast } = useToast()
+  const { phoneDisplay, phoneLink } = useContact()
 
   const handleScheduleConsultation = useCallback(() => {
     if (CALENDLY_URL) {
       window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
     } else {
-      showToast(`Call us at ${getPhoneDisplay()} to schedule your free consultation`, 'info')
+      showToast(`Call us at ${phoneDisplay} to schedule your free consultation`, 'info')
     }
-  }, [showToast])
+  }, [showToast, phoneDisplay])
 
   const handleDownloadPDF = useCallback(async () => {
     try {
@@ -130,10 +131,10 @@ export function PublicEstimateView({
             <span className="text-[#c9a25c]">Farrell</span> Roofing
           </a>
           <a
-            href={getPhoneLink()}
+            href={phoneLink}
             className="text-sm text-slate-400 hover:text-[#c9a25c] transition-colors"
           >
-            {getPhoneDisplay()}
+            {phoneDisplay}
           </a>
         </div>
       </header>

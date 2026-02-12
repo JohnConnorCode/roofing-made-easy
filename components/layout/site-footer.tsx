@@ -5,8 +5,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Phone, Mail, MapPin, Facebook, Instagram, ChevronDown } from 'lucide-react'
 import { getCitiesByPriority, getAllCounties, getAllCities } from '@/lib/data/ms-locations'
-import { BUSINESS_CONFIG } from '@/lib/config/business'
 import { useContact } from '@/lib/hooks/use-contact'
+import { useBusinessConfig } from '@/lib/config/business-provider'
 import { Logo } from '@/components/ui/logo'
 import { cn } from '@/lib/utils'
 
@@ -70,6 +70,7 @@ function FooterAccordion({ title, children }: { title: string; children: React.R
 
 export function SiteFooter() {
   const { phoneDisplay, phoneLink } = useContact()
+  const config = useBusinessConfig()
   const topCities = getCitiesByPriority('high').slice(0, 8)
   const counties = getAllCounties().slice(0, 5)
   const allCities = getAllCities()
@@ -111,25 +112,25 @@ export function SiteFooter() {
                     <Phone className="w-4 h-4" />
                     <span>{phoneDisplay}</span>
                   </a>
-                  <a href={`mailto:${BUSINESS_CONFIG.email.primary}`} className="flex items-center gap-2 text-slate-400 hover:text-gold transition-colors py-1">
+                  <a href={`mailto:${config.email.primary}`} className="flex items-center gap-2 text-slate-400 hover:text-gold transition-colors py-1">
                     <Mail className="w-4 h-4" />
-                    <span>{BUSINESS_CONFIG.email.primary}</span>
+                    <span>{config.email.primary}</span>
                   </a>
                   <div className="flex items-center gap-2 text-slate-400 py-1">
                     <MapPin className="w-4 h-4" />
-                    <span>Tupelo, MS 38801</span>
+                    <span>{config.address.city}, {config.address.stateCode} {config.address.zip}</span>
                   </div>
                 </div>
               </div>
-              {(BUSINESS_CONFIG.social.facebook || BUSINESS_CONFIG.social.instagram) && (
+              {(config.social.facebook || config.social.instagram) && (
               <div className="flex gap-3 mt-4">
-                {BUSINESS_CONFIG.social.facebook && (
-                <a href={BUSINESS_CONFIG.social.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold transition-colors" aria-label="Facebook">
+                {config.social.facebook && (
+                <a href={config.social.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold transition-colors" aria-label="Facebook">
                   <Facebook className="w-5 h-5" />
                 </a>
                 )}
-                {BUSINESS_CONFIG.social.instagram && (
-                <a href={BUSINESS_CONFIG.social.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold transition-colors" aria-label="Instagram">
+                {config.social.instagram && (
+                <a href={config.social.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold transition-colors" aria-label="Instagram">
                   <Instagram className="w-5 h-5" />
                 </a>
                 )}
@@ -276,7 +277,7 @@ export function SiteFooter() {
         <div className="border-t border-slate-800 safe-bottom">
           <div className="mx-auto max-w-6xl px-4 py-4">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-              <p>&copy; {new Date().getFullYear()} {BUSINESS_CONFIG.name}. All rights reserved.</p>
+              <p>&copy; {new Date().getFullYear()} {config.name}. All rights reserved.</p>
               <div className="flex gap-4">
                 <Link href="/terms" className="hover:text-gold transition-colors py-2 min-h-[48px] flex items-center">Terms of Service</Link>
                 <Link href="/privacy" className="hover:text-gold transition-colors py-2 min-h-[48px] flex items-center">Privacy Policy</Link>

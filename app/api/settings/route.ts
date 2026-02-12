@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
@@ -243,7 +244,11 @@ export async function PUT(request: NextRequest) {
     if (data.address) {
       if (data.address.street !== undefined) updateData.address_street = data.address.street
       if (data.address.city !== undefined) updateData.address_city = data.address.city
-      if (data.address.state !== undefined) updateData.address_state = data.address.state
+      if (data.address.state !== undefined) {
+        updateData.address_state = data.address.state
+        // Admin enters abbreviation (e.g. "MS"), keep state_code in sync
+        updateData.address_state_code = data.address.state
+      }
       if (data.address.zip !== undefined) updateData.address_zip = data.address.zip
     }
 
@@ -287,6 +292,9 @@ export async function PUT(request: NextRequest) {
         { status: 500 }
       )
     }
+
+    // Bust the server-side cache so the new phone/config shows immediately
+    revalidateTag('business-config', { expire: 300 })
 
     const settings = transformRowToSettings(updatedRow as SettingsRow)
     return NextResponse.json({ success: true, settings })

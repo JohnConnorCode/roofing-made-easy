@@ -1159,6 +1159,1254 @@ We've served [Tupelo](/tupelo-roofing), [Oxford](/oxford-roofing), [Starkville](
     tags: ['contractor', 'hiring', 'tips', 'mississippi', 'verification'],
     image: '/images/blog/choosing-contractor.jpg',
   },
+  {
+    id: '6',
+    slug: 'new-roof-cost-mississippi-2026',
+    title: 'How Much Does a New Roof Cost in Mississippi? (2026 Guide)',
+    excerpt: 'Get real 2026 pricing for a new roof in Mississippi. We break down costs by material, roof size, and complexity so you can budget confidently for your roof replacement.',
+    content: `
+# How Much Does a New Roof Cost in Mississippi? (2026 Guide)
+
+If you're a Mississippi homeowner wondering how much a new roof costs, you're not alone. It's one of the most common questions we hear, and the answer depends on several factors specific to your home and location. In this comprehensive 2026 guide, we break down everything that affects roof pricing so you can make an informed decision.
+
+## Average Roof Cost in Mississippi (2026)
+
+In 2026, the average cost of a new roof in Mississippi ranges from **$6,500 to $28,000** for a typical residential home. The wide range reflects differences in materials, roof size, complexity, and local labor rates. Here's a quick overview:
+
+| Material | Cost per Sq Ft (Installed) | 1,500 Sq Ft Roof | 2,000 Sq Ft Roof | 2,500 Sq Ft Roof |
+|----------|---------------------------|-------------------|-------------------|-------------------|
+| 3-Tab Asphalt | $3.00 - $4.50 | $4,500 - $6,750 | $6,000 - $9,000 | $7,500 - $11,250 |
+| Architectural Shingles | $4.50 - $7.00 | $6,750 - $10,500 | $9,000 - $14,000 | $11,250 - $17,500 |
+| Premium Shingles | $6.00 - $8.50 | $9,000 - $12,750 | $12,000 - $17,000 | $15,000 - $21,250 |
+| Standing Seam Metal | $9.00 - $14.00 | $13,500 - $21,000 | $18,000 - $28,000 | $22,500 - $35,000 |
+| Metal Shingles | $8.00 - $12.00 | $12,000 - $18,000 | $16,000 - $24,000 | $20,000 - $30,000 |
+
+These figures include materials, labor, standard tear-off of one existing layer, disposal, and basic permits. Your actual cost may be higher or lower depending on the factors outlined below.
+
+## Cost Breakdown by Roof Size
+
+Roof size is the single biggest factor in your total cost. Roofers measure in "squares" (one square = 100 sq ft), and most Mississippi homes range from 1,000 to 3,000 square feet of roof area.
+
+**Small Roof (1,000 - 1,500 sq ft):**
+- Architectural shingles: $4,500 - $10,500
+- Metal roofing: $8,000 - $21,000
+- Typical homes: Small ranch, cottage, starter home
+
+**Medium Roof (1,500 - 2,000 sq ft):**
+- Architectural shingles: $6,750 - $14,000
+- Metal roofing: $12,000 - $28,000
+- Typical homes: Average 3-bedroom ranch, split-level
+
+**Large Roof (2,000 - 3,000 sq ft):**
+- Architectural shingles: $9,000 - $21,000
+- Metal roofing: $16,000 - $42,000
+- Typical homes: Large colonial, two-story, multi-gable
+
+Remember, roof area is not the same as home square footage. Roof overhangs, multiple stories, and complex layouts mean your roof area often exceeds your living space square footage by 20-40%.
+
+## What Factors Affect Your Roof Cost?
+
+Understanding the variables helps you anticipate your total investment. Here are the key [cost factors](/blog/roof-replacement-cost-factors) that influence pricing:
+
+### 1. Roof Pitch (Slope)
+
+Steeper roofs cost more because they require additional safety equipment, take longer to install, and use more materials per square foot of coverage area.
+
+- **Low pitch (2/12 - 4/12):** Standard pricing
+- **Moderate pitch (5/12 - 8/12):** 10-20% premium
+- **Steep pitch (9/12 and above):** 25-50% premium
+
+### 2. Roof Complexity
+
+Simple gable roofs are the most affordable. Every additional feature adds cost:
+
+- **Valleys:** Where two roof planes meet, requiring extra flashing and labor
+- **Dormers:** Each dormer adds complexity and materials
+- **Skylights:** Require flashing kits and careful waterproofing
+- **Chimneys:** Flashing and counter-flashing around chimneys is time-intensive
+- **Multiple levels:** Roofs with several different heights and transitions cost more
+
+### 3. Tear-Off and Disposal
+
+Most Mississippi homes require removing the old roof before installing a new one:
+
+- **Single layer tear-off:** $1.00 - $1.50 per sq ft (usually included in quotes)
+- **Double layer tear-off:** $1.50 - $2.50 per sq ft (additional labor and disposal)
+- **Disposal fees:** Vary by county; typically $300 - $800 per job
+
+Mississippi building code allows a maximum of two shingle layers. If you already have two layers, tear-off is mandatory.
+
+### 4. Deck Repair
+
+Once old shingles are removed, damaged decking must be replaced. Rotted or deteriorated plywood is common in Mississippi due to our high humidity:
+
+- **Minor repairs (a few sheets):** $200 - $500
+- **Moderate repairs (10-20% of deck):** $500 - $2,000
+- **Extensive repairs (20%+):** $2,000 - $5,000+
+
+Your contractor won't know the full extent of deck damage until the old roof is removed, so budget 10-15% extra for unexpected repairs.
+
+### 5. Permits and Inspections
+
+Most Mississippi municipalities require building permits for roof replacement:
+
+- **Permit fees:** $100 - $500 depending on jurisdiction
+- **Inspection:** Usually included in permit fee
+- A reputable contractor handles the permitting process for you
+
+### 6. Material Choice
+
+Your material selection is the second largest cost factor after roof size. In Mississippi, the most popular options are:
+
+**Asphalt Shingles (80% of Mississippi homes):** The most affordable option with a solid track record. Architectural shingles offer the best balance of cost and performance for our climate. Learn more in our [asphalt vs. metal comparison](/blog/asphalt-vs-metal-roofing).
+
+**Metal Roofing (growing rapidly):** Higher upfront cost but exceptional longevity and storm resistance. Particularly popular in tornado-prone areas of Mississippi. See our detailed [metal roof vs. shingles cost analysis](/blog/metal-roof-vs-shingles-cost) for long-term value comparison.
+
+## Mississippi-Specific Pricing Context
+
+Mississippi homeowners benefit from some cost advantages compared to national averages, but face unique challenges:
+
+**Why Mississippi roofing can cost less:**
+- Lower labor costs than national average (10-20% less)
+- Strong contractor competition in metro areas
+- Fewer regulatory requirements in rural areas
+
+**Why Mississippi roofing can cost more:**
+- Weather-rated materials required (high wind, high UV)
+- Storm season demand spikes can raise prices 15-25%
+- Humidity-related deck damage is more common
+- Insurance-quality documentation adds time
+
+**Regional price variation within Mississippi:**
+- **Tupelo / Northeast MS:** Moderate pricing, strong contractor availability
+- **Jackson metro:** Higher pricing due to demand
+- **Gulf Coast:** Premium pricing due to hurricane-rated requirements
+- **Rural areas:** Variable; may have higher travel charges but lower overhead
+
+## How to Finance Your New Roof
+
+A new roof is a significant investment, but several options can make it manageable:
+
+### Roofing Contractor Financing
+
+Many contractors, including Farrell Roofing, offer [financing options](/financing) with:
+- 0% interest promotional periods (12-24 months)
+- Low monthly payments
+- Quick approval process
+- No prepayment penalties
+
+### Home Equity Options
+
+- **Home equity loan:** Fixed rate, lump sum for the full project
+- **HELOC:** Flexible borrowing as needed during the project
+- **Rates in 2026:** Generally 7-9% depending on credit
+
+### Insurance Coverage
+
+If your roof was damaged by a storm, your homeowner's insurance may cover most or all of the replacement cost. Key points:
+
+- Document damage immediately after any storm event
+- File claims promptly (Mississippi policies often require notification within 60 days)
+- Get a professional inspection to support your claim
+- Understand your deductible (especially wind/hail percentage deductibles common in MS)
+
+Read our complete guide to [roof insurance claims](/blog/roof-insurance-claims) and learn about [storm damage coverage](/blog/mississippi-storm-damage-insurance-coverage) for more details.
+
+## Tips for Saving Money on Your New Roof
+
+### 1. Get Multiple Estimates
+
+Always get at least three written estimates from licensed contractors. Our guide on [choosing a roofing contractor](/blog/choosing-roofing-contractor) explains what to look for and what questions to ask.
+
+### 2. Time Your Project Wisely
+
+- **Best pricing:** Late fall and winter (October - February) when demand is lower
+- **Worst pricing:** Late spring through summer (April - August) during storm season
+- **Planning ahead** instead of emergency replacement saves 10-20%
+
+### 3. Consider Long-Term Value
+
+The cheapest roof isn't always the best value. Consider total cost of ownership:
+- A $12,000 metal roof lasting 50 years = $240/year
+- An $8,000 shingle roof lasting 18 years = $444/year (plus replacement costs)
+
+### 4. Bundle Services
+
+If you also need gutters, siding, or other exterior work, bundling with your roof project can save 5-10% on total costs.
+
+### 5. Ask About Material Upgrades
+
+Sometimes upgrading from 3-tab to architectural shingles adds only $1,000-2,000 to the total project but extends lifespan by 5-8 years and improves wind resistance significantly.
+
+### 6. Don't Skip the Inspection
+
+A thorough [roof inspection](/services/roof-inspection) before committing to replacement may reveal that targeted [repairs](/services/roof-repair) can extend your roof's life by several years at a fraction of replacement cost.
+
+## Get Your Personalized Roof Cost Estimate
+
+Every roof is different, and online calculators can only get you so far. For an accurate estimate tailored to your specific home, roof condition, and material preferences, schedule a free in-person assessment.
+
+At Farrell Roofing, we provide detailed, transparent estimates that break down every cost line item. No surprises, no hidden fees, and no pressure.
+
+**What's included in our free estimate:**
+- Complete roof measurement and assessment
+- Material options with pricing for each
+- Identification of any deck or structural concerns
+- Timeline for your specific project
+- Financing options if needed
+
+[Get Your Free Roof Estimate](/) today, or call us to discuss your project. We serve [Tupelo](/tupelo-roofing), [Oxford](/oxford-roofing), [Starkville](/starkville-roofing), and communities throughout Northeast Mississippi.
+    `,
+    category: 'Pricing',
+    author: 'Mike Farrell',
+    publishedAt: '2026-02-10',
+    readTime: 12,
+    featured: true,
+    tags: ['roof cost', 'pricing', 'mississippi', 'roof replacement', '2026'],
+    image: '/images/blog/new-roof-cost-2026.jpg',
+  },
+  {
+    id: '7',
+    slug: 'metal-roof-vs-shingles-cost',
+    title: 'Metal Roof vs Shingles: The Real Cost Difference Over 30 Years',
+    excerpt: 'Compare the true 30-year cost of metal roofing vs asphalt shingles in Mississippi. When you factor in replacements, energy savings, insurance discounts, and maintenance, the numbers may surprise you.',
+    content: `
+# Metal Roof vs Shingles: The Real Cost Difference Over 30 Years
+
+When Mississippi homeowners compare metal roofing to asphalt shingles, they almost always start with the sticker price. Metal costs two to three times more upfront. Case closed, right? Not so fast. When you calculate the real cost over 30 years, factoring in replacements, energy savings, insurance discounts, maintenance, and home value, the picture changes dramatically.
+
+This guide uses real Mississippi pricing and conditions to give you an honest, numbers-driven comparison.
+
+## The Upfront Cost Gap
+
+Let's start with what most people focus on. For a typical 2,000 square foot roof in Mississippi in 2026:
+
+| Cost Component | Architectural Shingles | Standing Seam Metal |
+|----------------|----------------------|-------------------|
+| Materials | $4,500 - $7,000 | $10,000 - $16,000 |
+| Labor | $4,000 - $6,000 | $7,000 - $10,000 |
+| Tear-off & disposal | $1,500 - $2,500 | $1,500 - $2,500 |
+| Underlayment & accessories | $800 - $1,200 | $1,200 - $2,000 |
+| **Total installed** | **$10,800 - $16,700** | **$19,700 - $30,500** |
+
+The difference is real: metal roofing costs roughly $9,000 to $14,000 more upfront for an average Mississippi home. But that's only chapter one of the story.
+
+## The 30-Year Total Cost Comparison
+
+Here's where it gets interesting. Let's model total cost of ownership over 30 years for our 2,000 sq ft Mississippi home, using mid-range pricing for each option.
+
+### Asphalt Shingles: 30-Year Cost
+
+**Initial installation (Year 0):** $13,000
+
+Architectural shingles in Mississippi last 18-22 years in our UV-intense, storm-heavy climate. That means you'll need a full replacement around year 20.
+
+**Second roof (Year 20):** $15,600
+- Adjusted for 2% annual inflation on the original $13,000 cost
+- Could be higher if material costs rise faster than inflation
+
+**Maintenance and repairs over 30 years:** $3,500
+- Annual inspections: $150-200/year
+- Storm damage repairs (patching, replacing blown shingles): $200-500 every few years
+- Flashing resealing, gutter maintenance related to shingle granule buildup
+
+**Additional energy costs over 30 years:** $4,500
+- Asphalt shingles absorb more heat, increasing cooling costs
+- Mississippi summers mean AC runs 5-6 months/year
+- Estimated $150/year in additional cooling vs. reflective metal
+
+**Total 30-year cost for asphalt: approximately $36,600**
+
+### Standing Seam Metal: 30-Year Cost
+
+**Initial installation (Year 0):** $24,000
+
+Metal roofing lasts 40-60 years in Mississippi. At the 30-year mark, your metal roof is still going strong with decades of life remaining.
+
+**Replacement needed?** No. Metal roofs routinely last 40-60 years. At year 30, you're roughly at the midpoint of its lifespan.
+
+**Maintenance over 30 years:** $1,500
+- Periodic inspections: $100-150/year (less frequent than shingles)
+- Occasional fastener tightening or sealant touch-up
+- No granule loss, no shingle replacement, no moss/algae treatment
+
+**Energy savings over 30 years:** -$6,000 (savings)
+- Reflective metal roofing reduces cooling costs 10-25% in Mississippi
+- Estimated $200/year savings on electricity
+- Cool-roof coatings amplify savings further
+
+**Insurance savings over 30 years:** -$4,500 (savings)
+- Many Mississippi insurers offer 10-35% premium discounts for metal roofing
+- Average discount: $150/year on homeowner's insurance
+- Some insurers offer even more in high-wind zones
+
+**Total 30-year cost for metal: approximately $15,000**
+
+## Side-by-Side 30-Year Summary
+
+| Category | Asphalt Shingles | Standing Seam Metal |
+|----------|-----------------|-------------------|
+| Initial installation | $13,000 | $24,000 |
+| Second roof (Year 20) | $15,600 | $0 |
+| Maintenance & repairs | $3,500 | $1,500 |
+| Additional energy costs | +$4,500 | -$6,000 (savings) |
+| Insurance premium impact | $0 | -$4,500 (savings) |
+| **30-Year Total** | **$36,600** | **$15,000** |
+| **Net difference** | | **$21,600 cheaper** |
+
+That's right: despite costing $11,000 more upfront, metal roofing saves approximately **$21,600 over 30 years** compared to asphalt shingles in Mississippi. The crossover point where metal becomes cheaper than asphalt typically occurs around **year 12-15**.
+
+## Energy Savings in Mississippi: The Numbers
+
+Mississippi's long, hot summers make energy efficiency a major factor. Here's what the research shows:
+
+**Heat reflection:** Metal roofing with reflective coatings reflects 60-70% of solar energy compared to 15-25% for dark asphalt shingles.
+
+**Attic temperature difference:** Studies show 20-40 degree (Fahrenheit) lower attic temperatures with metal roofing, reducing the load on your HVAC system significantly.
+
+**Annual cooling savings in Mississippi:** $150-300 per year depending on roof color, insulation, and home size. Over 30 years, that adds up to $4,500-$9,000.
+
+**The Mississippi factor:** Because we run AC for 5-6 months annually with temperatures regularly exceeding 90 degrees Fahrenheit, energy savings from metal roofing are higher here than in northern states. You get more payback per dollar invested.
+
+## Insurance Discounts: A Hidden Advantage
+
+Mississippi insurance companies recognize metal roofing's superior performance, and they reward it:
+
+**Typical discounts for metal roofing:**
+- Wind/hail resistant roof credit: 10-20%
+- Impact-resistant material credit: 5-15%
+- Combined discount potential: 10-35% off your premium
+
+**Example:** If your homeowner's insurance costs $2,000/year and you get a 15% metal roof discount, that's $300/year savings, or $9,000 over 30 years.
+
+**How to maximize your discount:**
+- Ask your insurer about metal roof credits before choosing materials
+- Get a "wind mitigation inspection" after installation
+- Ensure your contractor provides documentation of wind rating
+- Some insurers require specific ratings (UL 2218 Class 4 for hail, UL 580 for wind uplift)
+
+## Storm Resistance: Real-World Performance
+
+Mississippi averages 50+ thunderstorm days per year, with tornadoes, straight-line winds, and occasional hurricanes. Storm resistance matters.
+
+**Asphalt shingles:**
+- Rated for 60-130 mph winds (depending on grade)
+- Vulnerable to hail cracking and granule loss
+- Tabs can lift and tear in strong gusts
+- Storm repairs needed more frequently
+
+**Standing seam metal:**
+- Rated for 140-180 mph winds
+- Interlocking panels resist uplift
+- Hail may dent but rarely penetrates
+- Far fewer storm damage repairs needed
+
+**Real-world impact:** After severe storms in Mississippi, it's common to see neighborhoods where asphalt roofs have significant damage while metal roofs on the same street are intact. This translates to fewer insurance claims, lower deductible expenses, and less disruption to your life.
+
+## Maintenance Comparison
+
+**Asphalt shingle maintenance requirements:**
+- Annual professional inspection recommended
+- Moss and algae treatment (common in Mississippi humidity)
+- Replacing damaged or blown shingles after storms
+- Resealing flashings every 5-10 years
+- Gutter cleaning more frequent due to granule buildup
+- Monitoring for curling, cracking, and wear
+
+**Metal roof maintenance requirements:**
+- Inspection every 2-3 years (or after major storms)
+- Occasional sealant touch-up at penetrations
+- Rare fastener maintenance (exposed fastener systems only)
+- Keep debris clear from valleys and transitions
+- That's essentially it
+
+Over 30 years, the maintenance time and cost difference is substantial. For a detailed seasonal [maintenance checklist](/blog/roof-maintenance-checklist), see our complete guide.
+
+## ROI Analysis: Which Adds More Home Value?
+
+Both roofing types add value, but the ROI differs:
+
+**Asphalt shingles:**
+- Average ROI on resale: 60-70% of project cost
+- Expected by buyers (standard)
+- Doesn't significantly differentiate your home
+
+**Metal roofing:**
+- Average ROI on resale: 75-90% of project cost
+- Increasingly attractive to Mississippi buyers
+- Differentiates your listing in competitive markets
+- Buyers value the "no roof replacement needed" factor
+
+**For a $24,000 metal roof:** Expect $18,000-$21,600 increase in home value.
+**For a $13,000 shingle roof:** Expect $7,800-$9,100 increase in home value.
+
+## Which Is Right for You?
+
+### Metal roofing makes sense if:
+
+- You plan to stay in your home 10+ years (break-even point)
+- Energy efficiency is a priority in Mississippi's heat
+- You want minimal maintenance hassle
+- Storm resistance is important to you
+- You want to lock in insurance savings
+- You're tired of replacing roofs every 15-20 years
+
+### Asphalt shingles make sense if:
+
+- Your budget is tight and you need a roof now
+- You plan to sell within 5-7 years
+- Your HOA restricts metal roofing
+- You want maximum style variety
+- Your roof has complex geometry that complicates metal installation
+- You're roofing a rental or investment property with shorter hold periods
+
+### The Hybrid Approach
+
+Some Mississippi homeowners choose a middle path:
+- Metal roofing on the main visible sections of the home
+- Architectural shingles on secondary or complex areas
+- This captures most of the benefits at a moderate price point
+
+## Getting Accurate Pricing for Your Home
+
+Online cost calculators provide ballpark figures, but your actual cost depends on your specific roof's size, pitch, complexity, and condition. The only way to get real numbers is a professional assessment.
+
+At Farrell Roofing, we provide free, detailed estimates for both metal and asphalt options so you can compare side by side for your exact home.
+
+[Get Your Free Roofing Estimate](/) to see real numbers for both options on your specific home. We serve [Tupelo](/tupelo-roofing), [Oxford](/oxford-roofing), [Starkville](/starkville-roofing), and all of Northeast Mississippi.
+
+Want more detail on material options? Read our complete [asphalt vs. metal roofing comparison](/blog/asphalt-vs-metal-roofing) for performance details beyond cost.
+    `,
+    category: 'Materials',
+    author: 'Mike Farrell',
+    publishedAt: '2026-02-05',
+    readTime: 10,
+    featured: true,
+    tags: ['metal roofing', 'asphalt shingles', 'cost comparison', 'roi', 'mississippi'],
+    image: '/images/blog/metal-vs-shingles-cost.jpg',
+  },
+  {
+    id: '8',
+    slug: 'roof-replacement-cost-factors',
+    title: 'What Factors Affect Your Roof Replacement Cost?',
+    excerpt: 'From roof size and pitch to material choice and deck condition, learn every factor that influences what you will pay for a new roof. Understand what drives pricing so you can budget accurately.',
+    content: `
+# What Factors Affect Your Roof Replacement Cost?
+
+When you get a roof replacement estimate, the number on the page is the result of dozens of variables working together. Understanding these factors helps you anticipate costs, compare quotes fairly, and make informed decisions about your roofing project.
+
+This guide explains every major factor that affects roof replacement pricing, with specific context for Mississippi homeowners.
+
+## Factor 1: Roof Size (Square Footage)
+
+Roof size is the single largest determinant of your total cost. Roofers measure in "squares," where one square equals 100 square feet. Most Mississippi homes have between 15 and 30 squares of roof area.
+
+**Important:** Your roof area is not the same as your home's living space. A 1,500 square foot home might have 1,800 to 2,200 square feet of roof area due to overhangs, eaves, and the geometry of the roof.
+
+**How size affects cost:**
+- Every additional square adds $350-$1,400 depending on material
+- Larger roofs benefit from some economy of scale on labor
+- But material costs scale linearly with size
+
+**Approximate cost by roof size (architectural shingles):**
+- 1,000 sq ft: $4,500 - $7,000
+- 1,500 sq ft: $6,750 - $10,500
+- 2,000 sq ft: $9,000 - $14,000
+- 2,500 sq ft: $11,250 - $17,500
+- 3,000 sq ft: $13,500 - $21,000
+
+A professional roofer will measure your actual roof area precisely, often using satellite imagery or drone measurements before providing an estimate.
+
+## Factor 2: Roof Pitch (Slope)
+
+Pitch refers to how steep your roof is, expressed as a ratio of rise over run. A 6/12 pitch means the roof rises 6 inches for every 12 inches of horizontal distance.
+
+**Why pitch matters:**
+- Steeper roofs are more dangerous to work on, requiring special safety equipment
+- Installation takes longer on steep surfaces
+- More material is needed per square foot of floor plan coverage
+- Waste percentage increases on steep roofs
+
+**Pitch multipliers:**
+
+| Pitch | Category | Typical Cost Impact |
+|-------|----------|-------------------|
+| 2/12 - 4/12 | Low (walkable) | Standard pricing |
+| 5/12 - 7/12 | Moderate | +10-15% |
+| 8/12 - 10/12 | Steep | +20-35% |
+| 11/12 - 12/12 | Very steep | +35-50% |
+| Above 12/12 | Extreme | +50%+ (specialized crews needed) |
+
+Many Mississippi homes, particularly traditional Southern styles like colonials and craftsmans, have moderate to steep pitches that add to the total cost.
+
+## Factor 3: Number of Stories
+
+A single-story ranch is easier and cheaper to roof than a two-story colonial, even if the roof area is identical.
+
+**Why story count matters:**
+- Higher roofs require more equipment (longer ladders, scaffolding)
+- Safety requirements increase with height
+- Material transport to the roof takes longer
+- Debris removal is more complex
+
+**Typical impact:**
+- Single story: Standard pricing
+- Two stories: +5-15%
+- Three stories or higher: +15-25%
+
+## Factor 4: Roof Complexity
+
+A simple gable roof with two flat planes is straightforward and affordable. Every added feature increases complexity, labor time, and cost.
+
+**Complexity elements and their impact:**
+
+**Valleys ($150-$400 each):**
+Where two roof planes meet at an inside angle. Valleys require careful flashing and waterproofing because they channel water.
+
+**Dormers ($200-$600 each):**
+Windows that project from the roof create multiple small surfaces, edges, and flashing points. Homes with three or more dormers can see significant cost increases.
+
+**Skylights ($200-$500 each for flashing):**
+Each skylight needs a custom flashing kit and careful integration with the roofing system. Older skylights may need replacement during roofing, adding $500-$1,500 each.
+
+**Chimneys ($300-$800 each for flashing):**
+Chimney flashing is one of the most leak-prone areas on any roof. Proper step flashing and counter-flashing require skilled labor and quality materials.
+
+**Hips and ridges ($100-$300 per ridge):**
+Hip roofs (sloping on all four sides) require more ridge cap material and labor than gable roofs. They look great but cost more.
+
+**Pipe boots and vents ($50-$150 each):**
+Every plumbing vent, exhaust fan, and HVAC penetration needs a waterproof boot or flashing. Most homes have 5-15 penetrations.
+
+**Multiple levels and transitions:**
+Roofs with sections at different heights create transitions that require careful waterproofing. Split-level homes and additions often have these features.
+
+A simple gable roof might have a complexity factor of 1.0x, while a complex multi-hip roof with dormers, skylights, and multiple levels could be 1.3-1.5x the base cost.
+
+## Factor 5: Existing Layers and Tear-Off
+
+What's currently on your roof matters significantly.
+
+**Single layer tear-off (standard):**
+- Cost: $1.00-$1.50 per sq ft (typically included in quotes)
+- This is the most common scenario
+
+**Double layer tear-off:**
+- Cost: $1.50-$2.50 per sq ft
+- Significantly more labor and disposal
+- Mississippi code prohibits more than two layers of asphalt shingles
+
+**Overlay (installing over existing):**
+- Saves $1,000-$3,000 on tear-off costs
+- Only possible with one existing layer in good condition
+- Shortens new roof lifespan by 2-5 years
+- May void some manufacturer warranties
+- Not recommended in Mississippi due to heat and humidity concerns
+
+**Cedar shake or tile removal:**
+- Cost: $2.00-$4.00 per sq ft
+- These materials are heavier and more labor-intensive to remove
+- May require additional deck preparation
+
+## Factor 6: Deck Condition
+
+The roof deck (typically plywood or OSB sheathing) is the structural foundation your roofing material attaches to. Damage is invisible until the old roof is removed.
+
+**Common deck problems in Mississippi:**
+- **Moisture damage:** Our high humidity promotes wood rot, especially in poorly ventilated attics
+- **Storm damage:** Impacts from branches or prolonged water intrusion weaken decking
+- **Age:** Older homes may have original decking that's deteriorated over decades
+- **Pest damage:** Termites and carpenter ants are active in Mississippi's warm climate
+
+**Deck repair costs:**
+- Replace individual sheets: $75-$150 per sheet (4x8 plywood/OSB)
+- Minor repairs (1-5 sheets): $150-$750
+- Moderate repairs (6-15 sheets): $750-$2,250
+- Major deck replacement (15+ sheets): $2,250-$6,000+
+
+**Budget tip:** Most contractors include a reasonable allowance for minor deck repair in their estimates. Ask specifically about how deck repair is priced. Reputable contractors like Farrell Roofing communicate transparently about deck repair costs as they're discovered during the project.
+
+## Factor 7: Material Choice
+
+Material selection is the second-largest cost factor. Each option has different price points, lifespans, and performance characteristics.
+
+**Asphalt Shingles:**
+- 3-tab: $3.00-$4.50/sq ft (economy option, 12-15 year life in MS)
+- Architectural: $4.50-$7.00/sq ft (best value, 18-22 year life in MS)
+- Premium/designer: $6.00-$8.50/sq ft (luxury appearance, 20-25 year life in MS)
+
+**Metal Roofing:**
+- Corrugated/ribbed: $6.00-$9.00/sq ft (40-50 year life)
+- Metal shingles: $8.00-$12.00/sq ft (40-50 year life)
+- Standing seam: $9.00-$14.00/sq ft (50-60+ year life)
+
+**Specialty Materials:**
+- Synthetic slate: $9.00-$14.00/sq ft
+- Clay/concrete tile: $10.00-$18.00/sq ft
+- Natural slate: $15.00-$30.00/sq ft
+
+For a detailed comparison of the two most popular options, see our [metal roof vs. shingles cost analysis](/blog/metal-roof-vs-shingles-cost).
+
+## Factor 8: Labor Costs and Market Conditions
+
+Labor typically represents 40-60% of your total roof replacement cost. Several variables affect labor pricing:
+
+**Seasonal demand:** Mississippi roofing prices peak during storm season (April-August) when demand surges. Scheduling during fall or winter can save 10-20%.
+
+**Contractor availability:** When major storms hit an area, every contractor is booked out for weeks. Prices increase due to demand.
+
+**Crew experience:** Experienced crews work faster and make fewer mistakes but may charge more per hour. The net cost difference is often minimal because they finish sooner.
+
+**Geographic location:** Labor rates vary within Mississippi. Urban areas like Jackson have higher labor costs than rural communities.
+
+## Factor 9: Permits and Code Requirements
+
+Most Mississippi jurisdictions require a building permit for roof replacement:
+
+- **Permit fees:** $100-$500 depending on municipality
+- **Code-required upgrades:** If your roof doesn't meet current code, you may need to add ice and water shield, improved ventilation, or additional structural support
+- **Inspection costs:** Usually included in permit fees
+- **Hurricane/wind zone requirements:** Coastal Mississippi has stricter wind resistance requirements that affect material and installation specifications
+
+A qualified contractor handles all permitting and ensures code compliance. Learn what to expect from contractors in our guide to [choosing a roofing contractor](/blog/choosing-roofing-contractor).
+
+## Factor 10: Time of Year
+
+Timing your roof replacement strategically can impact cost:
+
+**Best value (October - February):**
+- Lower demand means more competitive pricing
+- Contractors have more scheduling flexibility
+- Mississippi winters are mild enough for roofing work most days
+- Savings of 10-20% compared to peak season
+
+**Peak pricing (April - August):**
+- Storm season drives emergency demand
+- Contractors are fully booked
+- Materials may be in shorter supply
+- Premium pricing for scheduling priority
+
+**Ideal conditions (September - November):**
+- Mild temperatures for optimal material performance
+- After peak storm season
+- Before holiday slowdown
+- Good balance of pricing and working conditions
+
+## Factor 11: Geographic Location
+
+Where you live in Mississippi affects cost through several mechanisms:
+
+- **Travel distance:** Contractors may add travel charges for rural locations
+- **Local labor rates:** Vary by market
+- **Building code requirements:** Different municipalities have different requirements
+- **Wind zone ratings:** Coastal areas require higher-rated materials and installation methods
+- **Disposal fees:** Vary by county and available landfill options
+
+## How These Factors Combine
+
+No single factor determines your cost in isolation. They combine and compound:
+
+**Example: Budget-friendly scenario**
+- 1,500 sq ft simple gable roof, low pitch, single story
+- One existing shingle layer, good deck condition
+- Architectural shingles, installed in November
+- **Estimated cost: $7,000-$9,500**
+
+**Example: Mid-range scenario**
+- 2,000 sq ft hip roof, moderate pitch, two stories
+- One existing layer, minor deck repairs needed
+- Architectural shingles, installed in September
+- **Estimated cost: $12,000-$16,000**
+
+**Example: Premium scenario**
+- 2,500 sq ft complex roof with dormers and skylights, steep pitch
+- Two existing layers requiring full tear-off, moderate deck repair
+- Standing seam metal, installed during peak season
+- **Estimated cost: $30,000-$42,000**
+
+## Getting an Accurate Estimate
+
+Understanding these factors helps you evaluate quotes, but every roof is unique. The only way to get truly accurate pricing is a professional, on-site assessment.
+
+When comparing estimates, make sure each contractor is quoting the same scope. Use the factors above as a checklist to ensure nothing is missing or inconsistent between quotes.
+
+Ready to understand exactly what your [roof replacement](/services/roof-replacement) will cost? [Get your free estimate](/) from Farrell Roofing. We provide detailed, line-item quotes that explain every cost factor so there are no surprises.
+    `,
+    category: 'Guides',
+    author: 'Lisa Farrell',
+    publishedAt: '2026-01-28',
+    readTime: 8,
+    featured: false,
+    tags: ['roof replacement', 'cost factors', 'pricing', 'roof size', 'materials'],
+    image: '/images/blog/cost-factors.jpg',
+  },
+  {
+    id: '9',
+    slug: 'free-roof-inspection-what-to-expect',
+    title: 'Is a Free Roof Inspection Really Free? What to Expect',
+    excerpt: 'Wondering what actually happens during a free roof inspection? Learn what inspectors look for, how to prepare, what red flags to watch for, and whether that free inspection truly has no strings attached.',
+    content: `
+# Is a Free Roof Inspection Really Free? What to Expect
+
+You've seen the ads: "Free Roof Inspection!" Maybe a door-to-door salesperson offered one after a storm. Or perhaps your neighbor mentioned getting one. If you're skeptical, that's healthy. Nothing in life is truly free, right?
+
+The truth is, free roof inspections are a real and legitimate service, but understanding why they're offered and what to expect helps you get the most value while protecting yourself from pressure tactics.
+
+## Why Do Roofing Companies Offer Free Inspections?
+
+Let's be transparent: a free inspection is a lead generation tool. The roofing company is investing their time and expertise with the hope that if you need work, you'll choose them. That's the business model, and there's nothing wrong with it.
+
+**Here's why it works for both sides:**
+
+**For the company:**
+- Demonstrates their expertise and professionalism
+- Builds trust with potential customers
+- Identifies homeowners who genuinely need roofing services
+- Creates an opportunity to provide a quote
+
+**For the homeowner:**
+- Professional assessment at no cost
+- Early detection of problems before they become expensive
+- Documentation for insurance purposes
+- Peace of mind about your roof's condition
+- No obligation to purchase anything
+
+The key phrase is "no obligation." A reputable contractor will inspect your roof, tell you what they find, and leave it at that. There is no legitimate reason to sign anything or commit to work during or immediately after a free inspection.
+
+## What Does a Free Roof Inspection Include?
+
+A thorough free inspection should cover multiple areas of your roofing system. Here's what to expect from a professional inspection:
+
+### Exterior Assessment
+
+**Shingles/Roofing Material:**
+- Overall condition and remaining lifespan
+- Missing, cracked, curling, or cupping shingles
+- Granule loss (for asphalt shingles)
+- Rust, dents, or loose panels (for metal roofing)
+- Moss, algae, or biological growth
+
+**Flashing and Seals:**
+- Chimney flashing condition
+- Skylight seals and flashing
+- Vent pipe boots
+- Wall-to-roof transitions
+- Valley flashing
+
+**Structural Elements:**
+- Ridge line straightness (checking for sagging)
+- Fascia and soffit condition
+- Gutter attachment and condition
+- Drip edge presence and condition
+
+**Ventilation:**
+- Ridge vent condition
+- Soffit vent clearance
+- Overall ventilation adequacy
+
+### Interior Assessment (Attic)
+
+A thorough inspector will also want to check your attic if accessible:
+- Water stains on decking or rafters
+- Daylight visible through the roof
+- Insulation condition and coverage
+- Ventilation airflow
+- Signs of mold or moisture
+- Evidence of past or active leaks
+
+### Documentation
+
+After the inspection, you should receive:
+- Verbal summary of findings
+- Photos of any problem areas
+- Written report (some companies provide this; always request it)
+- Honest assessment of remaining roof life
+- Recommendations for repair or replacement if needed
+
+## How Long Does a Free Inspection Take?
+
+Plan for **45 minutes to 1.5 hours** depending on:
+- Size and complexity of your roof
+- Whether the inspector goes on the roof vs. ground-only assessment
+- Whether attic inspection is included
+- Number of issues found
+
+A quick 10-minute "inspection" from the ground is not thorough. If an inspector spends less than 30 minutes, they're likely not checking everything they should.
+
+## How to Prepare for a Roof Inspection
+
+A little preparation ensures you get the most from your inspection:
+
+**Before the appointment:**
+- Clear access to your driveway and around the house perimeter
+- Trim back vegetation close to the roof if possible
+- Note any specific concerns you've noticed (leaks, stains, loose material)
+- Locate your attic access (and clear any items blocking it)
+- Have your roof's age handy if you know it
+- Find your homeowner's insurance policy for reference
+
+**Questions to have ready:**
+- How old is my roof, and how much life is left?
+- Are there any immediate concerns or safety issues?
+- What maintenance should I be doing?
+- If repair is needed, what's the timeline and urgency?
+- What would replacement cost (ballpark) if it's needed in the near future?
+
+## What Inspectors Look For (and Why)
+
+Understanding what the inspector checks helps you appreciate the thoroughness of the process:
+
+**Shingle condition tells the story.** Curling edges indicate heat damage and age. Cracking means brittleness from UV exposure. Missing granules expose the asphalt mat to rapid UV degradation. In Mississippi, these signs appear faster than in northern states due to our intense sun and heat.
+
+**Flashing failures cause most leaks.** The metal pieces around chimneys, skylights, vents, and wall junctions are the roof's weak points. A good inspector checks every flashing point because even a small gap can allow gallons of water into your home during Mississippi's heavy rains.
+
+**Ventilation affects lifespan.** Inadequate attic ventilation in Mississippi can raise attic temperatures above 150 degrees Fahrenheit in summer, cooking your shingles from below. An inspector who checks ventilation is evaluating long-term performance, not just current condition.
+
+**Structural indicators matter.** A sagging ridge line suggests structural problems that go beyond the roofing material. An inspector checking for sag is looking at the health of the entire roof system, not just the surface.
+
+## Red Flags During an Inspection
+
+Not all free inspections are created equal. Watch for these warning signs:
+
+**High-pressure sales tactics:**
+- "This deal is only available today"
+- "Sign now and we'll lock in the price"
+- Pressure to make decisions immediately
+- Creating urgency that doesn't match the situation
+
+**Manufactured damage:**
+- An inspector who goes on the roof alone and comes back with photos of "damage" you can't verify
+- Claims of damage that seem excessive for your roof's age and condition
+- Refusal to let you see the damage yourself or have another contractor verify
+
+**Vague findings:**
+- No specific documentation or photos
+- Won't provide a written report
+- General claims like "it's bad" without specifics
+- Refuses to answer detailed questions
+
+**Storm chaser behavior:**
+- Showed up uninvited after a storm
+- Out-of-state plates or no local address
+- Offers to "handle everything with your insurance"
+- Asks you to sign an Assignment of Benefits immediately
+
+**What a good inspector looks like:**
+- Takes time and is thorough
+- Shows you photos and explains findings clearly
+- Provides honest assessment even if no work is needed
+- No pressure for immediate decisions
+- Happy to let you get additional opinions
+- Licensed, insured, and can provide references
+
+## Free Inspection vs. Paid Inspection: What's the Difference?
+
+| Feature | Free Inspection | Paid Inspection ($150-$400) |
+|---------|----------------|---------------------------|
+| Visual assessment | Yes | Yes |
+| Photo documentation | Usually | Always (detailed) |
+| Written report | Sometimes | Always (comprehensive) |
+| Moisture testing | Rarely | Often included |
+| Drone/thermal imaging | Rarely | Sometimes included |
+| Remaining life estimate | General | Detailed with documentation |
+| Insurance documentation | Basic | Detailed, insurance-ready |
+| Performed by | Sales rep or estimator | Certified inspector |
+| Objective/unbiased | Varies | Generally more objective |
+
+**When a free inspection is sufficient:**
+- Routine check on a roof you're not worried about
+- After a minor storm to verify no damage
+- When considering a replacement and want initial estimates
+- Annual maintenance check from a trusted contractor
+
+**When a paid inspection is worth it:**
+- Buying or selling a home (real estate transaction)
+- Preparing a detailed insurance claim
+- You need a fully objective, third-party assessment
+- Complex roof systems requiring specialized evaluation
+- When you want comprehensive written documentation for records
+
+## When Should You Get a Roof Inspection?
+
+Don't wait for a visible problem. Schedule an inspection when:
+
+**After any significant storm.** Mississippi sees severe thunderstorms, hail, tornadoes, and occasionally hurricanes. Damage isn't always visible from the ground, and many insurance policies have time limits for filing claims.
+
+**When your roof is aging.** If your asphalt roof is 12+ years old, annual inspections help you plan for replacement rather than being surprised by an emergency. Check our guide on [warning signs you need a new roof](/blog/signs-you-need-new-roof) for what to watch for between inspections.
+
+**Before buying a home.** A standard home inspection includes only a cursory roof check. A dedicated roof inspection can reveal thousands of dollars in issues that affect your purchase negotiation.
+
+**Before selling your home.** Knowing your roof's condition helps you price your home accurately and address issues before they derail a sale.
+
+**If you notice interior signs.** Water stains on ceilings, musty smells in the attic, or unexplained increases in energy bills warrant a roof inspection.
+
+**Annually as preventive maintenance.** An annual check catches small problems before they become expensive ones. See our [complete maintenance checklist](/blog/roof-maintenance-checklist) for what to monitor between professional inspections.
+
+## Getting the Most From Your Free Inspection
+
+Follow these tips to maximize the value:
+
+1. **Be present during the inspection.** Ask questions, look at photos, and understand what the inspector is finding.
+
+2. **Request a written summary.** Even if it's informal, having documentation of findings is valuable.
+
+3. **Don't commit to anything on the spot.** Take time to consider findings, get additional opinions if needed, and make decisions without pressure.
+
+4. **Ask about timeline.** If issues are found, understand urgency. "You should address this within 6 months" is very different from "this needs emergency attention."
+
+5. **Get a second opinion on major findings.** If an inspector says you need a full replacement, it's worth having another reputable contractor verify.
+
+6. **Keep records.** Store inspection photos and reports with your home records. They're valuable for insurance claims, home sales, and tracking your roof's condition over time.
+
+## Schedule Your Free Inspection
+
+At Farrell Roofing, our [free roof inspections](/services/roof-inspection) are exactly what they should be: thorough, honest, and truly no-obligation. We'll tell you what we find, answer your questions, and leave you with the information you need to make your own decision on your own timeline.
+
+Whether your roof needs attention now or simply needs monitoring, knowing its condition puts you in control.
+
+[Schedule Your Free Roof Inspection](/services/roof-inspection) today, or call us with any questions. We serve homeowners throughout Northeast Mississippi.
+    `,
+    category: 'Guides',
+    author: 'Mike Farrell',
+    publishedAt: '2026-01-18',
+    readTime: 7,
+    featured: false,
+    tags: ['roof inspection', 'free inspection', 'what to expect', 'mississippi'],
+    image: '/images/blog/free-roof-inspection.jpg',
+  },
+  {
+    id: '10',
+    slug: 'mississippi-storm-damage-insurance-coverage',
+    title: 'Mississippi Storm Damage: What Your Insurance Covers (and What It Doesn\'t)',
+    excerpt: 'Understand exactly what your Mississippi homeowner\'s insurance covers for storm-related roof damage, including wind, hail, tornado, and hurricane events. Learn about deductibles, ACV vs replacement cost, claims, and common denial reasons.',
+    content: `
+# Mississippi Storm Damage: What Your Insurance Covers (and What It Doesn't)
+
+Mississippi ranks among the most storm-prone states in the nation. Tornadoes, hurricanes, severe thunderstorms, straight-line winds, and hail are facts of life here. When a storm damages your roof, your homeowner's insurance is supposed to protect you. But the reality of what's covered, what's excluded, and how the process works is more complex than most homeowners realize.
+
+This guide breaks down Mississippi-specific storm damage insurance coverage so you know exactly where you stand before and after the next severe weather event.
+
+## What Types of Storm Damage Are Covered?
+
+Most standard Mississippi homeowner's insurance policies cover roof damage from these events:
+
+### Wind Damage (Covered)
+
+Wind is the most common cause of roof damage claims in Mississippi. Coverage typically includes:
+
+- Shingles blown off by wind gusts
+- Lifted or creased shingles
+- Damaged or detached flashing
+- Tree limbs blown onto the roof
+- Structural damage from high winds
+- Damage to gutters, soffits, and fascia from wind
+
+**Important detail:** Coverage applies whether the wind came from a thunderstorm, straight-line wind event, or tornado. Wind is wind in the eyes of your insurance policy.
+
+### Hail Damage (Covered)
+
+Hail causes billions of dollars in roof damage nationally each year, and Mississippi sees its share:
+
+- Dented or cracked shingles
+- Granule loss from hail impact
+- Bruised shingles (compressed mat beneath granules)
+- Dented metal roofing, gutters, or vents
+- Cracked skylights or vent covers
+
+**Hail damage can be subtle.** You might not see it from the ground, but a trained inspector can identify hail bruising that compromises your roof's integrity and will lead to premature failure.
+
+### Tornado Damage (Covered)
+
+Tornado damage is covered under the wind damage provisions of your policy:
+
+- Partial or complete roof removal
+- Structural damage from debris impact
+- Water damage resulting from roof breach
+- Fallen trees from neighboring properties
+
+### Hurricane Damage (Covered, But Read the Fine Print)
+
+Hurricanes are covered under most Mississippi policies, but with important caveats:
+
+- Wind damage from the hurricane is covered
+- Flying debris damage is covered
+- **But:** A separate, higher hurricane deductible usually applies
+- **And:** Flood damage from storm surge or rising water is NOT covered (see exclusions below)
+
+If you live in southern Mississippi or along the Gulf Coast, pay close attention to your hurricane deductible, which can be 2-5% of your dwelling coverage, a significant out-of-pocket expense.
+
+### Lightning and Fire (Covered)
+
+- Lightning strikes that damage roofing materials
+- Fire damage resulting from lightning strikes
+- Damage to electrical systems that affect roofing components
+
+## What Is NOT Covered?
+
+Understanding exclusions is just as important as knowing what's covered. These are the most common exclusions Mississippi homeowners encounter:
+
+### Flood Damage (NOT Covered)
+
+**This is the biggest gap in Mississippi storm coverage.** Standard homeowner's insurance does not cover flood damage. Period. This includes:
+
+- Rising water from rivers, streams, or bayous
+- Storm surge from hurricanes (even though hurricane wind is covered)
+- Standing water from overwhelmed drainage systems
+- Groundwater seepage during heavy rains
+
+**If flooding is a risk in your area, you need a separate flood insurance policy** through the National Flood Insurance Program (NFIP) or a private flood insurer. Don't assume your homeowner's policy covers everything a storm throws at you.
+
+### Wear and Tear (NOT Covered)
+
+Insurance covers sudden, accidental damage, not gradual deterioration:
+
+- Age-related shingle degradation
+- Normal weathering and UV damage
+- Gradual moisture intrusion from failing sealants
+- Slow leaks that develop over time
+
+**Where this gets tricky:** After a storm, your adjuster may attribute some damage to pre-existing wear rather than the storm event. This is why maintaining your roof and documenting its condition regularly is so important. A recent [roof inspection report](/services/roof-inspection) showing your roof was in good condition before the storm is powerful evidence in your favor.
+
+### Neglected Maintenance (NOT Covered)
+
+If your insurer determines that damage resulted from failure to maintain your roof, coverage may be denied:
+
+- Moss or algae damage you never addressed
+- Known leaks you didn't repair
+- Missing shingles you didn't replace
+- Clogged gutters that caused water backup
+
+**Protect yourself:** Follow a regular [maintenance schedule](/blog/roof-maintenance-checklist) and keep records of all maintenance performed. This documentation proves you've been a responsible homeowner if a claim is ever questioned.
+
+### Cosmetic Damage (Often NOT Covered)
+
+Some Mississippi policies include "cosmetic damage exclusions," particularly for hail:
+
+- Dents in metal roofing that don't affect function
+- Granule loss that doesn't compromise the shingle
+- Surface marks that are aesthetic rather than structural
+
+**Read your policy carefully.** If it contains a cosmetic exclusion, hail damage may need to be demonstrably functional (affecting the roof's ability to protect your home) rather than merely visible.
+
+### Pest and Animal Damage (NOT Covered)
+
+Roof damage caused by animals is typically excluded:
+
+- Squirrels chewing through soffits or vents
+- Birds nesting in or damaging roofing materials
+- Raccoon damage to attic vents
+- Termite or insect damage to roof structure
+
+## Understanding Your Deductible
+
+Your deductible is the amount you pay out of pocket before insurance coverage kicks in. In Mississippi, deductible structures can be confusing:
+
+### Fixed Dollar Deductible
+
+The simpler type: a set dollar amount like $1,000 or $2,500. You pay this amount, and insurance covers the rest up to policy limits.
+
+### Percentage-Based Wind/Hail Deductible
+
+Many Mississippi policies use percentage-based deductibles specifically for wind and hail damage:
+
+**How it works:**
+- The deductible is a percentage of your dwelling coverage amount
+- Common percentages: 1%, 2%, 3%, or 5%
+- Applied to wind and hail claims specifically
+
+**Example:**
+- Your dwelling coverage: $250,000
+- Your wind/hail deductible: 2%
+- Your out-of-pocket: $5,000 before insurance pays anything
+
+This means a $5,000 out-of-pocket expense for wind or hail damage, even if your standard deductible is only $1,000 for other types of claims. Many Mississippi homeowners don't realize this until they file a claim.
+
+### Hurricane Deductible
+
+If damage occurs during a named hurricane, an even higher deductible may apply:
+- Typically 2-5% of dwelling coverage
+- Can be $5,000-$15,000 or more
+- Only triggers during officially named storms
+
+**Action step:** Review your policy right now. Find your wind/hail deductible and hurricane deductible. If you don't understand the terms, call your agent and ask specifically.
+
+## ACV vs. Replacement Cost: A Critical Distinction
+
+This single policy detail can mean a difference of thousands of dollars in your claim settlement.
+
+### Actual Cash Value (ACV)
+
+An ACV policy pays the depreciated value of your roof:
+- Takes the replacement cost and subtracts depreciation based on age
+- A 15-year-old asphalt roof might be depreciated 50-70%
+- You could receive significantly less than the cost to replace
+
+**Example with ACV:**
+- Replacement cost: $15,000
+- Roof age: 12 years (of 20-year expected life)
+- Depreciation: 60% ($9,000 deducted)
+- ACV payout: $6,000
+- Minus deductible: $5,000 (2% of $250,000)
+- **Your check: $1,000** for a $15,000 roof
+
+### Replacement Cost Value (RCV)
+
+An RCV policy pays the full cost to replace your roof with similar materials:
+- No depreciation deduction
+- Pays what it actually costs to replace
+- Usually paid in two phases: initial ACV payment, then depreciation holdback after repairs complete
+
+**Example with RCV:**
+- Replacement cost: $15,000
+- Initial payment: ACV amount ($6,000) minus deductible ($5,000) = $1,000
+- After repairs completed and receipts submitted: remaining $9,000 holdback paid
+- **Total received: $10,000** ($15,000 minus $5,000 deductible)
+
+**The difference:** $1,000 (ACV) vs. $10,000 (RCV) for the same damage. If you have an ACV policy, strongly consider upgrading to replacement cost coverage. The premium difference is typically small compared to the coverage improvement.
+
+## Filing a Claim: Step-by-Step
+
+When storm damage occurs, follow this process:
+
+### Step 1: Document Everything Immediately
+
+- Photograph all visible damage from multiple angles
+- Record video walking around the property
+- Note the date, time, and type of storm
+- Save weather reports and storm warnings
+- Document any interior water damage
+
+### Step 2: Prevent Further Damage
+
+Your policy requires you to mitigate additional damage:
+- Tarp exposed areas to prevent water intrusion
+- Board up openings
+- Remove debris that could cause more harm
+- **Keep all receipts** for emergency supplies and services
+- These mitigation costs are typically reimbursable
+
+If you can't safely tarp your roof, Farrell Roofing provides [emergency repair services](/services/emergency-repair) with rapid response throughout Northeast Mississippi.
+
+### Step 3: Call Your Insurance Company
+
+File your claim as soon as possible:
+- Most policies require notification within 60 days
+- Some require notification within 72 hours for wind/hail
+- Get your claim number in writing
+- Ask about your specific deductible for this type of damage
+- Request timeline for adjuster visit
+
+### Step 4: Get an Independent Professional Inspection
+
+Before the adjuster arrives, have a licensed roofing contractor inspect your roof:
+- Professional roofers identify damage adjusters may miss
+- They speak the technical language of the industry
+- Their documentation strengthens your claim
+- They can be present during the adjuster's visit
+
+This is one of the most valuable steps you can take. An experienced contractor has seen hundreds of storm-damaged roofs and knows exactly what to document. Read our complete [insurance claims guide](/blog/roof-insurance-claims) for detailed advice on working with adjusters.
+
+### Step 5: Meet With the Adjuster
+
+- Be present and accompany the adjuster
+- Share your contractor's findings and photos
+- Point out all damage areas (not just obvious ones)
+- Ask questions about their assessment
+- Take notes on what they inspect and don't inspect
+- Request a copy of their report
+
+### Step 6: Review the Settlement
+
+- Compare the insurance estimate to your contractor's estimate
+- Verify all damage areas are included
+- Check material specifications and labor rates
+- If you disagree, you have the right to dispute
+
+## Common Claim Denial Reasons (and How to Fight Back)
+
+Understanding why claims get denied helps you prevent it:
+
+### "Pre-existing damage"
+
+**The claim:** Insurer says the damage existed before the storm.
+
+**How to fight it:** Provide documentation of your roof's condition before the storm (previous inspection reports, dated photos, maintenance records). A recent [roof inspection](/services/roof-inspection) is your strongest evidence.
+
+### "Normal wear and tear"
+
+**The claim:** Insurer attributes damage to age rather than storm.
+
+**How to fight it:** Have your contractor document specific evidence of storm damage versus wear (impact marks, directional damage patterns, consistent damage across the roof). Storm damage has distinct characteristics that differ from age-related deterioration.
+
+### "Maintenance neglect"
+
+**The claim:** Insurer says you failed to maintain the roof, so damage was avoidable.
+
+**How to fight it:** Present maintenance records, inspection reports, and receipts for repairs. Regular [maintenance](/services/roof-maintenance) is your insurance policy for your insurance policy.
+
+### "Cosmetic only"
+
+**The claim:** Insurer says damage is cosmetic and doesn't affect function.
+
+**How to fight it:** Have your contractor document how the damage compromises the roofing system's integrity, even if it doesn't cause an immediate leak. Granule loss, for example, accelerates UV degradation and shortens remaining lifespan.
+
+### When to Escalate
+
+If your claim is denied or significantly underpaid:
+
+1. **Request a re-inspection** with a different adjuster
+2. **Invoke the appraisal clause** in your policy (both sides hire appraisers who select an umpire; majority rules)
+3. **File a complaint** with the Mississippi Department of Insurance
+4. **Consult a public adjuster** who works for you, not the insurance company (they typically charge 10-15% of the settlement increase)
+5. **Consult an insurance attorney** for significant disputes (many work on contingency)
+
+## Seasonal Preparation Tips
+
+The best time to prepare for a storm is before it happens:
+
+**Before storm season (March-April):**
+- Schedule a professional roof inspection
+- Complete any needed repairs
+- Document your roof's current condition with dated photos
+- Review your insurance policy and understand your deductibles
+- Verify you have replacement cost (not ACV) coverage
+- Consider flood insurance if you're in a risk area
+
+**During storm season (April-November):**
+- Monitor weather alerts
+- Inspect after every significant storm
+- Report damage promptly
+- Keep emergency tarps and supplies accessible
+
+**After any storm:**
+- Do a ground-level visual inspection within 24 hours
+- Check interior for water intrusion
+- Document any damage immediately
+- Don't wait for damage to worsen before acting
+
+## Protect Yourself Now
+
+Storm damage is a matter of when, not if, in Mississippi. The homeowners who navigate the insurance process most successfully are those who prepare in advance:
+
+- Maintain your roof regularly
+- Document its condition annually
+- Understand your policy before you need it
+- Build a relationship with a trusted local contractor
+
+At Farrell Roofing, we've helped hundreds of Mississippi homeowners through the storm damage and insurance process. From emergency tarping to detailed damage documentation to working with adjusters and completing quality repairs, we're with you every step of the way.
+
+If you've experienced storm damage, or want a professional inspection to document your roof's current condition before the next storm, [contact us](/contact) or visit our [insurance help page](/insurance-help) for resources and guidance.
+
+[Schedule Your Free Storm Damage Assessment](/) today. Don't wait for the next storm to find out where you stand.
+    `,
+    category: 'Insurance',
+    author: 'Mike Farrell',
+    publishedAt: '2026-01-12',
+    readTime: 10,
+    featured: true,
+    tags: ['storm damage', 'insurance', 'mississippi', 'claims', 'hurricane', 'tornado'],
+    image: '/images/blog/storm-damage-insurance.jpg',
+  },
 ]
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {

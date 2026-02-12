@@ -105,7 +105,7 @@ export async function GET(request: NextRequest) {
 
         if (msg.channel === 'email' && msg.recipient_email) {
           // Wrap body in email template for consistent branding
-          const wrappedHtml = emailWrapper(msg.body, msg.subject || 'Notification')
+          const wrappedHtml = await emailWrapper(msg.body, msg.subject || 'Notification')
 
           sendResult = await sendEmail({
             to: msg.recipient_email,

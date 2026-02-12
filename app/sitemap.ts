@@ -6,7 +6,10 @@ import { getAllServiceSlugs } from '@/lib/data/ms-services'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
-  const currentDate = new Date()
+
+  // Use fixed dates for static content - only update when content actually changes
+  const staticContentDate = new Date('2026-02-11')
+  const pricingContentDate = new Date('2026-02-11')
 
   // Get all dynamic content
   const cities = getAllCities()
@@ -19,88 +22,116 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/services`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/service-areas`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/portfolio`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'weekly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'weekly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/financing`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
       url: `${baseUrl}/insurance-help`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/assistance-programs`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/referral`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'yearly',
       priority: 0.2,
     },
     {
       url: `${baseUrl}/privacy`,
-      lastModified: currentDate,
+      lastModified: staticContentDate,
       changeFrequency: 'yearly',
       priority: 0.2,
+    },
+  ]
+
+  // Pricing pages - high priority for SEO
+  const pricingPages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/pricing`,
+      lastModified: pricingContentDate,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/pricing/roof-replacement-cost`,
+      lastModified: pricingContentDate,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/pricing/metal-roof-cost`,
+      lastModified: pricingContentDate,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/pricing/roof-repair-cost`,
+      lastModified: pricingContentDate,
+      changeFrequency: 'monthly',
+      priority: 0.85,
     },
   ]
 
   // City location pages - highest priority for local SEO
   const cityPages: MetadataRoute.Sitemap = cities.map(city => ({
     url: `${baseUrl}/${city.slug}-roofing`,
-    lastModified: currentDate,
+    lastModified: staticContentDate,
     changeFrequency: 'weekly' as const,
     priority: city.isHQ ? 1.0 : city.priority === 'high' ? 0.95 : 0.85,
   }))
@@ -108,7 +139,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // County location pages
   const countyPages: MetadataRoute.Sitemap = counties.map(county => ({
     url: `${baseUrl}/${county.slug}-roofing`,
-    lastModified: currentDate,
+    lastModified: staticContentDate,
     changeFrequency: 'weekly' as const,
     priority: 0.9,
   }))
@@ -116,7 +147,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Service pages
   const servicePages: MetadataRoute.Sitemap = services.map(service => ({
     url: `${baseUrl}/services/${service.slug}`,
-    lastModified: currentDate,
+    lastModified: staticContentDate,
     changeFrequency: 'monthly' as const,
     priority: 0.85,
   }))
@@ -137,7 +168,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const city of cities) {
       serviceCityPages.push({
         url: `${baseUrl}/${service}-${city.slug}-ms`,
-        lastModified: currentDate,
+        lastModified: staticContentDate,
         changeFrequency: 'monthly' as const,
         // Higher priority for high-priority cities
         priority: city.isHQ ? 0.85 : city.priority === 'high' ? 0.8 : 0.7,
@@ -148,13 +179,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Comparison pages - "Best Roofers in [City]" (high priority for local SEO)
   const comparisonPages: MetadataRoute.Sitemap = cities.map(city => ({
     url: `${baseUrl}/best-roofers-in-${city.slug}-${city.stateCode.toLowerCase()}`,
-    lastModified: currentDate,
+    lastModified: staticContentDate,
     changeFrequency: 'monthly' as const,
     priority: city.isHQ ? 0.9 : city.priority === 'high' ? 0.85 : 0.75,
   }))
 
   return [
     ...staticPages,
+    ...pricingPages,
     ...cityPages,
     ...countyPages,
     ...servicePages,
