@@ -55,9 +55,7 @@ export function MobileCTABar() {
         visible ? 'translate-y-0' : 'translate-y-full'
       }`}
     >
-      {/* Subtle top shadow for depth */}
-      <div className="h-px bg-gradient-to-r from-transparent via-[#c9a25c]/30 to-transparent" />
-      <div className="flex bg-[#0c0f14]/98 backdrop-blur-lg border-t border-slate-800">
+      <div className="flex bg-[#0c0f14] border-t border-slate-800">
         <a
           href={phoneLink}
           className="flex items-center justify-center gap-2 px-4 py-3.5 min-h-[56px] text-sm font-medium text-slate-200 border-r border-slate-800 active:bg-slate-800/80 transition-colors"

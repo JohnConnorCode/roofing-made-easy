@@ -85,7 +85,7 @@ export function SiteFooter() {
   }))
 
   return (
-    <footer className="bg-ink border-glow-top relative overflow-hidden">
+    <footer className="bg-ink border-t border-slate-800 relative overflow-hidden">
       {/* Subtle roof pattern background */}
       <div
         className="absolute inset-0 opacity-[0.015] pointer-events-none"
@@ -101,7 +101,7 @@ export function SiteFooter() {
               <div className="mb-3">
                 <Logo size="sm" showText={true} />
               </div>
-              <div className="h-[2px] w-20 bg-gradient-to-r from-transparent via-gold to-transparent rounded-full mt-3 mb-4" />
+              <div className="h-px w-16 bg-gold/30 mt-3 mb-4" />
               <p className="text-slate-300 text-sm leading-relaxed mb-4 max-w-sm">
                 Northeast Mississippi&apos;s trusted roofing contractor. Proudly serving Tupelo and surrounding communities since 2010.
               </p>
@@ -270,8 +270,8 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Gradient divider above bottom bar */}
-        <div className="section-divider" />
+        {/* Divider above bottom bar */}
+        <div className="border-t border-slate-800" />
 
         {/* Bottom Bar */}
         <div className="border-t border-slate-800 safe-bottom">

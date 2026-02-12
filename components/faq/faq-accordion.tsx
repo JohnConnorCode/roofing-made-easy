@@ -52,8 +52,8 @@ interface FAQAccordionItemProps {
 function FAQAccordionItem({ question, answer, isOpen, onToggle }: FAQAccordionItemProps) {
   return (
     <div className={cn(
-      'rounded-xl border border-slate-700 bg-[#1a1f2e] overflow-hidden shadow-card transition-all duration-200 hover:border-slate-600',
-      isOpen && 'border-l-2 border-l-gold'
+      'rounded-xl border border-slate-700/50 bg-[#1a1f2e] overflow-hidden transition-all duration-200 hover:border-slate-600',
+      isOpen && 'border-[#c9a25c]/30'
     )}>
       <button
         className="flex w-full items-center justify-between px-6 py-4 text-left"

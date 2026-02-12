@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, ReactNode } from 'react'
 interface ScrollAnimateProps {
   children: ReactNode
   className?: string
-  animation?: 'slide-up' | 'slide-in-right' | 'slide-in-left' | 'scale-in' | 'fade-in' | 'rise-up' | 'reveal-rotate'
+  animation?: 'slide-up' | 'slide-in-right' | 'slide-in-left' | 'scale-in' | 'fade-in' | 'rise-up' | 'reveal-rotate' | 'fade-up'
   delay?: number
   threshold?: number
   once?: boolean
@@ -14,7 +14,7 @@ interface ScrollAnimateProps {
 export function ScrollAnimate({
   children,
   className = '',
-  animation = 'slide-up',
+  animation = 'fade-up',
   delay = 0,
   threshold = 0.1,
   once = true,
@@ -52,10 +52,11 @@ export function ScrollAnimate({
     'fade-in': 'animate-fade-in',
     'rise-up': 'animate-rise-up',
     'reveal-rotate': 'animate-reveal-rotate',
+    'fade-up': 'animate-fade-up',
   }[animation]
 
   const hiddenStyle: React.CSSProperties = {
-    willChange: 'transform, opacity, filter',
+    willChange: 'transform, opacity',
     ...(delay > 0 ? { animationDelay: `${delay}ms` } : {}),
   }
   const visibleStyle: React.CSSProperties = delay > 0 ? { animationDelay: `${delay}ms` } : {}
@@ -77,6 +78,7 @@ interface ScrollStaggerProps {
   staggerDelay?: number
   threshold?: number
   once?: boolean
+  simple?: boolean
 }
 
 export function ScrollStagger({
@@ -85,6 +87,7 @@ export function ScrollStagger({
   staggerDelay = 50,
   threshold = 0.1,
   once = true,
+  simple = false,
 }: ScrollStaggerProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
@@ -114,7 +117,7 @@ export function ScrollStagger({
   return (
     <div
       ref={ref}
-      className={`${className} ${isVisible ? 'stagger-children' : 'stagger-children-hidden'}`}
+      className={`${className} ${isVisible ? (simple ? 'stagger-children-simple' : 'stagger-children') : (simple ? 'stagger-children-simple-hidden' : 'stagger-children-hidden')}`}
       style={{ '--stagger-delay': `${staggerDelay}ms` } as React.CSSProperties}
     >
       {children}

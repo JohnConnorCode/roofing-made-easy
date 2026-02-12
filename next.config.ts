@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 768, 1024, 1280, 1536],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+  },
   async rewrites() {
     return [
       // County roofing pages: /lee-county-roofing -> /county/lee
@@ -35,11 +40,11 @@ const nextConfig: NextConfig = {
     const supabaseUrl = sanitizeForHeader(rawSupabaseUrl)
     const cspDirectives = [
       "default-src 'self'",
-      `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://vercel.live`,
+      `script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://vercel.live https://www.googletagmanager.com https://www.google-analytics.com`,
       `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-      `img-src 'self' data: blob: ${supabaseUrl} https://*.unsplash.com https://*.googleapis.com`,
+      `img-src 'self' data: blob: ${supabaseUrl} https://*.unsplash.com https://*.googleapis.com https://www.google-analytics.com https://www.googletagmanager.com`,
       `font-src 'self' https://fonts.gstatic.com`,
-      `connect-src 'self' ${supabaseUrl} wss://*.supabase.co https://api.stripe.com https://vitals.vercel-insights.com https://vercel.live`,
+      `connect-src 'self' ${supabaseUrl} wss://*.supabase.co https://api.stripe.com https://vitals.vercel-insights.com https://vercel.live https://www.google-analytics.com https://www.googletagmanager.com`,
       `frame-src 'self' https://js.stripe.com https://hooks.stripe.com`,
       "object-src 'none'",
       "base-uri 'self'",

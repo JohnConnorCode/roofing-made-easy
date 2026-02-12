@@ -31,11 +31,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       'inline-flex items-center justify-center font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-lg shadow-sm'
 
     const variants = {
-      // Professional roofing colors - bold orange accent
-      primary: 'bg-amber-600 text-white hover:bg-amber-700 active:bg-amber-800 focus-visible:ring-amber-500 shadow-amber-600/25',
-      secondary: 'bg-slate-800 text-white hover:bg-slate-900 active:bg-slate-950 focus-visible:ring-slate-500',
-      outline: 'border-2 border-slate-300 bg-white text-slate-800 hover:bg-slate-50 hover:border-slate-400 focus-visible:ring-slate-500',
-      ghost: 'hover:bg-slate-100 text-slate-700 shadow-none focus-visible:ring-slate-500',
+      primary: 'bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] border-0 focus-visible:ring-[#c9a25c] shadow-[#b5893a]/25',
+      secondary: 'bg-[#1a1f2e] text-slate-200 border border-slate-700 hover:bg-[#232938] hover:border-slate-600 active:bg-[#1a1f2e] focus-visible:ring-slate-500',
+      outline: 'border-2 border-slate-600 bg-transparent text-slate-200 hover:bg-[#1a1f2e] hover:border-slate-500 focus-visible:ring-slate-500',
+      ghost: 'hover:bg-[#1a1f2e] text-slate-400 hover:text-slate-200 shadow-none focus-visible:ring-slate-500',
       destructive: 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500',
     }
 
