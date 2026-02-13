@@ -85,7 +85,7 @@ export function SiteFooter() {
   }))
 
   return (
-    <footer className="bg-ink border-t border-slate-800 relative overflow-hidden">
+    <footer className="bg-ink border-glow-top relative overflow-hidden">
       {/* Subtle roof pattern background */}
       <div
         className="absolute inset-0 opacity-[0.015] pointer-events-none"

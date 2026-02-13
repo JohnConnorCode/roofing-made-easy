@@ -28,6 +28,7 @@ import {
   MapPin,
 } from 'lucide-react'
 import { FAQAccordion } from '@/components/faq/faq-accordion'
+import { HeroSlider } from './hero-slider'
 import Link from 'next/link'
 import { getFeaturedTestimonials } from '@/lib/data/testimonials'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
@@ -79,19 +80,13 @@ export function HomePageContent() {
       <section id="hero" className="relative overflow-hidden min-h-[480px] md:min-h-[700px] flex items-center">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <Image
-            src="/images/hero-roof.jpg"
-            alt="Professional roofing work"
-            fill
-            className="object-cover"
-            priority
-          />
+          <HeroSlider />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/90 via-[#0c0f14]/75 to-[#0c0f14]/95" />
         </div>
 
         <div className="relative mx-auto max-w-6xl px-4 py-14 md:py-28">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#1a1f2e] border border-[#c9a25c]/40 px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 text-[#c9a25c] mb-5 md:mb-6 animate-hero-badge">
+            <div className="inline-flex items-center gap-2 rounded-full glass-card border-[#c9a25c]/40 px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 text-[#c9a25c] mb-5 md:mb-6 animate-hero-badge">
               <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
               AI-powered from 50,000+ roofing projects
             </div>
@@ -114,7 +109,7 @@ export function HomePageContent() {
                 size="xl"
                 onClick={handleGetStarted}
                 disabled={isCreating}
-                className="text-lg btn-press shadow-lg"
+                className="text-lg btn-press shadow-lg glow-gold btn-shimmer"
               >
                 {isCreating ? (
                   <>
@@ -191,7 +186,7 @@ export function HomePageContent() {
       </section>
 
       {/* THE PROBLEM - Why Traditional Quoting Sucks */}
-      <section className="py-20 md:py-28 bg-[#161a23]">
+      <section className="py-20 md:py-28 bg-mesh-dark">
         <div className="mx-auto max-w-6xl px-4">
           <ScrollAnimate className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
@@ -320,10 +315,10 @@ export function HomePageContent() {
       </section>
 
       {/* HOW IT WORKS - Technology Explanation */}
-      <section className="py-16 md:py-24 bg-glow-warm border-t border-slate-800">
+      <section className="py-16 md:py-24 bg-glow-cool border-t border-slate-800">
         <div className="mx-auto max-w-6xl px-4">
           <ScrollAnimate className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#c9a25c]/10 border border-[#c9a25c]/30 px-4 py-2 text-sm text-[#c9a25c] mb-4">
+            <div className="inline-flex items-center gap-2 rounded-full bg-blue-accent/10 border border-blue-accent/30 px-4 py-2 text-sm text-blue-accent-light mb-4">
               <Brain className="h-4 w-4" />
               AI-Powered Technology
             </div>
@@ -350,10 +345,10 @@ export function HomePageContent() {
             </div>
 
             <div className="relative text-center bg-[#1a1f2e] border border-slate-700/50 rounded-2xl p-4 md:p-6 card-hover-premium">
-              <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center shadow-lg z-10">
+              <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-blue-accent text-white text-xs font-bold flex items-center justify-center shadow-lg z-10">
                 2
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#c9a25c] to-[#9a7432] mx-auto mb-4 shadow-lg">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-accent-light to-blue-accent-muted mx-auto mb-4 shadow-lg">
                 <BarChart3 className="h-7 w-7 text-[#0c0f14]" />
               </div>
               <h3 className="text-lg font-bold text-slate-100 mb-2">2. Material Costs</h3>
@@ -376,10 +371,10 @@ export function HomePageContent() {
             </div>
 
             <div className="relative text-center bg-[#1a1f2e] border border-slate-700/50 rounded-2xl p-4 md:p-6 card-hover-premium">
-              <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center shadow-lg z-10">
+              <div className="absolute -top-3 -left-3 w-7 h-7 rounded-full bg-blue-accent text-white text-xs font-bold flex items-center justify-center shadow-lg z-10">
                 4
               </div>
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#c9a25c] to-[#9a7432] mx-auto mb-4 shadow-lg">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-accent-light to-blue-accent-muted mx-auto mb-4 shadow-lg">
                 <Calculator className="h-7 w-7 text-[#0c0f14]" />
               </div>
               <h3 className="text-lg font-bold text-slate-100 mb-2">4. Similar Projects</h3>
@@ -457,7 +452,7 @@ export function HomePageContent() {
       </section>
 
       {/* PROOF POINTS - Why Trust Us */}
-      <section className="py-20 md:py-28 bg-[#161a23] bg-texture-dark">
+      <section className="py-20 md:py-28 bg-diagonal-dark">
         <div className="mx-auto max-w-6xl px-4">
           <ScrollAnimate className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
@@ -499,8 +494,8 @@ export function HomePageContent() {
 
             {/* Card 3: Privacy */}
             <div className="bg-[#1a1f2e] border border-slate-700/50 rounded-2xl p-8 card-inner-glow card-hover-premium">
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#c9a25c]/15 border border-[#c9a25c]/30 mb-6">
-                <Shield className="h-7 w-7 text-[#c9a25c]" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-accent/10 border border-blue-accent/20 mb-6">
+                <Shield className="h-7 w-7 text-blue-accent" />
               </div>
               <h3 className="text-xl font-bold text-slate-100 mb-3">Privacy Protected</h3>
               <p className="text-slate-400 mb-4">
@@ -514,7 +509,7 @@ export function HomePageContent() {
 
           {/* Testimonials */}
           <ScrollAnimate className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-slate-100">
+            <h3 className="text-2xl font-bold text-slate-100 font-display">
               What Homeowners Say
             </h3>
           </ScrollAnimate>
@@ -523,7 +518,7 @@ export function HomePageContent() {
             {testimonials.map((testimonial, index) => (
               <div
                 key={testimonial.id}
-                className={`min-w-[85vw] snap-center sm:min-w-0 bg-[#1a1f2e] border border-slate-700/50 rounded-2xl p-6 card-inner-glow ${index === 1 ? 'testimonial-featured' : ''}`}
+                className={`min-w-[85vw] snap-center sm:min-w-0 bg-[#1a1f2e] border border-slate-700/50 rounded-2xl p-6 card-inner-glow card-hover-premium ${index === 1 ? 'testimonial-featured' : ''}`}
               >
                 <Quote className="h-8 w-8 text-[#c9a25c]/50 mb-4" />
                 <p className="text-slate-300 mb-4 leading-relaxed">
@@ -550,7 +545,7 @@ export function HomePageContent() {
       </section>
 
       {/* BEYOND THE ESTIMATE - Connected Journey */}
-      <section className="py-14 md:py-20 bg-glow-cool border-t border-slate-800">
+      <section className="py-14 md:py-20 bg-glow-warm border-t border-slate-800">
         <div className="mx-auto max-w-6xl px-4">
           <ScrollAnimate className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
@@ -651,7 +646,7 @@ export function HomePageContent() {
         <div className="relative mx-auto max-w-4xl px-4 text-center">
           <ScrollAnimate>
             <div className="flex justify-center mb-6">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c9a25c] to-[#9a7432] shadow-lg glow-gold animate-float icon-pulse-ring">
                 <Home className="h-8 w-8 text-[#0c0f14]" />
               </div>
             </div>

@@ -732,6 +732,16 @@ body {
   }
 }
 
+/* Hero background slider - Ken Burns zoom */
+@keyframes heroSliderZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+.hero-slide-active {
+  animation: heroSliderZoom 7s ease-out forwards;
+}
+
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,

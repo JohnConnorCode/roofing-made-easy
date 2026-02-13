@@ -56,7 +56,7 @@ export function SiteHeader() {
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), [])
 
   return (
-    <header className="border-b border-slate-800 bg-ink/95 sticky top-0 z-50 safe-top">
+    <header className="border-b border-slate-800 bg-ink/90 backdrop-blur-md sticky top-0 z-50 safe-top shadow-[0_1px_0_0_rgba(201,162,92,0.08)]">
       {/* Top Bar */}
       <div className="bg-slate-deep border-b border-slate-800/50 py-2 hidden md:block">
         <div className="mx-auto max-w-6xl px-4 flex items-center justify-between text-sm">
@@ -106,7 +106,7 @@ export function SiteHeader() {
               </button>
 
               {resourcesOpen && (
-                <div className="absolute top-full left-0 mt-2 w-64 bg-[#1a1f2e] border border-slate-700/50 rounded-xl shadow-xl py-2 z-50">
+                <div className="absolute top-full left-0 mt-2 w-64 glass-card-elevated rounded-xl shadow-xl py-2 z-50">
                   {resourceLinks.map(link => (
                     <Link
                       key={link.href}
