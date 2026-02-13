@@ -5,10 +5,10 @@ import Image from 'next/image'
 
 const SLIDES = [
   { src: '/images/services/roof-replacement.jpg', alt: 'Professional shingle installation on residential roof' },
-  { src: '/images/hero-roof.jpg', alt: 'Completed residential roofing project' },
-  { src: '/images/services/process-install.jpg', alt: 'Aerial view of residential neighborhood rooftops' },
-  { src: '/images/about/team-work.jpg', alt: 'Roofing team at work on a project' },
-  { src: '/images/blog/roof-maintenance.jpg', alt: 'Roof maintenance and care' },
+  { src: '/images/services/storm-damage-repair.jpg', alt: 'Storm damage roof repair in progress' },
+  { src: '/images/services/roof-inspection.jpg', alt: 'Professional roof inspection on residential home' },
+  { src: '/images/services/metal-roofing.jpg', alt: 'Metal roofing installation on a home' },
+  { src: '/images/services/roof-repair.jpg', alt: 'Roof repair work on residential property' },
 ]
 
 const INTERVAL_MS = 7000

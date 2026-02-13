@@ -91,12 +91,10 @@ export function HomePageContent() {
               AI-powered from 50,000+ roofing projects
             </div>
 
-            <h1 className="text-[1.75rem] leading-tight font-bold tracking-tight text-slate-100 sm:text-4xl md:text-5xl lg:text-6xl animate-hero-title delay-100 font-display">
+            <h1 className="text-3xl leading-tight font-bold tracking-tight text-slate-100 sm:text-5xl md:text-6xl lg:text-7xl animate-hero-title delay-100 font-display">
               Know Your Roof Cost
               <br className="sm:hidden" />
-              {' '}in <span className="bg-gradient-to-r from-[#d4b06c] to-[#c9a25c] bg-clip-text text-transparent">2 Minutes</span>
-              <span className="hidden sm:inline">, Not 2 Weeks</span>
-              <span className="sm:hidden block text-slate-400 text-xl mt-1 font-semibold">Not 2 Weeks</span>
+              {' '}in <span className="bg-gradient-to-r from-[#d4b06c] to-[#c9a25c] bg-clip-text text-transparent">2 Minutes</span>, Not 2 Weeks
             </h1>
 
             <p className="mt-4 md:mt-6 text-base md:text-xl text-slate-300 leading-relaxed animate-hero-subtitle delay-200 max-w-3xl mx-auto">
