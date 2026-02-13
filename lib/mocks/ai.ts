@@ -12,6 +12,13 @@ import type {
   IntakeAnalysisResult,
   InternalNotesInput,
   AiResult,
+  FinancingGuidanceInput,
+  FinancingGuidanceResult,
+  InsuranceLetterInput,
+  EligibilityGuidanceInput,
+  EligibilityGuidanceResult,
+  AdvisorInput,
+  AdvisorResult,
 } from '@/lib/ai/provider'
 import { simulateDelay, getMockDelay } from './config'
 
@@ -240,6 +247,107 @@ export class MockAiProvider implements AiProvider {
       provider: this.name,
       latencyMs: Date.now() - startTime,
       model: 'mock-notes-v1',
+    }
+  }
+
+  async generateFinancingGuidance(input: FinancingGuidanceInput): Promise<AiResult<FinancingGuidanceResult>> {
+    const startTime = Date.now()
+    await simulateDelay()
+
+    const amount = input.estimateAmount - (input.insurancePayoutAmount || 0)
+    const rate = input.creditRange === 'excellent' ? 6.99 : input.creditRange === 'good' ? 9.99 : 14.99
+
+    function calcPayment(p: number, r: number, m: number) {
+      const mr = r / 100 / 12
+      return (p * mr * Math.pow(1 + mr, m)) / (Math.pow(1 + mr, m) - 1)
+    }
+
+    const scenarios = [
+      { name: 'Lowest Total Cost', termMonths: 36 },
+      { name: 'Balanced', termMonths: 60 },
+      { name: 'Best Monthly', termMonths: 120 },
+    ].map(({ name, termMonths }) => {
+      const mp = calcPayment(amount, rate, termMonths)
+      return {
+        name, termMonths, estimatedRate: rate,
+        monthlyPayment: Math.round(mp * 100) / 100,
+        totalInterest: Math.round((mp * termMonths - amount) * 100) / 100,
+        recommendation: termMonths === 36 ? 'Best for minimizing interest.' : termMonths === 60 ? 'Good balance of payment and cost.' : 'Lowest monthly payment.',
+      }
+    })
+
+    return {
+      success: true,
+      data: {
+        scenarios,
+        summary: `With ${input.creditRange} credit, estimated rate is ${rate}% APR for $${amount.toLocaleString()}.`,
+        nextStep: 'Contact us for actual pre-qualification.',
+      },
+      provider: this.name,
+      latencyMs: Date.now() - startTime,
+      model: 'mock-financing-v1',
+    }
+  }
+
+  async generateInsuranceLetter(input: InsuranceLetterInput): Promise<AiResult<string>> {
+    const startTime = Date.now()
+    await simulateDelay()
+
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    const letterType = input.letterType === 'appeal' ? 'Appeal' : 'Claim'
+
+    const letter = `${input.customerName}\n${input.propertyAddress}\n${today}\n\n${input.claimData.insuranceCompany || '[Insurance Company]'}\nClaims Department\n\nRE: ${letterType} - Policy ${input.claimData.policyNumber || '[Policy]'}\nClaim: ${input.claimData.claimNumber || '[Claim]'}\nDate of Loss: ${input.claimData.dateOfLoss || '[Date]'}\n\nDear Claims Department,\n\n${input.letterType === 'appeal' ? 'I am writing to appeal the claim decision.' : `I am reporting roof damage caused by ${input.claimData.causeOfLoss || '[cause]'}.`}\n\n${input.estimateAmount ? `Professional repair estimate: $${input.estimateAmount.toLocaleString()}` : ''}\n\nSincerely,\n${input.customerName}\n\n(Mock AI-generated letter)`
+
+    return {
+      success: true,
+      data: letter,
+      provider: this.name,
+      latencyMs: Date.now() - startTime,
+      model: 'mock-letter-v1',
+    }
+  }
+
+  async generateEligibilityGuidance(input: EligibilityGuidanceInput): Promise<AiResult<EligibilityGuidanceResult>> {
+    const startTime = Date.now()
+    await simulateDelay()
+
+    const prioritizedActions = input.eligiblePrograms
+      .sort((a, b) => (b.maxBenefitAmount || 0) - (a.maxBenefitAmount || 0))
+      .map((p, i) => ({
+        order: i + 1,
+        programName: p.name,
+        reason: p.programType === 'federal' ? 'Federal grant - no repayment' : `${p.programType} program`,
+        potentialBenefit: p.maxBenefitAmount ? `Up to $${p.maxBenefitAmount.toLocaleString()}` : 'Varies',
+      }))
+
+    const total = input.eligiblePrograms.reduce((s, p) => s + (p.maxBenefitAmount || 0), 0)
+
+    return {
+      success: true,
+      data: {
+        prioritizedActions,
+        combinedStrategy: `You may qualify for up to $${total.toLocaleString()} across ${input.eligiblePrograms.length} programs.`,
+        importantNotes: ['Apply for grants before loans.', 'Keep copies of all applications.'],
+      },
+      provider: this.name,
+      latencyMs: Date.now() - startTime,
+      model: 'mock-eligibility-v1',
+    }
+  }
+
+  async generateAdvisorResponse(input: AdvisorInput): Promise<AiResult<AdvisorResult>> {
+    const startTime = Date.now()
+    await simulateDelay()
+
+    return {
+      success: true,
+      data: {
+        message: `Mock advisor response for ${input.topic}. In production, this would provide personalized guidance.`,
+        suggestedActions: [{ label: 'Learn More', href: `/portal/${input.topic === 'assistance' ? 'assistance' : input.topic}` }],
+      },
+      provider: this.name,
+      latencyMs: Date.now() - startTime,
+      model: 'mock-advisor-v1',
     }
   }
 }

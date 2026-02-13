@@ -18,6 +18,7 @@ import {
   NextStepHero,
   EmptyState,
 } from '@/components/customer'
+import { FundingSummary } from '@/components/customer/FundingSummary'
 import { computeJourneySteps } from '@/lib/customer/journey'
 import {
   DollarSign,
@@ -42,6 +43,7 @@ export default function CustomerPortalPage() {
     financingApplications,
     insuranceClaims,
     programApplications,
+    eligiblePrograms,
     setCustomer,
     setLinkedLeads,
     setSelectedLeadId,
@@ -386,6 +388,23 @@ export default function CustomerPortalPage() {
                 city: property?.city || undefined,
                 state: property?.state || undefined,
               }}
+            />
+          )}
+
+          {/* Funding Overview */}
+          {estimate && (
+            <FundingSummary
+              estimateAmount={estimate.price_likely}
+              insuranceApproved={currentClaim?.claim_amount_approved || undefined}
+              insuranceDeductible={currentClaim?.deductible || 0}
+              insuranceStatus={currentClaim?.status}
+              hasInsuranceClaim={!!currentClaim}
+              eligibleProgramsBenefit={
+                eligiblePrograms.reduce((sum, p) => sum + (p.max_benefit_amount || 0), 0)
+              }
+              programCount={currentPrograms.length}
+              hasFinancingApp={!!currentFinancing}
+              financingStatus={currentFinancing?.status}
             />
           )}
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useCustomerStore } from '@/stores/customerStore'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -21,10 +22,15 @@ import {
   AlertCircle,
   Phone,
   Shield,
+  Sparkles,
+  ArrowRight,
+  HandHeart,
 } from 'lucide-react'
 import { cn, formatCurrency } from '@/lib/utils'
 import type { FinancingStatus } from '@/lib/supabase/types'
 import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
+import AffordabilityAnalyzer from '@/components/financing/AffordabilityAnalyzer'
+import { AiAdvisorChat } from '@/components/shared/AiAdvisorChat'
 
 const STATUS_CONFIG: Record<FinancingStatus, { icon: typeof Clock; color: string; bgColor: string; label: string; description: string }> = {
   interested: {
@@ -85,9 +91,20 @@ export default function FinancingPage() {
     selectedLeadId,
     financingApplications,
     addFinancingApplication,
+    insuranceClaims,
   } = useCustomerStore()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [scenarios, setScenarios] = useState<Array<{
+    name: string
+    termMonths: number
+    estimatedRate: number
+    monthlyPayment: number
+    totalInterest: number
+    recommendation: string
+  }> | null>(null)
+  const [scenarioSummary, setScenarioSummary] = useState<string | null>(null)
+  const [scenarioLoading, setScenarioLoading] = useState(false)
 
   // Get current lead data
   const currentLead = linkedLeads.find((l) => l.lead_id === selectedLeadId)
@@ -126,6 +143,34 @@ export default function FinancingPage() {
       showToast(error instanceof Error ? error.message : 'Failed to submit', 'error')
     } finally {
       setIsSubmitting(false)
+    }
+  }
+
+  const handleGenerateScenarios = async () => {
+    if (!estimate) return
+    setScenarioLoading(true)
+    try {
+      const existingClaim = insuranceClaims.find((c) => c.lead_id === selectedLeadId)
+      const response = await fetch('/api/customer/financing/guidance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          estimateAmount: estimate.price_likely,
+          creditRange: existingApplication?.credit_range || 'good',
+          insurancePayoutAmount: existingClaim?.claim_amount_approved || undefined,
+          state: property?.state || 'MS',
+        }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setScenarios(data.data.scenarios)
+        setScenarioSummary(data.data.summary)
+      }
+    } catch {
+      // Silently fail - AI scenarios are optional
+    } finally {
+      setScenarioLoading(false)
     }
   }
 
@@ -338,6 +383,112 @@ export default function FinancingPage() {
           />
         </>
       )}
+
+      {/* AI Payment Scenarios */}
+      {estimate && (
+        <Card variant="dark" className="border-slate-700">
+          <CardHeader>
+            <CardTitle className="text-base text-slate-100 flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-gold-light" />
+              AI Payment Scenarios
+            </CardTitle>
+            <CardDescription>
+              Get personalized payment scenarios based on your estimate and credit profile
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {!scenarios ? (
+              <Button
+                variant="primary"
+                className="w-full bg-gradient-to-r from-gold-light to-gold hover:from-gold-hover hover:to-gold-light text-ink border-0"
+                leftIcon={<Sparkles className="h-4 w-4" />}
+                isLoading={scenarioLoading}
+                onClick={handleGenerateScenarios}
+              >
+                Generate Payment Scenarios
+              </Button>
+            ) : (
+              <div className="space-y-4">
+                {scenarioSummary && (
+                  <p className="text-sm text-slate-400">{scenarioSummary}</p>
+                )}
+                <div className="grid gap-3">
+                  {scenarios.map((scenario) => (
+                    <div
+                      key={scenario.termMonths}
+                      className="rounded-lg bg-slate-800 border border-slate-700 p-4"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-slate-200">{scenario.name}</span>
+                        <span className="text-xs text-slate-500">{scenario.termMonths / 12} years at {scenario.estimatedRate}%</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <p className="text-slate-500">Monthly Payment</p>
+                          <p className="text-lg font-bold text-gold-light">{formatCurrency(scenario.monthlyPayment)}</p>
+                        </div>
+                        <div>
+                          <p className="text-slate-500">Total Interest</p>
+                          <p className="text-slate-300">{formatCurrency(scenario.totalInterest)}</p>
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-2">{scenario.recommendation}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Affordability Analyzer */}
+      {estimate && existingApplication && (
+        <AffordabilityAnalyzer
+          estimateAmount={estimate.price_likely}
+          incomeRange={existingApplication.income_range}
+        />
+      )}
+
+      {/* AI Financing Advisor */}
+      <AiAdvisorChat
+        topic="financing"
+        leadId={selectedLeadId || undefined}
+        suggestedQuestions={[
+          'What monthly payment can I realistically afford?',
+          'Should I finance or pay cash?',
+          'How does a new roof affect my home value?',
+          'What credit score do I need for the best rates?',
+        ]}
+      />
+
+      {/* Cross-links */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        <Link href="/portal/insurance">
+          <Card variant="dark" className="border-slate-700 hover:border-gold-light/30 transition-colors h-full cursor-pointer">
+            <CardContent className="pt-4 pb-4 flex items-center gap-3">
+              <Shield className="h-5 w-5 text-gold-light flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-200">Have Insurance?</p>
+                <p className="text-xs text-slate-500">Your payout can reduce what you finance</p>
+              </div>
+              <ArrowRight className="h-4 w-4 text-slate-500" />
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/portal/assistance">
+          <Card variant="dark" className="border-slate-700 hover:border-gold-light/30 transition-colors h-full cursor-pointer">
+            <CardContent className="pt-4 pb-4 flex items-center gap-3">
+              <HandHeart className="h-5 w-5 text-gold-light flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-slate-200">Need Help Covering Costs?</p>
+                <p className="text-xs text-slate-500">Check grants and assistance programs</p>
+              </div>
+              <ArrowRight className="h-4 w-4 text-slate-500" />
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
     </div>
   )
 }

@@ -7,7 +7,24 @@ import type {
   IntakeAnalysisResult,
   InternalNotesInput,
   AiResult,
+  FinancingGuidanceInput,
+  FinancingGuidanceResult,
+  InsuranceLetterInput,
+  EligibilityGuidanceInput,
+  EligibilityGuidanceResult,
+  AdvisorInput,
+  AdvisorResult,
 } from '../provider'
+
+const CREDIT_RATES: Record<string, number> = {
+  excellent: 6.99, good: 9.99, fair: 14.99, poor: 19.99, very_poor: 24.99,
+}
+
+function calcMonthlyPayment(principal: number, annualRate: number, months: number): number {
+  const monthlyRate = annualRate / 100 / 12
+  if (monthlyRate === 0) return principal / months
+  return (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1)
+}
 
 export class FallbackProvider implements AiProvider {
   name = 'fallback' as const
@@ -216,6 +233,115 @@ export class FallbackProvider implements AiProvider {
     return {
       success: true,
       data: notes.join('\n'),
+      provider: this.name,
+      latencyMs: 0,
+    }
+  }
+
+  async generateFinancingGuidance(input: FinancingGuidanceInput): Promise<AiResult<FinancingGuidanceResult>> {
+    const amountToFinance = input.estimateAmount - (input.insurancePayoutAmount || 0)
+    const rate = CREDIT_RATES[input.creditRange] || 9.99
+
+    const scenarios = [
+      { name: 'Lowest Total Cost', termMonths: 36 },
+      { name: 'Balanced', termMonths: 60 },
+      { name: 'Best Monthly', termMonths: 120 },
+    ].map(({ name, termMonths }) => {
+      const monthlyPayment = calcMonthlyPayment(amountToFinance, rate, termMonths)
+      const totalInterest = (monthlyPayment * termMonths) - amountToFinance
+      return {
+        name,
+        termMonths,
+        estimatedRate: rate,
+        monthlyPayment: Math.round(monthlyPayment * 100) / 100,
+        totalInterest: Math.round(totalInterest * 100) / 100,
+        recommendation: termMonths === 36
+          ? 'Best if you can afford higher payments - saves the most on interest.'
+          : termMonths === 60
+          ? 'Good balance between affordable payments and total cost.'
+          : 'Lowest monthly payment, but you\'ll pay more in interest over time.',
+      }
+    })
+
+    return {
+      success: true,
+      data: {
+        scenarios,
+        summary: `Based on ${input.creditRange} credit, you can expect rates around ${rate}% APR. The full amount to finance is $${amountToFinance.toLocaleString()}.`,
+        nextStep: 'Create an account to get pre-qualified with actual lender rates.',
+      },
+      provider: this.name,
+      latencyMs: 0,
+    }
+  }
+
+  async generateInsuranceLetter(input: InsuranceLetterInput): Promise<AiResult<string>> {
+    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    const company = input.claimData.insuranceCompany || '[Insurance Company]'
+    const policy = input.claimData.policyNumber || '[Policy Number]'
+    const claim = input.claimData.claimNumber || '[Claim Number]'
+    const dateOfLoss = input.claimData.dateOfLoss || '[Date of Loss]'
+    const cause = input.claimData.causeOfLoss || '[cause]'
+
+    if (input.letterType === 'appeal') {
+      const letter = `${input.customerName}\n${input.propertyAddress}\n${today}\n\n${company}\nClaims Department\n\nRE: Appeal of Claim Decision\nPolicy: ${policy}\nClaim: ${claim}\nDate of Loss: ${dateOfLoss}\n\nDear Claims Department,\n\nI am writing to formally appeal the decision regarding my roof damage claim.\n\n${input.claimAmountApproved !== undefined && input.estimateAmount ? `The approved amount of $${input.claimAmountApproved.toLocaleString()} is less than the professional repair estimate of $${input.estimateAmount.toLocaleString()}.` : 'I believe the damage assessment was insufficient.'}\n\n${input.claimData.customerNotes || ''}\n\nI request a re-inspection and reconsideration of this claim.\n\nSincerely,\n${input.customerName}`
+      return { success: true, data: letter, provider: this.name, latencyMs: 0 }
+    }
+
+    const letter = `${input.customerName}\n${input.propertyAddress}\n${today}\n\n${company}\nClaims Department\n\nRE: Property Damage Claim\nPolicy: ${policy}\nDate of Loss: ${dateOfLoss}\n\nDear Claims Department,\n\nI am reporting roof damage caused by ${cause} on ${dateOfLoss}.\n\n${input.estimateAmount ? `Professional repair estimate: $${input.estimateAmount.toLocaleString()}.` : ''}\n\n${input.claimData.customerNotes || ''}\n\nPlease assign an adjuster to inspect my property.\n\nSincerely,\n${input.customerName}`
+    return { success: true, data: letter, provider: this.name, latencyMs: 0 }
+  }
+
+  async generateEligibilityGuidance(input: EligibilityGuidanceInput): Promise<AiResult<EligibilityGuidanceResult>> {
+    const sorted = [...input.eligiblePrograms].sort((a, b) => {
+      const aIsGrant = a.programType === 'federal' || a.programType === 'nonprofit' ? 0 : 1
+      const bIsGrant = b.programType === 'federal' || b.programType === 'nonprofit' ? 0 : 1
+      if (aIsGrant !== bIsGrant) return aIsGrant - bIsGrant
+      return (b.maxBenefitAmount || 0) - (a.maxBenefitAmount || 0)
+    })
+
+    const prioritizedActions = sorted.map((program, index) => ({
+      order: index + 1,
+      programName: program.name,
+      reason: program.programType === 'federal' || program.programType === 'nonprofit'
+        ? 'Grant program - no repayment required'
+        : 'Low-interest option to cover remaining costs',
+      potentialBenefit: program.maxBenefitAmount
+        ? `Up to $${program.maxBenefitAmount.toLocaleString()}`
+        : 'Varies',
+    }))
+
+    const totalPotential = sorted.reduce((sum, p) => sum + (p.maxBenefitAmount || 0), 0)
+
+    return {
+      success: true,
+      data: {
+        prioritizedActions,
+        combinedStrategy: `You may qualify for up to $${totalPotential.toLocaleString()} across ${sorted.length} programs. Start with grants, then loans for any gap.`,
+        importantNotes: [
+          'Apply for grants before loans - grants don\'t need repayment.',
+          'Keep copies of all applications.',
+        ],
+      },
+      provider: this.name,
+      latencyMs: 0,
+    }
+  }
+
+  async generateAdvisorResponse(input: AdvisorInput): Promise<AiResult<AdvisorResult>> {
+    const topic = input.topic
+    let message: string
+    if (topic === 'financing') {
+      message = 'For personalized financing guidance, please call our office. We can walk you through loan options and help find the best fit for your budget.'
+    } else if (topic === 'insurance') {
+      message = 'For insurance claim guidance, document all damage with photos, contact your insurance company, and schedule an adjuster visit. Our team can guide you through each step.'
+    } else {
+      message = 'Use the eligibility screener to find programs you qualify for. We can help match you with federal, state, and local programs.'
+    }
+
+    return {
+      success: true,
+      data: { message, suggestedActions: [] },
       provider: this.name,
       latencyMs: 0,
     }

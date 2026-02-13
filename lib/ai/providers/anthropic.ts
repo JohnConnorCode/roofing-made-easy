@@ -8,7 +8,15 @@ import type {
   IntakeAnalysisResult,
   InternalNotesInput,
   AiResult,
+  FinancingGuidanceInput,
+  FinancingGuidanceResult,
+  InsuranceLetterInput,
+  EligibilityGuidanceInput,
+  EligibilityGuidanceResult,
+  AdvisorInput,
+  AdvisorResult,
 } from '../provider'
+import { buildSystemPrompt } from '../advisor'
 
 /**
  * Extract the first balanced JSON object from a string.
@@ -384,6 +392,172 @@ Keep it brief and actionable. Use bullet points.`
         provider: this.name,
         latencyMs: Date.now() - startTime,
         model,
+      }
+    }
+  }
+
+  private extractJson<T>(text: string): T {
+    const jsonStr = extractJson(text)
+    if (!jsonStr) {
+      throw new Error('Could not parse JSON from response')
+    }
+    return JSON.parse(jsonStr) as T
+  }
+
+  async generateFinancingGuidance(input: FinancingGuidanceInput): Promise<AiResult<FinancingGuidanceResult>> {
+    const startTime = Date.now()
+    try {
+      const client = this.getClient()
+      const response = await client.messages.create({
+        model: 'claude-sonnet-4-5-20250929',
+        max_tokens: 1000,
+        system: `You are a roofing financing advisor. Generate 3 payment scenarios.
+Credit rates: excellent=6.99%, good=9.99%, fair=14.99%, poor=19.99%, very_poor=24.99%.
+Respond with ONLY JSON: { "scenarios": [{ "name", "termMonths", "estimatedRate", "monthlyPayment", "totalInterest", "recommendation" }], "summary", "nextStep" }`,
+        messages: [
+          {
+            role: 'user',
+            content: `Estimate: $${input.estimateAmount}, Credit: ${input.creditRange}, State: ${input.state}${input.insurancePayoutAmount ? `, Insurance payout: $${input.insurancePayoutAmount}` : ''}. Generate 3 scenarios (36mo, 60mo, 120mo).`,
+          },
+        ],
+      })
+
+      const text = response.content[0]?.type === 'text' ? response.content[0].text : ''
+      const data = this.extractJson<FinancingGuidanceResult>(text)
+
+      return {
+        success: true,
+        data,
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+        model: 'claude-sonnet-4-5-20250929',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Anthropic financing guidance failed',
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+      }
+    }
+  }
+
+  async generateInsuranceLetter(input: InsuranceLetterInput): Promise<AiResult<string>> {
+    const startTime = Date.now()
+    try {
+      const letterTypeLabel = input.letterType === 'appeal' ? 'appeal' : input.letterType === 'follow_up' ? 'follow-up' : 'initial claim'
+
+      const client = this.getClient()
+      const response = await client.messages.create({
+        model: 'claude-sonnet-4-5-20250929',
+        max_tokens: 2000,
+        system: `Write a professional insurance ${letterTypeLabel} letter for roofing damage. Be factual and persuasive.`,
+        messages: [
+          {
+            role: 'user',
+            content: `Write a ${letterTypeLabel} letter:
+Customer: ${input.customerName}, Property: ${input.propertyAddress}
+Insurance: ${input.claimData.insuranceCompany || '[Company]'}, Policy: ${input.claimData.policyNumber || '[Policy]'}, Claim: ${input.claimData.claimNumber || '[Claim]'}
+Date of Loss: ${input.claimData.dateOfLoss || '[Date]'}, Cause: ${input.claimData.causeOfLoss || '[Cause]'}
+${input.estimateAmount ? `Estimate: $${input.estimateAmount.toLocaleString()}` : ''}
+${input.claimAmountApproved !== undefined ? `Approved: $${input.claimAmountApproved.toLocaleString()}` : ''}
+${input.claimData.customerNotes || ''}`,
+          },
+        ],
+      })
+
+      const letter = response.content[0]?.type === 'text' ? response.content[0].text : ''
+
+      return {
+        success: true,
+        data: letter,
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+        model: 'claude-sonnet-4-5-20250929',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Anthropic letter generation failed',
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+      }
+    }
+  }
+
+  async generateEligibilityGuidance(input: EligibilityGuidanceInput): Promise<AiResult<EligibilityGuidanceResult>> {
+    const startTime = Date.now()
+    try {
+      const client = this.getClient()
+      const response = await client.messages.create({
+        model: 'claude-sonnet-4-5-20250929',
+        max_tokens: 1500,
+        system: `You are an assistance programs advisor. Prioritize programs: grants before loans, deadline-sensitive first, highest benefit first.
+Respond with ONLY JSON: { "prioritizedActions": [{ "order", "programName", "reason", "potentialBenefit" }], "combinedStrategy", "importantNotes": [] }`,
+        messages: [
+          {
+            role: 'user',
+            content: `Programs: ${JSON.stringify(input.eligiblePrograms)}
+Context: State=${input.userContext.state}${input.userContext.age ? `, Age=${input.userContext.age}` : ''}${input.userContext.isVeteran ? ', Veteran' : ''}${input.userContext.hasDisasterDeclaration ? ', Disaster area' : ''}
+${input.estimateAmount ? `Estimate: $${input.estimateAmount}` : ''}`,
+          },
+        ],
+      })
+
+      const text = response.content[0]?.type === 'text' ? response.content[0].text : ''
+      const data = this.extractJson<EligibilityGuidanceResult>(text)
+
+      return {
+        success: true,
+        data,
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+        model: 'claude-sonnet-4-5-20250929',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Anthropic eligibility guidance failed',
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+      }
+    }
+  }
+
+  async generateAdvisorResponse(input: AdvisorInput): Promise<AiResult<AdvisorResult>> {
+    const startTime = Date.now()
+    try {
+      const systemPrompt = buildSystemPrompt(input)
+
+      const client = this.getClient()
+      const response = await client.messages.create({
+        model: 'claude-sonnet-4-5-20250929',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: input.messages.map((m) => ({
+          role: m.role as 'user' | 'assistant',
+          content: m.content,
+        })),
+      })
+
+      const content = response.content[0]?.type === 'text' ? response.content[0].text : ''
+
+      return {
+        success: true,
+        data: {
+          message: content,
+          suggestedActions: [],
+        },
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+        model: 'claude-sonnet-4-5-20250929',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Anthropic advisor failed',
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
       }
     }
   }

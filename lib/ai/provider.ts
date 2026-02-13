@@ -87,6 +87,120 @@ export interface InternalNotesInput {
   }
 }
 
+// Financing guidance
+export interface FinancingGuidanceInput {
+  estimateAmount: number
+  creditRange: 'excellent' | 'good' | 'fair' | 'poor' | 'very_poor'
+  incomeRange?: string
+  insurancePayoutAmount?: number
+  state: string
+}
+
+export interface FinancingScenario {
+  name: string
+  termMonths: number
+  estimatedRate: number
+  monthlyPayment: number
+  totalInterest: number
+  recommendation: string
+}
+
+export interface FinancingGuidanceResult {
+  scenarios: FinancingScenario[]
+  summary: string
+  nextStep: string
+}
+
+// Insurance letter
+export interface InsuranceLetterInput {
+  letterType: 'initial_claim' | 'appeal' | 'follow_up'
+  claimData: {
+    insuranceCompany?: string
+    claimNumber?: string
+    policyNumber?: string
+    dateOfLoss?: string
+    causeOfLoss?: string
+    customerNotes?: string
+  }
+  propertyAddress: string
+  customerName: string
+  estimateAmount?: number
+  claimAmountApproved?: number
+  photoAnalyses?: PhotoAnalysisResult[]
+}
+
+// Eligibility guidance
+export interface EligibilityGuidanceInput {
+  eligiblePrograms: Array<{
+    name: string
+    programType: string
+    maxBenefitAmount?: number
+    applicationDeadline?: string
+    tips?: string[]
+  }>
+  userContext: {
+    income?: number
+    state: string
+    age?: number
+    isVeteran?: boolean
+    isDisabled?: boolean
+    hasDisasterDeclaration?: boolean
+  }
+  estimateAmount?: number
+}
+
+export interface EligibilityAction {
+  order: number
+  programName: string
+  reason: string
+  potentialBenefit: string
+}
+
+export interface EligibilityGuidanceResult {
+  prioritizedActions: EligibilityAction[]
+  combinedStrategy: string
+  importantNotes: string[]
+}
+
+// Advisor chat
+export type AdvisorTopic = 'financing' | 'insurance' | 'assistance'
+
+export interface AdvisorMessage {
+  role: 'user' | 'assistant'
+  content: string
+}
+
+export interface AdvisorInput {
+  topic: AdvisorTopic
+  messages: AdvisorMessage[]
+  userContext: {
+    estimateAmount?: number
+    propertyAddress?: string
+    propertyState?: string
+    creditRange?: string
+    incomeRange?: string
+    insuranceCompany?: string
+    causeOfLoss?: string
+    claimStatus?: string
+    claimAmountApproved?: number
+    deductible?: number
+    eligibleProgramNames?: string[]
+    isVeteran?: boolean
+    isDisabled?: boolean
+    hasDisasterDeclaration?: boolean
+  }
+}
+
+export interface SuggestedAction {
+  label: string
+  href?: string
+}
+
+export interface AdvisorResult {
+  message: string
+  suggestedActions?: SuggestedAction[]
+}
+
 export interface AiResult<T> {
   success: boolean
   data?: T
@@ -102,6 +216,10 @@ export interface AiProvider {
   generateExplanation(input: ExplanationInput): Promise<AiResult<string>>
   analyzeIntake(input: IntakeAnalysisInput): Promise<AiResult<IntakeAnalysisResult>>
   generateInternalNotes(input: InternalNotesInput): Promise<AiResult<string>>
+  generateFinancingGuidance(input: FinancingGuidanceInput): Promise<AiResult<FinancingGuidanceResult>>
+  generateInsuranceLetter(input: InsuranceLetterInput): Promise<AiResult<string>>
+  generateEligibilityGuidance(input: EligibilityGuidanceInput): Promise<AiResult<EligibilityGuidanceResult>>
+  generateAdvisorResponse(input: AdvisorInput): Promise<AiResult<AdvisorResult>>
 }
 
 export async function withFallback<T>(

@@ -16,6 +16,13 @@ import {
   type IntakeAnalysisResult,
   type InternalNotesInput,
   type AiResult,
+  type FinancingGuidanceInput,
+  type FinancingGuidanceResult,
+  type InsuranceLetterInput,
+  type EligibilityGuidanceInput,
+  type EligibilityGuidanceResult,
+  type AdvisorInput,
+  type AdvisorResult,
 } from './provider'
 import { shouldUseMockAi, mockAiProvider } from '@/lib/mocks/ai'
 import { getOpenAICredentials } from '@/lib/credentials/loader'
@@ -124,6 +131,46 @@ export async function generateInternalNotes(
   return withFallback(providers, (provider) => provider.generateInternalNotes(input))
 }
 
+/**
+ * Generate AI-powered financing guidance with payment scenarios
+ */
+export async function generateFinancingGuidance(
+  input: FinancingGuidanceInput
+): Promise<AiResult<FinancingGuidanceResult>> {
+  const providers = await getProvidersAsync()
+  return withFallback(providers, (provider) => provider.generateFinancingGuidance(input))
+}
+
+/**
+ * Generate a professional insurance claim or appeal letter
+ */
+export async function generateInsuranceLetter(
+  input: InsuranceLetterInput
+): Promise<AiResult<string>> {
+  const providers = await getProvidersAsync()
+  return withFallback(providers, (provider) => provider.generateInsuranceLetter(input))
+}
+
+/**
+ * Generate personalized eligibility guidance for assistance programs
+ */
+export async function generateEligibilityGuidance(
+  input: EligibilityGuidanceInput
+): Promise<AiResult<EligibilityGuidanceResult>> {
+  const providers = await getProvidersAsync()
+  return withFallback(providers, (provider) => provider.generateEligibilityGuidance(input))
+}
+
+/**
+ * Generate an AI advisor response for multi-turn chat
+ */
+export async function generateAdvisorResponse(
+  input: AdvisorInput
+): Promise<AiResult<AdvisorResult>> {
+  const providers = await getProvidersAsync()
+  return withFallback(providers, (provider) => provider.generateAdvisorResponse(input))
+}
+
 // Photo measurement analysis
 export {
   analyzePhotoForMeasurements,
@@ -152,4 +199,11 @@ export {
   type IntakeAnalysisResult,
   type InternalNotesInput,
   type AiResult,
+  type FinancingGuidanceInput,
+  type FinancingGuidanceResult,
+  type InsuranceLetterInput,
+  type EligibilityGuidanceInput,
+  type EligibilityGuidanceResult,
+  type AdvisorInput,
+  type AdvisorResult,
 }

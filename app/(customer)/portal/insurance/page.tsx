@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import Link from 'next/link'
 import { useCustomerStore } from '@/stores/customerStore'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -19,10 +20,18 @@ import {
   Users,
   Clock,
   DollarSign,
+  AlertTriangle,
+  ArrowRight,
+  HandHeart,
 } from 'lucide-react'
 import { INSURANCE_COMPANIES, CLAIM_STATUS_LABELS } from '@/lib/data/insurance-resources'
 import type { InsuranceClaimStatus, InsuranceClaimTimelineEvent } from '@/lib/supabase/types'
 import { BUSINESS_CONFIG, getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
+import { formatCurrency } from '@/lib/utils'
+import ClaimLetterGenerator from '@/components/insurance/ClaimLetterGenerator'
+import DamageDocGuide from '@/components/insurance/DamageDocGuide'
+import ClaimValueEstimator from '@/components/insurance/ClaimValueEstimator'
+import { AiAdvisorChat } from '@/components/shared/AiAdvisorChat'
 
 const CAUSE_OPTIONS = [
   { value: 'hail', label: 'Hail Damage' },
@@ -73,6 +82,16 @@ export default function InsurancePage() {
 
   // Get existing claim for this lead
   const existingClaim = insuranceClaims.find((c) => c.lead_id === selectedLeadId)
+
+  // Calculate insurance gap
+  const insuranceGap = useMemo(() => {
+    if (!existingClaim?.claim_amount_approved || !estimate?.price_likely) return null
+    const approved = existingClaim.claim_amount_approved
+    const deductible = existingClaim.deductible || 0
+    const netPayout = approved - deductible
+    const gap = estimate.price_likely - netPayout
+    return gap > 0 ? { approved, deductible, netPayout, gap, estimateAmount: estimate.price_likely } : null
+  }, [existingClaim?.claim_amount_approved, existingClaim?.deductible, estimate?.price_likely])
 
   // Reset form and pre-fill from intake data when property changes
   useEffect(() => {
@@ -165,6 +184,9 @@ export default function InsurancePage() {
       setIsSubmitting(false)
     }
   }
+
+  // Detected issues placeholder (intake table doesn't store photo_analysis)
+  const detectedIssues: Array<{ issue: string; confidence: number; description?: string }> = []
 
   return (
     <div className="space-y-6">
@@ -387,6 +409,68 @@ export default function InsurancePage() {
             </div>
           )}
 
+          {/* AI Claim Letter Generator */}
+          {existingClaim && (
+            <ClaimLetterGenerator leadId={selectedLeadId || undefined} />
+          )}
+
+          {/* Damage Documentation Guide */}
+          <DamageDocGuide detectedIssues={detectedIssues} />
+
+          {/* Claim Value Estimator */}
+          {estimate && (
+            <ClaimValueEstimator estimateAmount={estimate.price_likely} />
+          )}
+
+          {/* Gap Analysis */}
+          {insuranceGap && (
+            <Card variant="dark" className="border-amber-500/30 bg-amber-500/5">
+              <CardHeader>
+                <CardTitle className="text-base text-slate-100 flex items-center gap-2">
+                  <AlertTriangle className="h-4 w-4 text-amber-400" />
+                  Coverage Gap
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <p className="text-slate-500">Estimate</p>
+                    <p className="text-slate-200 font-medium">{formatCurrency(insuranceGap.estimateAmount)}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-500">Approved</p>
+                    <p className="text-slate-200 font-medium">{formatCurrency(insuranceGap.approved)}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-500">Deductible</p>
+                    <p className="text-slate-200 font-medium">-{formatCurrency(insuranceGap.deductible)}</p>
+                  </div>
+                  <div>
+                    <p className="text-slate-500">Net Payout</p>
+                    <p className="text-slate-200 font-medium">{formatCurrency(insuranceGap.netPayout)}</p>
+                  </div>
+                </div>
+                <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 p-3">
+                  <p className="text-amber-300 font-semibold text-lg">{formatCurrency(insuranceGap.gap)} remaining</p>
+                  <p className="text-sm text-slate-400 mt-1">You may need to cover this gap out of pocket or through financing/assistance.</p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Link href={`/portal/financing`}>
+                    <Button variant="outline" size="sm" className="w-full border-slate-600 text-slate-300 hover:bg-slate-800" rightIcon={<ArrowRight className="h-3.5 w-3.5" />}>
+                      Explore Financing Options
+                    </Button>
+                  </Link>
+                  <Link href="/portal/assistance">
+                    <Button variant="outline" size="sm" className="w-full border-slate-600 text-slate-300 hover:bg-slate-800" rightIcon={<ArrowRight className="h-3.5 w-3.5" />}>
+                      <HandHeart className="h-3.5 w-3.5 mr-1.5" />
+                      Check Assistance Programs
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Status update modal/form */}
           {showStatusUpdate && existingClaim && (
             <Card className="border-gold-light/30">
@@ -441,6 +525,19 @@ export default function InsurancePage() {
 
         {/* Sidebar - resources */}
         <div className="space-y-6">
+          {/* AI Insurance Advisor */}
+          <AiAdvisorChat
+            topic="insurance"
+            leadId={selectedLeadId || undefined}
+            suggestedQuestions={[
+              'What should I say when I call to file?',
+              'My adjuster is coming -- how do I prepare?',
+              'My claim was denied -- what are my options?',
+              `How much should insurance cover on my repair?`,
+            ]}
+            compact
+          />
+
           {/* Quick actions */}
           <Card variant="dark" className="border-slate-700">
             <CardHeader>
@@ -498,6 +595,28 @@ export default function InsurancePage() {
             </CardHeader>
             <CardContent>
               <ResourceLibrary limit={3} />
+            </CardContent>
+          </Card>
+
+          {/* Cross-links */}
+          <Card variant="dark" className="border-slate-700">
+            <CardContent className="pt-4 pb-4 space-y-3">
+              <Link href="/portal/financing" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-800 transition-colors group">
+                <DollarSign className="h-5 w-5 text-gold-light" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-slate-200">Financing Options</p>
+                  <p className="text-xs text-slate-500">Cover any gap with affordable payments</p>
+                </div>
+                <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-gold-light transition-colors" />
+              </Link>
+              <Link href="/portal/assistance" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-800 transition-colors group">
+                <HandHeart className="h-5 w-5 text-gold-light" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-slate-200">Assistance Programs</p>
+                  <p className="text-xs text-slate-500">Grants and programs you may qualify for</p>
+                </div>
+                <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-gold-light transition-colors" />
+              </Link>
             </CardContent>
           </Card>
         </div>

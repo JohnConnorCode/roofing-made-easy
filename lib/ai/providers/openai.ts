@@ -8,7 +8,15 @@ import type {
   IntakeAnalysisResult,
   InternalNotesInput,
   AiResult,
+  FinancingGuidanceInput,
+  FinancingGuidanceResult,
+  InsuranceLetterInput,
+  EligibilityGuidanceInput,
+  EligibilityGuidanceResult,
+  AdvisorInput,
+  AdvisorResult,
 } from '../provider'
+import { buildSystemPrompt } from '../advisor'
 
 const PHOTO_ANALYSIS_PROMPT = `You are analyzing a photo that may be of a roof. Analyze the image and provide a structured assessment.
 
@@ -329,6 +337,193 @@ Keep it brief and actionable. Use bullet points.`
         provider: this.name,
         latencyMs: Date.now() - startTime,
         model,
+      }
+    }
+  }
+
+  async generateFinancingGuidance(input: FinancingGuidanceInput): Promise<AiResult<FinancingGuidanceResult>> {
+    const startTime = Date.now()
+    try {
+      const response = await this.client.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'system',
+            content: `You are a roofing financing advisor. Generate 3 payment scenarios for a homeowner.
+Credit-based rate guidelines: excellent=6.99%, good=9.99%, fair=14.99%, poor=19.99%, very_poor=24.99%.
+Return JSON: { "scenarios": [{ "name", "termMonths", "estimatedRate", "monthlyPayment", "totalInterest", "recommendation" }], "summary", "nextStep" }`,
+          },
+          {
+            role: 'user',
+            content: `Estimate: $${input.estimateAmount}, Credit: ${input.creditRange}, State: ${input.state}${input.insurancePayoutAmount ? `, Insurance payout: $${input.insurancePayoutAmount}` : ''}${input.incomeRange ? `, Income: ${input.incomeRange}` : ''}. Generate 3 scenarios (36mo, 60mo, 120mo).`,
+          },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.3,
+        max_tokens: 1000,
+      })
+
+      const content = response.choices[0]?.message?.content || '{}'
+      const data = JSON.parse(content) as FinancingGuidanceResult
+
+      return {
+        success: true,
+        data,
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+        model: 'gpt-4o',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'OpenAI financing guidance failed',
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+      }
+    }
+  }
+
+  async generateInsuranceLetter(input: InsuranceLetterInput): Promise<AiResult<string>> {
+    const startTime = Date.now()
+    try {
+      const letterTypeLabel = input.letterType === 'appeal' ? 'appeal' : input.letterType === 'follow_up' ? 'follow-up' : 'initial claim'
+
+      let damageContext = ''
+      if (input.photoAnalyses && input.photoAnalyses.length > 0) {
+        const issues = input.photoAnalyses.flatMap(a => a.detectedIssues || [])
+        if (issues.length > 0) {
+          damageContext = `\nDocumented damage from professional inspection: ${issues.map(i => i.description || i.issue).join('; ')}`
+        }
+      }
+
+      const response = await this.client.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'system',
+            content: `You are a professional letter writer specializing in insurance claims for roofing damage. Write a formal, persuasive ${letterTypeLabel} letter. Include specific details provided. Be factual and professional.`,
+          },
+          {
+            role: 'user',
+            content: `Write a ${letterTypeLabel} letter for:
+Customer: ${input.customerName}
+Property: ${input.propertyAddress}
+Insurance: ${input.claimData.insuranceCompany || '[Company]'}
+Policy: ${input.claimData.policyNumber || '[Policy]'}
+Claim: ${input.claimData.claimNumber || '[Claim]'}
+Date of Loss: ${input.claimData.dateOfLoss || '[Date]'}
+Cause: ${input.claimData.causeOfLoss || '[Cause]'}
+${input.estimateAmount ? `Estimate: $${input.estimateAmount.toLocaleString()}` : ''}
+${input.claimAmountApproved !== undefined ? `Approved: $${input.claimAmountApproved.toLocaleString()}` : ''}
+${input.claimData.customerNotes ? `Notes: ${input.claimData.customerNotes}` : ''}${damageContext}`,
+          },
+        ],
+        temperature: 0.4,
+        max_tokens: 2000,
+      })
+
+      const letter = response.choices[0]?.message?.content || ''
+
+      return {
+        success: true,
+        data: letter,
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+        model: 'gpt-4o',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'OpenAI letter generation failed',
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+      }
+    }
+  }
+
+  async generateEligibilityGuidance(input: EligibilityGuidanceInput): Promise<AiResult<EligibilityGuidanceResult>> {
+    const startTime = Date.now()
+    try {
+      const response = await this.client.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'system',
+            content: `You are an assistance programs advisor for roofing. Prioritize programs for a homeowner.
+Prioritize: grants before loans, deadline-sensitive first, highest benefit first.
+Return JSON: { "prioritizedActions": [{ "order", "programName", "reason", "potentialBenefit" }], "combinedStrategy", "importantNotes": [] }`,
+          },
+          {
+            role: 'user',
+            content: `Eligible programs: ${JSON.stringify(input.eligiblePrograms)}
+Context: State=${input.userContext.state}, ${input.userContext.age ? `Age=${input.userContext.age}` : ''} ${input.userContext.isVeteran ? 'Veteran' : ''} ${input.userContext.isDisabled ? 'Disabled' : ''} ${input.userContext.hasDisasterDeclaration ? 'Disaster area' : ''}
+${input.estimateAmount ? `Estimate: $${input.estimateAmount}` : ''}
+Prioritize and explain which to apply for first and why.`,
+          },
+        ],
+        response_format: { type: 'json_object' },
+        temperature: 0.3,
+        max_tokens: 1500,
+      })
+
+      const content = response.choices[0]?.message?.content || '{}'
+      const data = JSON.parse(content) as EligibilityGuidanceResult
+
+      return {
+        success: true,
+        data,
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+        model: 'gpt-4o',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'OpenAI eligibility guidance failed',
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+      }
+    }
+  }
+
+  async generateAdvisorResponse(input: AdvisorInput): Promise<AiResult<AdvisorResult>> {
+    const startTime = Date.now()
+    try {
+      const systemPrompt = buildSystemPrompt(input)
+
+      const messages = [
+        { role: 'system' as const, content: systemPrompt },
+        ...input.messages.map((m) => ({
+          role: m.role as 'user' | 'assistant',
+          content: m.content,
+        })),
+      ]
+
+      const response = await this.client.chat.completions.create({
+        model: 'gpt-4o',
+        messages,
+        temperature: 0.7,
+        max_tokens: 1000,
+      })
+
+      const content = response.choices[0]?.message?.content || ''
+
+      return {
+        success: true,
+        data: {
+          message: content,
+          suggestedActions: [],
+        },
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
+        model: 'gpt-4o',
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'OpenAI advisor failed',
+        provider: this.name,
+        latencyMs: Date.now() - startTime,
       }
     }
   }

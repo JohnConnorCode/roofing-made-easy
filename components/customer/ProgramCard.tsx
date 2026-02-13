@@ -5,10 +5,28 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/lib/utils'
-import { ExternalLink, Phone, CheckCircle, XCircle, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { ExternalLink, Phone, CheckCircle, XCircle, HelpCircle, ChevronDown, ChevronUp, Clock, Zap, BarChart3 } from 'lucide-react'
 import type { AssistanceProgramData } from '@/lib/data/assistance-programs'
 import { PROGRAM_TYPE_LABELS, APPLICATION_STATUS_LABELS } from '@/lib/data/assistance-programs'
 import type { ApplicationStatus } from '@/lib/supabase/types'
+
+function getApplicationComplexity(program: AssistanceProgramData): { label: string; color: string } {
+  const docCount = program.requiredDocuments.length
+  if (docCount <= 2) return { label: 'Easy', color: 'text-emerald-400 bg-emerald-400/10' }
+  if (docCount <= 5) return { label: 'Moderate', color: 'text-amber-400 bg-amber-400/10' }
+  return { label: 'Complex', color: 'text-red-400 bg-red-400/10' }
+}
+
+function getEstimatedTimeline(programType: string): string {
+  switch (programType) {
+    case 'federal': return '4-12 weeks'
+    case 'state': return '3-8 weeks'
+    case 'nonprofit': return '1-4 weeks'
+    case 'local': return '2-6 weeks'
+    case 'utility': return '2-4 weeks'
+    default: return '2-8 weeks'
+  }
+}
 
 interface ProgramCardProps {
   program: AssistanceProgramData
@@ -17,6 +35,7 @@ interface ProgramCardProps {
     reasons?: string[]
   }
   applicationStatus?: ApplicationStatus
+  estimateAmount?: number
   onApply?: () => void
   onTrack?: () => void
   compact?: boolean
@@ -27,6 +46,7 @@ export function ProgramCard({
   program,
   eligibilityStatus,
   applicationStatus,
+  estimateAmount,
   onApply,
   onTrack,
   compact = false,
@@ -35,6 +55,8 @@ export function ProgramCard({
   const [expanded, setExpanded] = useState(false)
   const typeInfo = PROGRAM_TYPE_LABELS[program.programType]
   const appStatusInfo = applicationStatus ? APPLICATION_STATUS_LABELS[applicationStatus] : null
+  const complexity = getApplicationComplexity(program)
+  const timeline = getEstimatedTimeline(program.programType)
 
   if (compact) {
     return (
@@ -193,6 +215,23 @@ export function ProgramCard({
               Up to {formatCurrency(program.maxBenefitAmount)}
             </p>
           )}
+          {estimateAmount && program.maxBenefitAmount && (
+            <p className="text-xs text-slate-400 mt-1">
+              Could cover up to {Math.min(100, Math.round((program.maxBenefitAmount / estimateAmount) * 100))}% of your {formatCurrency(estimateAmount)} project
+            </p>
+          )}
+        </div>
+
+        {/* Complexity & Timeline badges */}
+        <div className="flex flex-wrap gap-2">
+          <span className={cn('inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full', complexity.color)}>
+            <BarChart3 className="h-3 w-3" />
+            {complexity.label} Application
+          </span>
+          <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full text-blue-400 bg-blue-400/10">
+            <Clock className="h-3 w-3" />
+            {timeline}
+          </span>
         </div>
 
         {/* Eligibility status */}

@@ -228,7 +228,7 @@ export default function AssistanceContent() {
                   'Find programs specific to your state and county',
                   'Identify programs for seniors, veterans, and disabled homeowners',
                   'See disaster relief programs available in your area',
-                  'Get step-by-step application guidance',
+                  'Get AI-powered personalized guidance on which programs to apply for first',
                 ].map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-[#3d7a5a] flex-shrink-0 mt-0.5" />

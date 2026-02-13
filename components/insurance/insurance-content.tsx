@@ -197,12 +197,18 @@ export default function InsuranceContent() {
             </div>
           </ScrollStagger>
 
-          <div className="mt-8 text-center">
+          {/* AI Letter Teaser */}
+          <div className="mt-8 bg-gradient-to-r from-[#c9a25c]/10 to-transparent border border-[#c9a25c]/20 rounded-xl p-6 text-center">
+            <FileText className="h-8 w-8 text-[#c9a25c] mx-auto mb-3" />
+            <h3 className="text-lg font-bold text-slate-100 mb-2">AI-Powered Claim Letters</h3>
+            <p className="text-sm text-slate-400 mb-4 max-w-xl mx-auto">
+              Generate professional claim and appeal letters pre-filled with your information. Our AI crafts personalized letters based on your specific situation.
+            </p>
             <Link href="/customer/register">
               <Button
-                variant="outline"
+                variant="primary"
                 size="lg"
-                className="border-[#c9a25c] text-[#c9a25c] hover:bg-[#c9a25c]/10"
+                className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
               >
                 Create Account for Full Access
               </Button>
