@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { formatCurrency } from '@/lib/utils'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
+import { useToast } from '@/components/ui/toast'
 import {
   ArrowLeft,
   Send,
@@ -22,6 +23,7 @@ import {
   Phone,
   MapPin,
   ExternalLink,
+  Banknote,
 } from 'lucide-react'
 
 interface InvoiceLineItem {
@@ -38,6 +40,7 @@ interface InvoicePayment {
   amount: number
   status: string
   payment_method: string | null
+  reference_number: string | null
   paid_at: string | null
   payer_email: string | null
   payer_name: string | null
@@ -99,7 +102,13 @@ export default function InvoiceDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [showRecordPayment, setShowRecordPayment] = useState(false)
+  const [paymentAmount, setPaymentAmount] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState('check')
+  const [paymentRef, setPaymentRef] = useState('')
+  const [paymentNotes, setPaymentNotes] = useState('')
   const { confirm, ConfirmDialog } = useConfirmDialog()
+  const { showToast } = useToast()
 
   useEffect(() => {
     fetchInvoice()
@@ -127,7 +136,7 @@ export default function InvoiceDetailPage() {
       if (!res.ok) throw new Error('Failed to send invoice')
       await fetchInvoice()
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to send invoice')
+      showToast(err instanceof Error ? err.message : 'Failed to send invoice', 'error')
     } finally {
       setActionLoading(null)
     }
@@ -145,7 +154,7 @@ export default function InvoiceDetailPage() {
       if (!res.ok) throw new Error('Failed to update status')
       await fetchInvoice()
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to update status')
+      showToast(err instanceof Error ? err.message : 'Failed to update status', 'error')
     } finally {
       setActionLoading(null)
     }
@@ -170,7 +179,38 @@ export default function InvoiceDetailPage() {
       if (!res.ok) throw new Error('Failed to delete invoice')
       router.push('/admin/invoices')
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to delete invoice')
+      showToast(err instanceof Error ? err.message : 'Failed to delete invoice', 'error')
+    } finally {
+      setActionLoading(null)
+    }
+  }
+
+  async function handleRecordPayment() {
+    if (!invoice || !paymentAmount) return
+    setActionLoading('payment')
+    try {
+      const res = await fetch(`/api/invoices/${invoice.id}/record-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: parseFloat(paymentAmount),
+          payment_method: paymentMethod,
+          reference_number: paymentRef || undefined,
+          notes: paymentNotes || undefined,
+        }),
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Failed to record payment')
+      }
+      setShowRecordPayment(false)
+      setPaymentAmount('')
+      setPaymentRef('')
+      setPaymentNotes('')
+      showToast('Payment recorded successfully', 'success')
+      await fetchInvoice()
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to record payment', 'error')
     } finally {
       setActionLoading(null)
     }
@@ -394,6 +434,16 @@ export default function InvoiceDetailPage() {
                       <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${payment.status === 'succeeded' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
                         {payment.status}
                       </span>
+                      {payment.payment_method && (
+                        <span className="ml-2 text-xs text-slate-500 capitalize">
+                          {payment.payment_method.replace('_', ' ')}
+                        </span>
+                      )}
+                      {payment.reference_number && (
+                        <span className="ml-1 text-xs text-slate-400">
+                          #{payment.reference_number}
+                        </span>
+                      )}
                       {payment.payer_name && (
                         <span className="ml-2 text-sm text-slate-500">by {payment.payer_name}</span>
                       )}
@@ -463,6 +513,81 @@ export default function InvoiceDetailPage() {
                 >
                   Mark as Paid
                 </Button>
+              )}
+              {invoice.status !== 'paid' && invoice.status !== 'cancelled' && invoice.balance_due > 0 && (
+                <Button
+                  variant="outline"
+                  className="w-full justify-start"
+                  onClick={() => {
+                    setPaymentAmount(invoice.balance_due.toString())
+                    setShowRecordPayment(!showRecordPayment)
+                  }}
+                  leftIcon={<Banknote className="h-4 w-4" />}
+                >
+                  Record Payment
+                </Button>
+              )}
+              {showRecordPayment && (
+                <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
+                  <div>
+                    <label htmlFor="payment-amount" className="sr-only">Payment amount</label>
+                    <input
+                      id="payment-amount"
+                      type="number"
+                      step="0.01"
+                      placeholder="Amount"
+                      value={paymentAmount}
+                      onChange={e => setPaymentAmount(e.target.value)}
+                      aria-required="true"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-light"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="payment-method" className="sr-only">Payment method</label>
+                    <select
+                      id="payment-method"
+                      value={paymentMethod}
+                      onChange={e => setPaymentMethod(e.target.value)}
+                      aria-required="true"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-light"
+                    >
+                      <option value="check">Check</option>
+                      <option value="cash">Cash</option>
+                      <option value="bank_transfer">Bank Transfer</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="payment-ref" className="sr-only">Reference number</label>
+                    <input
+                      id="payment-ref"
+                      type="text"
+                      placeholder="Reference # (optional)"
+                      value={paymentRef}
+                      onChange={e => setPaymentRef(e.target.value)}
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-light"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="payment-notes" className="sr-only">Payment notes</label>
+                    <input
+                      id="payment-notes"
+                      type="text"
+                      placeholder="Notes (optional)"
+                      value={paymentNotes}
+                      onChange={e => setPaymentNotes(e.target.value)}
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gold-light"
+                    />
+                  </div>
+                  <Button
+                    size="sm"
+                    className="w-full"
+                    onClick={handleRecordPayment}
+                    isLoading={actionLoading === 'payment'}
+                    disabled={!paymentAmount}
+                  >
+                    Record Payment
+                  </Button>
+                </div>
               )}
               {invoice.status !== 'cancelled' && invoice.status !== 'paid' && (
                 <Button

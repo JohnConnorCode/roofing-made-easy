@@ -14,6 +14,7 @@ import {
   ExternalLink,
 } from 'lucide-react'
 import type { AdvisorTopic } from '@/lib/ai/provider'
+import { usePhoneDisplay, usePhoneLink } from '@/lib/config/business-provider'
 
 interface SuggestedAction {
   label: string
@@ -41,14 +42,18 @@ export function AiAdvisorChat({
   compact = false,
   className,
 }: AiAdvisorChatProps) {
+  const phoneDisplay = usePhoneDisplay()
+  const phoneLinkHref = usePhoneLink()
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isExpanded, setIsExpanded] = useState(!compact)
   const [cooldownSeconds, setCooldownSeconds] = useState(0)
+  const [lastFailedMessage, setLastFailedMessage] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -60,6 +65,17 @@ export function AiAdvisorChat({
     return () => clearTimeout(timer)
   }, [cooldownSeconds])
 
+  // Mobile: scroll input into view when keyboard opens
+  useEffect(() => {
+    const el = inputRef.current
+    if (!el) return
+    const handleFocus = () => {
+      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300)
+    }
+    el.addEventListener('focus', handleFocus)
+    return () => el.removeEventListener('focus', handleFocus)
+  }, [])
+
   const sendMessage = async (content: string) => {
     if (!content.trim() || isLoading || cooldownSeconds > 0) return
 
@@ -68,7 +84,16 @@ export function AiAdvisorChat({
     setMessages(updatedMessages)
     setInput('')
     setError(null)
+    setLastFailedMessage(null)
     setIsLoading(true)
+
+    // Abort any in-flight request
+    abortControllerRef.current?.abort()
+    const controller = new AbortController()
+    abortControllerRef.current = controller
+
+    // 30-second timeout
+    const timeout = setTimeout(() => controller.abort(), 30000)
 
     try {
       const response = await fetch('/api/customer/advisor', {
@@ -79,7 +104,10 @@ export function AiAdvisorChat({
           messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
           leadId,
         }),
+        signal: controller.signal,
       })
+
+      clearTimeout(timeout)
 
       if (response.status === 429) {
         const data = await response.json()
@@ -100,10 +128,24 @@ export function AiAdvisorChat({
         suggestedActions: data.suggestedActions,
       }
       setMessages([...updatedMessages, assistantMessage])
-    } catch {
-      setError('Something went wrong. Please try again.')
+    } catch (err) {
+      clearTimeout(timeout)
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        setError('Request timed out. Please try again.')
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
+      // Remove the user message that failed and store for retry
+      setMessages(messages)
+      setLastFailedMessage(content.trim())
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const retryLastMessage = () => {
+    if (lastFailedMessage) {
+      sendMessage(lastFailedMessage)
     }
   }
 
@@ -177,11 +219,14 @@ export function AiAdvisorChat({
                 <p className="whitespace-pre-wrap">{msg.content}</p>
                 {msg.suggestedActions && msg.suggestedActions.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {msg.suggestedActions.map((action, j) => (
-                      action.href ? (
+                    {msg.suggestedActions.map((action, j) => {
+                      // Block dangerous URL schemes
+                      const href = action.href
+                      const isSafe = href && !href.toLowerCase().replace(/\s/g, '').startsWith('javascript:') && !href.toLowerCase().replace(/\s/g, '').startsWith('data:')
+                      return isSafe ? (
                         <a
                           key={j}
-                          href={action.href}
+                          href={href}
                           className="inline-flex items-center gap-1 text-xs text-[#c9a25c] hover:text-[#b5893a] bg-[#c9a25c]/10 rounded-full px-3 py-1"
                         >
                           {action.label}
@@ -195,7 +240,7 @@ export function AiAdvisorChat({
                           {action.label}
                         </span>
                       )
-                    ))}
+                    })}
                   </div>
                 )}
               </div>
@@ -233,9 +278,17 @@ export function AiAdvisorChat({
         {error && (
           <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 rounded-lg p-2">
             <AlertCircle className="h-4 w-4 flex-shrink-0" />
-            <span>{error}</span>
+            <span className="flex-1">{error}</span>
             {cooldownSeconds > 0 && (
-              <span className="ml-auto text-xs">({cooldownSeconds}s)</span>
+              <span className="text-xs">({cooldownSeconds}s)</span>
+            )}
+            {lastFailedMessage && cooldownSeconds <= 0 && (
+              <button
+                onClick={retryLastMessage}
+                className="text-xs text-[#c9a25c] hover:text-[#b5893a] whitespace-nowrap"
+              >
+                Retry
+              </button>
             )}
           </div>
         )}
@@ -265,6 +318,13 @@ export function AiAdvisorChat({
             )}
           </Button>
         </form>
+
+        <div className="flex items-center justify-center gap-2 text-xs text-slate-500">
+          <span>Prefer to talk to a person?</span>
+          <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">
+            Call {phoneDisplay}
+          </a>
+        </div>
 
         <p className="text-[10px] text-slate-600 text-center">
           AI advisor provides general guidance, not professional financial or legal advice.

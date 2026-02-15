@@ -19,6 +19,8 @@ import {
   EmptyState,
 } from '@/components/customer'
 import { FundingSummary } from '@/components/customer/FundingSummary'
+import { JobProgress } from '@/components/customer'
+import type { CustomerJob } from '@/stores/customerStore'
 import { computeJourneySteps } from '@/lib/customer/journey'
 import {
   DollarSign,
@@ -44,12 +46,14 @@ export default function CustomerPortalPage() {
     insuranceClaims,
     programApplications,
     eligiblePrograms,
+    jobs,
     setCustomer,
     setLinkedLeads,
     setSelectedLeadId,
     setFinancingApplications,
     setInsuranceClaims,
     setProgramApplications,
+    setJobs,
     setLoading,
     isLoading,
   } = useCustomerStore()
@@ -60,18 +64,25 @@ export default function CustomerPortalPage() {
   // Refetch customer data (used after upload)
   const refetchData = useCallback(async () => {
     try {
-      const response = await fetch('/api/customer/profile')
-      if (response.ok) {
-        const data = await response.json()
+      const [profileRes, jobsRes] = await Promise.all([
+        fetch('/api/customer/profile'),
+        fetch('/api/customer/jobs'),
+      ])
+      if (profileRes.ok) {
+        const data = await profileRes.json()
         setLinkedLeads(data.linkedLeads || [])
         setFinancingApplications(data.financingApplications || [])
         setInsuranceClaims(data.insuranceClaims || [])
         setProgramApplications(data.programApplications || [])
       }
+      if (jobsRes.ok) {
+        const data = await jobsRes.json()
+        setJobs(data.jobs || [])
+      }
     } catch {
       // Refetch failed silently
     }
-  }, [setLinkedLeads, setFinancingApplications, setInsuranceClaims, setProgramApplications])
+  }, [setLinkedLeads, setFinancingApplications, setInsuranceClaims, setProgramApplications, setJobs])
 
   // Handle photo upload
   const handlePhotoUpload = useCallback(async (files: FileList) => {
@@ -175,6 +186,17 @@ export default function CustomerPortalPage() {
         setInsuranceClaims(data.insuranceClaims || [])
         setProgramApplications(data.programApplications || [])
 
+        // Fetch jobs in parallel
+        try {
+          const jobsRes = await fetch('/api/customer/jobs')
+          if (jobsRes.ok) {
+            const jobsData = await jobsRes.json()
+            setJobs(jobsData.jobs || [])
+          }
+        } catch {
+          // Jobs fetch failed silently
+        }
+
         // Set selected lead to primary or first lead (only on initial load)
         if (data.linkedLeads?.length > 0) {
           const currentSelection = useCustomerStore.getState().selectedLeadId
@@ -193,7 +215,7 @@ export default function CustomerPortalPage() {
 
     fetchCustomerData()
     // eslint-disable-next-line react-hooks/exhaustive-deps -- Run once on mount; selectedLeadId read from store directly to avoid re-fetch loop
-  }, [router, setCustomer, setLinkedLeads, setSelectedLeadId, setFinancingApplications, setInsuranceClaims, setProgramApplications, setLoading])
+  }, [router, setCustomer, setLinkedLeads, setSelectedLeadId, setFinancingApplications, setInsuranceClaims, setProgramApplications, setJobs, setLoading])
 
   // Get current lead data
   const currentLead = linkedLeads.find((l) => l.lead_id === selectedLeadId)
@@ -405,6 +427,14 @@ export default function CustomerPortalPage() {
               programCount={currentPrograms.length}
               hasFinancingApp={!!currentFinancing}
               financingStatus={currentFinancing?.status}
+            />
+          )}
+
+          {/* Job Progress (only when a job exists for this lead) */}
+          {jobs.filter((j: CustomerJob) => j.lead_id === selectedLeadId).length > 0 && (
+            <JobProgress
+              job={jobs.filter((j: CustomerJob) => j.lead_id === selectedLeadId)[0]}
+              compact
             />
           )}
 

@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
+import { requireLeadOwnership } from '@/lib/api/auth'
 import { z } from 'zod'
 import { sendEmail } from '@/lib/email'
+import { escapeHtml } from '@/lib/communication/template-renderer'
 
 interface RouteParams {
   params: Promise<{ leadId: string }>
@@ -20,6 +22,11 @@ const acceptQuoteSchema = z.object({
 export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
     const { leadId } = await params
+
+    // Require authenticated user who owns this lead (or admin)
+    const { error: authError } = await requireLeadOwnership(leadId)
+    if (authError) return authError
+
     const body = await request.json()
     const parsed = acceptQuoteSchema.safeParse(body)
 
@@ -257,12 +264,12 @@ async function sendAdminNotification(
                 <h1 style="margin: 0;">🎉 Quote Accepted!</h1>
               </div>
               <div class="content">
-                <p><strong>${customerName}</strong> has accepted a quote.</p>
+                <p><strong>${escapeHtml(customerName)}</strong> has accepted a quote.</p>
                 <div class="details">
-                  <p><strong>Customer:</strong> ${customerName}</p>
-                  <p><strong>Email:</strong> ${contact?.email || 'Unknown'}</p>
-                  <p><strong>Phone:</strong> ${contact?.phone || 'Unknown'}</p>
-                  <p><strong>Address:</strong> ${address}</p>
+                  <p><strong>Customer:</strong> ${escapeHtml(customerName)}</p>
+                  <p><strong>Email:</strong> ${escapeHtml(contact?.email || 'Unknown')}</p>
+                  <p><strong>Phone:</strong> ${escapeHtml(contact?.phone || 'Unknown')}</p>
+                  <p><strong>Address:</strong> ${escapeHtml(address)}</p>
                   <p><strong>Quote Amount:</strong> ${quoteAmount}</p>
                 </div>
                 <p style="text-align: center;">

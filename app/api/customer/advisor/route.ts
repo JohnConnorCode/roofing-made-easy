@@ -3,7 +3,9 @@ import { createClient } from '@/lib/supabase/server'
 import { checkRateLimitAsync, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { generateAdvisorResponse } from '@/lib/ai'
 import type { AdvisorInput } from '@/lib/ai/provider'
+import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 import { z } from 'zod'
+import { persistAiContent } from '@/lib/ai/persist-content'
 
 const advisorSchema = z.object({
   topic: z.enum(['financing', 'insurance', 'assistance']),
@@ -40,6 +42,7 @@ interface LinkedLead {
 interface FinancingApp {
   credit_range?: string
   income_range?: string
+  status?: string
 }
 
 interface InsuranceClaim {
@@ -50,19 +53,27 @@ interface InsuranceClaim {
   deductible?: number
 }
 
+interface ProgramApp {
+  program_id: string
+  status?: string
+  approved_amount?: number | null
+  program?: { name?: string } | null
+}
+
 export async function POST(request: NextRequest) {
   try {
-    const clientIP = getClientIP(request)
-    const rateLimitResult = await checkRateLimitAsync(clientIP, 'ai')
-    if (!rateLimitResult.success) {
-      return rateLimitResponse(rateLimitResult)
-    }
-
     const supabase = await createClient()
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Rate limit using composite key: IP + user ID
+    const clientIP = getClientIP(request)
+    const rateLimitResult = await checkRateLimitAsync(`${clientIP}:${user.id}`, 'ai')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
     }
 
     const { data: customerData, error: customerError } = await supabase
@@ -111,60 +122,133 @@ export async function POST(request: NextRequest) {
           userContext.propertyAddress = [p.street_address, p.city].filter(Boolean).join(', ')
           userContext.propertyState = p.state || undefined
         }
-      }
-
-      // Get financing data
-      if (topic === 'financing') {
-        const { data: financingData } = await supabase
-          .from('financing_applications' as never)
-          .select('credit_range, income_range')
-          .eq('customer_id', customer.id)
-          .eq('lead_id', leadId)
-          .single()
-
-        const financing = financingData as FinancingApp | null
-        if (financing) {
-          userContext.creditRange = financing.credit_range
-          userContext.incomeRange = financing.income_range
+        // Check intake for storm damage flag
+        if (lead.intake?.has_insurance_claim) {
+          userContext.hasStormDamage = true
         }
       }
 
-      // Get insurance data
-      if (topic === 'insurance') {
-        const { data: claimData } = await supabase
+      // Fetch all three data sources in parallel for cross-topic awareness
+      const [financingResult, claimResult, programsResult] = await Promise.all([
+        supabase
+          .from('financing_applications' as never)
+          .select('credit_range, income_range, status')
+          .eq('customer_id', customer.id)
+          .eq('lead_id', leadId)
+          .single(),
+        supabase
           .from('insurance_claims' as never)
           .select('insurance_company, cause_of_loss, status, claim_amount_approved, deductible')
           .eq('customer_id', customer.id)
           .eq('lead_id', leadId)
-          .single()
+          .single(),
+        supabase
+          .from('customer_program_applications' as never)
+          .select('program_id, status, approved_amount, program:assistance_programs(name)')
+          .eq('customer_id', customer.id)
+          .eq('lead_id', leadId),
+      ])
 
-        const claim = claimData as InsuranceClaim | null
-        if (claim) {
-          userContext.insuranceCompany = claim.insurance_company
-          userContext.causeOfLoss = claim.cause_of_loss
-          userContext.claimStatus = claim.status
-          if (claim.claim_amount_approved) {
-            userContext.claimAmountApproved = claim.claim_amount_approved
-          }
-          if (claim.deductible) {
-            userContext.deductible = claim.deductible
-          }
+      // Financing
+      const financing = financingResult.data as FinancingApp | null
+      if (financing) {
+        userContext.creditRange = financing.credit_range
+        userContext.incomeRange = financing.income_range
+        userContext.financingStatus = financing.status
+      }
+
+      // Insurance
+      const claim = claimResult.data as InsuranceClaim | null
+      if (claim) {
+        userContext.hasInsuranceClaim = true
+        userContext.insuranceCompany = claim.insurance_company
+        userContext.causeOfLoss = claim.cause_of_loss
+        userContext.claimStatus = claim.status
+        if (claim.claim_amount_approved) {
+          userContext.claimAmountApproved = claim.claim_amount_approved
+        }
+        if (claim.deductible) {
+          userContext.deductible = claim.deductible
         }
       }
+
+      // Programs — include names and statuses for richer AI context
+      const programs = programsResult.data as ProgramApp[] | null
+      if (programs && programs.length > 0) {
+        userContext.eligibleProgramCount = programs.length
+        const programNames = programs
+          .map((p) => {
+            const name = (p.program as { name?: string } | null)?.name || p.program_id
+            return p.status ? `${name} (${p.status})` : name
+          })
+          .filter(Boolean)
+        if (programNames.length > 0) {
+          userContext.eligibleProgramNames = programNames
+        }
+      }
+
+      // Calculate funding gap: estimate minus insurance payout minus approved assistance
+      if (userContext.estimateAmount) {
+        let covered = userContext.claimAmountApproved || 0
+        // Sum approved assistance amounts
+        if (programs && programs.length > 0) {
+          for (const p of programs) {
+            if (p.approved_amount && p.approved_amount > 0) {
+              covered += p.approved_amount
+            }
+          }
+        }
+        const gap = userContext.estimateAmount - covered
+        if (gap > 0) {
+          userContext.fundingGap = gap
+        }
+      }
+    }
+
+    // Load business config from DB (admin settings) — not the static fallback
+    const dbConfig = await getBusinessConfigFromDB()
+    const businessConfig = {
+      name: dbConfig.name,
+      tagline: dbConfig.tagline,
+      phone: { raw: dbConfig.phone.raw, display: dbConfig.phone.display },
+      email: { primary: dbConfig.email.primary },
+      hours: {
+        weekdays: dbConfig.hours.weekdays,
+        saturday: dbConfig.hours.saturday,
+        sunday: dbConfig.hours.sunday as { open: string; close: string } | null,
+      },
     }
 
     const result = await generateAdvisorResponse({
       topic,
       messages,
       userContext,
+      businessConfig,
     })
 
     if (!result.success) {
+      console.error(`[advisor] topic=${topic} provider=${result.provider} error="${result.error}"`)
       return NextResponse.json(
         { error: 'Failed to generate response' },
         { status: 500 }
       )
     }
+
+    console.log(`[advisor] topic=${topic} provider=${result.provider} latency=${result.latencyMs}ms`)
+
+    // Persist AI response for the customer (fire-and-forget)
+    persistAiContent({
+      customerId: customer.id,
+      leadId: leadId || undefined,
+      contentType: 'advisor_message',
+      topic,
+      content: {
+        message: result.data!.message,
+        suggestedActions: result.data!.suggestedActions || [],
+      },
+      provider: result.provider,
+      inputContext: { lastUserMessage: messages[messages.length - 1]?.content },
+    })
 
     return NextResponse.json({
       message: result.data!.message,

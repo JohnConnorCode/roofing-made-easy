@@ -15,6 +15,7 @@ interface RateLimitConfig {
 interface RateLimitEntry {
   count: number
   resetTime: number
+  lastAccessed: number
 }
 
 // In-memory store for rate limiting (fallback)
@@ -157,30 +158,39 @@ function checkRateLimitInMemory(
 ): RateLimitResult {
   cleanup()
 
+  const now = Date.now()
+
   // Prevent memory exhaustion from many unique IPs
   if (rateLimitStore.size >= MAX_STORE_SIZE) {
-    const now = Date.now()
+    // First pass: remove expired entries
     for (const [k, entry] of rateLimitStore.entries()) {
       if (entry.resetTime < now) {
         rateLimitStore.delete(k)
       }
     }
+    // Still too large: evict oldest 20% by lastAccessed time
     if (rateLimitStore.size >= MAX_STORE_SIZE) {
-      rateLimitStore.clear()
+      const entries = Array.from(rateLimitStore.entries())
+        .sort((a, b) => a[1].lastAccessed - b[1].lastAccessed)
+      const evictCount = Math.ceil(entries.length * 0.2)
+      for (let i = 0; i < evictCount; i++) {
+        rateLimitStore.delete(entries[i][0])
+      }
     }
   }
 
   const config = RATE_LIMITS[limitType]
   const key = `${limitType}:${identifier}`
-  const now = Date.now()
 
   const entry = rateLimitStore.get(key)
 
-  // No existing entry or window expired - create new entry
+  // Lazy cleanup: if entry's window has expired, treat as new
   if (!entry || entry.resetTime < now) {
+    if (entry) rateLimitStore.delete(key)
     const newEntry: RateLimitEntry = {
       count: 1,
       resetTime: now + config.windowMs,
+      lastAccessed: now,
     }
     rateLimitStore.set(key, newEntry)
     return {
@@ -189,6 +199,9 @@ function checkRateLimitInMemory(
       resetTime: newEntry.resetTime,
     }
   }
+
+  // Update access time
+  entry.lastAccessed = now
 
   // Check if limit exceeded
   if (entry.count >= config.maxRequests) {
@@ -241,7 +254,7 @@ export function createRateLimitHeaders(result: RateLimitResult): HeadersInit {
  * Helper to create a 429 Too Many Requests response
  */
 export function rateLimitResponse(result: RateLimitResult): Response {
-  const retryAfter = Math.ceil((result.resetTime - Date.now()) / 1000)
+  const retryAfter = Math.max(1, Math.ceil((result.resetTime - Date.now()) / 1000))
 
   return new Response(
     JSON.stringify({

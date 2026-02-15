@@ -17,6 +17,8 @@ const DEFAULT_PERMISSIONS: Record<UserRole, Permissions> = {
     team: { view: true, edit: true, delete: true, invite: true },
     settings: { view: true, edit: true, delete: true },
     reports: { view: true, export: true },
+    jobs: { view: true, edit: true, delete: true, assign: true },
+    calendar: { view: true, edit: true, delete: true },
   },
   manager: {
     leads: { view: true, edit: true, delete: false, assign: true },
@@ -26,6 +28,8 @@ const DEFAULT_PERMISSIONS: Record<UserRole, Permissions> = {
     team: { view: true, edit: false, delete: false, invite: false },
     settings: { view: true, edit: false, delete: false },
     reports: { view: true, export: true },
+    jobs: { view: true, edit: true, delete: false, assign: true },
+    calendar: { view: true, edit: true, delete: false },
   },
   sales: {
     leads: { view: true, edit: true, delete: false, assign: false },
@@ -35,6 +39,8 @@ const DEFAULT_PERMISSIONS: Record<UserRole, Permissions> = {
     team: { view: true, edit: false, delete: false, invite: false },
     settings: { view: false, edit: false, delete: false },
     reports: { view: true, export: false },
+    jobs: { view: true, edit: false, delete: false, assign: false },
+    calendar: { view: true, edit: false, delete: false },
   },
   crew_lead: {
     leads: { view: true, edit: false, delete: false, assign: false },
@@ -44,6 +50,8 @@ const DEFAULT_PERMISSIONS: Record<UserRole, Permissions> = {
     team: { view: true, edit: false, delete: false, invite: false },
     settings: { view: false, edit: false, delete: false },
     reports: { view: false, export: false },
+    jobs: { view: true, edit: true, delete: false, assign: false },
+    calendar: { view: true, edit: true, delete: false },
   },
   crew: {
     leads: { view: true, edit: false, delete: false, assign: false },
@@ -53,6 +61,8 @@ const DEFAULT_PERMISSIONS: Record<UserRole, Permissions> = {
     team: { view: false, edit: false, delete: false, invite: false },
     settings: { view: false, edit: false, delete: false },
     reports: { view: false, export: false },
+    jobs: { view: true, edit: false, delete: false, assign: false },
+    calendar: { view: true, edit: false, delete: false },
   },
 }
 

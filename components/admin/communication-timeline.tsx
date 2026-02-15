@@ -40,7 +40,9 @@ interface ScheduledMessage {
 }
 
 interface CommunicationTimelineProps {
-  leadId: string
+  leadId?: string
+  customerId?: string
+  jobId?: string
 }
 
 const CHANNEL_ICONS = {
@@ -71,7 +73,7 @@ const STATUS_COLORS = {
   cancelled: 'text-slate-400',
 }
 
-export function CommunicationTimeline({ leadId }: CommunicationTimelineProps) {
+export function CommunicationTimeline({ leadId, customerId, jobId }: CommunicationTimelineProps) {
   const [logs, setLogs] = useState<CommunicationLog[]>([])
   const [scheduled, setScheduled] = useState<ScheduledMessage[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -81,7 +83,16 @@ export function CommunicationTimeline({ leadId }: CommunicationTimelineProps) {
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch(`/api/leads/${leadId}/communications`)
+      // Use lead-specific endpoint if leadId provided, otherwise use admin communications API
+      let response: Response
+      if (leadId) {
+        response = await fetch(`/api/leads/${leadId}/communications`)
+      } else {
+        const params = new URLSearchParams()
+        if (customerId) params.set('customer_id', customerId)
+        // For job-based lookup, we fetch via the admin communications endpoint
+        response = await fetch(`/api/admin/communications?${params}`)
+      }
       if (!response.ok) throw new Error('Failed to fetch communications')
       const data = await response.json()
       setLogs(data.logs || [])
@@ -91,7 +102,7 @@ export function CommunicationTimeline({ leadId }: CommunicationTimelineProps) {
     } finally {
       setIsLoading(false)
     }
-  }, [leadId])
+  }, [leadId, customerId, jobId])
 
   useEffect(() => {
     fetchCommunications()

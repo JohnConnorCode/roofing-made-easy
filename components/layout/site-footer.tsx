@@ -28,6 +28,7 @@ const company = [
   { href: '/assistance-programs', label: 'Assistance Programs' },
   { href: '/referral', label: 'Referral Program' },
   { href: '/contact', label: 'Contact' },
+  { href: '/portal', label: 'My Account' },
 ]
 
 function FooterColumnHeading({ title }: { title: string }) {

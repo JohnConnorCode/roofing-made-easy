@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart } from 'lucide-react'
+import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart, User } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 import { useContact } from '@/lib/hooks/use-contact'
 import { useBusinessConfig, useHoursText } from '@/lib/config/business-provider'
@@ -70,8 +70,13 @@ export function SiteHeader() {
               <span>{config.address.city}, {config.address.stateCode} &amp; Surrounding Areas</span>
             </span>
           </div>
-          <div className="text-slate-500">
-            {hoursText}
+          <div className="flex items-center gap-4 text-slate-500">
+            <span>{hoursText}</span>
+            <span className="h-3.5 w-px bg-slate-700" />
+            <Link href="/portal" className="flex items-center gap-1.5 text-slate-400 hover:text-gold transition-colors">
+              <User className="w-3.5 h-3.5" />
+              <span>My Account</span>
+            </Link>
           </div>
         </div>
       </div>
@@ -229,6 +234,14 @@ export function SiteHeader() {
               <Phone className="w-4 h-4" />
               <span>{phoneDisplay}</span>
             </a>
+            <Link
+              href="/portal"
+              className="flex items-center justify-center gap-2 text-slate-400 hover:text-gold py-3 border border-slate-800 rounded-lg transition-colors"
+              onClick={closeMobileMenu}
+            >
+              <User className="w-4 h-4" />
+              <span>My Account</span>
+            </Link>
           </div>
         </nav>
       </div>

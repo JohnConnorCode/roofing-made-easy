@@ -37,32 +37,31 @@ function CustomerRegisterForm() {
   } | null>(null)
 
   const leadId = searchParams.get('leadId')
+  const source = searchParams.get('source')
 
-  // Fetch lead data if leadId is provided
+  // Fetch lead data if leadId is provided (public endpoint, no auth required)
   useEffect(() => {
     async function fetchLeadData() {
       if (!leadId || leadId.startsWith('demo-')) return
 
       try {
-        const response = await fetch(`/api/leads/${leadId}`)
+        const response = await fetch(`/api/public/lead-summary/${leadId}`)
         if (response.ok) {
           const data = await response.json()
           setLeadData({
-            address: data.property?.formatted_address || data.property?.street_address,
-            estimate: data.estimate?.price_likely,
+            address: data.address,
+            estimate: data.estimate,
           })
-          // Pre-fill contact info if available
-          if (data.contact) {
+          // Pre-fill name if available (email/phone not returned for privacy)
+          if (data.firstName || data.lastName) {
             setFormData((prev) => ({
               ...prev,
-              email: data.contact.email || '',
-              firstName: data.contact.first_name || '',
-              lastName: data.contact.last_name || '',
-              phone: data.contact.phone || '',
+              firstName: data.firstName || '',
+              lastName: data.lastName || '',
             }))
           }
         }
-      } catch (err) {
+      } catch {
         // Silently fail - user can still register
       }
     }
@@ -146,6 +145,7 @@ function CustomerRegisterForm() {
           phone: formData.phone,
           consentMarketing: formData.consentMarketing,
           leadId: leadId || undefined,
+          source: source || undefined,
         }),
       })
 

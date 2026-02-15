@@ -16,7 +16,7 @@ import type {
   AdvisorInput,
   AdvisorResult,
 } from '../provider'
-import { buildSystemPrompt } from '../advisor'
+import { buildSystemPrompt, parseAdvisorResponse } from '../advisor'
 
 /**
  * Extract the first balanced JSON object from a string.
@@ -82,7 +82,7 @@ export class AnthropicProvider implements AiProvider {
 
   async analyzePhoto(input: PhotoAnalysisInput): Promise<AiResult<PhotoAnalysisResult>> {
     const startTime = Date.now()
-    const model = 'claude-sonnet-4-20250514'
+    const model = 'claude-sonnet-4-5-20250929'
 
     try {
       const content: Anthropic.Messages.ContentBlockParam[] = []
@@ -163,7 +163,7 @@ export class AnthropicProvider implements AiProvider {
 
   async generateExplanation(input: ExplanationInput): Promise<AiResult<string>> {
     const startTime = Date.now()
-    const model = 'claude-sonnet-4-20250514'
+    const model = 'claude-sonnet-4-5-20250929'
 
     try {
       const prompt = `You are a helpful roofing expert. Generate a brief, friendly explanation (2-3 paragraphs) of a roofing estimate for a homeowner.
@@ -234,7 +234,7 @@ Keep it under 200 words. Don't use phrases like "I understand" or "I can see". B
 
   async analyzeIntake(input: IntakeAnalysisInput): Promise<AiResult<IntakeAnalysisResult>> {
     const startTime = Date.now()
-    const model = 'claude-sonnet-4-20250514'
+    const model = 'claude-sonnet-4-5-20250929'
 
     try {
       const prompt = `You are analyzing a roofing lead intake form to help sales prioritize and prepare. Analyze the following information and provide a structured assessment.
@@ -325,7 +325,7 @@ Consider:
 
   async generateInternalNotes(input: InternalNotesInput): Promise<AiResult<string>> {
     const startTime = Date.now()
-    const model = 'claude-sonnet-4-20250514'
+    const model = 'claude-sonnet-4-5-20250929'
 
     try {
       const prompt = `Generate concise internal notes for our sales team about this roofing lead. These are INTERNAL notes, not customer-facing.
@@ -540,14 +540,12 @@ ${input.estimateAmount ? `Estimate: $${input.estimateAmount}` : ''}`,
         })),
       })
 
-      const content = response.content[0]?.type === 'text' ? response.content[0].text : ''
+      const rawContent = response.content[0]?.type === 'text' ? response.content[0].text : ''
+      const parsed = parseAdvisorResponse(rawContent, input.businessConfig)
 
       return {
         success: true,
-        data: {
-          message: content,
-          suggestedActions: [],
-        },
+        data: parsed,
         provider: this.name,
         latencyMs: Date.now() - startTime,
         model: 'claude-sonnet-4-5-20250929',

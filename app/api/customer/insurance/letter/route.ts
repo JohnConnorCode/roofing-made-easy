@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
 import { checkRateLimitAsync, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { generateInsuranceLetter } from '@/lib/ai'
 import { z } from 'zod'
+import { persistAiContent } from '@/lib/ai/persist-content'
+import { requireCustomer } from '@/lib/api/auth'
 
 const letterSchema = z.object({
   letterType: z.enum(['initial_claim', 'appeal', 'follow_up']),
@@ -28,12 +29,8 @@ export async function POST(request: NextRequest) {
       return rateLimitResponse(rateLimitResult)
     }
 
-    const supabase = await createClient()
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const { customerId, error: authError } = await requireCustomer()
+    if (authError) return authError
 
     const body = await request.json()
     const parsed = letterSchema.safeParse(body)
@@ -52,6 +49,18 @@ export async function POST(request: NextRequest) {
         { error: result.error || 'AI generation failed' },
         { status: 500 }
       )
+    }
+
+    // Persist AI response (fire-and-forget)
+    if (customerId) {
+      persistAiContent({
+        customerId,
+        contentType: 'insurance_letter',
+        topic: 'insurance',
+        content: { letterType: parsed.data.letterType, letter: result.data },
+        provider: result.provider,
+        inputContext: { letterType: parsed.data.letterType, insuranceCompany: parsed.data.claimData.insuranceCompany },
+      })
     }
 
     return NextResponse.json({

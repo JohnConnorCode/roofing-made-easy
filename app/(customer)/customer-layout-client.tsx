@@ -16,14 +16,17 @@ import {
   X,
   Home,
   ChevronDown,
+  Hammer,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Logo } from '@/components/ui/logo'
 import { useCustomerStore } from '@/stores/customerStore'
+import { CustomerNotificationBell } from '@/components/customer/CustomerNotificationBell'
 
 const NAV_ITEMS = [
   { href: '/portal', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { href: '/portal/project', label: 'Project', icon: Hammer },
   { href: '/portal/financing', label: 'Financing', icon: DollarSign },
   { href: '/portal/insurance', label: 'Insurance', icon: Shield },
   { href: '/portal/assistance', label: 'Programs', icon: HandHeart },
@@ -94,12 +97,15 @@ export default function CustomerLayoutClient({
         <Link href="/portal">
           <Logo size="sm" />
         </Link>
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 text-slate-300"
-        >
-          {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-1">
+          <CustomerNotificationBell />
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-slate-300"
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile menu */}
@@ -181,10 +187,11 @@ export default function CustomerLayoutClient({
         {/* Desktop sidebar */}
         <aside className="hidden w-64 shrink-0 border-r border-slate-800 bg-ink md:block">
           <div className="sticky top-0 flex h-screen flex-col">
-            <div className="flex h-16 items-center border-b border-slate-800 px-6">
+            <div className="flex h-16 items-center justify-between border-b border-slate-800 px-6">
               <Link href="/portal">
                 <Logo size="sm" />
               </Link>
+              <CustomerNotificationBell />
             </div>
 
             {/* Property selector */}

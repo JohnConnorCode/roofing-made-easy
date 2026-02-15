@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createPaymentIntent, isStripeConfigured } from '@/lib/stripe'
 import { z } from 'zod'
 import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
-import { requireAuth } from '@/lib/api/auth'
+import { requireAuth, requireLeadOwnership } from '@/lib/api/auth'
 
 // Validation schema
 const createIntentSchema = z.object({
@@ -52,6 +52,10 @@ export async function POST(request: NextRequest) {
     }
 
     const { leadId, estimateId, amount, description } = validation.data
+
+    // Verify the authenticated user owns this lead (or is admin)
+    const { error: ownershipError } = await requireLeadOwnership(leadId)
+    if (ownershipError) return ownershipError
 
     // Fetch lead and contact info
     const supabase = await createClient()

@@ -128,6 +128,10 @@ export default function EstimatePage() {
     window.location.href = '/'
   }, [resetFunnel])
 
+  const handleCreateAccount = useCallback(() => {
+    router.push(`/customer/register?leadId=${leadId}&source=estimate`)
+  }, [router, leadId])
+
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -229,6 +233,7 @@ export default function EstimatePage() {
       onDownload={handleDownloadPDF}
       onBack={handleBack}
       onStartNew={handleStartNew}
+      onCreateAccount={handleCreateAccount}
       calendlyUrl={CALENDLY_URL}
       // Project details
       roofAgeYears={roofAgeYears}

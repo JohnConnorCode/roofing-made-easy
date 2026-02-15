@@ -48,6 +48,7 @@ interface InvoiceListProps {
   initialInvoices?: InvoiceListItem[]
   leadId?: string
   customerId?: string
+  jobId?: string
   showCreateButton?: boolean
 }
 
@@ -66,6 +67,7 @@ export function InvoiceList({
   initialInvoices,
   leadId,
   customerId,
+  jobId,
   showCreateButton = true,
 }: InvoiceListProps) {
   const router = useRouter()
@@ -82,7 +84,7 @@ export function InvoiceList({
     if (!initialInvoices) {
       fetchInvoices()
     }
-  }, [leadId, customerId, statusFilter])
+  }, [leadId, customerId, jobId, statusFilter])
 
   async function fetchInvoices() {
     try {
@@ -90,6 +92,7 @@ export function InvoiceList({
       const params = new URLSearchParams()
       if (leadId) params.set('leadId', leadId)
       if (customerId) params.set('customerId', customerId)
+      if (jobId) params.set('jobId', jobId)
       if (statusFilter) params.set('status', statusFilter)
 
       const res = await fetch(`/api/invoices?${params}`)

@@ -189,6 +189,23 @@ export async function POST(
       .single()
 
     if (estimateError) {
+      // Unique violation from idx_one_active_estimate_per_lead — concurrent request won the race
+      if (estimateError.code === '23505') {
+        const { data: existing } = await supabase
+          .from('estimates')
+          .select('*')
+          .eq('lead_id', leadId)
+          .eq('is_superseded', false)
+          .single()
+
+        if (existing) {
+          return NextResponse.json(
+            { ...(existing as Record<string, unknown>), deduplicated: true },
+            { status: 200, headers: createRateLimitHeaders(rateLimitResult) }
+          )
+        }
+      }
+
       console.error('Failed to save estimate:', estimateError)
       return NextResponse.json(
         { error: 'Failed to save estimate' },

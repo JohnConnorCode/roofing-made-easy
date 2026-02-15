@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
+import { requireLeadOwnership } from '@/lib/api/auth'
 import { z } from 'zod'
 import { sendEmail } from '@/lib/email'
+import { escapeHtml } from '@/lib/communication/template-renderer'
 
 interface RouteParams {
   params: Promise<{ leadId: string }>
@@ -19,6 +21,11 @@ const rejectQuoteSchema = z.object({
 export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
     const { leadId } = await params
+
+    // Require authenticated user who owns this lead (or admin)
+    const { error: authError } = await requireLeadOwnership(leadId)
+    if (authError) return authError
+
     const body = await request.json()
     const parsed = rejectQuoteSchema.safeParse(body)
 
@@ -252,16 +259,16 @@ async function sendAdminNotification(
                 <h1 style="margin: 0;">Quote Declined</h1>
               </div>
               <div class="content">
-                <p><strong>${customerName}</strong> has declined a quote.</p>
+                <p><strong>${escapeHtml(customerName)}</strong> has declined a quote.</p>
                 <div class="details">
-                  <p><strong>Customer:</strong> ${customerName}</p>
-                  <p><strong>Email:</strong> ${contact?.email || 'Unknown'}</p>
-                  <p><strong>Phone:</strong> ${contact?.phone || 'Unknown'}</p>
-                  <p><strong>Address:</strong> ${address}</p>
+                  <p><strong>Customer:</strong> ${escapeHtml(customerName)}</p>
+                  <p><strong>Email:</strong> ${escapeHtml(contact?.email || 'Unknown')}</p>
+                  <p><strong>Phone:</strong> ${escapeHtml(contact?.phone || 'Unknown')}</p>
+                  <p><strong>Address:</strong> ${escapeHtml(address)}</p>
                 </div>
                 <div class="reason">
                   <p style="margin: 0;"><strong>Reason for declining:</strong></p>
-                  <p style="margin: 10px 0 0 0;">${reason}</p>
+                  <p style="margin: 10px 0 0 0;">${escapeHtml(reason)}</p>
                 </div>
                 <p style="text-align: center;">
                   <a href="${leadUrl}" class="button">View Lead Details</a>

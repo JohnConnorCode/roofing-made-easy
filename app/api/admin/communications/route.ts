@@ -194,12 +194,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Update template usage if used
+    // Update template usage count + last_used_at
     if (messageData.template_id) {
+      const { data: tpl } = await supabase
+        .from('message_templates')
+        .select('usage_count')
+        .eq('id', messageData.template_id)
+        .single()
+      const currentCount = (tpl as { usage_count: number } | null)?.usage_count || 0
       await supabase
         .from('message_templates')
         .update({
-          usage_count: supabase.rpc('increment_usage_count'),
+          usage_count: currentCount + 1,
           last_used_at: new Date().toISOString(),
         } as never)
         .eq('id', messageData.template_id)

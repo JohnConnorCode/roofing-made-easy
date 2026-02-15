@@ -20,6 +20,9 @@ export type ActivityCategory =
   | 'settings'
   | 'customer'
   | 'communication'
+  | 'job'
+  | 'calendar'
+  | 'notification'
 
 // Permission structure
 export interface Permissions {
@@ -60,6 +63,17 @@ export interface Permissions {
   reports: {
     view: boolean
     export?: boolean
+  }
+  jobs: {
+    view: boolean
+    edit: boolean
+    delete: boolean
+    assign?: boolean
+  }
+  calendar: {
+    view: boolean
+    edit: boolean
+    delete: boolean
   }
 }
 

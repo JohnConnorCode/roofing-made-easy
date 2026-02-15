@@ -162,6 +162,19 @@ export interface EligibilityGuidanceResult {
   importantNotes: string[]
 }
 
+// Business config shape (subset needed by advisor)
+export interface AdvisorBusinessConfig {
+  name: string
+  tagline: string
+  phone: { raw: string; display: string }
+  email: { primary: string }
+  hours: {
+    weekdays: { open: string; close: string }
+    saturday: { open: string; close: string } | null
+    sunday: { open: string; close: string } | null
+  }
+}
+
 // Advisor chat
 export type AdvisorTopic = 'financing' | 'insurance' | 'assistance'
 
@@ -173,6 +186,7 @@ export interface AdvisorMessage {
 export interface AdvisorInput {
   topic: AdvisorTopic
   messages: AdvisorMessage[]
+  businessConfig?: AdvisorBusinessConfig
   userContext: {
     estimateAmount?: number
     propertyAddress?: string
@@ -188,6 +202,12 @@ export interface AdvisorInput {
     isVeteran?: boolean
     isDisabled?: boolean
     hasDisasterDeclaration?: boolean
+    // Cross-topic awareness
+    financingStatus?: string
+    hasInsuranceClaim?: boolean
+    hasStormDamage?: boolean
+    fundingGap?: number
+    eligibleProgramCount?: number
   }
 }
 

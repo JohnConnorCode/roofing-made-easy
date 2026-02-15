@@ -9,6 +9,8 @@ import {
 } from '@/lib/rate-limit'
 import { requireAdmin, parsePagination } from '@/lib/api/auth'
 import { triggerWorkflows } from '@/lib/communication/workflow-engine'
+import { notifyAdmins } from '@/lib/notifications'
+import { notifyNewLead } from '@/lib/email/notifications'
 
 // Valid status values for filtering (must match LeadStatus type in lib/constants/status.ts)
 const VALID_STATUSES = new Set([
@@ -75,19 +77,40 @@ export async function POST(request: NextRequest) {
     // Create empty related records
     const leadId = (lead as { id: string }).id
 
-    await Promise.all([
+    const relatedResults = await Promise.allSettled([
       supabase.from('contacts').insert({ lead_id: leadId } as never),
       supabase.from('properties').insert({ lead_id: leadId } as never),
       supabase.from('intakes').insert({ lead_id: leadId } as never),
     ])
 
+    const failures = relatedResults.filter(r => r.status === 'rejected')
+    if (failures.length > 0) {
+      console.error('Partial lead initialization failure:', failures.map(f =>
+        f.status === 'rejected' ? f.reason : null
+      ))
+    }
+
+    // If ALL related record inserts failed, clean up the orphaned lead
+    if (failures.length === relatedResults.length) {
+      await supabase.from('leads').delete().eq('id', leadId)
+      return NextResponse.json(
+        { error: 'Failed to initialize lead' },
+        { status: 500 }
+      )
+    }
+
     // Trigger lead_created workflows (async, don't wait)
+    const source = parsed.data.source || 'web_funnel'
     triggerWorkflows('lead_created', {
       leadId,
-      data: {
-        source: parsed.data.source || 'web_funnel',
-      },
+      data: { source },
     }).catch(err => console.error('Failed to trigger lead_created workflows:', err))
+
+    // Fire-and-forget notifications
+    notifyAdmins('lead_new', 'New Lead Submitted', `New lead from ${source}`, `/leads/${leadId}`)
+      .catch(err => console.error('Failed to notify admins of new lead:', err))
+    notifyNewLead({ leadId, source, createdAt: new Date().toISOString() })
+      .catch(err => console.error('Failed to send new lead email:', err))
 
     return NextResponse.json(
       { lead },

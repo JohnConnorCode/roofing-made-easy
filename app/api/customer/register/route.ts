@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient, createClient } from '@/lib/supabase/server'
 import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
+import { notifyAdmins } from '@/lib/notifications'
+import { sendWelcomeEmail } from '@/lib/email/notifications'
+import { logCommunication } from '@/lib/communication/log-direct-send'
 import { z } from 'zod'
 
 // Validation schema for customer registration
@@ -12,6 +15,7 @@ const registerSchema = z.object({
   phone: z.string().max(20).optional(),
   consentMarketing: z.boolean().optional(),
   leadId: z.string().uuid().optional(),
+  source: z.string().max(50).optional(),
 })
 
 export async function POST(request: NextRequest) {
@@ -40,6 +44,7 @@ export async function POST(request: NextRequest) {
       phone,
       consentMarketing,
       leadId,
+      source,
     } = validation.data
 
     // Security: Verify the authUserId matches the authenticated user
@@ -77,6 +82,7 @@ export async function POST(request: NextRequest) {
         notification_preferences: {
           email: consentMarketing ?? true,
           sms: false,
+          ...(source ? { signup_source: source } : {}),
         },
       } as never)
       .select()
@@ -92,6 +98,7 @@ export async function POST(request: NextRequest) {
     }
 
     // If leadId provided, link the lead to this customer
+    let leadLinked = true
     if (leadId && !leadId.startsWith('demo-') && customer) {
       const { error: linkError } = await supabase
         .from('customer_leads' as never)
@@ -102,11 +109,34 @@ export async function POST(request: NextRequest) {
         } as never)
 
       if (linkError) {
-        // Don't fail the registration - lead link will be retried later
+        leadLinked = false
+        console.error('Failed to link customer to lead:', {
+          customerId: customer.id,
+          leadId,
+          error: linkError.message,
+          code: linkError.code,
+        })
       }
     }
 
-    return NextResponse.json({ customer }, { status: 201 })
+    // Fire-and-forget notifications
+    const custName = `${firstName || ''} ${lastName || ''}`.trim() || email
+    sendWelcomeEmail({ email, firstName: firstName || undefined, leadId: leadId || undefined })
+      .then(() => {
+        logCommunication({
+          channel: 'email', to: email, subject: 'Welcome',
+          leadId: leadId || undefined, category: 'welcome',
+        }).catch(() => {})
+      })
+      .catch(err => console.error('Failed to send welcome email:', err))
+    notifyAdmins(
+      'customer_registered',
+      'New Customer Registered',
+      `${custName} (${email})`,
+      '/customers'
+    ).catch(err => console.error('Failed to notify admins of registration:', err))
+
+    return NextResponse.json({ customer, leadLinked }, { status: 201 })
   } catch {
     return NextResponse.json(
       { error: 'Internal server error' },

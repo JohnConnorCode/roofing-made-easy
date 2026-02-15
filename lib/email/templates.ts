@@ -2,6 +2,7 @@
 // Using inline styles for maximum email client compatibility
 
 import { EMAIL_COLORS, EMAIL_FONTS, getEmailCompanyInfo } from './brand-config'
+import { escapeHtml } from '@/lib/communication/template-renderer'
 
 // Re-export for backwards compatibility
 const BRAND_COLORS = EMAIL_COLORS
@@ -93,8 +94,8 @@ function infoRow(label: string, value: string | null | undefined): string {
   if (!value) return ''
   return `
     <tr>
-      <td style="padding: 8px 0; color: ${BRAND_COLORS.textLight}; font-size: 14px; width: 120px; vertical-align: top;">${label}</td>
-      <td style="padding: 8px 0; color: ${BRAND_COLORS.text}; font-size: 14px; font-weight: 500;">${value}</td>
+      <td style="padding: 8px 0; color: ${BRAND_COLORS.textLight}; font-size: 14px; width: 120px; vertical-align: top;">${escapeHtml(label)}</td>
+      <td style="padding: 8px 0; color: ${BRAND_COLORS.text}; font-size: 14px; font-weight: 500;">${escapeHtml(value)}</td>
     </tr>
   `
 }
@@ -388,7 +389,7 @@ export async function customerEstimateEmail(data: CustomerEstimateEmailData): Pr
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
       <tr>
         <td>
-          <h2 style="margin: 0 0 8px; color: ${BRAND_COLORS.ink}; font-size: 20px; font-weight: 600;">Hi ${firstName}!</h2>
+          <h2 style="margin: 0 0 8px; color: ${BRAND_COLORS.ink}; font-size: 20px; font-weight: 600;">Hi ${escapeHtml(firstName)}!</h2>
           <p style="margin: 0 0 24px; color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6;">
             Thank you for requesting an estimate for your roofing project. Based on the information you provided, here's your personalized estimate:
           </p>
@@ -546,7 +547,7 @@ export async function contactConfirmationEmail(data: ContactConfirmationEmailDat
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
       <tr>
         <td>
-          <h2 style="margin: 0 0 8px; color: ${BRAND_COLORS.ink}; font-size: 20px; font-weight: 600;">Thanks for reaching out, ${firstName}!</h2>
+          <h2 style="margin: 0 0 8px; color: ${BRAND_COLORS.ink}; font-size: 20px; font-weight: 600;">Thanks for reaching out, ${escapeHtml(firstName)}!</h2>
           <p style="margin: 0 0 24px; color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6;">
             We've received your message and will get back to you within 24 hours. In the meantime, here's a copy of what you sent us:
           </p>
@@ -556,9 +557,9 @@ export async function contactConfirmationEmail(data: ContactConfirmationEmailDat
       <!-- Message Copy -->
       <tr>
         <td style="padding: 20px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid ${BRAND_COLORS.gold};">
-          ${data.subject ? `<p style="margin: 0 0 8px; color: ${BRAND_COLORS.textLight}; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Subject</p><p style="margin: 0 0 16px; color: ${BRAND_COLORS.text}; font-size: 14px; font-weight: 500;">${data.subject}</p>` : ''}
+          ${data.subject ? `<p style="margin: 0 0 8px; color: ${BRAND_COLORS.textLight}; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Subject</p><p style="margin: 0 0 16px; color: ${BRAND_COLORS.text}; font-size: 14px; font-weight: 500;">${escapeHtml(data.subject)}</p>` : ''}
           <p style="margin: 0 0 8px; color: ${BRAND_COLORS.textLight}; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Your Message</p>
-          <p style="margin: 0; color: ${BRAND_COLORS.text}; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${data.message}</p>
+          <p style="margin: 0; color: ${BRAND_COLORS.text}; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(data.message)}</p>
         </td>
       </tr>
 
@@ -660,9 +661,9 @@ export async function contactAdminNotificationEmail(data: ContactAdminNotificati
       <!-- Message -->
       <tr>
         <td style="padding: 20px; background-color: #f8fafc; border-radius: 8px; margin-top: 16px;">
-          ${data.subject ? `<p style="margin: 0 0 8px; color: ${BRAND_COLORS.ink}; font-size: 14px; font-weight: 600;">Subject: ${data.subject}</p>` : ''}
-          <p style="margin: 0 0 8px; color: ${BRAND_COLORS.ink}; font-size: 14px; font-weight: 600;">${data.subject ? 'Message' : 'Message'}</p>
-          <p style="margin: 0; color: ${BRAND_COLORS.text}; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${data.message}</p>
+          ${data.subject ? `<p style="margin: 0 0 8px; color: ${BRAND_COLORS.ink}; font-size: 14px; font-weight: 600;">Subject: ${escapeHtml(data.subject)}</p>` : ''}
+          <p style="margin: 0 0 8px; color: ${BRAND_COLORS.ink}; font-size: 14px; font-weight: 600;">Message</p>
+          <p style="margin: 0; color: ${BRAND_COLORS.text}; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(data.message)}</p>
         </td>
       </tr>
 
@@ -712,10 +713,10 @@ export async function dailyDigestEmail(data: DailyDigestEmailData): Promise<{ su
 
   const leadRows = data.leads.slice(0, 10).map(lead => `
     <tr>
-      <td style="padding: 12px 8px; border-bottom: 1px solid #e2e8f0; color: ${BRAND_COLORS.text}; font-size: 14px;">${lead.name || 'No name'}</td>
-      <td style="padding: 12px 8px; border-bottom: 1px solid #e2e8f0; color: ${BRAND_COLORS.textLight}; font-size: 14px;">${lead.city || '-'}</td>
+      <td style="padding: 12px 8px; border-bottom: 1px solid #e2e8f0; color: ${BRAND_COLORS.text}; font-size: 14px;">${escapeHtml(lead.name || 'No name')}</td>
+      <td style="padding: 12px 8px; border-bottom: 1px solid #e2e8f0; color: ${BRAND_COLORS.textLight}; font-size: 14px;">${escapeHtml(lead.city || '-')}</td>
       <td style="padding: 12px 8px; border-bottom: 1px solid #e2e8f0; font-size: 14px;">
-        <span style="display: inline-block; padding: 2px 8px; background-color: #f1f5f9; color: ${BRAND_COLORS.text}; font-size: 12px; border-radius: 4px;">${lead.status.replace(/_/g, ' ')}</span>
+        <span style="display: inline-block; padding: 2px 8px; background-color: #f1f5f9; color: ${BRAND_COLORS.text}; font-size: 12px; border-radius: 4px;">${escapeHtml(lead.status.replace(/_/g, ' '))}</span>
       </td>
       <td style="padding: 12px 8px; border-bottom: 1px solid #e2e8f0; color: ${BRAND_COLORS.text}; font-size: 14px; text-align: right;">${lead.estimateValue ? formatCurrency(lead.estimateValue) : '-'}</td>
     </tr>
@@ -846,7 +847,7 @@ export async function consultationReminderEmail(data: ConsultationReminderEmailD
       <tr>
         <td style="padding-bottom: 24px;">
           <p style="margin: 0 0 16px; color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6;">
-            Hi ${customerName},
+            Hi ${escapeHtml(customerName)},
           </p>
           <p style="margin: 0; color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6;">
             This is a friendly reminder that your roofing consultation is scheduled for <strong>tomorrow</strong>.
@@ -879,14 +880,14 @@ export async function consultationReminderEmail(data: ConsultationReminderEmailD
                   <tr>
                     <td style="padding: 8px 0;">
                       <p style="margin: 0; color: ${BRAND_COLORS.textLight}; font-size: 14px;">Location</p>
-                      <p style="margin: 4px 0 0; color: ${BRAND_COLORS.ink}; font-size: 16px; font-weight: 600;">${locationText}</p>
+                      <p style="margin: 4px 0 0; color: ${BRAND_COLORS.ink}; font-size: 16px; font-weight: 600;">${escapeHtml(locationText)}</p>
                     </td>
                   </tr>
                   ${data.consultantName ? `
                   <tr>
                     <td style="padding: 8px 0;">
                       <p style="margin: 0; color: ${BRAND_COLORS.textLight}; font-size: 14px;">Your Consultant</p>
-                      <p style="margin: 4px 0 0; color: ${BRAND_COLORS.ink}; font-size: 16px; font-weight: 600;">${data.consultantName}</p>
+                      <p style="margin: 4px 0 0; color: ${BRAND_COLORS.ink}; font-size: 16px; font-weight: 600;">${escapeHtml(data.consultantName)}</p>
                     </td>
                   </tr>
                   ` : ''}
@@ -1007,7 +1008,7 @@ export async function welcomeEmail(data: WelcomeEmailData): Promise<{ subject: s
       <tr>
         <td style="padding-bottom: 24px;">
           <p style="margin: 0 0 16px; color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6;">
-            Hi ${firstName},
+            Hi ${escapeHtml(firstName)},
           </p>
           <p style="margin: 0; color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6;">
             Thank you for getting an estimate with us! We've created a customer portal account for you
@@ -1050,7 +1051,7 @@ export async function welcomeEmail(data: WelcomeEmailData): Promise<{ subject: s
       <tr>
         <td style="padding: 20px; background-color: #f8fafc; border-radius: 8px; border-left: 4px solid ${BRAND_COLORS.gold};">
           <p style="margin: 0 0 8px; color: ${BRAND_COLORS.textLight}; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">Your Account Email</p>
-          <p style="margin: 0; color: ${BRAND_COLORS.ink}; font-size: 16px; font-weight: 500;">${data.email}</p>
+          <p style="margin: 0; color: ${BRAND_COLORS.ink}; font-size: 16px; font-weight: 500;">${escapeHtml(data.email)}</p>
         </td>
       </tr>
 
@@ -1136,7 +1137,7 @@ export async function paymentReceivedEmail(data: PaymentReceivedEmailData): Prom
       <tr>
         <td style="padding-bottom: 24px;">
           <p style="margin: 0; color: ${BRAND_COLORS.text}; font-size: 16px; line-height: 1.6; text-align: center;">
-            Hi ${customerName}, thank you for your payment! We've successfully received your ${paymentLabel.toLowerCase()}.
+            Hi ${escapeHtml(customerName)}, thank you for your payment! We've successfully received your ${paymentLabel.toLowerCase()}.
           </p>
         </td>
       </tr>
@@ -1158,7 +1159,7 @@ export async function paymentReceivedEmail(data: PaymentReceivedEmailData): Prom
                   <tr>
                     <td style="padding-top: 16px;">
                       <p style="margin: 0; color: ${BRAND_COLORS.textLight}; font-size: 14px;">Project Address</p>
-                      <p style="margin: 4px 0 0; color: ${BRAND_COLORS.ink}; font-size: 16px;">${locationText}</p>
+                      <p style="margin: 4px 0 0; color: ${BRAND_COLORS.ink}; font-size: 16px;">${escapeHtml(locationText)}</p>
                     </td>
                   </tr>
                   ` : ''}
@@ -1166,7 +1167,7 @@ export async function paymentReceivedEmail(data: PaymentReceivedEmailData): Prom
                   <tr>
                     <td style="padding-top: 16px;">
                       <p style="margin: 0; color: ${BRAND_COLORS.textLight}; font-size: 14px;">Project</p>
-                      <p style="margin: 4px 0 0; color: ${BRAND_COLORS.ink}; font-size: 16px;">${data.projectDescription}</p>
+                      <p style="margin: 4px 0 0; color: ${BRAND_COLORS.ink}; font-size: 16px;">${escapeHtml(data.projectDescription)}</p>
                     </td>
                   </tr>
                   ` : ''}

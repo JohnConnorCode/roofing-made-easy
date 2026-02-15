@@ -43,6 +43,39 @@ export interface CustomerState {
   // Assistance programs
   eligiblePrograms: AssistanceProgram[]
   programApplications: CustomerProgramApplication[]
+
+  // Jobs
+  jobs: CustomerJob[]
+}
+
+// Job with status history for customer portal
+export interface CustomerJob {
+  id: string
+  job_number: string
+  lead_id: string | null
+  customer_id: string | null
+  status: string
+  scheduled_start: string | null
+  scheduled_end: string | null
+  actual_start: string | null
+  actual_end: string | null
+  contract_amount: number
+  property_address: string | null
+  property_city: string | null
+  property_state: string | null
+  warranty_start_date: string | null
+  warranty_end_date: string | null
+  warranty_type: string | null
+  notes: string | null
+  created_at: string
+  updated_at: string
+  status_history: Array<{
+    id: string
+    old_status: string | null
+    new_status: string
+    notes: string | null
+    created_at: string
+  }>
 }
 
 export interface CustomerActions {
@@ -75,6 +108,9 @@ export interface CustomerActions {
   addProgramApplication: (application: CustomerProgramApplication) => void
   updateProgramApplication: (id: string, updates: Partial<CustomerProgramApplication>) => void
 
+  // Jobs
+  setJobs: (jobs: CustomerJob[]) => void
+
   // Reset
   resetCustomerStore: () => void
 }
@@ -89,6 +125,7 @@ const initialState: CustomerState = {
   insuranceClaims: [],
   eligiblePrograms: [],
   programApplications: [],
+  jobs: [],
 }
 
 export const useCustomerStore = create<CustomerState & CustomerActions>()(
@@ -153,6 +190,9 @@ export const useCustomerStore = create<CustomerState & CustomerActions>()(
         ),
       })),
 
+      // Jobs
+      setJobs: (jobs) => set({ jobs }),
+
       // Reset
       resetCustomerStore: () => set(initialState),
     }),
@@ -177,6 +217,7 @@ export const useFinancingApplications = () => useCustomerStore((state) => state.
 export const useInsuranceClaims = () => useCustomerStore((state) => state.insuranceClaims)
 export const useEligiblePrograms = () => useCustomerStore((state) => state.eligiblePrograms)
 export const useProgramApplications = () => useCustomerStore((state) => state.programApplications)
+export const useJobs = () => useCustomerStore((state) => state.jobs)
 
 // Derived selectors
 export const useSelectedLead = () => useCustomerStore((state) =>
@@ -197,4 +238,8 @@ export const useInsuranceClaimForLead = (leadId: string) => useCustomerStore((st
 
 export const useProgramApplicationsForLead = (leadId: string) => useCustomerStore((state) =>
   state.programApplications.filter((a) => a.lead_id === leadId)
+)
+
+export const useJobsForLead = (leadId: string) => useCustomerStore((state) =>
+  state.jobs.filter((j) => j.lead_id === leadId)
 )

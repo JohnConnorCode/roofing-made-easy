@@ -30,10 +30,17 @@ import {
   MessageSquare,
   TrendingUp,
   Globe,
+  Hammer,
+  CalendarDays,
+  Bell,
+  BarChart3,
+  PieChart,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { AdminLogo } from '@/components/ui/admin-logo'
+import { NotificationBell } from '@/components/admin/notification-bell'
+import { GlobalSearch } from '@/components/admin/global-search'
 import {
   getNavClasses,
   getChildNavClasses,
@@ -61,6 +68,8 @@ const NAV_ITEMS: NavItem[] = [
       { href: '/messages', label: 'Messages', icon: MessageSquare },
     ],
   },
+  { href: '/jobs', label: 'Jobs', icon: Hammer },
+  { href: '/calendar', label: 'Calendar', icon: CalendarDays },
   { href: '/tasks', label: 'Tasks', icon: CheckSquare },
   { href: '/customers', label: 'Customers', icon: Users2 },
   { href: '/team', label: 'Team', icon: UserCog },
@@ -82,6 +91,16 @@ const NAV_ITEMS: NavItem[] = [
       { href: '/rate-management/geographic', label: 'Geographic', icon: Map },
       { href: '/line-items', label: 'Line Items', icon: Tag },
       { href: '/macros', label: 'Estimate Templates', icon: FileText },
+    ],
+  },
+  {
+    href: '/reports',
+    label: 'Reports',
+    icon: BarChart3,
+    children: [
+      { href: '/reports', label: 'Overview', icon: PieChart },
+      { href: '/reports/revenue', label: 'Revenue', icon: TrendingUp },
+      { href: '/reports/aging', label: 'AR Aging', icon: DollarSign },
     ],
   },
   { href: '/settings', label: 'Settings', icon: Settings },
@@ -236,12 +255,16 @@ export default function AdminLayoutClient({
       {/* Mobile header */}
       <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-slate-800 px-4 md:hidden">
         <AdminLogo size="sm" />
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 text-white"
-        >
-          {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <GlobalSearch />
+          <NotificationBell />
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-white"
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </header>
 
       {/* Mobile menu */}
@@ -266,8 +289,12 @@ export default function AdminLayoutClient({
         {/* Desktop sidebar */}
         <aside className="hidden w-64 shrink-0 border-r bg-slate-800 md:block">
           <div className="sticky top-0 flex h-screen flex-col">
-            <div className="flex h-16 items-center border-b border-slate-700 px-6">
+            <div className="flex h-16 items-center justify-between border-b border-slate-700 px-6">
               <AdminLogo size="sm" />
+              <div className="flex items-center gap-1">
+                <GlobalSearch />
+                <NotificationBell />
+              </div>
             </div>
 
             <nav className="flex-1 overflow-y-auto p-4">

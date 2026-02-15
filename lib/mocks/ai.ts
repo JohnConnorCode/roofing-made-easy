@@ -339,12 +339,35 @@ export class MockAiProvider implements AiProvider {
     const startTime = Date.now()
     await simulateDelay()
 
+    const topicActions: Record<string, { message: string; suggestedActions: AdvisorResult['suggestedActions'] }> = {
+      financing: {
+        message: 'Based on your estimate, there are several financing paths that could work well. We offer competitive rates and flexible terms. Our team can walk you through the options and help you find the best fit for your budget.',
+        suggestedActions: [
+          { label: 'Schedule a Free Consultation', href: '/contact' },
+          { label: 'Explore Insurance Options', href: '/portal/insurance' },
+        ],
+      },
+      insurance: {
+        message: "It looks like your property may have storm damage. The first step is documenting everything with dated photos, then filing a claim with your insurance company. We can guide you through the entire process.",
+        suggestedActions: [
+          { label: 'Schedule a Free Consultation', href: '/contact' },
+          { label: 'Explore Assistance Programs', href: '/portal/assistance' },
+        ],
+      },
+      assistance: {
+        message: 'There are several federal and state programs that could help cover your roofing costs. Grants are the best option since they don\'t need to be repaid. Let\'s find the ones you qualify for.',
+        suggestedActions: [
+          { label: 'Schedule a Free Consultation', href: '/contact' },
+          { label: 'Explore Financing Options', href: '/portal/financing' },
+        ],
+      },
+    }
+
+    const response = topicActions[input.topic] || topicActions.financing
+
     return {
       success: true,
-      data: {
-        message: `Mock advisor response for ${input.topic}. In production, this would provide personalized guidance.`,
-        suggestedActions: [{ label: 'Learn More', href: `/portal/${input.topic === 'assistance' ? 'assistance' : input.topic}` }],
-      },
+      data: response,
       provider: this.name,
       latencyMs: Date.now() - startTime,
       model: 'mock-advisor-v1',
@@ -356,7 +379,11 @@ export class MockAiProvider implements AiProvider {
 export const mockAiProvider = new MockAiProvider()
 
 // Check if we should use mock AI
+// In production, never use mocks — require real API keys or let the fallback provider handle it
 export function shouldUseMockAi(): boolean {
+  if (process.env.NODE_ENV === 'production') {
+    return false
+  }
   return (
     process.env.NEXT_PUBLIC_MOCK_MODE === 'true' ||
     (!process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY)

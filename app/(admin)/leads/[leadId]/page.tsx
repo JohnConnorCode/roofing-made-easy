@@ -27,6 +27,7 @@ import {
   Mail,
   Download,
   Send,
+  Hammer,
 } from 'lucide-react'
 import { SkeletonLeadDetail } from '@/components/ui/skeleton'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
@@ -35,6 +36,7 @@ import { LeadNotes } from '@/components/admin/lead-notes'
 import { FollowUpReminder } from '@/components/admin/follow-up-reminder'
 import { QuoteGenerator } from '@/components/admin/quote-generator'
 import { PhotoGallery } from '@/components/admin/photo-gallery'
+import { CommunicationTimeline } from '@/components/admin/communication-timeline'
 
 interface LeadDetail {
   id: string
@@ -335,6 +337,13 @@ export default function LeadDetailPage() {
             {scoreTier.emoji && <span>{scoreTier.emoji}</span>}
             {scoreTier.label} ({leadScore.score})
           </div>
+          {lead.status === 'won' && (
+            <Link href={`/jobs?create_from_lead=${lead.id}`}>
+              <Button variant="primary" size="sm" leftIcon={<Hammer className="h-4 w-4" />}>
+                Create Job
+              </Button>
+            </Link>
+          )}
           <Select
             options={STATUS_OPTIONS}
             value={lead.status}
@@ -622,6 +631,19 @@ export default function LeadDetailPage() {
               leadId={lead.id}
               leadName={`${contact?.first_name || ''} ${contact?.last_name || ''}`.trim() || 'Lead'}
             />
+          </CardContent>
+        </Card>
+
+        {/* Communications */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Mail className="h-5 w-5" />
+              Communications
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CommunicationTimeline leadId={lead.id} />
           </CardContent>
         </Card>
 

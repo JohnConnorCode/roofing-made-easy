@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
 import { checkRateLimitAsync, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { generateEligibilityGuidance } from '@/lib/ai'
 import { z } from 'zod'
+import { persistAiContent } from '@/lib/ai/persist-content'
+import { requireCustomer } from '@/lib/api/auth'
 
 const guidanceSchema = z.object({
   eligiblePrograms: z.array(z.object({
@@ -31,12 +32,8 @@ export async function POST(request: NextRequest) {
       return rateLimitResponse(rateLimitResult)
     }
 
-    const supabase = await createClient()
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const { customerId, error: authError } = await requireCustomer()
+    if (authError) return authError
 
     const body = await request.json()
     const parsed = guidanceSchema.safeParse(body)
@@ -55,6 +52,22 @@ export async function POST(request: NextRequest) {
         { error: result.error || 'AI generation failed' },
         { status: 500 }
       )
+    }
+
+    // Persist AI response (fire-and-forget)
+    if (customerId) {
+      persistAiContent({
+        customerId,
+        contentType: 'program_guidance',
+        topic: 'assistance',
+        content: result.data as unknown as Record<string, unknown>,
+        provider: result.provider,
+        inputContext: {
+          programCount: parsed.data.eligiblePrograms.length,
+          state: parsed.data.userContext.state,
+          estimateAmount: parsed.data.estimateAmount,
+        },
+      })
     }
 
     return NextResponse.json({

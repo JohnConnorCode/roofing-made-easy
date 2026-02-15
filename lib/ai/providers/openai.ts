@@ -16,7 +16,7 @@ import type {
   AdvisorInput,
   AdvisorResult,
 } from '../provider'
-import { buildSystemPrompt } from '../advisor'
+import { buildSystemPrompt, parseAdvisorResponse } from '../advisor'
 
 const PHOTO_ANALYSIS_PROMPT = `You are analyzing a photo that may be of a roof. Analyze the image and provide a structured assessment.
 
@@ -506,14 +506,12 @@ Prioritize and explain which to apply for first and why.`,
         max_tokens: 1000,
       })
 
-      const content = response.choices[0]?.message?.content || ''
+      const rawContent = response.choices[0]?.message?.content || ''
+      const parsed = parseAdvisorResponse(rawContent, input.businessConfig)
 
       return {
         success: true,
-        data: {
-          message: content,
-          suggestedActions: [],
-        },
+        data: parsed,
         provider: this.name,
         latencyMs: Date.now() - startTime,
         model: 'gpt-4o',

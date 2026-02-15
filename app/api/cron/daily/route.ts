@@ -16,6 +16,9 @@ import { createClient } from '@/lib/supabase/server'
 import { sendEmail } from '@/lib/communication/send-email'
 import { sendSMS } from '@/lib/communication/send-sms'
 import { emailWrapper } from '@/lib/email/templates'
+import { notifyUser } from '@/lib/notifications'
+import { sendConsultationReminderEmail } from '@/lib/email/notifications'
+import { sendConsultationReminder as sendConsultationReminderSms } from '@/lib/sms/twilio'
 
 const CRON_SECRET = process.env.CRON_SECRET
 const ABANDONED_UPLOAD_HOURS = 24
@@ -62,7 +65,24 @@ export async function GET(request: NextRequest) {
     })
   }
 
-  // Task 2: Cleanup Abandoned Uploads
+  // Task 2: Send Calendar Reminders (24h before)
+  try {
+    const reminderResult = await sendCalendarReminders(supabase)
+    results.push({
+      task: 'calendar_reminders',
+      success: true,
+      details: reminderResult,
+    })
+  } catch (error) {
+    results.push({
+      task: 'calendar_reminders',
+      success: false,
+      details: {},
+      error: error instanceof Error ? error.message : 'Unknown error',
+    })
+  }
+
+  // Task 3: Cleanup Abandoned Uploads (was Task 2)
   try {
     const cleanupResult = await cleanupAbandonedUploads(supabase)
     results.push({
@@ -219,6 +239,74 @@ async function processScheduledMessages(
         .eq('id', msg.id)
       results.failed++
     }
+  }
+
+  return results
+}
+
+async function sendCalendarReminders(
+  supabase: Awaited<ReturnType<typeof createClient>>
+): Promise<{ checked: number; sent: number }> {
+  const now = new Date()
+  const in24h = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+  const in25h = new Date(now.getTime() + 25 * 60 * 60 * 1000)
+
+  const results = { checked: 0, sent: 0 }
+
+  // Find calendar events starting in the next 24-25 hours that haven't had reminders sent
+  const { data: events, error } = await supabase
+    .from('calendar_events')
+    .select('id, title, start_at, lead_id, assigned_to, attendee_email, attendee_phone, attendee_name')
+    .gte('start_at', in24h.toISOString())
+    .lte('start_at', in25h.toISOString())
+    .eq('reminder_sent', false)
+    .limit(50)
+
+  if (error || !events || events.length === 0) {
+    return results
+  }
+
+  results.checked = events.length
+
+  for (const event of events) {
+    const evt = event as {
+      id: string; title: string; start_at: string; lead_id?: string; assigned_to?: string
+      attendee_email?: string; attendee_phone?: string; attendee_name?: string
+    }
+
+    const startDate = new Date(evt.start_at)
+    const dateStr = startDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+    const timeStr = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+
+    // Notify the assigned user
+    if (evt.assigned_to) {
+      notifyUser(evt.assigned_to, 'calendar_reminder', `Reminder: ${evt.title}`, `Tomorrow at ${timeStr}`, `/calendar`)
+        .catch(() => {})
+    }
+
+    // Email attendee
+    if (evt.attendee_email) {
+      sendConsultationReminderEmail({
+        customerEmail: evt.attendee_email,
+        customerName: evt.attendee_name || undefined,
+        consultationDate: dateStr,
+        consultationTime: timeStr,
+      }).catch(() => {})
+    }
+
+    // SMS attendee
+    if (evt.attendee_phone) {
+      sendConsultationReminderSms(evt.attendee_phone, evt.attendee_name || 'there', dateStr, timeStr)
+        .catch(() => {})
+    }
+
+    // Mark reminder as sent
+    await supabase
+      .from('calendar_events')
+      .update({ reminder_sent: true } as never)
+      .eq('id', evt.id)
+
+    results.sent++
   }
 
   return results

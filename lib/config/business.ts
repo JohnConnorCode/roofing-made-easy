@@ -294,5 +294,32 @@ export function isProductionReady(): boolean {
          BUSINESS_CONFIG.address.isReal
 }
 
+/**
+ * Structured config warnings for admin settings page setup checklist
+ */
+export interface ConfigWarning {
+  field: string
+  label: string
+  severity: 'critical' | 'recommended' | 'optional'
+  configured: boolean
+}
+
+export function getConfigWarnings(): ConfigWarning[] {
+  return [
+    { field: 'phone', label: 'Business phone number', severity: 'critical', configured: BUSINESS_CONFIG.phone.isReal },
+    { field: 'address', label: 'Business address', severity: 'critical', configured: BUSINESS_CONFIG.address.isReal },
+    { field: 'coordinates', label: 'GPS coordinates', severity: 'recommended', configured: BUSINESS_CONFIG.coordinates.lat !== 34.2576 || BUSINESS_CONFIG.coordinates.lng !== -88.7034 },
+    { field: 'social.googleBusiness', label: 'Google Business profile', severity: 'recommended', configured: BUSINESS_CONFIG.social.googleBusiness !== null },
+    { field: 'social.facebook', label: 'Facebook page', severity: 'optional', configured: BUSINESS_CONFIG.social.facebook !== null },
+    { field: 'verification.google', label: 'Google Search Console', severity: 'recommended', configured: BUSINESS_CONFIG.verification.google !== null },
+    { field: 'credentials.stateLicensed', label: 'State contractor license', severity: 'recommended', configured: BUSINESS_CONFIG.credentials.stateLicensed },
+    { field: 'credentials.stateContractorLicense', label: 'License number', severity: 'recommended', configured: BUSINESS_CONFIG.credentials.stateContractorLicense !== null },
+    { field: 'reviews.googleRating', label: 'Google reviews', severity: 'recommended', configured: BUSINESS_CONFIG.reviews.googleRating !== null },
+    { field: 'credentials.gafCertified', label: 'GAF certification', severity: 'optional', configured: BUSINESS_CONFIG.credentials.gafCertified },
+    { field: 'credentials.owensCorningPreferred', label: 'Owens Corning preferred', severity: 'optional', configured: BUSINESS_CONFIG.credentials.owensCorningPreferred },
+    { field: 'credentials.bbbAccredited', label: 'BBB accreditation', severity: 'optional', configured: BUSINESS_CONFIG.credentials.bbbAccredited },
+  ]
+}
+
 // Export type for use elsewhere
 export type BusinessConfig = typeof BUSINESS_CONFIG

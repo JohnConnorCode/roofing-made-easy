@@ -3,12 +3,14 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAdmin, parsePagination } from '@/lib/api/auth'
 import { z } from 'zod'
 import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
+import { notifyAdmins } from '@/lib/notifications'
 
 // Schema for creating an invoice
 const createInvoiceSchema = z.object({
   leadId: z.string().uuid(),
   customerId: z.string().uuid().optional(),
   estimateId: z.string().uuid().optional(),
+  jobId: z.string().uuid().optional(),
   paymentType: z.enum(['deposit', 'progress', 'final', 'adjustment']).default('deposit'),
   dueDate: z.string().optional(),
   taxRate: z.number().min(0).max(1).default(0),
@@ -42,6 +44,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
     const leadId = searchParams.get('leadId')
     const customerId = searchParams.get('customerId')
+    const jobId = searchParams.get('jobId')
     const { limit, offset } = parsePagination(searchParams)
 
     let query = supabase
@@ -67,6 +70,9 @@ export async function GET(request: NextRequest) {
     }
     if (customerId) {
       query = query.eq('customer_id', customerId)
+    }
+    if (jobId) {
+      query = query.eq('job_id', jobId)
     }
 
     const { data: invoices, error, count } = await query
@@ -164,6 +170,7 @@ export async function POST(request: NextRequest) {
         lead_id: parsed.data.leadId,
         customer_id: parsed.data.customerId || null,
         estimate_id: parsed.data.estimateId || null,
+        job_id: parsed.data.jobId || null,
         payment_type: parsed.data.paymentType,
         due_date: parsed.data.dueDate || null,
         tax_rate: parsed.data.taxRate,
@@ -224,6 +231,16 @@ export async function POST(request: NextRequest) {
       `)
       .eq('id', invoiceId)
       .single()
+
+    // Fire-and-forget notification
+    const inv = completeInvoice as { invoice_number?: string } | null
+    const billName = contact ? `${contact.first_name || ''} ${contact.last_name || ''}`.trim() : 'Customer'
+    notifyAdmins(
+      'invoice_created',
+      `New Invoice: ${inv?.invoice_number || 'Draft'}`,
+      `$${total.toLocaleString(undefined, { minimumFractionDigits: 2 })} for ${billName}`,
+      '/invoices'
+    ).catch(err => console.error('Failed to notify admins of invoice creation:', err))
 
     return NextResponse.json(
       { invoice: completeInvoice },

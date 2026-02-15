@@ -15,6 +15,7 @@ import type {
   AdvisorInput,
   AdvisorResult,
 } from '../provider'
+import { BUSINESS_CONFIG } from '@/lib/config/business'
 
 const CREDIT_RATES: Record<string, number> = {
   excellent: 6.99, good: 9.99, fair: 14.99, poor: 19.99, very_poor: 24.99,
@@ -30,16 +31,16 @@ export class FallbackProvider implements AiProvider {
   name = 'fallback' as const
 
   async analyzePhoto(_input: PhotoAnalysisInput): Promise<AiResult<PhotoAnalysisResult>> {
-    // Fallback returns a generic "unable to analyze" result
+    // Fallback cannot determine photo content — return negative to avoid false positives
     return {
       success: true,
       data: {
-        isRoofPhoto: true, // Assume it's a roof photo
-        confidence: 0.5,
+        isRoofPhoto: false,
+        confidence: 0,
         detectedMaterial: undefined,
         detectedIssues: [],
         estimatedCondition: undefined,
-        notes: 'Automatic analysis unavailable. Our team will review your photos manually.',
+        notes: 'Automatic analysis is temporarily unavailable. Our team will review your photos.',
       },
       provider: this.name,
       latencyMs: 0,
@@ -330,7 +331,16 @@ export class FallbackProvider implements AiProvider {
 
   async generateAdvisorResponse(input: AdvisorInput): Promise<AiResult<AdvisorResult>> {
     const topic = input.topic
+    // Use DB-loaded config if available, fall back to static
+    const phoneDisplay = input.businessConfig?.phone.display ?? BUSINESS_CONFIG.phone.display
+    const phoneRaw = input.businessConfig?.phone.raw ?? BUSINESS_CONFIG.phone.raw
+    const phoneHref = `tel:${phoneRaw.replace(/[^+\d]/g, '')}`
     let message: string
+    const portalLink = `/portal/${topic}`
+    const portalLabel = topic === 'financing' ? 'Explore Financing Options'
+      : topic === 'insurance' ? 'Explore Insurance Options'
+      : 'Explore Assistance Programs'
+
     if (topic === 'financing') {
       message = 'For personalized financing guidance, please call our office. We can walk you through loan options and help find the best fit for your budget.'
     } else if (topic === 'insurance') {
@@ -341,7 +351,13 @@ export class FallbackProvider implements AiProvider {
 
     return {
       success: true,
-      data: { message, suggestedActions: [] },
+      data: {
+        message,
+        suggestedActions: [
+          { label: `Call ${phoneDisplay}`, href: phoneHref },
+          { label: portalLabel, href: portalLink },
+        ],
+      },
       provider: this.name,
       latencyMs: 0,
     }

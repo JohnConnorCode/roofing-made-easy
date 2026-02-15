@@ -4,6 +4,7 @@ import { checkRateLimitAsync, getClientIP, rateLimitResponse } from '@/lib/rate-
 import { generateInsuranceLetter } from '@/lib/ai'
 import type { InsuranceLetterInput } from '@/lib/ai/provider'
 import { z } from 'zod'
+import { persistAiContent } from '@/lib/ai/persist-content'
 
 const letterSchema = z.object({
   letterType: z.enum(['initial_claim', 'supplement', 'appeal']),
@@ -143,6 +144,17 @@ export async function POST(request: NextRequest) {
     if (!result.success) {
       return NextResponse.json({ error: 'Failed to generate letter' }, { status: 500 })
     }
+
+    // Persist AI response (fire-and-forget)
+    persistAiContent({
+      customerId: customer.id,
+      leadId,
+      contentType: 'insurance_letter',
+      topic: 'insurance',
+      content: { letterType, letter: result.data },
+      provider: result.provider,
+      inputContext: { letterType, insuranceCompany: claim?.insurance_company },
+    })
 
     return NextResponse.json({
       letter: result.data,

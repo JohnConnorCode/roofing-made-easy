@@ -31,6 +31,7 @@ import {
   Search,
   MessageSquare,
   Handshake,
+  UserPlus,
 } from 'lucide-react'
 import type { RoofPitch, TimelineUrgency } from '@/lib/supabase/types'
 
@@ -113,6 +114,7 @@ export interface EstimateDocumentProps {
   onStartNew?: () => void
   calendlyUrl?: string
   isPublicView?: boolean
+  onCreateAccount?: () => void
   // Project details
   roofAgeYears?: number | null
   roofPitch?: RoofPitch | null
@@ -267,6 +269,7 @@ export function EstimateDocument({
   onStartNew,
   calendlyUrl,
   isPublicView,
+  onCreateAccount,
   // Project details
   roofAgeYears,
   roofPitch,
@@ -700,6 +703,34 @@ export function EstimateDocument({
           />
         </CardContent>
       </Card>
+
+      {/* ================================================================
+          SECTION 10b: CREATE ACCOUNT CTA - Convert funnel visitor to portal user
+          ================================================================ */}
+      {onCreateAccount && (
+        <Card className="border-[#3d7a5a]/30 bg-gradient-to-b from-[#3d7a5a]/10 to-[#161a23] print:hidden">
+          <CardContent className="p-6 text-center">
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#3d7a5a]/15 border border-[#3d7a5a]/30">
+              <UserPlus className="h-6 w-6 text-[#3d7a5a]" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-100 mb-2">
+              Save &amp; Track Your Project
+            </h3>
+            <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto">
+              Create a free account to access your estimate anytime, explore financing options, and track your project progress.
+            </p>
+            <Button
+              variant="primary"
+              size="lg"
+              className="bg-[#3d7a5a] hover:bg-[#4a9068] text-white border-0"
+              leftIcon={<UserPlus className="h-5 w-5" />}
+              onClick={onCreateAccount}
+            >
+              Create Free Account
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {/* ================================================================
           SECTION 11: UTILITY ACTIONS - PDF, Share

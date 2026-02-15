@@ -77,9 +77,11 @@ export async function POST(request: NextRequest) {
       submittedAt: submissionData.created_at,
       submissionId: submissionData.id,
     }).catch((err) => {
+      const [localPart, domain] = email.split('@')
+      const maskedEmail = localPart ? `${localPart[0]}***@${domain}` : '***'
       console.error('[Contact Form] Failed to send contact form emails:', {
         submissionId: submissionData.id,
-        email,
+        email: maskedEmail,
         error: err instanceof Error ? err.message : 'Unknown error',
       })
     })
