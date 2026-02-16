@@ -241,8 +241,8 @@ export function generateComparisonMeta({ city, path, image }: ComparisonMetaPara
 }
 
 // Generate service + city metadata
-export function generateServiceCityMeta({ serviceName, city, title, description, path, image }: ServiceMetaParams): Metadata {
-  const baseMeta = generateBaseMeta({ title, description, path, image })
+export function generateServiceCityMeta({ serviceName, city, title, description, path, image, noIndex }: ServiceMetaParams): Metadata {
+  const baseMeta = generateBaseMeta({ title, description, path, image, noIndex })
 
   const cityKeywords = city ? [
     `${serviceName.toLowerCase()} ${city.name}`,

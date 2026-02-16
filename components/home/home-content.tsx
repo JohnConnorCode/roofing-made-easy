@@ -81,31 +81,31 @@ export function HomePageContent() {
       <MobileCTABar />
 
       {/* HERO - Problem -> Solution */}
-      <section id="hero" className="relative overflow-hidden min-h-[480px] md:min-h-[700px] flex items-center">
+      <section id="hero" className="relative overflow-hidden min-h-[100svh] md:min-h-[700px] flex items-center">
         {/* Background Image */}
         <div className="absolute inset-0">
           <HeroSlider />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/90 via-[#0c0f14]/75 to-[#0c0f14]/95" />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-4 py-14 md:py-28">
+        <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 rounded-full glass-card border-[#c9a25c]/40 px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 text-[#c9a25c] mb-5 md:mb-6 animate-hero-badge">
+            <div className="inline-flex items-center gap-2 rounded-full glass-card border-[#c9a25c]/40 px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 text-[#c9a25c] mb-6 md:mb-6 animate-hero-badge">
               <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
               AI-powered from 50,000+ roofing projects
             </div>
 
-            <h1 className="text-3xl leading-tight font-bold tracking-tight text-slate-100 sm:text-5xl md:text-6xl lg:text-7xl animate-hero-title delay-100 font-display">
+            <h1 className="text-4xl leading-[1.1] font-bold tracking-tight text-slate-100 sm:text-5xl md:text-6xl lg:text-7xl animate-hero-title delay-100 font-display">
               Know Your Roof Cost
               <br className="sm:hidden" />
               {' '}in <span className="bg-gradient-to-r from-[#d4b06c] to-[#c9a25c] bg-clip-text text-transparent">2 Minutes</span>, Not 2 Weeks
             </h1>
 
-            <p className="mt-4 md:mt-6 text-base md:text-xl text-slate-300 leading-relaxed animate-hero-subtitle delay-200 max-w-3xl mx-auto">
+            <p className="mt-5 md:mt-6 text-base md:text-xl text-slate-300 leading-relaxed animate-hero-subtitle delay-200 max-w-3xl mx-auto">
               Stop guessing what your roof costs. Get a real estimate based on your actual roof and local prices—instantly.
             </p>
 
-            <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-hero-cta delay-300">
+            <div className="mt-10 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-hero-cta delay-300">
               <Button
                 variant="primary"
                 size="xl"
@@ -128,12 +128,12 @@ export function HomePageContent() {
             </div>
 
             {error && (
-              <div className="mt-4 bg-red-900/50 border border-red-700 rounded-lg px-4 py-3 text-center animate-fade-up">
-                <p className="text-red-200 text-sm">{error}</p>
+              <div className="mt-4 bg-red-950 border border-red-800 rounded-lg px-4 py-3 text-center animate-fade-up">
+                <p className="text-red-100 text-sm">{error}</p>
               </div>
             )}
 
-            <div className="mt-6 flex flex-col items-center gap-2 animate-hero-subtitle delay-400">
+            <div className="mt-8 flex flex-col items-center gap-3 animate-hero-subtitle delay-400">
               <div className="flex items-center gap-1.5">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-4 w-4 fill-[#c9a25c] text-[#c9a25c] star-glow" />
@@ -153,34 +153,34 @@ export function HomePageContent() {
 
       {/* Trust Bar - Left-aligned metrics with gold accent bars */}
       <section className="border-y border-slate-800 bg-ink">
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          <ScrollStagger simple className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0">
+        <div className="mx-auto max-w-6xl px-4 py-10 md:py-8">
+          <ScrollStagger simple className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0">
             <div className="flex items-center gap-4 md:first:pl-0 md:pl-8">
               <div className="h-10 w-1 rounded-full bg-gold flex-shrink-0" />
               <div>
                 <div className="text-3xl sm:text-4xl font-bold text-slate-100 font-display"><CountUp end={50000} suffix="+" /></div>
-                <div className="text-sm text-slate-500 mt-0.5">Estimates Generated</div>
+                <div className="text-sm text-slate-500 mt-1">Estimates Generated</div>
               </div>
             </div>
             <div className="flex items-center gap-4 md:pl-8 md:border-l md:border-slate-800/50">
               <div className="h-14 w-1 rounded-full bg-gold flex-shrink-0" />
               <div>
                 <div className="text-3xl sm:text-4xl font-bold text-slate-100 font-display"><CountUp end={92} suffix="%" /></div>
-                <div className="text-sm text-slate-500 mt-0.5">Within 15% of Final Quote</div>
+                <div className="text-sm text-slate-500 mt-1">Within 15% of Final Quote</div>
               </div>
             </div>
             <div className="flex items-center gap-4 md:pl-8 md:border-l md:border-slate-800/50">
               <div className="h-10 w-1 rounded-full bg-gold flex-shrink-0" />
               <div>
                 <div className="text-3xl sm:text-4xl font-bold text-slate-100 font-display"><CountUp end={2} suffix=" min" duration={1200} /></div>
-                <div className="text-sm text-slate-500 mt-0.5">Average Time to Estimate</div>
+                <div className="text-sm text-slate-500 mt-1">Average Time to Estimate</div>
               </div>
             </div>
             <div className="flex items-center gap-4 md:pl-8 md:border-l md:border-slate-800/50">
               <div className="h-14 w-1 rounded-full bg-gold flex-shrink-0" />
               <div>
                 <div className="text-3xl sm:text-4xl font-bold text-slate-100 font-display"><CountUp end={20} suffix="+ yrs" duration={1500} /></div>
-                <div className="text-sm text-slate-500 mt-0.5">Roofing Experience</div>
+                <div className="text-sm text-slate-500 mt-1">Roofing Experience</div>
               </div>
             </div>
           </ScrollStagger>

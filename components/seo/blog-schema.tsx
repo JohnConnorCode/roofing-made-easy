@@ -65,9 +65,9 @@ export function BlogPostingSchema({
       url: BASE_URL,
       logo: {
         '@type': 'ImageObject',
-        url: `${BASE_URL}/images/smart-roof-pricing-logo.png`,
-        width: 200,
-        height: 60,
+        url: `${BASE_URL}/images/og-default.jpg`,
+        width: 1200,
+        height: 630,
       },
     },
     mainEntityOfPage: {

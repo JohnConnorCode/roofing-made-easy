@@ -155,7 +155,7 @@ export function ComparisonArticleSchema({ city, pageUrl }: ComparisonArticleSche
       name: BUSINESS_CONFIG.name,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://www.smartroofpricing.com/images/smart-roof-pricing-logo.png'
+        url: 'https://www.smartroofpricing.com/images/og-default.jpg'
       }
     },
     // Only use dateModified - don't claim publication date without real date

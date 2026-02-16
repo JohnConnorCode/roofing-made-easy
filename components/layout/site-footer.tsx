@@ -9,6 +9,7 @@ import { useContact } from '@/lib/hooks/use-contact'
 import { useBusinessConfig } from '@/lib/config/business-provider'
 import { Logo } from '@/components/ui/logo'
 import { cn } from '@/lib/utils'
+import { isRealPortfolioData } from '@/lib/data/portfolio'
 
 const services = [
   { href: '/services/roof-replacement', label: 'Roof Replacement' },
@@ -19,7 +20,7 @@ const services = [
   { href: '/services/roof-maintenance', label: 'Maintenance' },
 ]
 
-const company = [
+const allCompanyLinks = [
   { href: '/about', label: 'About Us' },
   { href: '/portfolio', label: 'Our Work' },
   { href: '/blog', label: 'Blog' },
@@ -30,6 +31,10 @@ const company = [
   { href: '/contact', label: 'Contact' },
   { href: '/portal', label: 'My Account' },
 ]
+
+const company = isRealPortfolioData
+  ? allCompanyLinks
+  : allCompanyLinks.filter(link => link.href !== '/portfolio')
 
 function FooterColumnHeading({ title }: { title: string }) {
   return (

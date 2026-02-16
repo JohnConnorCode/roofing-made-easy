@@ -51,8 +51,8 @@ export function LocalBusinessSchema({
     '@id': `${url}/#organization`,
     url,
     priceRange,
-    image: `${url}/images/smart-roof-pricing-logo.png`,
-    logo: `${url}/images/smart-roof-pricing-logo.png`,
+    image: `${url}/images/og-default.jpg`,
+    logo: `${url}/images/og-default.jpg`,
     telephone: BUSINESS_CONFIG.phone.raw,
     address: {
       '@type': 'PostalAddress',

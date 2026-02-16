@@ -3,7 +3,13 @@
  *
  * Completed projects for the portfolio gallery.
  * Updated January 2026 with recent projects.
+ *
+ * IMPORTANT: Set isRealPortfolioData to true only when real project photos and data are available.
+ * Using placeholder portfolio data in production can hurt credibility and SEO.
  */
+
+// Set to true ONLY when you have real project photos and verified data
+export const isRealPortfolioData = false
 
 export interface PortfolioProject {
   id: string

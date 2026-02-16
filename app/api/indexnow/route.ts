@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/api/auth'
+import { isRealPortfolioData } from '@/lib/data/portfolio'
 
 const INDEXNOW_KEY = process.env.INDEXNOW_KEY || ''
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
@@ -20,7 +21,7 @@ export async function POST() {
     `${BASE_URL}/contact`,
     `${BASE_URL}/about`,
     `${BASE_URL}/blog`,
-    `${BASE_URL}/portfolio`,
+    ...(isRealPortfolioData ? [`${BASE_URL}/portfolio`] : []),
     `${BASE_URL}/financing`,
     `${BASE_URL}/insurance-help`,
     `${BASE_URL}/assistance-programs`,

@@ -8,8 +8,9 @@ import { Logo } from '@/components/ui/logo'
 import { useContact } from '@/lib/hooks/use-contact'
 import { useBusinessConfig, useHoursText } from '@/lib/config/business-provider'
 import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
+import { isRealPortfolioData } from '@/lib/data/portfolio'
 
-const navLinks = [
+const allNavLinks = [
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
   { href: '/service-areas', label: 'Service Areas' },
@@ -17,6 +18,10 @@ const navLinks = [
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
 ]
+
+const navLinks = isRealPortfolioData
+  ? allNavLinks
+  : allNavLinks.filter(link => link.href !== '/portfolio')
 
 const resourceLinks = [
   { href: '/financing', label: 'Financing Options', icon: CreditCard, description: 'Affordable payment plans' },

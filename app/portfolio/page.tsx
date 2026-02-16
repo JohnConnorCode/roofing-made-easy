@@ -1,12 +1,11 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { portfolioProjects } from '@/lib/data/portfolio'
+import { isRealPortfolioData, portfolioProjects } from '@/lib/data/portfolio'
 import {
   Home,
   ArrowRight,
   MapPin,
-  Calendar,
   Clock,
   Quote,
 } from 'lucide-react'
@@ -41,9 +40,48 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${BASE_URL}/portfolio`,
   },
+  ...(!isRealPortfolioData && {
+    robots: { index: false, follow: false },
+  }),
 }
 
 export default function PortfolioPage() {
+  if (!isRealPortfolioData) {
+    return (
+      <div className="min-h-screen bg-gradient-dark">
+        <SiteHeader />
+
+        <section className="py-24 md:py-32">
+          <div className="mx-auto max-w-2xl px-4 text-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#c9a25c]/15 border border-[#c9a25c]/30 mx-auto mb-6">
+              <Home className="h-8 w-8 text-[#c9a25c]" />
+            </div>
+            <h1 className="text-3xl font-bold text-slate-100 md:text-4xl">
+              Portfolio Coming Soon
+            </h1>
+            <p className="mt-4 text-lg text-slate-400 leading-relaxed">
+              We&apos;re putting together a showcase of our completed roofing projects across Northeast Mississippi. Check back soon to see our work.
+            </p>
+            <div className="mt-8">
+              <Link href="/">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
+                  rightIcon={<ArrowRight className="h-5 w-5" />}
+                >
+                  Get Free Estimate
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <SiteFooter />
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-dark">
       <SiteHeader />
@@ -119,8 +157,8 @@ export default function PortfolioPage() {
                   {project.testimonial && (
                     <div className="border-t border-slate-700 pt-4 mt-4">
                       <Quote className="h-4 w-4 text-[#c9a25c] mb-2" />
-                      <p className="text-slate-400 text-sm italic">"{project.testimonial.text}"</p>
-                      <p className="text-slate-500 text-xs mt-2">— {project.testimonial.author}</p>
+                      <p className="text-slate-400 text-sm italic">&ldquo;{project.testimonial.text}&rdquo;</p>
+                      <p className="text-slate-500 text-xs mt-2">&mdash; {project.testimonial.author}</p>
                     </div>
                   )}
                 </div>

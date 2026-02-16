@@ -3,6 +3,7 @@ import { getAllCities, getAllCounties } from '@/lib/data/ms-locations'
 import { getAllServices } from '@/lib/data/services'
 import { getAllBlogPosts } from '@/lib/data/blog'
 import { getAllServiceSlugs } from '@/lib/data/ms-services'
+import { isRealPortfolioData } from '@/lib/data/portfolio'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
@@ -44,12 +45,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    {
+    ...(isRealPortfolioData ? [{
       url: `${baseUrl}/portfolio`,
       lastModified: staticContentDate,
-      changeFrequency: 'weekly',
+      changeFrequency: 'weekly' as const,
       priority: 0.7,
-    },
+    }] : []),
     {
       url: `${baseUrl}/blog`,
       lastModified: staticContentDate,
