@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { BUSINESS_CONFIG, getPhoneDisplay } from '@/lib/config/business'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
@@ -163,11 +164,12 @@ export default function PrivacyPage() {
             </h2>
             <p>
               If you have any questions about this Privacy Policy or wish to exercise your rights,
-              please contact us:
+              please contact {BUSINESS_CONFIG.legalName}:
             </p>
             <ul className="list-none space-y-1 pl-0">
-              <li>By phone: Contact us using the number provided on our website</li>
-              <li>By using the contact form on our website</li>
+              <li>By phone: {getPhoneDisplay()}</li>
+              <li>By email: {BUSINESS_CONFIG.email.primary}</li>
+              <li>By using the <Link href="/contact" className="text-[#c9a25c] hover:underline">contact form</Link> on our website</li>
             </ul>
           </div>
         </div>

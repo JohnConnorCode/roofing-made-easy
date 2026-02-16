@@ -6,6 +6,7 @@ import { useAnalytics } from '@/lib/analytics'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { SiteHeader, SiteFooter, MobileCTABar } from '@/components/layout'
+import { BUSINESS_CONFIG } from '@/lib/config/business'
 import {
   Loader2,
   Shield,
@@ -134,12 +135,18 @@ export function HomePageContent() {
             )}
 
             <div className="mt-8 flex flex-col items-center gap-3 animate-hero-subtitle delay-400">
-              <div className="flex items-center gap-1.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-[#c9a25c] text-[#c9a25c] star-glow" />
-                ))}
-                <span className="text-sm text-slate-300 ml-1.5">4.9/5 from 200+ reviews</span>
-              </div>
+              {BUSINESS_CONFIG.reviews.googleRating && BUSINESS_CONFIG.reviews.googleReviewCount ? (
+                <div className="flex items-center gap-1.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-[#c9a25c] text-[#c9a25c] star-glow" />
+                  ))}
+                  <span className="text-sm text-slate-300 ml-1.5">
+                    {BUSINESS_CONFIG.reviews.googleRating}/5 from {BUSINESS_CONFIG.reviews.googleReviewCount}+ reviews
+                  </span>
+                </div>
+              ) : (
+                <p className="text-sm text-slate-300">Trusted by Mississippi homeowners</p>
+              )}
               <p className="text-sm text-slate-500">
                 Free forever • No account required • No contractors calling you
               </p>

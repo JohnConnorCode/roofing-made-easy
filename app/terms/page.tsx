@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { BUSINESS_CONFIG, getPhoneDisplay } from '@/lib/config/business'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
@@ -186,19 +187,21 @@ export default function TermsPage() {
             </h2>
             <p>
               These Terms of Service shall be governed by and construed in accordance with the
-              laws of the state in which our company is registered, without regard to its conflict
-              of law provisions.
+              laws of the State of {BUSINESS_CONFIG.address.state}, without regard to its conflict
+              of law provisions. {BUSINESS_CONFIG.legalName} is a limited liability company
+              registered in {BUSINESS_CONFIG.address.state}.
             </p>
 
             <h2 className="mt-8 text-xl font-semibold text-slate-100">
               14. Contact Information
             </h2>
             <p>
-              If you have any questions about these Terms of Service, please contact us:
+              If you have any questions about these Terms of Service, please contact {BUSINESS_CONFIG.legalName}:
             </p>
             <ul className="list-none space-y-1 pl-0">
-              <li>By phone: Contact us using the number provided on our website</li>
-              <li>By using the contact form on our website</li>
+              <li>By phone: {getPhoneDisplay()}</li>
+              <li>By email: {BUSINESS_CONFIG.email.primary}</li>
+              <li>By using the <Link href="/contact" className="text-[#c9a25c] hover:underline">contact form</Link> on our website</li>
             </ul>
           </div>
         </div>
