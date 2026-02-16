@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { useAnalytics } from '@/lib/analytics'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { SiteHeader, SiteFooter, MobileCTABar } from '@/components/layout'
@@ -41,8 +42,10 @@ export function HomePageContent() {
   const router = useRouter()
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { trackCTAClick, trackConversion } = useAnalytics()
 
-  const handleGetStarted = async () => {
+  const handleGetStarted = useCallback(async () => {
+    trackCTAClick('get_estimate_clicked')
     setIsCreating(true)
     setError(null)
     try {
@@ -57,6 +60,7 @@ export function HomePageContent() {
 
       if (response.ok) {
         const data = await response.json()
+        trackConversion('lead_created', { lead_id: data.lead.id })
         router.push(`/${data.lead.id}/property`)
       } else {
         setError('Unable to start your estimate. Please try again.')
@@ -66,7 +70,7 @@ export function HomePageContent() {
       setError('Connection error. Please check your internet and try again.')
       setIsCreating(false)
     }
-  }
+  }, [router, trackCTAClick, trackConversion])
 
   const testimonials = getFeaturedTestimonials(3)
 

@@ -22,10 +22,12 @@ import {
 } from 'lucide-react'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 import type { NotificationPreferences } from '@/lib/supabase/types'
+import { useAnalytics } from '@/lib/analytics'
 
 export default function SettingsPage() {
   const router = useRouter()
   const { showToast } = useToast()
+  useAnalytics()
   const { confirm, ConfirmDialog } = useConfirmDialog()
   const {
     customer,

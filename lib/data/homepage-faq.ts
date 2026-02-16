@@ -24,7 +24,7 @@ export const HOMEPAGE_FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: 'Who built this and why should I trust it?',
-    answer: "We're Farrell Roofing, a local Mississippi roofing company with 20+ years of experience. We built this because we were tired of seeing homeowners get ripped off by storm chasers and high-pressure salespeople. We use the same pricing methodology we use for our own jobs—honest, data-driven, no games.",
+    answer: "We're Smart Roof Pricing, a local Mississippi roofing company with 20+ years of experience. We built this because we were tired of seeing homeowners get ripped off by storm chasers and high-pressure salespeople. We use the same pricing methodology we use for our own jobs—honest, data-driven, no games.",
   },
   {
     question: 'What if I need more than just an estimate?',

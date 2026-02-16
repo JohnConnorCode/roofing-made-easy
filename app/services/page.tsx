@@ -155,7 +155,7 @@ export default function ServicesPage() {
       <section className="py-16 md:py-24 bg-[#161a23]">
         <div className="mx-auto max-w-6xl px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-100">Why Choose Farrell Roofing?</h2>
+            <h2 className="text-3xl font-bold text-slate-100">Why Choose Smart Roof Pricing?</h2>
           </div>
 
           <div className="grid md:grid-cols-4 gap-6 stagger-children">

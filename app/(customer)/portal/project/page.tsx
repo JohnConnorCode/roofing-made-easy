@@ -6,9 +6,11 @@ import type { CustomerJob } from '@/stores/customerStore'
 import { JobProgress, EmptyState } from '@/components/customer'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Hammer } from 'lucide-react'
+import { useAnalytics } from '@/lib/analytics'
 
 export default function ProjectPage() {
   const { selectedLeadId, jobs, setJobs } = useCustomerStore()
+  const { trackEngagement } = useAnalytics()
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -22,6 +24,7 @@ export default function ProjectPage() {
         if (response.ok) {
           const data = await response.json()
           setJobs(data.jobs || [])
+          trackEngagement('portal_project_viewed')
         }
       } catch {
         // Failed to fetch jobs
@@ -31,7 +34,7 @@ export default function ProjectPage() {
     }
 
     fetchJobs()
-  }, [selectedLeadId, setJobs])
+  }, [selectedLeadId, setJobs, trackEngagement])
 
   // Filter jobs for selected lead
   const leadJobs = selectedLeadId

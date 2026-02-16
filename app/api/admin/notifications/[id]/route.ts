@@ -5,7 +5,10 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
+
+const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 const updateSchema = z.object({
   read: z.boolean().optional(),
@@ -17,14 +20,16 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { user, error: authError } = await requireAdmin()
+    if (authError) return authError
 
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = await createClient()
 
     const { id } = await params
+    if (!uuidRegex.test(id)) {
+      return NextResponse.json({ error: 'Invalid notification ID' }, { status: 400 })
+    }
+
     const body = await request.json()
     const parsed = updateSchema.safeParse(body)
 
@@ -51,7 +56,7 @@ export async function PATCH(
       .from('notifications')
       .update(updateData as never)
       .eq('id', id)
-      .eq('user_id', user.id)
+      .eq('user_id', user!.id)
       .select()
       .single()
 

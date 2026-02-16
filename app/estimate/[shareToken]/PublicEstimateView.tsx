@@ -128,7 +128,7 @@ export function PublicEstimateView({
       <header className="border-b border-slate-800 bg-[#0c0f14]/95 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
           <a href="/" className="text-xl font-bold text-white">
-            <span className="text-[#c9a25c]">Farrell</span> Roofing
+            <span className="text-[#c9a25c]">Smart Roof</span> Pricing
           </a>
           <a
             href={phoneLink}
@@ -176,7 +176,7 @@ export function PublicEstimateView({
             <p className="text-sm text-slate-400 mb-4 max-w-md mx-auto">
               Create your free account to track your project, view financing options, and manage your estimate.
             </p>
-            <Link href={`/customer/register?leadId=${leadId}`}>
+            <Link href={`/customer/register?leadId=${leadId}&token=${encodeURIComponent(shareToken)}`}>
               <Button
                 variant="primary"
                 size="lg"

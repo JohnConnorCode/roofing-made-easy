@@ -308,8 +308,8 @@ export function EstimatePDF({ data }: { data: EstimatePDFData }) {
         <View style={styles.header}>
           <View>
             <Text style={styles.logo}>
-              <Text style={styles.logoGold}>Farrell</Text>
-              <Text style={styles.logoBlack}> Roofing</Text>
+              <Text style={styles.logoGold}>Smart Roof</Text>
+              <Text style={styles.logoBlack}> Pricing</Text>
             </Text>
           </View>
           <View style={styles.headerRight}>

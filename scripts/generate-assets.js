@@ -39,7 +39,7 @@ const ogImageSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height=
   </g>
 
   <!-- Company Name -->
-  <text x="600" y="450" text-anchor="middle" font-family="Georgia, serif" font-size="72" font-weight="bold" fill="#ffffff">Farrell Roofing</text>
+  <text x="600" y="450" text-anchor="middle" font-family="Georgia, serif" font-size="72" font-weight="bold" fill="#ffffff">Smart Roof Pricing</text>
 
   <!-- Tagline -->
   <text x="600" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#c9a25c">Northeast Mississippi's Trusted Roofing Experts</text>

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/components/ui/toast'
 import { Plus, Trash2, ArrowLeft, Save, Send } from 'lucide-react'
 
 interface LineItem {
@@ -33,6 +34,7 @@ interface InvoiceFormProps {
 
 export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProps) {
   const router = useRouter()
+  const { showToast } = useToast()
   const [loading, setLoading] = useState(false)
   const [leadData, setLeadData] = useState<{
     id: string
@@ -119,12 +121,12 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
 
   async function handleSubmit(sendImmediately = false) {
     if (!formData.leadId) {
-      alert('Please select a lead')
+      showToast('Please select a lead', 'error')
       return
     }
 
     if (lineItems.some(item => !item.description || item.unitPrice <= 0)) {
-      alert('Please fill in all line items')
+      showToast('Please fill in all line items', 'error')
       return
     }
 
@@ -168,7 +170,7 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
 
       router.push(`/admin/invoices/${invoice.id}`)
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to create invoice')
+      showToast(err instanceof Error ? err.message : 'Failed to create invoice', 'error')
     } finally {
       setLoading(false)
     }

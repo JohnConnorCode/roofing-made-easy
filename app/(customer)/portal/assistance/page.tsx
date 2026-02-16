@@ -31,6 +31,7 @@ import {
 } from '@/lib/data/assistance-programs'
 import BenefitCalculator from '@/components/assistance/BenefitCalculator'
 import { AiAdvisorChat } from '@/components/shared/AiAdvisorChat'
+import { useAnalytics } from '@/lib/analytics'
 
 const INCOME_OPTIONS = [
   { value: '', label: 'Select income range...' },
@@ -60,6 +61,7 @@ const STATE_OPTIONS = [
 
 export default function AssistancePage() {
   const { showToast } = useToast()
+  const { trackEngagement } = useAnalytics()
   const {
     linkedLeads,
     selectedLeadId,
@@ -98,6 +100,7 @@ export default function AssistancePage() {
 
   // Pre-fill state from property
   useEffect(() => {
+    trackEngagement('portal_assistance_viewed')
     if (property?.state && !eligibilityData.state) {
       setEligibilityData((prev) => ({ ...prev, state: property.state || '' }))
     }

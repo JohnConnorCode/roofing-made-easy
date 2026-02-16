@@ -32,6 +32,7 @@ import {
   AlertTriangle,
 } from 'lucide-react'
 import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
+import { useAnalytics } from '@/lib/analytics'
 
 const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || ''
 
@@ -58,6 +59,7 @@ export default function CustomerPortalPage() {
     isLoading,
   } = useCustomerStore()
 
+  const { trackEngagement } = useAnalytics()
   const [isInitializing, setIsInitializing] = useState(true)
   const [isUploading, setIsUploading] = useState(false)
 
@@ -110,7 +112,7 @@ export default function CustomerPortalPage() {
             continue
           }
 
-          const { uploadId, signedUrl, token } = await signedUrlResponse.json()
+          const { uploadId, signedUrl } = await signedUrlResponse.json()
 
           // Upload file to storage
           const uploadResponse = await fetch(signedUrl, {
@@ -168,33 +170,33 @@ export default function CustomerPortalPage() {
           return
         }
 
-        // Fetch customer profile and linked data
-        const response = await fetch('/api/customer/profile')
-        if (!response.ok) {
-          // If no customer record exists, redirect to complete registration
-          if (response.status === 404) {
+        // Fetch profile and jobs in parallel
+        const [profileResult, jobsResult] = await Promise.allSettled([
+          fetch('/api/customer/profile'),
+          fetch('/api/customer/jobs'),
+        ])
+
+        // Handle profile response
+        if (profileResult.status !== 'fulfilled' || !profileResult.value.ok) {
+          const status = profileResult.status === 'fulfilled' ? profileResult.value.status : 0
+          if (status === 404) {
             router.push('/customer/register')
             return
           }
           throw new Error('Failed to fetch profile')
         }
 
-        const data = await response.json()
+        const data = await profileResult.value.json()
         setCustomer(data.customer)
         setLinkedLeads(data.linkedLeads || [])
         setFinancingApplications(data.financingApplications || [])
         setInsuranceClaims(data.insuranceClaims || [])
         setProgramApplications(data.programApplications || [])
 
-        // Fetch jobs in parallel
-        try {
-          const jobsRes = await fetch('/api/customer/jobs')
-          if (jobsRes.ok) {
-            const jobsData = await jobsRes.json()
-            setJobs(jobsData.jobs || [])
-          }
-        } catch {
-          // Jobs fetch failed silently
+        // Handle jobs response
+        if (jobsResult.status === 'fulfilled' && jobsResult.value.ok) {
+          const jobsData = await jobsResult.value.json()
+          setJobs(jobsData.jobs || [])
         }
 
         // Set selected lead to primary or first lead (only on initial load)
@@ -205,8 +207,9 @@ export default function CustomerPortalPage() {
             setSelectedLeadId(primaryLead?.lead_id || data.linkedLeads[0].lead_id)
           }
         }
+        trackEngagement('portal_dashboard_viewed')
       } catch {
-        // Failed to fetch customer data
+        showToast('Failed to load your dashboard. Please refresh the page.', 'error')
       } finally {
         setLoading(false)
         setIsInitializing(false)
@@ -431,12 +434,10 @@ export default function CustomerPortalPage() {
           )}
 
           {/* Job Progress (only when a job exists for this lead) */}
-          {jobs.filter((j: CustomerJob) => j.lead_id === selectedLeadId).length > 0 && (
-            <JobProgress
-              job={jobs.filter((j: CustomerJob) => j.lead_id === selectedLeadId)[0]}
-              compact
-            />
-          )}
+          {(() => {
+            const leadJob = jobs.find((j: CustomerJob) => j.lead_id === selectedLeadId)
+            return leadJob ? <JobProgress job={leadJob} compact /> : null
+          })()}
 
           {/* Quote and Updates Grid */}
           <div id="quote-section" className="grid gap-4 lg:grid-cols-2">

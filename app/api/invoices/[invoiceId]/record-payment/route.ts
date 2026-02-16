@@ -79,7 +79,7 @@ export async function POST(
         reference_number: parsed.data.reference_number || null,
         recorded_by: user!.id,
         paid_at: new Date().toISOString(),
-        payer_name: parsed.data.notes || null,
+        notes: parsed.data.notes || null,
       } as never)
       .select()
       .single()

@@ -242,12 +242,12 @@ describe('Quote PDF vs Estimate PDF', () => {
 
   it('includes company branding', () => {
     const branding = {
-      companyName: 'Farrell Roofing',
+      companyName: 'Smart Roof Pricing',
       logo: true,
       colors: ['gold', 'dark'],
     }
 
-    expect(branding.companyName).toBe('Farrell Roofing')
+    expect(branding.companyName).toBe('Smart Roof Pricing')
   })
 
   it('shows price range prominently', () => {

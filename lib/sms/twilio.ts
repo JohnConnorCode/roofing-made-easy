@@ -109,19 +109,19 @@ function normalizePhoneNumber(phone: string): string | null {
 // SMS Templates
 export const SMS_TEMPLATES = {
   consultationReminder: (customerName: string, date: string, time: string) =>
-    `Hi ${customerName}! This is a reminder that your roofing consultation with Farrell Roofing is tomorrow (${date}) at ${time}. Reply CONFIRM to confirm or call (662) 555-0123 to reschedule.`,
+    `Hi ${customerName}! This is a reminder that your roofing consultation with Smart Roof Pricing is tomorrow (${date}) at ${time}. Reply CONFIRM to confirm or call (662) 555-0123 to reschedule.`,
 
   estimateReady: (customerName: string, url: string) =>
-    `Hi ${customerName}! Your roofing estimate from Farrell Roofing is ready. View it here: ${url}`,
+    `Hi ${customerName}! Your roofing estimate from Smart Roof Pricing is ready. View it here: ${url}`,
 
   paymentReceived: (customerName: string, amount: string) =>
-    `Hi ${customerName}! We've received your payment of ${amount}. Thank you for choosing Farrell Roofing! We'll be in touch to schedule your project.`,
+    `Hi ${customerName}! We've received your payment of ${amount}. Thank you for choosing Smart Roof Pricing! We'll be in touch to schedule your project.`,
 
   appointmentConfirmed: (customerName: string, date: string, time: string) =>
-    `Hi ${customerName}! Your roofing consultation is confirmed for ${date} at ${time}. See you then! - Farrell Roofing`,
+    `Hi ${customerName}! Your roofing consultation is confirmed for ${date} at ${time}. See you then! - Smart Roof Pricing`,
 
   projectStarting: (customerName: string, date: string) =>
-    `Hi ${customerName}! Your roofing project is scheduled to begin on ${date}. Our crew will arrive between 7-8am. - Farrell Roofing`,
+    `Hi ${customerName}! Your roofing project is scheduled to begin on ${date}. Our crew will arrive between 7-8am. - Smart Roof Pricing`,
 }
 
 // Send consultation reminder SMS

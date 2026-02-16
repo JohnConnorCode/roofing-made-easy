@@ -11,9 +11,9 @@ export const BUSINESS_CONFIG = {
   // -------------------------------------------------------------------------
   // COMPANY INFORMATION
   // -------------------------------------------------------------------------
-  name: 'Farrell Roofing',
+  name: 'Smart Roof Pricing',
   legalName: 'Farrell Roofing LLC',
-  tagline: "Northeast Mississippi's Trusted Roofing Experts",
+  tagline: "Northeast Mississippi's Smart Roofing Estimates",
   foundedYear: '2010',
 
   // -------------------------------------------------------------------------

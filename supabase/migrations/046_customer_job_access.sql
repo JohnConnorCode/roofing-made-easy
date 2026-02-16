@@ -4,6 +4,11 @@
 -- status history, and non-internal documents
 -- ============================================
 
+-- Drop existing policies if they exist (idempotent)
+DROP POLICY IF EXISTS "jobs_customer_read" ON jobs;
+DROP POLICY IF EXISTS "job_status_history_customer_read" ON job_status_history;
+DROP POLICY IF EXISTS "job_documents_customer_read" ON job_documents;
+
 -- Customers can view their own jobs
 CREATE POLICY "jobs_customer_read" ON jobs FOR SELECT USING (
   customer_id IN (

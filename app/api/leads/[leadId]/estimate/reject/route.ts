@@ -77,11 +77,11 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         )
       }
 
-      // Reject basic estimate
+      // Reject basic estimate with concurrency guard
       const estimate = basicEstimates[0] as { id: string }
       const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip')
 
-      const { error: updateError } = await supabase
+      const { data: updatedRows, error: updateError } = await supabase
         .from('estimates')
         .update({
           estimate_status: 'rejected',
@@ -91,12 +91,21 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           rejected_by_email: parsed.data.rejectedByEmail || null,
         } as never)
         .eq('id', estimate.id)
+        .not('estimate_status', 'in', '("accepted","rejected","expired")')
+        .select('id')
 
       if (updateError) {
         console.error('Error rejecting quote:', updateError)
         return NextResponse.json(
           { error: 'Failed to decline quote' },
           { status: 500 }
+        )
+      }
+
+      if (!updatedRows || updatedRows.length === 0) {
+        return NextResponse.json(
+          { error: 'This quote has already been responded to or is no longer available' },
+          { status: 409 }
         )
       }
 
@@ -132,11 +141,11 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       })
     }
 
-    // Reject detailed estimate
+    // Reject detailed estimate with concurrency guard
     const estimate = estimates[0] as { id: string }
     const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip')
 
-    const { error: updateError } = await supabase
+    const { data: updatedDetailedRows, error: updateError } = await supabase
       .from('detailed_estimates')
       .update({
         status: 'rejected',
@@ -146,12 +155,21 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         rejected_by_email: parsed.data.rejectedByEmail || null,
       } as never)
       .eq('id', estimate.id)
+      .not('status', 'in', '("accepted","rejected","expired")')
+      .select('id')
 
     if (updateError) {
       console.error('Error rejecting quote:', updateError)
       return NextResponse.json(
         { error: 'Failed to decline quote' },
         { status: 500 }
+      )
+    }
+
+    if (!updatedDetailedRows || updatedDetailedRows.length === 0) {
+      return NextResponse.json(
+        { error: 'This quote has already been responded to or is no longer available' },
+        { status: 409 }
       )
     }
 

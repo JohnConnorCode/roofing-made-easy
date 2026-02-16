@@ -30,6 +30,7 @@ import { cn, formatCurrency } from '@/lib/utils'
 import type { FinancingStatus } from '@/lib/supabase/types'
 import { getPhoneDisplay, getPhoneLink } from '@/lib/config/business'
 import AffordabilityAnalyzer from '@/components/financing/AffordabilityAnalyzer'
+import { useAnalytics } from '@/lib/analytics'
 import { AiAdvisorChat } from '@/components/shared/AiAdvisorChat'
 
 const STATUS_CONFIG: Record<FinancingStatus, { icon: typeof Clock; color: string; bgColor: string; label: string; description: string }> = {
@@ -86,6 +87,7 @@ const STATUS_CONFIG: Record<FinancingStatus, { icon: typeof Clock; color: string
 
 export default function FinancingPage() {
   const { showToast } = useToast()
+  const { trackCTAClick } = useAnalytics()
   const {
     linkedLeads,
     selectedLeadId,
@@ -138,6 +140,7 @@ export default function FinancingPage() {
 
       const data = await response.json()
       addFinancingApplication(data)
+      trackCTAClick('portal_financing_applied')
       showToast('Pre-qualification submitted successfully!', 'success')
     } catch (error) {
       showToast(error instanceof Error ? error.message : 'Failed to submit', 'error')

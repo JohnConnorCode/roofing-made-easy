@@ -1,7 +1,8 @@
 'use client'
 
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState, useRef, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useAnalytics } from '@/lib/analytics'
 import { useFunnelStore } from '@/stores/funnelStore'
 import { StepContainer } from '@/components/funnel/step-container'
 import { useToast } from '@/components/ui/toast'
@@ -132,6 +133,11 @@ export default function PropertyPage() {
   const leadId = params.leadId as string
 
   const { showToast } = useToast()
+  const { trackFunnelStep } = useAnalytics(leadId)
+
+  useEffect(() => {
+    trackFunnelStep(1, 'property_entered')
+  }, [trackFunnelStep])
 
   const {
     address,
@@ -252,6 +258,7 @@ export default function PropertyPage() {
         showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
       }
 
+      trackFunnelStep(1, 'property_completed')
       setCurrentStep(2)
       router.push(`/${leadId}/details`)
     } finally {

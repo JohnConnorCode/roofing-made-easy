@@ -121,7 +121,7 @@ function transformRowToSettings(row: SettingsRow) {
 // Default settings for fallback
 const defaultSettings = {
   company: {
-    name: 'Farrell Roofing',
+    name: 'Smart Roof Pricing',
     legalName: 'Farrell Roofing LLC',
     tagline: "Northeast Mississippi's Trusted Roofing Experts",
     phone: '(662) 555-0123',

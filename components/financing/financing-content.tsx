@@ -23,6 +23,7 @@ import {
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
 import { usePhoneDisplay, usePhoneLink } from '@/lib/config/business-provider'
+import { useAnalytics } from '@/lib/analytics'
 
 const TERM_OPTIONS = [
   { value: '36', label: '36 months (3 years)' },
@@ -45,6 +46,7 @@ function calculateMonthlyPayment(principal: number, annualRate: number, months: 
 }
 
 export default function FinancingContent() {
+  const { trackCTAClick } = useAnalytics()
   const phoneDisplay = usePhoneDisplay()
   const phoneLinkHref = usePhoneLink()
 
@@ -159,6 +161,7 @@ export default function FinancingContent() {
                     size="lg"
                     className="w-full bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                     rightIcon={<ArrowRight className="h-5 w-5" />}
+                    onClick={() => trackCTAClick('financing_cta_clicked')}
                   >
                     Get Personalized Plans — Free
                   </Button>
@@ -431,6 +434,7 @@ export default function FinancingContent() {
                   size="lg"
                   className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                   rightIcon={<ArrowRight className="h-5 w-5" />}
+                  onClick={() => trackCTAClick('financing_cta_clicked')}
                 >
                   <UserPlus className="mr-2 h-5 w-5" />
                   Get Pre-Qualified — Free
@@ -578,6 +582,7 @@ export default function FinancingContent() {
                   variant="primary"
                   size="xl"
                   className="text-lg shadow-lg bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
+                  onClick={() => trackCTAClick('financing_cta_clicked')}
                 >
                   <UserPlus className="mr-2 h-5 w-5" />
                   Create Free Account

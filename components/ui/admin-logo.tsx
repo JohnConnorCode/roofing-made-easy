@@ -29,7 +29,7 @@ export function AdminLogo({
         />
       </div>
       <div>
-        <h1 className="text-lg font-bold text-white">{BUSINESS_CONFIG.name.split(' ')[0]} Admin</h1>
+        <h1 className="text-lg font-bold text-white">Smart Roof Admin</h1>
         {showPortalLabel && (
           <p className="text-sm text-slate-400">Admin Portal</p>
         )}

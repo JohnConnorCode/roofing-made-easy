@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter, useParams } from 'next/navigation'
+import { useAnalytics } from '@/lib/analytics'
 import { useFunnelStore } from '@/stores/funnelStore'
 import { StepContainer } from '@/components/funnel/step-container'
 import { useToast } from '@/components/ui/toast'
@@ -8,7 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { CollapsibleSection } from '@/components/funnel/collapsible-section'
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { Settings } from 'lucide-react'
 
 const CONTACT_METHODS = [
@@ -33,9 +34,15 @@ export default function ContactPage() {
     consentTerms,
     setContact,
     setCurrentStep,
+    setShareToken,
   } = useFunnelStore()
 
   const { showToast } = useToast()
+  const { trackFunnelStep, trackConversion } = useAnalytics(leadId)
+
+  useEffect(() => {
+    trackFunnelStep(3, 'contact_entered')
+  }, [trackFunnelStep])
 
   const [isLoading, setIsLoading] = useState(false)
   const [estimateFailed, setEstimateFailed] = useState(false)
@@ -129,6 +136,11 @@ export default function ContactPage() {
           setIsLoading(false)
           return
         }
+        // Store share_token for authenticated estimate retrieval
+        const estimateData = await estimateResponse.json()
+        if (estimateData.share_token) {
+          setShareToken(estimateData.share_token)
+        }
       } catch (err) {
         console.error('Failed to generate estimate:', err)
         setEstimateFailed(true)
@@ -137,6 +149,7 @@ export default function ContactPage() {
         return
       }
 
+      trackConversion('estimate_generated')
       setCurrentStep(4)
       router.push(`/${leadId}/estimate`)
     } finally {

@@ -130,6 +130,94 @@ export async function GET(request: NextRequest) {
         updated_at: l.updated_at
       }))
 
+    // Speed-to-Lead: avg minutes to first non-system contact activity for leads this month
+    const monthLeadIds = leads
+      .filter(l => new Date(l.created_at) >= startOfMonth)
+      .map(l => l.id)
+
+    let avgResponseMinutes: number | null = null
+    let staleLeadCount = 0
+    const staleLeadIds: string[] = []
+
+    if (monthLeadIds.length > 0) {
+      const { data: activities } = await supabase
+        .from('lead_activities')
+        .select('lead_id, type, created_at, is_system_generated')
+        .in('lead_id', monthLeadIds.slice(0, 100))
+        .in('type', ['call', 'email', 'sms'])
+        .eq('is_system_generated', false)
+        .order('created_at', { ascending: true })
+
+      if (activities && activities.length > 0) {
+        // Find first contact per lead
+        const firstContactByLead = new Map<string, string>()
+        for (const act of activities as { lead_id: string; created_at: string }[]) {
+          if (!firstContactByLead.has(act.lead_id)) {
+            firstContactByLead.set(act.lead_id, act.created_at)
+          }
+        }
+
+        // Calculate avg response time
+        const responseTimes: number[] = []
+        const leadMap = new Map(leads.map(l => [l.id, l]))
+        for (const [leadId, firstContact] of firstContactByLead) {
+          const lead = leadMap.get(leadId)
+          if (lead) {
+            const diffMs = new Date(firstContact).getTime() - new Date(lead.created_at).getTime()
+            responseTimes.push(diffMs / 60000) // convert to minutes
+          }
+        }
+        if (responseTimes.length > 0) {
+          avgResponseMinutes = Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length)
+        }
+      }
+    }
+
+    // Stale leads: open leads with no activity in 48+ hours
+    const openLeads = leads.filter(l =>
+      !['won', 'lost', 'archived'].includes(l.status)
+    )
+    const fortyEightHoursAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000)
+
+    if (openLeads.length > 0) {
+      const openLeadIds = openLeads.map(l => l.id).slice(0, 200)
+      const { data: recentActivities } = await supabase
+        .from('lead_activities')
+        .select('lead_id, created_at')
+        .in('lead_id', openLeadIds)
+        .order('created_at', { ascending: false })
+
+      // Find latest activity per lead
+      const latestActivityByLead = new Map<string, string>()
+      for (const act of (recentActivities || []) as { lead_id: string; created_at: string }[]) {
+        if (!latestActivityByLead.has(act.lead_id)) {
+          latestActivityByLead.set(act.lead_id, act.created_at)
+        }
+      }
+
+      for (const lead of openLeads) {
+        const lastActivity = latestActivityByLead.get(lead.id)
+        if (!lastActivity || new Date(lastActivity) < fortyEightHoursAgo) {
+          staleLeadCount++
+          if (staleLeadIds.length < 10) staleLeadIds.push(lead.id)
+        }
+      }
+    }
+
+    // Revenue MTD: sum contract_amount from jobs completed this month
+    let revenueMTD = 0
+    const { data: completedJobs } = await supabase
+      .from('jobs')
+      .select('contract_amount')
+      .in('status', ['completed', 'warranty_active', 'closed'])
+      .gte('actual_end', startOfMonth.toISOString())
+
+    if (completedJobs) {
+      revenueMTD = (completedJobs as { contract_amount: number }[]).reduce(
+        (sum, j) => sum + (j.contract_amount || 0), 0
+      )
+    }
+
     return NextResponse.json({
       stats: {
         totalLeads,
@@ -143,7 +231,11 @@ export async function GET(request: NextRequest) {
         conversionRate,
         estimatesGenerated: leadsWithEstimates,
         wonDeals: wonLeads.length,
-        lostDeals: statusCounts['lost'] || 0
+        lostDeals: statusCounts['lost'] || 0,
+        avgResponseMinutes,
+        staleLeadCount,
+        staleLeadIds,
+        revenueMTD,
       },
       statusCounts,
       sourceBreakdown,

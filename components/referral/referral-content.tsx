@@ -49,7 +49,7 @@ const HOW_IT_WORKS_STEPS = [
   {
     step: 3,
     title: 'Project Completes',
-    description: "When they choose Farrell Roofing and their project is done, you get rewarded!",
+    description: "When they choose Smart Roof Pricing and their project is done, you get rewarded!",
   },
 ]
 
@@ -93,14 +93,14 @@ export default function ReferralContent() {
   const shareViaEmail = () => {
     const subject = encodeURIComponent('Get a free roofing estimate')
     const body = encodeURIComponent(
-      `Hey!\n\nI used Farrell Roofing for my roof and had a great experience. They have this cool tool that gives you a free estimate in under 2 minutes.\n\nCheck it out: ${referralLink}\n\nNo pressure, just honest pricing.`
+      `Hey!\n\nI used Smart Roof Pricing for my roof and had a great experience. They have this cool tool that gives you a free estimate in under 2 minutes.\n\nCheck it out: ${referralLink}\n\nNo pressure, just honest pricing.`
     )
     window.open(`mailto:?subject=${subject}&body=${body}`)
   }
 
   const shareViaSMS = () => {
     const text = encodeURIComponent(
-      `Hey! Need a roofing estimate? I used Farrell Roofing - they're great. Get a free estimate here: ${referralLink}`
+      `Hey! Need a roofing estimate? I used Smart Roof Pricing - they're great. Get a free estimate here: ${referralLink}`
     )
     window.open(`sms:?body=${text}`)
   }
@@ -120,7 +120,7 @@ export default function ReferralContent() {
               Earn Rewards for Referrals
             </h1>
             <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              Know someone who needs a new roof? Share Farrell Roofing and earn cash rewards when they complete their project.
+              Know someone who needs a new roof? Share Smart Roof Pricing and earn cash rewards when they complete their project.
             </p>
           </div>
         </div>
@@ -277,9 +277,9 @@ export default function ReferralContent() {
           <h3 className="text-sm font-semibold text-slate-400 mb-4">Program Terms</h3>
           <ul className="text-xs text-slate-500 space-y-2">
             <li>Rewards are paid after the referred project is completed and paid in full.</li>
-            <li>Referrals must be new customers who have not previously received a quote from Farrell Roofing.</li>
+            <li>Referrals must be new customers who have not previously received a quote from Smart Roof Pricing.</li>
             <li>There is no limit to the number of referrals you can make.</li>
-            <li>Farrell Roofing reserves the right to modify or end this program at any time.</li>
+            <li>Smart Roof Pricing reserves the right to modify or end this program at any time.</li>
             <li>Rewards are typically processed within 30 days of project completion.</li>
           </ul>
         </div>

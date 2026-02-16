@@ -17,8 +17,10 @@ import {
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { useBusinessConfig, useContact } from '@/lib/config/business-provider'
+import { useAnalytics } from '@/lib/analytics'
 
 export function ContactPageContent() {
+  const { trackCTAClick } = useAnalytics()
   const config = useBusinessConfig()
   const { phoneDisplay: PHONE_NUMBER, phoneLink } = useContact()
   const EMAIL = config.email.primary
@@ -58,6 +60,7 @@ export function ContactPageContent() {
       }
 
       setIsSubmitted(true)
+      trackCTAClick('contact_form_submitted')
       showToast('Message sent successfully! We\'ll be in touch soon.', 'success')
     } catch (err) {
       showToast(

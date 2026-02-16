@@ -32,6 +32,7 @@ import ClaimLetterGenerator from '@/components/insurance/ClaimLetterGenerator'
 import DamageDocGuide from '@/components/insurance/DamageDocGuide'
 import ClaimValueEstimator from '@/components/insurance/ClaimValueEstimator'
 import { AiAdvisorChat } from '@/components/shared/AiAdvisorChat'
+import { useAnalytics } from '@/lib/analytics'
 
 const CAUSE_OPTIONS = [
   { value: 'hail', label: 'Hail Damage' },
@@ -46,6 +47,7 @@ const CAUSE_OPTIONS = [
 
 export default function InsurancePage() {
   const { showToast } = useToast()
+  const { trackEngagement } = useAnalytics()
   const {
     linkedLeads,
     selectedLeadId,
@@ -95,6 +97,7 @@ export default function InsurancePage() {
 
   // Reset form and pre-fill from intake data when property changes
   useEffect(() => {
+    trackEngagement('portal_insurance_viewed')
     setShowForm(false)
     setShowStatusUpdate(false)
     setShowOptionalFields(false)

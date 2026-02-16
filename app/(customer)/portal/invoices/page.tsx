@@ -11,6 +11,7 @@ import {
   Clock,
   AlertCircle,
 } from 'lucide-react'
+import { useAnalytics } from '@/lib/analytics'
 
 interface Invoice {
   id: string
@@ -35,6 +36,7 @@ const STATUS_CONFIG: Record<string, { icon: React.ElementType; className: string
 
 export default function CustomerInvoicesPage() {
   const router = useRouter()
+  const { trackEngagement } = useAnalytics()
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -50,6 +52,7 @@ export default function CustomerInvoicesPage() {
       if (!res.ok) throw new Error('Failed to fetch invoices')
       const data = await res.json()
       setInvoices(data.invoices || [])
+      trackEngagement('portal_invoices_viewed')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load invoices')
     } finally {

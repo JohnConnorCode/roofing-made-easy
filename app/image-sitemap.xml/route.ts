@@ -93,7 +93,7 @@ export async function GET() {
     images: [
       {
         url: `${BASE_URL}/images/og-default.jpg`,
-        title: 'Farrell Roofing - Northeast Mississippi Roofing Experts',
+        title: 'Smart Roof Pricing - Northeast Mississippi Roofing Experts',
         caption: 'Professional roofing services in Tupelo and Northeast Mississippi',
         geoLocation: 'Tupelo, Mississippi, USA',
       },

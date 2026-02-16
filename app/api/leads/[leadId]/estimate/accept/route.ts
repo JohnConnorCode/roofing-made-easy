@@ -78,11 +78,11 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         )
       }
 
-      // Accept basic estimate
-      const estimate = basicEstimates[0] as { id: string; price_likely: number }
+      // Accept basic estimate with concurrency guard
+      const estimate = basicEstimates[0] as { id: string; price_likely: number; estimate_status?: string }
       const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip')
 
-      const { error: updateError } = await supabase
+      const { data: updatedRows, error: updateError } = await supabase
         .from('estimates')
         .update({
           estimate_status: 'accepted',
@@ -93,6 +93,15 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           accepted_by_ip: clientIP,
         } as never)
         .eq('id', estimate.id)
+        .not('estimate_status', 'in', '("accepted","rejected","expired")')
+        .select('id')
+
+      if (!updateError && (!updatedRows || updatedRows.length === 0)) {
+        return NextResponse.json(
+          { error: 'This quote has already been accepted or is no longer available' },
+          { status: 409 }
+        )
+      }
 
       if (updateError) {
         console.error('Error accepting quote:', updateError)
@@ -140,7 +149,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     }
     const clientIP = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip')
 
-    const { error: updateError } = await supabase
+    const { data: updatedDetailedRows, error: updateError } = await supabase
       .from('detailed_estimates')
       .update({
         status: 'accepted',
@@ -152,12 +161,21 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         accepted_terms_version: parsed.data.termsVersion,
       } as never)
       .eq('id', estimate.id)
+      .not('status', 'in', '("accepted","rejected","expired")')
+      .select('id')
 
     if (updateError) {
       console.error('Error accepting quote:', updateError)
       return NextResponse.json(
         { error: 'Failed to accept quote' },
         { status: 500 }
+      )
+    }
+
+    if (!updatedDetailedRows || updatedDetailedRows.length === 0) {
+      return NextResponse.json(
+        { error: 'This quote has already been accepted or is no longer available' },
+        { status: 409 }
       )
     }
 

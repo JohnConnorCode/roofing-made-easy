@@ -35,7 +35,7 @@ export const teamMembers: TeamMember[] = [
     id: '1',
     name: 'Mike Farrell',
     role: 'Founder & CEO',
-    bio: 'Mike started Farrell Roofing over 20 years ago with a simple mission: provide honest, quality roofing services without the typical contractor runaround. A third-generation roofer, he learned the trade from his father and grandfather.',
+    bio: 'Mike founded Farrell Roofing over 20 years ago and created Smart Roof Pricing to give homeowners the honest pricing information they deserve. A third-generation roofer, he learned the trade from his father and grandfather.',
     years: 25,
   },
   {
@@ -62,10 +62,10 @@ export const teamMembers: TeamMember[] = [
 ]
 
 export const companyInfo: CompanyInfo = {
-  name: 'Farrell Roofing',
+  name: 'Smart Roof Pricing',
   founded: 2010,
-  description: 'Farrell Roofing has been protecting homes and families for over a decade. What started as a small family operation has grown into one of the region\'s most trusted roofing companies, but we\'ve never lost sight of our roots.',
-  mission: 'To provide every homeowner with honest, transparent, and high-quality roofing services. We believe you deserve to know exactly what you\'re paying for and why.',
+  description: 'Smart Roof Pricing was built by Farrell Roofing, a family-owned company that has been protecting homes and families for over a decade. We created this tool because we believe every homeowner deserves to know what their roof should cost before talking to a single contractor.',
+  mission: 'To give every homeowner honest, transparent, and accurate roofing estimates. We believe you deserve to know exactly what you\'re paying for and why, powered by real data from real projects.',
   values: [
     {
       title: 'Honesty First',

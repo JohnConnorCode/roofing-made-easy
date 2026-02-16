@@ -16,8 +16,8 @@ import { BUSINESS_CONFIG } from '@/lib/config/business'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
-  title: 'Service Areas | Farrell Roofing | Northeast Mississippi',
-  description: 'Farrell Roofing serves Tupelo, Oxford, Starkville, Columbus, and 20+ cities across Northeast Mississippi. View our complete service area coverage.',
+  title: 'Service Areas | Smart Roof Pricing | Northeast Mississippi',
+  description: 'Smart Roof Pricing serves Tupelo, Oxford, Starkville, Columbus, and 20+ cities across Northeast Mississippi. View our complete service area coverage.',
   keywords: [
     'Mississippi roofing',
     'Tupelo roofer',
@@ -27,10 +27,10 @@ export const metadata: Metadata = {
     'Starkville roofing',
   ],
   openGraph: {
-    title: 'Service Areas | Farrell Roofing',
+    title: 'Service Areas | Smart Roof Pricing',
     description: 'Serving 20+ cities across Northeast Mississippi with quality roofing services.',
     url: `${BASE_URL}/service-areas`,
-    siteName: 'Farrell Roofing',
+    siteName: 'Smart Roof Pricing',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/api/og?type=service&title=Service%20Areas&subtitle=20%2B%20Cities%20Across%20Northeast%20Mississippi`,
         width: 1200,
         height: 630,
-        alt: 'Farrell Roofing Service Areas',
+        alt: 'Smart Roof Pricing Service Areas',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Service Areas | Farrell Roofing',
+    title: 'Service Areas | Smart Roof Pricing',
     description: 'Serving 20+ cities across Northeast Mississippi with quality roofing services.',
   },
   alternates: {

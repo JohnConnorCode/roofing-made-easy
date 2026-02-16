@@ -30,7 +30,7 @@ export function LocalFAQ({ city, county }: LocalFAQProps) {
     },
     {
       question: `Do I need a permit for roofing work in ${countyName} County?`,
-      answer: `Most roof replacements in ${countyName} County require a building permit. At Farrell Roofing, we handle all permitting requirements as part of our service, ensuring your project meets local building codes and passes all inspections. You don't need to worry about the paperwork.`
+      answer: `Most roof replacements in ${countyName} County require a building permit. At Smart Roof Pricing, we handle all permitting requirements as part of our service, ensuring your project meets local building codes and passes all inspections. You don't need to worry about the paperwork.`
     },
     {
       question: `What are the best roofing materials for Mississippi weather?`,
@@ -41,7 +41,7 @@ export function LocalFAQ({ city, county }: LocalFAQProps) {
       answer: `Most residential roof replacements in ${locationName} are completed in 1-3 days, depending on the size and complexity of your roof. Larger homes or those requiring structural repairs may take longer. Weather can also affect timing, but we work efficiently to minimize disruption to your daily life.`
     },
     {
-      question: `Does Farrell Roofing handle insurance claims for storm damage?`,
+      question: `Does Smart Roof Pricing handle insurance claims for storm damage?`,
       answer: `Yes, we have extensive experience working with insurance companies on storm damage claims in ${locationName} and throughout Northeast Mississippi. We document all damage, provide detailed estimates, and communicate directly with your insurance adjuster to help ensure you receive fair compensation.`
     },
     {

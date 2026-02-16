@@ -35,6 +35,13 @@ import {
   Bell,
   BarChart3,
   PieChart,
+  Target,
+  Clock,
+  Shield,
+  Landmark,
+  FileCheck,
+  Package,
+  Crosshair,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -99,8 +106,17 @@ const NAV_ITEMS: NavItem[] = [
     icon: BarChart3,
     children: [
       { href: '/reports', label: 'Overview', icon: PieChart },
+      { href: '/reports/funnel', label: 'Funnel Analytics', icon: Target },
       { href: '/reports/revenue', label: 'Revenue', icon: TrendingUp },
       { href: '/reports/aging', label: 'AR Aging', icon: DollarSign },
+      { href: '/reports/lead-response', label: 'Lead Response', icon: Clock },
+      { href: '/reports/operations', label: 'Operations', icon: Hammer },
+      { href: '/reports/team', label: 'Team', icon: Users },
+      { href: '/reports/insurance-claims', label: 'Insurance Claims', icon: Shield },
+      { href: '/reports/financing', label: 'Financing', icon: Landmark },
+      { href: '/reports/estimate-accuracy', label: 'Estimate Accuracy', icon: Crosshair },
+      { href: '/reports/document-compliance', label: 'Doc Compliance', icon: FileCheck },
+      { href: '/reports/material-costs', label: 'Material Costs', icon: Package },
     ],
   },
   { href: '/settings', label: 'Settings', icon: Settings },
@@ -140,7 +156,7 @@ export default function AdminLayoutClient({
     const supabase = createClient()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED' && !session) {
+      if (event === 'SIGNED_OUT' || (event === 'TOKEN_REFRESHED' && !session)) {
         router.push('/login?expired=true')
       }
     })
@@ -151,8 +167,12 @@ export default function AdminLayoutClient({
   }, [pathname, router])
 
   const handleLogout = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+    } catch {
+      // Sign out failed, redirect to login anyway
+    }
     router.push('/login')
   }
 

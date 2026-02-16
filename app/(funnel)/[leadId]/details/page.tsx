@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useAnalytics } from '@/lib/analytics'
 import { useFunnelStore, type RoofIssue, type UploadedPhoto } from '@/stores/funnelStore'
 import { StepContainer } from '@/components/funnel/step-container'
 import { useToast } from '@/components/ui/toast'
@@ -123,6 +124,11 @@ export default function DetailsPage() {
   } = useFunnelStore()
 
   const { showToast } = useToast()
+  const { trackFunnelStep } = useAnalytics(leadId)
+
+  useEffect(() => {
+    trackFunnelStep(2, 'details_entered')
+  }, [trackFunnelStep])
 
   const [isLoading, setIsLoading] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
@@ -216,6 +222,7 @@ export default function DetailsPage() {
         showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
       }
 
+      trackFunnelStep(2, 'details_completed')
       setCurrentStep(3)
       router.push(`/${leadId}/contact`)
     } finally {

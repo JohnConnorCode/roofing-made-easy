@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { v4 as uuidv4 } from 'uuid'
+
+const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit uploads
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'general')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
+
     const formData = await request.formData()
     const file = formData.get('file') as File | null
     const leadId = formData.get('leadId') as string | null
@@ -11,6 +21,38 @@ export async function POST(request: NextRequest) {
     if (!file || !leadId) {
       return NextResponse.json(
         { error: 'file and leadId are required' },
+        { status: 400 }
+      )
+    }
+
+    // Validate leadId is a UUID
+    if (!uuidRegex.test(leadId)) {
+      return NextResponse.json(
+        { error: 'Invalid leadId format' },
+        { status: 400 }
+      )
+    }
+
+    // Verify lead exists and is in an appropriate funnel stage
+    const adminSupabase = await createAdminClient()
+    const { data: lead } = await adminSupabase
+      .from('leads')
+      .select('id, status')
+      .eq('id', leadId)
+      .single()
+
+    if (!lead) {
+      return NextResponse.json(
+        { error: 'Lead not found' },
+        { status: 404 }
+      )
+    }
+
+    const leadStatus = (lead as { status?: string }).status
+    const allowedStatuses = ['new', 'in_progress', 'contacted', 'intake_complete']
+    if (leadStatus && !allowedStatuses.includes(leadStatus)) {
+      return NextResponse.json(
+        { error: 'Uploads are no longer accepted for this lead' },
         { status: 400 }
       )
     }

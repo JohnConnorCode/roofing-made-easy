@@ -64,9 +64,9 @@ export default function CustomerLayoutClient({
   }, [pathname, router, resetCustomerStore])
 
   const handleLogout = async () => {
+    resetCustomerStore() // Clear PII first — even if signOut fails
     const supabase = createClient()
-    await supabase.auth.signOut()
-    resetCustomerStore()
+    await supabase.auth.signOut().catch(() => {})
     router.push('/customer/login')
   }
 

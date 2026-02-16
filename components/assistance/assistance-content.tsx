@@ -23,6 +23,7 @@ import {
 } from 'lucide-react'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
 import { usePhoneDisplay, usePhoneLink } from '@/lib/config/business-provider'
+import { useAnalytics } from '@/lib/analytics'
 
 const programTypes = [
   {
@@ -94,6 +95,7 @@ const featuredPrograms = [
 ]
 
 export default function AssistanceContent() {
+  const { trackCTAClick } = useAnalytics()
   const phoneDisplay = usePhoneDisplay()
   const phoneLinkHref = usePhoneLink()
 
@@ -121,6 +123,7 @@ export default function AssistanceContent() {
                   size="lg"
                   className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                   rightIcon={<ArrowRight className="h-5 w-5" />}
+                  onClick={() => trackCTAClick('assistance_cta_clicked')}
                 >
                   Check Your Eligibility
                 </Button>
@@ -178,6 +181,7 @@ export default function AssistanceContent() {
                   size="lg"
                   className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                   rightIcon={<ArrowRight className="h-5 w-5" />}
+                  onClick={() => trackCTAClick('assistance_cta_clicked')}
                 >
                   <UserPlus className="mr-2 h-5 w-5" />
                   Check My Eligibility
@@ -344,6 +348,7 @@ export default function AssistanceContent() {
                   size="lg"
                   className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                   rightIcon={<ArrowRight className="h-5 w-5" />}
+                  onClick={() => trackCTAClick('assistance_cta_clicked')}
                 >
                   Get Your Action Plan — Free
                 </Button>
@@ -674,6 +679,7 @@ export default function AssistanceContent() {
                 size="lg"
                 className="border-[#c9a25c]/30 text-[#c9a25c] hover:bg-[#c9a25c]/10"
                 rightIcon={<ArrowRight className="h-5 w-5" />}
+                onClick={() => trackCTAClick('assistance_cta_clicked')}
               >
                 See All Programs
               </Button>
@@ -855,6 +861,7 @@ export default function AssistanceContent() {
                   variant="primary"
                   size="xl"
                   className="text-lg shadow-lg bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
+                  onClick={() => trackCTAClick('assistance_cta_clicked')}
                 >
                   <UserPlus className="mr-2 h-5 w-5" />
                   Check Your Eligibility — It&apos;s Free

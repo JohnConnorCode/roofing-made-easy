@@ -31,7 +31,7 @@ import {
 } from 'lucide-react'
 
 // ============================================================================
-// Content Strategy Page — SEO Playbook for Farrell Roofing
+// Content Strategy Page — SEO Playbook for Smart Roof Pricing
 // ============================================================================
 
 const NAV_SECTIONS = [
@@ -119,7 +119,7 @@ export default function ContentStrategyPage() {
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
             A step-by-step playbook for continuously adding pages and posts that
-            drive organic traffic, generate leads, and establish Farrell Roofing
+            drive organic traffic, generate leads, and establish Smart Roof Pricing
             as Mississippi&apos;s most trusted roofing authority.
           </p>
         </div>
@@ -141,7 +141,7 @@ export default function ContentStrategyPage() {
             <p className="text-slate-300 text-sm mb-4">
               Google now rewards <strong className="text-white">entities</strong> over pages. It evaluates who you are,
               where you serve, what you&apos;re known for, and whether real people search for you by name.
-              Every piece of content should reinforce that Farrell Roofing is Mississippi&apos;s roofing authority.
+              Every piece of content should reinforce that Smart Roof Pricing is Mississippi&apos;s roofing authority.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <StatCard number="36%" label="of local ranking" desc="comes from on-page signals" />
@@ -463,7 +463,7 @@ Structure:
 4. Each section: 200-400 words with actionable advice
 5. "Mississippi-Specific Considerations" section
 6. FAQ section (5 questions based on "People Also Ask" results for this topic)
-7. Conclusion with clear CTA to Farrell Roofing
+7. Conclusion with clear CTA to Smart Roof Pricing
 
 Requirements:
 - Reference Mississippi weather, building codes, and insurance practices
@@ -540,7 +540,7 @@ Include:
 2. How to assess damage (with safety warnings)
 3. Step-by-step process: document damage → contact insurance → get professional inspection → temporary protection → permanent repair
 4. Mississippi insurance specifics — filing deadlines, common pitfalls
-5. How Farrell Roofing can help — emergency response, insurance claim assistance
+5. How Smart Roof Pricing can help — emergency response, insurance claim assistance
 6. FAQ (3-4 questions)
 
 Tone: Calm, authoritative, helpful — not fear-mongering. These people may be stressed.

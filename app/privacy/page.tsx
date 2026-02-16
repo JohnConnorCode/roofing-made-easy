@@ -6,16 +6,16 @@ import { SiteHeader, SiteFooter } from '@/components/layout'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Farrell Roofing',
-  description: 'Privacy Policy for Farrell Roofing. Learn how we collect, use, and protect your information when using our roofing estimate services.',
+  title: 'Privacy Policy | Smart Roof Pricing',
+  description: 'Privacy Policy for Smart Roof Pricing, operated by Farrell Roofing LLC. Learn how we collect, use, and protect your information when using our roofing estimate services.',
   alternates: {
     canonical: `${BASE_URL}/privacy`,
   },
   openGraph: {
-    title: 'Privacy Policy | Farrell Roofing',
-    description: 'How Farrell Roofing collects, uses, and protects your personal information.',
+    title: 'Privacy Policy | Smart Roof Pricing',
+    description: 'How Smart Roof Pricing collects, uses, and protects your personal information.',
     url: `${BASE_URL}/privacy`,
-    siteName: 'Farrell Roofing',
+    siteName: 'Smart Roof Pricing',
     locale: 'en_US',
     type: 'website',
   },

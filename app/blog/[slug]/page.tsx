@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title: post.title,
       description: post.excerpt,
       url: canonicalUrl,
-      siteName: 'Farrell Roofing',
+      siteName: 'Smart Roof Pricing',
       type: 'article',
       publishedTime: post.publishedAt,
       authors: [post.author],

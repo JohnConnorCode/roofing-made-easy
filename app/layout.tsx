@@ -12,6 +12,8 @@ import {
 } from "@/components/seo/regional-schema";
 import { MinimalNAPSchema } from "@/components/seo/nap-schema";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getBusinessConfigFromDB } from "@/lib/config/business-loader";
 
 const inter = Inter({
@@ -42,8 +44,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Farrell Roofing | Tupelo MS Roofing Contractor | Free Estimates",
-    template: "%s | Farrell Roofing",
+    default: "Smart Roof Pricing | Tupelo MS Roofing Estimates | Free & Instant",
+    template: "%s | Smart Roof Pricing",
   },
   description:
     "Trusted roofing contractor serving Tupelo and Northeast Mississippi since 2010. Professional roof replacement, repair, and storm damage restoration. Free estimates available.",
@@ -59,9 +61,9 @@ export const metadata: Metadata = {
     "Oxford roofing",
     "Starkville roofing",
   ],
-  authors: [{ name: "Farrell Roofing", url: BASE_URL }],
-  creator: "Farrell Roofing",
-  publisher: "Farrell Roofing",
+  authors: [{ name: "Smart Roof Pricing", url: BASE_URL }],
+  creator: "Smart Roof Pricing",
+  publisher: "Smart Roof Pricing",
   formatDetection: {
     email: false,
     address: false,
@@ -71,28 +73,28 @@ export const metadata: Metadata = {
   classification: "Roofing Contractor",
   referrer: "origin-when-cross-origin",
   openGraph: {
-    title: "Farrell Roofing | Tupelo MS Roofing Contractor",
+    title: "Smart Roof Pricing | Instant Roofing Estimates in Mississippi",
     description:
-      "Trusted roofing contractor serving Tupelo and Northeast Mississippi. Professional roof replacement, repair, and storm damage restoration.",
+      "Know your roof cost in 2 minutes. AI-powered roofing estimates for Tupelo and Northeast Mississippi. Free, instant, no contractors calling.",
     type: "website",
     locale: "en_US",
     url: BASE_URL,
-    siteName: "Farrell Roofing",
+    siteName: "Smart Roof Pricing",
     images: [
       {
         url: "/images/og-default.jpg",
         width: 1200,
         height: 630,
-        alt: "Farrell Roofing - Northeast Mississippi Roofing Experts",
+        alt: "Smart Roof Pricing - Instant Roofing Estimates for Mississippi",
         type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Farrell Roofing | Tupelo MS Roofing Contractor",
+    title: "Smart Roof Pricing | Instant Roofing Estimates in Mississippi",
     description:
-      "Trusted roofing contractor serving Northeast Mississippi. Free estimates available.",
+      "Know your roof cost in 2 minutes. Free, instant roofing estimates for Northeast Mississippi.",
     site: "@smartroofpricing",
     creator: "@smartroofpricing",
     images: ["/images/og-default.jpg"],
@@ -152,7 +154,7 @@ export default async function RootLayout({
     <html lang="en-US" dir="ltr">
       <head>
         {/* RSS Feed Discovery */}
-        <link rel="alternate" type="application/rss+xml" title="Farrell Roofing Blog" href="/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title="Smart Roof Pricing Blog" href="/feed.xml" />
 
         {/* Preconnect to important origins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -176,6 +178,8 @@ export default async function RootLayout({
       </head>
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
         <GoogleAnalytics />
+        <Analytics />
+        <SpeedInsights />
         <Providers businessConfig={config}>
           {children}
         </Providers>

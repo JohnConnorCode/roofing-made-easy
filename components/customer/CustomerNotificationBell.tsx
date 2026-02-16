@@ -24,12 +24,17 @@ const PRIORITY_DOTS: Record<string, string> = {
   urgent: 'bg-red-500',
 }
 
+function isSafeUrl(url: string): boolean {
+  return url.startsWith('/') && !url.startsWith('//')
+}
+
 export function CustomerNotificationBell() {
   const [unreadCount, setUnreadCount] = useState(0)
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   const fetchUnreadCount = useCallback(async () => {
     try {
@@ -58,10 +63,14 @@ export function CustomerNotificationBell() {
     }
   }, [])
 
-  // Poll for unread count every 30 seconds
+  // Poll for unread count every 30 seconds (pause when tab hidden)
   useEffect(() => {
     fetchUnreadCount()
-    const interval = setInterval(fetchUnreadCount, 30000)
+    const interval = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        fetchUnreadCount()
+      }
+    }, 30000)
     return () => clearInterval(interval)
   }, [fetchUnreadCount])
 
@@ -72,7 +81,7 @@ export function CustomerNotificationBell() {
     }
   }, [isOpen, fetchNotifications])
 
-  // Close on outside click
+  // Close on outside click or Escape key
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
@@ -80,48 +89,69 @@ export function CustomerNotificationBell() {
       }
     }
 
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsOpen(false)
+        buttonRef.current?.focus()
+      }
+    }
+
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
+      document.addEventListener('keydown', handleEscape)
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+        document.removeEventListener('keydown', handleEscape)
+      }
     }
   }, [isOpen])
 
   const markAsRead = async (id: string) => {
     try {
-      await fetch(`/api/customer/notifications/${id}`, {
+      const notification = notifications.find((n) => n.id === id)
+      if (notification?.read_at) return // Already read
+      const res = await fetch(`/api/customer/notifications/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ read: true }),
       })
+      if (!res.ok) return
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n))
       )
       setUnreadCount((prev) => Math.max(0, prev - 1))
     } catch {
-      // Silently fail
+      // Non-critical — will sync on next poll
     }
   }
 
   const dismiss = async (id: string) => {
     try {
-      await fetch(`/api/customer/notifications/${id}`, {
+      const notification = notifications.find((n) => n.id === id)
+      const res = await fetch(`/api/customer/notifications/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dismissed: true }),
       })
+      if (!res.ok) return
       setNotifications((prev) => prev.filter((n) => n.id !== id))
-      setUnreadCount((prev) => Math.max(0, prev - 1))
+      // Only decrement if the notification was unread
+      if (notification && !notification.read_at) {
+        setUnreadCount((prev) => Math.max(0, prev - 1))
+      }
     } catch {
-      // Silently fail
+      // Non-critical — will sync on next poll
     }
   }
 
   return (
     <div className="relative" ref={panelRef}>
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 rounded-lg text-slate-400 hover:text-gold-light hover:bg-slate-800 transition-colors"
-        aria-label="Notifications"
+        aria-label={unreadCount > 0 ? `Notifications, ${unreadCount} unread` : 'Notifications'}
+        aria-expanded={isOpen}
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
@@ -132,7 +162,12 @@ export function CustomerNotificationBell() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-80 bg-slate-deep rounded-lg shadow-xl border border-slate-700 z-50 overflow-hidden">
+        <div
+          role="dialog"
+          aria-label="Notifications"
+          tabIndex={-1}
+          className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-1rem)] bg-slate-deep rounded-lg shadow-xl border border-slate-700 z-50 overflow-hidden"
+        >
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700">
             <h3 className="text-sm font-semibold text-slate-100">Notifications</h3>
@@ -146,7 +181,7 @@ export function CustomerNotificationBell() {
               </div>
             ) : notifications.length === 0 ? (
               <div className="text-center py-8">
-                <Bell className="h-8 w-8 text-slate-600 mx-auto" />
+                <Bell className="h-8 w-8 text-slate-500 mx-auto" />
                 <p className="mt-2 text-sm text-slate-500">No notifications</p>
               </div>
             ) : (
@@ -169,7 +204,7 @@ export function CustomerNotificationBell() {
                         {notification.message && (
                           <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{notification.message}</p>
                         )}
-                        <p className="text-[10px] text-slate-600 mt-1">{formatDate(notification.created_at)}</p>
+                        <p className="text-[10px] text-slate-500 mt-1">{formatDate(notification.created_at)}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
@@ -177,7 +212,7 @@ export function CustomerNotificationBell() {
                         <button
                           onClick={() => markAsRead(notification.id)}
                           className="p-1 text-slate-500 hover:text-green-400 transition-colors"
-                          title="Mark as read"
+                          aria-label={`Mark as read: ${notification.title}`}
                         >
                           <Check className="h-3.5 w-3.5" />
                         </button>
@@ -185,20 +220,20 @@ export function CustomerNotificationBell() {
                       <button
                         onClick={() => dismiss(notification.id)}
                         className="p-1 text-slate-500 hover:text-red-400 transition-colors"
-                        title="Dismiss"
+                        aria-label={`Dismiss: ${notification.title}`}
                       >
                         <X className="h-3.5 w-3.5" />
                       </button>
                     </div>
                   </div>
-                  {notification.action_url && (
+                  {notification.action_url && isSafeUrl(notification.action_url) && (
                     <Link
                       href={notification.action_url}
                       onClick={() => {
                         markAsRead(notification.id)
                         setIsOpen(false)
                       }}
-                      className="inline-flex items-center gap-1 text-xs text-gold-light hover:underline mt-1 ml-4.5"
+                      className="inline-flex items-center gap-1 text-xs text-gold-light hover:underline mt-1 ml-5"
                     >
                       {notification.action_label || 'View'}
                       <ExternalLink className="h-3 w-3" />

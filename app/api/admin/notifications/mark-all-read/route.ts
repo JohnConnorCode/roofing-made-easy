@@ -5,20 +5,19 @@
 
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requireAdmin } from '@/lib/api/auth'
 
 export async function POST() {
   try {
-    const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { user, error: authError } = await requireAdmin()
+    if (authError) return authError
 
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const supabase = await createClient()
 
     const { error: updateError } = await supabase
       .from('notifications')
       .update({ read_at: new Date().toISOString() } as never)
-      .eq('user_id', user.id)
+      .eq('user_id', user!.id)
       .is('read_at', null)
 
     if (updateError) {

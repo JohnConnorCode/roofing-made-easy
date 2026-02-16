@@ -4,7 +4,7 @@ import { Home, Hammer } from 'lucide-react'
 import NotFoundBackButton from '@/components/not-found-back-button'
 
 export const metadata: Metadata = {
-  title: 'Page Not Found | Farrell Roofing',
+  title: 'Page Not Found | Smart Roof Pricing',
   description: 'The page you are looking for does not exist. Visit our homepage for roofing estimates, services, and resources.',
   robots: {
     index: false,

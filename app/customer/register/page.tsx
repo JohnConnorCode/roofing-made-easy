@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useAnalytics } from '@/lib/analytics'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -38,6 +39,12 @@ function CustomerRegisterForm() {
 
   const leadId = searchParams.get('leadId')
   const source = searchParams.get('source')
+  const shareToken = searchParams.get('token')
+  const { trackConversion } = useAnalytics(leadId || undefined)
+
+  useEffect(() => {
+    trackConversion('registration_started')
+  }, [trackConversion])
 
   // Fetch lead data if leadId is provided (public endpoint, no auth required)
   useEffect(() => {
@@ -45,19 +52,19 @@ function CustomerRegisterForm() {
       if (!leadId || leadId.startsWith('demo-')) return
 
       try {
-        const response = await fetch(`/api/public/lead-summary/${leadId}`)
+        const tokenParam = shareToken ? `?token=${encodeURIComponent(shareToken)}` : ''
+        const response = await fetch(`/api/public/lead-summary/${leadId}${tokenParam}`)
         if (response.ok) {
           const data = await response.json()
           setLeadData({
             address: data.address,
             estimate: data.estimate,
           })
-          // Pre-fill name if available (email/phone not returned for privacy)
-          if (data.firstName || data.lastName) {
+          // Pre-fill name if available
+          if (data.firstName) {
             setFormData((prev) => ({
               ...prev,
               firstName: data.firstName || '',
-              lastName: data.lastName || '',
             }))
           }
         }
@@ -156,6 +163,7 @@ function CustomerRegisterForm() {
         return
       }
 
+      trackConversion('registration_completed')
       setSuccess(true)
       showToast('Account created successfully!', 'success')
 

@@ -383,7 +383,7 @@ describe('Settings API', () => {
 
       expect(response.status).toBe(200)
       expect(data.settings).toBeDefined()
-      expect(data.settings.company.name).toBe('Farrell Roofing')
+      expect(data.settings.company.name).toBe('Smart Roof Pricing')
     })
 
     it('should return saved settings', async () => {

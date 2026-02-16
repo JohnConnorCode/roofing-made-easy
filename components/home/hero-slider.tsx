@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 const SLIDES = [
-  { src: '/images/services/roof-replacement.jpg', alt: 'Professional shingle installation on residential roof' },
-  { src: '/images/services/storm-damage-repair.jpg', alt: 'Storm damage roof repair in progress' },
-  { src: '/images/services/roof-inspection.jpg', alt: 'Professional roof inspection on residential home' },
-  { src: '/images/services/metal-roofing.jpg', alt: 'Metal roofing installation on a home' },
-  { src: '/images/services/roof-repair.jpg', alt: 'Roof repair work on residential property' },
+  { src: '/images/services/roof-replacement.jpg', alt: 'Roofer working on residential roof replacement' },
+  { src: '/images/services/storm-damage-repair.jpg', alt: 'Workers repairing storm-damaged roof' },
+  { src: '/images/services/roof-inspection.jpg', alt: 'Roofer tearing off old shingles during roof inspection' },
+  { src: '/images/services/metal-roofing.jpg', alt: 'Roofers installing shingles on a steep residential roof' },
+  { src: '/images/services/roof-repair.jpg', alt: 'Two roofers performing repair work on a tile roof' },
 ]
 
 const INTERVAL_MS = 7000

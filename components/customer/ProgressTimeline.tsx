@@ -19,8 +19,8 @@ interface ProgressTimelineProps {
 export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTimelineProps) {
   if (orientation === 'horizontal') {
     return (
-      <div className="w-full">
-        <div className="flex items-start justify-between">
+      <div className="w-full overflow-x-auto">
+        <div className="flex items-start justify-between min-w-[640px]">
           {steps.map((step, index) => (
             <div
               key={step.id}
@@ -76,7 +76,7 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
                   {step.label}
                 </p>
                 {step.date && (
-                  <p className="text-xs text-slate-600 mt-0.5">{step.date}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{step.date}</p>
                 )}
               </div>
             </div>

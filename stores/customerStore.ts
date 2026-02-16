@@ -48,13 +48,25 @@ export interface CustomerState {
   jobs: CustomerJob[]
 }
 
+// Matches job_status enum from migration 034
+export type JobStatus =
+  | 'pending_start'
+  | 'materials_ordered'
+  | 'scheduled'
+  | 'in_progress'
+  | 'inspection_pending'
+  | 'punch_list'
+  | 'completed'
+  | 'warranty_active'
+  | 'closed'
+
 // Job with status history for customer portal
 export interface CustomerJob {
   id: string
   job_number: string
   lead_id: string | null
   customer_id: string | null
-  status: string
+  status: JobStatus
   scheduled_start: string | null
   scheduled_end: string | null
   actual_start: string | null
@@ -63,17 +75,16 @@ export interface CustomerJob {
   property_address: string | null
   property_city: string | null
   property_state: string | null
+  property_zip: string | null
   warranty_start_date: string | null
   warranty_end_date: string | null
   warranty_type: string | null
-  notes: string | null
   created_at: string
   updated_at: string
   status_history: Array<{
     id: string
     old_status: string | null
     new_status: string
-    notes: string | null
     created_at: string
   }>
 }
@@ -199,9 +210,8 @@ export const useCustomerStore = create<CustomerState & CustomerActions>()(
     {
       name: 'customer-storage',
       partialize: (state) => ({
-        customer: state.customer,
         selectedLeadId: state.selectedLeadId,
-        // Don't persist detailed data - fetch fresh on login
+        // Don't persist PII (customer name, email, phone) — fetch fresh per session
       }),
     }
   )

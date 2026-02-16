@@ -84,7 +84,7 @@ export default function AboutPage() {
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden animate-slide-up delay-200">
               <Image
                 src="/images/about/team-work.jpg"
-                alt="Farrell Roofing team at work"
+                alt="Smart Roof Pricing team at work"
                 fill
                 className="object-cover"
                 priority
@@ -213,7 +213,7 @@ export default function AboutPage() {
             Ready to Work With Us?
           </h2>
           <p className="mt-4 text-lg text-slate-400">
-            Get a free estimate and see why thousands of homeowners trust Farrell Roofing.
+            Get a free estimate and see why thousands of homeowners trust Smart Roof Pricing.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/">

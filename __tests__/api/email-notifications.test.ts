@@ -424,8 +424,8 @@ describe('Email Template Structure', () => {
 
     // Check for brand colors
     expect(result.html).toContain('#c9a25c') // Gold
-    expect(result.html).toContain('Farrell')
-    expect(result.html).toContain('Roofing')
+    expect(result.html).toContain('Smart Roof')
+    expect(result.html).toContain('Pricing')
   })
 
   it('text versions are plain text without HTML', async () => {

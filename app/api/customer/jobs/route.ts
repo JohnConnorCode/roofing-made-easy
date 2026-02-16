@@ -2,6 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 
+// Only expose customer-safe columns — never notes, internal_notes, costs, or team IDs
+const JOB_SELECT = `
+  id, job_number, lead_id, customer_id, status,
+  scheduled_start, scheduled_end, actual_start, actual_end,
+  contract_amount, property_address, property_city, property_state, property_zip,
+  warranty_start_date, warranty_end_date, warranty_type,
+  created_at, updated_at
+`
+
+// Exclude notes — admin staff may write sensitive info in status history notes
+const HISTORY_SELECT = 'id, job_id, old_status, new_status, created_at'
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
 export async function GET(request: NextRequest) {
   try {
     const clientIP = getClientIP(request)
@@ -38,14 +52,21 @@ export async function GET(request: NextRequest) {
 
     const customerId = (customer as { id: string }).id
 
-    // Optional leadId filter
+    // Optional leadId filter (validated as UUID)
     const { searchParams } = new URL(request.url)
     const leadId = searchParams.get('leadId')
 
-    // Build query for jobs
+    if (leadId && !UUID_RE.test(leadId)) {
+      return NextResponse.json(
+        { error: 'Invalid leadId format' },
+        { status: 400 }
+      )
+    }
+
+    // Build query for jobs — explicit column list
     let query = supabase
       .from('jobs' as never)
-      .select('*')
+      .select(JOB_SELECT)
       .eq('customer_id', customerId)
       .order('created_at', { ascending: false })
 
@@ -59,21 +80,22 @@ export async function GET(request: NextRequest) {
       throw jobsError
     }
 
-    // Fetch status history for each job (last 5 entries)
+    // Fetch status history for each job (in-memory cap of 5 per job)
+    // No global .limit() — customer typically has 1-5 jobs, history is bounded
     const jobIds = ((jobs as Array<{ id: string }>) || []).map((j) => j.id)
 
     let statusHistory: Record<string, unknown>[] = []
     if (jobIds.length > 0) {
       const { data: history } = await supabase
         .from('job_status_history' as never)
-        .select('*')
+        .select(HISTORY_SELECT)
         .in('job_id', jobIds)
         .order('created_at', { ascending: false })
 
       statusHistory = (history as Record<string, unknown>[]) || []
     }
 
-    // Group status history by job_id and limit to 5
+    // Group status history by job_id and limit to 5 per job
     const historyByJob: Record<string, Record<string, unknown>[]> = {}
     for (const entry of statusHistory) {
       const jobId = entry.job_id as string

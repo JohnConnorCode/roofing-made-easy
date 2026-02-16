@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { InvoiceViewer } from '@/components/customer/InvoiceViewer'
 import { ArrowLeft } from 'lucide-react'
+import { useAnalytics } from '@/lib/analytics'
 
 interface InvoiceData {
   id: string
@@ -38,6 +39,7 @@ interface InvoiceData {
 export default function CustomerInvoiceDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const { trackEngagement } = useAnalytics()
   const [invoice, setInvoice] = useState<InvoiceData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -53,6 +55,7 @@ export default function CustomerInvoiceDetailPage() {
       if (!res.ok) throw new Error('Invoice not found')
       const data = await res.json()
       setInvoice(data.invoice)
+      trackEngagement('portal_invoice_viewed')
 
       // Mark as viewed
       if (data.invoice.status === 'sent') {

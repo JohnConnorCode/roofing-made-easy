@@ -47,6 +47,7 @@ export const RATE_LIMITS = {
   auth: { windowMs: 60 * 1000, maxRequests: 5 }, // 5 per minute for auth routes (reduced for brute force protection)
   ai: { windowMs: 60 * 1000, maxRequests: 10 }, // 10 AI requests per minute (cost protection)
   aiVision: { windowMs: 60 * 1000, maxRequests: 5 }, // 5 vision requests per minute (higher cost)
+  analytics: { windowMs: 60 * 1000, maxRequests: 30 }, // 30 analytics batches per minute
 } as const
 
 export type RateLimitType = keyof typeof RATE_LIMITS

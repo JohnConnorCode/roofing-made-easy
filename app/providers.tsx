@@ -5,6 +5,7 @@ import { ErrorBoundary } from '@/components/error-boundary'
 import { ToastProvider } from '@/components/ui/toast'
 import { ConfirmDialogProvider } from '@/components/ui/confirm-dialog'
 import { BusinessConfigProvider, type BusinessConfig } from '@/lib/config/business-provider'
+import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider'
 
 interface ProvidersProps {
   children: ReactNode
@@ -16,7 +17,9 @@ export function Providers({ children, businessConfig }: ProvidersProps) {
     <ErrorBoundary>
       <BusinessConfigProvider config={businessConfig}>
         <ToastProvider>
-          <ConfirmDialogProvider>{children}</ConfirmDialogProvider>
+          <ConfirmDialogProvider>
+            <AnalyticsProvider>{children}</AnalyticsProvider>
+          </ConfirmDialogProvider>
         </ToastProvider>
       </BusinessConfigProvider>
     </ErrorBoundary>

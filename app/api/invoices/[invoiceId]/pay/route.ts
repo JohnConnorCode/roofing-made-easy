@@ -20,7 +20,7 @@ const paymentSchema = z.object({
 export async function POST(request: NextRequest, { params }: RouteParams) {
   try {
     // Require authentication - only logged-in users can pay invoices
-    const { error: authError } = await requireAuth()
+    const { user, error: authError } = await requireAuth()
     if (authError) return authError
 
     const clientIP = getClientIP(request)
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // Get the invoice
     const { data: invoice, error: fetchError } = await supabase
       .from('invoices')
-      .select('id, lead_id, invoice_number, total, balance_due, status')
+      .select('id, lead_id, customer_id, invoice_number, total, balance_due, status')
       .eq('id', invoiceId)
       .single()
 
@@ -68,10 +68,33 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const invoiceData = invoice as {
       id: string
       lead_id: string
+      customer_id: string | null
       invoice_number: string
       total: number
       balance_due: number
       status: string
+    }
+
+    // Verify the authenticated user owns this invoice (admin or linked customer)
+    const isAdmin =
+      user!.user_metadata?.role === 'admin' ||
+      user!.app_metadata?.role === 'admin'
+
+    if (!isAdmin) {
+      // Check if the user is linked to this invoice's customer
+      const { data: customer } = await supabase
+        .from('customers' as never)
+        .select('id')
+        .eq('auth_user_id', user!.id)
+        .single()
+
+      const customerId = (customer as { id: string } | null)?.id
+      if (!customerId || customerId !== invoiceData.customer_id) {
+        return NextResponse.json(
+          { error: 'Not authorized to pay this invoice' },
+          { status: 403 }
+        )
+      }
     }
 
     // Check invoice is payable

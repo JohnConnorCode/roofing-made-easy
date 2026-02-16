@@ -104,13 +104,17 @@ export function NotificationBell() {
 
   const dismiss = async (id: string) => {
     try {
+      const notification = notifications.find((n) => n.id === id)
       await fetch(`/api/admin/notifications/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dismissed: true }),
       })
       setNotifications((prev) => prev.filter((n) => n.id !== id))
-      setUnreadCount((prev) => Math.max(0, prev - 1))
+      // Only decrement if the notification was unread
+      if (notification && !notification.read_at) {
+        setUnreadCount((prev) => Math.max(0, prev - 1))
+      }
     } catch {
       // Silently fail
     }

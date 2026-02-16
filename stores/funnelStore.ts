@@ -39,6 +39,7 @@ export interface UploadedPhoto {
 export interface FunnelState {
   // Meta
   leadId: string | null
+  shareToken: string | null
   currentStep: number
   isLoading: boolean
   error: string | null
@@ -115,6 +116,7 @@ export interface FunnelState {
 export interface FunnelActions {
   // Navigation
   setLeadId: (leadId: string) => void
+  setShareToken: (token: string) => void
   setCurrentStep: (step: number) => void
   nextStep: () => void
   prevStep: () => void
@@ -187,6 +189,7 @@ export interface FunnelActions {
 
 const initialState: FunnelState = {
   leadId: null,
+  shareToken: null,
   currentStep: 1,
   isLoading: false,
   error: null,
@@ -230,6 +233,7 @@ export const useFunnelStore = create<FunnelState & FunnelActions>()(
       // Navigation
       // New 3-step funnel: 1=Property, 2=Details, 3=Contact, 4=Estimate (view only)
       setLeadId: (leadId) => set({ leadId }),
+      setShareToken: (shareToken) => set({ shareToken }),
       setCurrentStep: (step) => set({ currentStep: step }),
       nextStep: () => set((state) => ({ currentStep: Math.min(state.currentStep + 1, 4) })),
       prevStep: () => set((state) => ({ currentStep: Math.max(state.currentStep - 1, 1) })),

@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/api/auth'
 
-const INDEXNOW_KEY = 'e77cc4f3ce62757d9fcbf2d1e621c803'
+const INDEXNOW_KEY = process.env.INDEXNOW_KEY || ''
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export async function POST() {
   const { error } = await requireAdmin()
   if (error) return error
+
+  if (!INDEXNOW_KEY) {
+    return NextResponse.json({ error: 'INDEXNOW_KEY not configured' }, { status: 500 })
+  }
 
   // Collect all important URLs to submit
   const urls = [

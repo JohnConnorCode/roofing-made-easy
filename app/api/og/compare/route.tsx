@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
                   letterSpacing: '-0.5px',
                 }}
               >
-                Farrell Roofing
+                Smart Roof Pricing
               </span>
             </div>
 

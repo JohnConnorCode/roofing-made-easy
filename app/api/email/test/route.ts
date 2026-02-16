@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     const result = await sendEmail({
       to,
-      subject: 'Test Email - Farrell Roofing Notifications',
+      subject: 'Test Email - Smart Roof Pricing Notifications',
       html: `
 <!DOCTYPE html>
 <html>
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
           <tr>
             <td style="padding: 32px 40px; background-color: #0c0f14; border-radius: 12px 12px 0 0;">
               <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700;">
-                <span style="color: #c9a25c;">Farrell</span> Roofing
+                <span style="color: #c9a25c;">Smart Roof</span> Pricing
               </h1>
             </td>
           </tr>
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
 </html>
       `.trim(),
       text: `
-Test Email - Farrell Roofing
+Test Email - Smart Roof Pricing
 
 Your email notifications are configured correctly!
 

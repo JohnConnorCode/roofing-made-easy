@@ -27,8 +27,10 @@ import {
 import { INSURANCE_COMPANIES, INSURANCE_RESOURCES } from '@/lib/data/insurance-resources'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
 import { usePhoneDisplay, usePhoneLink } from '@/lib/config/business-provider'
+import { useAnalytics } from '@/lib/analytics'
 
 export default function InsuranceContent() {
+  const { trackCTAClick } = useAnalytics()
   const phoneDisplay = usePhoneDisplay()
   const phoneLinkHref = usePhoneLink()
 
@@ -61,6 +63,7 @@ export default function InsuranceContent() {
                   size="lg"
                   className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                   rightIcon={<ArrowRight className="h-5 w-5" />}
+                  onClick={() => trackCTAClick('insurance_cta_clicked')}
                 >
                   Start Tracking Your Claim
                 </Button>
@@ -118,6 +121,7 @@ export default function InsuranceContent() {
                   size="lg"
                   className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                   rightIcon={<ArrowRight className="h-5 w-5" />}
+                  onClick={() => trackCTAClick('insurance_cta_clicked')}
                 >
                   <UserPlus className="mr-2 h-5 w-5" />
                   Create Free Account
@@ -642,6 +646,7 @@ export default function InsuranceContent() {
                   variant="primary"
                   size="xl"
                   className="text-lg shadow-lg bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
+                  onClick={() => trackCTAClick('insurance_cta_clicked')}
                 >
                   <UserPlus className="mr-2 h-5 w-5" />
                   Start Tracking Your Claim — It&apos;s Free

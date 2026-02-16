@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { PricingEngine, DEFAULT_PRICING_RULES } from '@/lib/pricing/engine'
 import { generateExplanation } from '@/lib/ai'
+import { safeCompare } from '@/lib/utils'
 import { notifyEstimateGenerated, sendCustomerEstimateEmail } from '@/lib/email'
 import { sendEstimateReadySms } from '@/lib/sms'
 import { autoCreateCustomerAccount } from '@/lib/customer/auto-create'
@@ -370,6 +371,7 @@ export async function POST(
 
     return NextResponse.json({
       ...estimate as Record<string, unknown>,
+      share_token: lead.share_token,
       notification_results: notificationResults,
     }, {
       status: 201,
@@ -399,6 +401,70 @@ export async function GET(
 
     const { leadId } = await params
     const supabase = await createAdminClient()
+
+    // Authorization: require share_token query param or authenticated user
+    const { searchParams } = new URL(request.url)
+    const token = searchParams.get('token')
+
+    if (token) {
+      // Validate share_token matches the lead
+      const { data: lead } = await supabase
+        .from('leads')
+        .select('id, share_token')
+        .eq('id', leadId)
+        .single()
+
+      if (!lead || !safeCompare((lead as { share_token: string }).share_token || '', token)) {
+        return NextResponse.json(
+          { error: 'Invalid or expired token' },
+          { status: 403 }
+        )
+      }
+    } else {
+      // No token — require authenticated user (admin or customer linked to this lead)
+      const { createClient } = await import('@/lib/supabase/server')
+      const authSupabase = await createClient()
+      const { data: { user } } = await authSupabase.auth.getUser()
+
+      if (!user) {
+        return NextResponse.json(
+          { error: 'Authentication required. Provide a token parameter or sign in.' },
+          { status: 401 }
+        )
+      }
+
+      // Check if user is admin or customer linked to this lead
+      const isAdmin = user.user_metadata?.role === 'admin'
+      if (!isAdmin) {
+        const { data: customerRow } = await supabase
+          .from('customers' as never)
+          .select('id')
+          .eq('auth_user_id', user.id)
+          .single()
+
+        const customerId = (customerRow as { id: string } | null)?.id
+        if (!customerId) {
+          return NextResponse.json(
+            { error: 'Not authorized to view this estimate' },
+            { status: 403 }
+          )
+        }
+
+        const { data: customerLink } = await supabase
+          .from('customer_leads' as never)
+          .select('id')
+          .eq('lead_id', leadId)
+          .eq('customer_id', customerId)
+          .maybeSingle()
+
+        if (!customerLink) {
+          return NextResponse.json(
+            { error: 'Not authorized to view this estimate' },
+            { status: 403 }
+          )
+        }
+      }
+    }
 
     const { data: estimate, error } = await supabase
       .from('estimates')

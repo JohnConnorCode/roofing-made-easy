@@ -175,7 +175,7 @@ export function ComparisonArticleSchema({ city, pageUrl }: ComparisonArticleSche
 }
 
 /**
- * LocalBusiness Schema specifically for Farrell Roofing on comparison pages
+ * LocalBusiness Schema specifically for Smart Roof Pricing on comparison pages
  * Highlights the featured company
  */
 export function FeaturedCompanySchema({ city }: { city: MSCity }) {

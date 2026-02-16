@@ -1,4 +1,4 @@
-// Featured Company Card - "Our Top Pick" for Farrell Roofing
+// Featured Company Card - "Our Top Pick" for Smart Roof Pricing
 // Full company profile with credentials and primary CTA
 
 import { MSCity } from '@/lib/data/ms-locations'
@@ -83,7 +83,7 @@ export function FeaturedCompanyCard({ city }: FeaturedCompanyCardProps) {
         {/* Company Description */}
         <div className="mb-8">
           <p className="text-gray-300 leading-relaxed">
-            Farrell Roofing has proudly served {city.name} and the greater {city.county} County
+            Smart Roof Pricing has proudly served {city.name} and the greater {city.county} County
             area since {BUSINESS_CONFIG.foundedYear}. As a locally owned and operated roofing
             contractor headquartered in Tupelo, we understand the unique roofing challenges that
             Northeast Mississippi homeowners face. From severe spring storms and high humidity to

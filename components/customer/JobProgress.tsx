@@ -5,13 +5,14 @@ import { ProgressTimeline, type TimelineStep } from './ProgressTimeline'
 import { Hammer, Calendar } from 'lucide-react'
 import type { CustomerJob } from '@/stores/customerStore'
 
-// Map job_status enum values to timeline steps
+// All customer-visible timeline steps (matches job_status enum minus 'closed')
 const JOB_TIMELINE_STEPS = [
   { status: 'pending_start', label: 'Contract Signed' },
   { status: 'materials_ordered', label: 'Materials Ordered' },
   { status: 'scheduled', label: 'Scheduled' },
   { status: 'in_progress', label: 'In Progress' },
   { status: 'inspection_pending', label: 'Inspection' },
+  { status: 'punch_list', label: 'Punch List' },
   { status: 'completed', label: 'Completed' },
   { status: 'warranty_active', label: 'Warranty Active' },
 ] as const
@@ -27,17 +28,23 @@ function formatDate(dateStr: string | null): string | undefined {
 }
 
 function buildTimelineSteps(job: CustomerJob): TimelineStep[] {
-  const currentIndex = STATUS_ORDER.indexOf(job.status as typeof STATUS_ORDER[number])
+  // 'closed' is a terminal state — treat as equivalent to warranty_active (everything done)
+  const effectiveStatus = job.status === 'closed' ? 'warranty_active' : job.status
+  const currentIndex = STATUS_ORDER.indexOf(effectiveStatus as typeof STATUS_ORDER[number])
 
   return JOB_TIMELINE_STEPS.map((step, index) => {
     let status: TimelineStep['status'] = 'upcoming'
-    if (index < currentIndex) {
+
+    if (currentIndex === -1) {
+      // Unknown status — show first step as current so timeline isn't blank
+      if (index === 0) status = 'current'
+    } else if (index < currentIndex) {
       status = 'completed'
     } else if (index === currentIndex) {
       status = 'current'
     }
 
-    // Try to find a date for this step
+    // Try to find a date for this step from job fields
     let date: string | undefined
     if (step.status === 'scheduled' && job.scheduled_start) {
       date = formatDate(job.scheduled_start)
@@ -47,7 +54,7 @@ function buildTimelineSteps(job: CustomerJob): TimelineStep[] {
       date = formatDate(job.actual_start)
     }
 
-    // Check status history for dates
+    // Fall back to status history for the date
     const historyEntry = job.status_history.find((h) => h.new_status === step.status)
     if (!date && historyEntry) {
       date = formatDate(historyEntry.created_at)
@@ -129,7 +136,7 @@ export function JobProgress({ job, compact = false }: JobProgressProps) {
         {/* Recent updates */}
         {recentUpdates.length > 0 && (
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Recent Updates
             </p>
             <div className="space-y-2">
@@ -146,11 +153,8 @@ export function JobProgress({ job, compact = false }: JobProgressProps) {
                         {update.new_status.replace(/_/g, ' ')}
                       </span>
                     </span>
-                    {update.notes && (
-                      <p className="text-slate-500 text-xs mt-0.5">{update.notes}</p>
-                    )}
                   </div>
-                  <span className="text-xs text-slate-600 shrink-0">
+                  <span className="text-xs text-slate-500 shrink-0">
                     {formatDate(update.created_at)}
                   </span>
                 </div>

@@ -1,5 +1,5 @@
 // Mississippi Locations Data for Local SEO
-// Farrell Roofing - Tupelo, MS & Surrounding Areas
+// Smart Roof Pricing - Tupelo, MS & Surrounding Areas
 
 export interface MSCity {
   slug: string
@@ -80,11 +80,11 @@ const tupeloMetroCities: MSCity[] = [
     coordinates: { lat: 34.2576, lng: -88.7034 },
     isHQ: true,
     priority: 'high',
-    metaTitle: 'Roofing Services in Tupelo, MS | Farrell Roofing | Free Estimates',
+    metaTitle: 'Roofing Services in Tupelo, MS | Smart Roof Pricing | Free Estimates',
     metaDescription: 'Trusted roofing contractor in Tupelo, Mississippi. Roof replacement, repair, storm damage experts. Locally owned, serving Lee County since 2010. Free estimates!',
     h1: 'Trusted Roofing Contractor in Tupelo, Mississippi',
     localContent: {
-      intro: `As Tupelo's hometown roofing company, Farrell Roofing has been protecting Northeast Mississippi homes for over a decade. Born and raised right here in the birthplace of Elvis, we understand the unique roofing challenges that Tupelo homeowners face. From the historic homes near Downtown and Fairpark to the growing neighborhoods of North Tupelo and the established communities around Milam and Joyner, we've helped thousands of families keep their homes safe and dry. Mississippi's humid subtropical climate brings intense summer storms, occasional tornadoes during spring, and heavy rainfall that can test any roof. Our team specializes in the roofing systems that perform best in our local conditions, and we're always just a short drive away when you need us.`,
+      intro: `As Tupelo's hometown roofing company, Smart Roof Pricing has been protecting Northeast Mississippi homes for over a decade. Born and raised right here in the birthplace of Elvis, we understand the unique roofing challenges that Tupelo homeowners face. From the historic homes near Downtown and Fairpark to the growing neighborhoods of North Tupelo and the established communities around Milam and Joyner, we've helped thousands of families keep their homes safe and dry. Mississippi's humid subtropical climate brings intense summer storms, occasional tornadoes during spring, and heavy rainfall that can test any roof. Our team specializes in the roofing systems that perform best in our local conditions, and we're always just a short drive away when you need us.`,
       weatherChallenges: [
         'Severe thunderstorms with high winds and hail',
         'Tornado season from March through May',
@@ -123,7 +123,7 @@ const tupeloMetroCities: MSCity[] = [
     },
     testimonial: {
       name: 'James M.',
-      text: 'After the spring storms damaged our roof in North Tupelo, Farrell Roofing was there the next day. They worked directly with our insurance company and had our new roof installed within a week. True professionals who care about our community.',
+      text: 'After the spring storms damaged our roof in North Tupelo, Smart Roof Pricing was there the next day. They worked directly with our insurance company and had our new roof installed within a week. True professionals who care about our community.',
       neighborhood: 'North Tupelo',
       projectType: 'Storm Damage Repair'
     },
@@ -144,7 +144,7 @@ const tupeloMetroCities: MSCity[] = [
     metaDescription: 'Professional roofing services in Saltillo, Mississippi. Local contractor serving Lee County with quality roof repairs, replacements, and storm damage restoration.',
     h1: 'Professional Roofing Services in Saltillo, Mississippi',
     localContent: {
-      intro: `Saltillo residents trust Farrell Roofing for all their roofing needs. Just a few miles north of our Tupelo headquarters, we consider Saltillo part of our extended family. This growing community along Highway 45 has seen significant residential development, with new subdivisions and established neighborhoods alike needing reliable roofing services. Whether you're in one of Saltillo's newer developments or maintaining an older home near the town center, our team delivers the same quality workmanship and honest service that has made us Northeast Mississippi's preferred roofing contractor.`,
+      intro: `Saltillo residents trust Smart Roof Pricing for all their roofing needs. Just a few miles north of our Tupelo headquarters, we consider Saltillo part of our extended family. This growing community along Highway 45 has seen significant residential development, with new subdivisions and established neighborhoods alike needing reliable roofing services. Whether you're in one of Saltillo's newer developments or maintaining an older home near the town center, our team delivers the same quality workmanship and honest service that has made us Northeast Mississippi's preferred roofing contractor.`,
       weatherChallenges: [
         'Severe spring thunderstorms',
         'High humidity and moisture exposure',
@@ -173,7 +173,7 @@ const tupeloMetroCities: MSCity[] = [
     },
     testimonial: {
       name: 'Patricia H.',
-      text: 'We needed our roof replaced before selling our home. Farrell Roofing gave us a fair price and finished ahead of schedule. The new roof actually helped us sell faster!',
+      text: 'We needed our roof replaced before selling our home. Smart Roof Pricing gave us a fair price and finished ahead of schedule. The new roof actually helped us sell faster!',
       projectType: 'Complete Roof Replacement'
     },
     nearbyCities: ['tupelo', 'baldwyn', 'guntown', 'booneville']
@@ -193,7 +193,7 @@ const tupeloMetroCities: MSCity[] = [
     metaDescription: 'Expert roofing services in Baldwyn, Mississippi. Trusted local contractor for roof repair, replacement, and storm damage. Serving Lee County homes.',
     h1: 'Expert Roofing Services in Baldwyn, Mississippi',
     localContent: {
-      intro: `Baldwyn may be a small town, but the homes here deserve big-time roofing service. Located in northern Lee County, Baldwyn experiences the same challenging weather as the rest of Northeast Mississippi. Our team at Farrell Roofing regularly serves Baldwyn homeowners, bringing the same expertise and dedication we're known for throughout the region. From historic homes along Main Street to the residential areas surrounding the community, we provide comprehensive roofing solutions tailored to local conditions and budgets.`,
+      intro: `Baldwyn may be a small town, but the homes here deserve big-time roofing service. Located in northern Lee County, Baldwyn experiences the same challenging weather as the rest of Northeast Mississippi. Our team at Smart Roof Pricing regularly serves Baldwyn homeowners, bringing the same expertise and dedication we're known for throughout the region. From historic homes along Main Street to the residential areas surrounding the community, we provide comprehensive roofing solutions tailored to local conditions and budgets.`,
       weatherChallenges: [
         'Severe thunderstorms and tornadoes',
         'High humidity and heat',
@@ -220,7 +220,7 @@ const tupeloMetroCities: MSCity[] = [
     },
     testimonial: {
       name: 'Robert T.',
-      text: 'Great experience from start to finish. They treated our small-town job with the same care as any big project. Highly recommend Farrell Roofing!',
+      text: 'Great experience from start to finish. They treated our small-town job with the same care as any big project. Highly recommend Smart Roof Pricing!',
       projectType: 'Roof Repair'
     },
     nearbyCities: ['saltillo', 'tupelo', 'booneville', 'guntown']
@@ -240,7 +240,7 @@ const tupeloMetroCities: MSCity[] = [
     metaDescription: 'Quality roofing services in Verona, Mississippi. Family-owned contractor providing roof repairs, replacements, and inspections in Lee County.',
     h1: 'Quality Roofing Services in Verona, Mississippi',
     localContent: {
-      intro: `Verona sits at the crossroads of Northeast Mississippi, and Farrell Roofing is proud to serve this growing community. Located just south of Tupelo along the Highway 45 corridor, Verona homeowners benefit from our proximity and quick response times. The town's mix of established homes and new construction means we handle everything from maintenance on older roofing systems to installing the latest materials on newly built homes. Our familiarity with local building codes and weather patterns ensures your roof will stand up to whatever Mississippi throws at it.`,
+      intro: `Verona sits at the crossroads of Northeast Mississippi, and Smart Roof Pricing is proud to serve this growing community. Located just south of Tupelo along the Highway 45 corridor, Verona homeowners benefit from our proximity and quick response times. The town's mix of established homes and new construction means we handle everything from maintenance on older roofing systems to installing the latest materials on newly built homes. Our familiarity with local building codes and weather patterns ensures your roof will stand up to whatever Mississippi throws at it.`,
       weatherChallenges: [
         'Spring severe weather season',
         'Summer heat and humidity',
@@ -268,7 +268,7 @@ const tupeloMetroCities: MSCity[] = [
     },
     testimonial: {
       name: 'Angela W.',
-      text: 'Farrell Roofing replaced our aging roof with beautiful architectural shingles. The crew was professional and cleaned up everything when they finished.',
+      text: 'Smart Roof Pricing replaced our aging roof with beautiful architectural shingles. The crew was professional and cleaned up everything when they finished.',
       projectType: 'Roof Replacement'
     },
     nearbyCities: ['tupelo', 'shannon', 'nettleton', 'amory']
@@ -288,7 +288,7 @@ const tupeloMetroCities: MSCity[] = [
     metaDescription: 'Reliable roofing services in Shannon, Mississippi. Expert roof repair and replacement from a trusted Lee County contractor. Free estimates available.',
     h1: 'Reliable Roofing Services in Shannon, Mississippi',
     localContent: {
-      intro: `Shannon homeowners count on Farrell Roofing for dependable service and honest pricing. This close-knit Lee County community south of Tupelo deserves roofing contractors who understand small-town values and deliver big-city quality. Our team treats every Shannon roofing project with the care and attention it deserves, whether it's a simple repair or a complete replacement. We're committed to protecting the homes of this wonderful community.`,
+      intro: `Shannon homeowners count on Smart Roof Pricing for dependable service and honest pricing. This close-knit Lee County community south of Tupelo deserves roofing contractors who understand small-town values and deliver big-city quality. Our team treats every Shannon roofing project with the care and attention it deserves, whether it's a simple repair or a complete replacement. We're committed to protecting the homes of this wonderful community.`,
       weatherChallenges: [
         'Severe thunderstorms',
         'High humidity',
@@ -333,7 +333,7 @@ const tupeloMetroCities: MSCity[] = [
     metaDescription: 'Professional roofing services in Guntown, Mississippi. Local experts for roof repair, replacement, and storm damage. Serving Lee County since 2010.',
     h1: 'Professional Roofing Services in Guntown, Mississippi',
     localContent: {
-      intro: `Guntown residents enjoy quick access to our Tupelo-based team for all their roofing needs. This growing northern Lee County community sits along the Highway 45 corridor, making it easy for our crews to respond promptly. From storm damage repairs to complete roof replacements, Farrell Roofing brings professional service and quality materials to every Guntown project. We understand the importance of protecting your home and family from Northeast Mississippi's challenging weather.`,
+      intro: `Guntown residents enjoy quick access to our Tupelo-based team for all their roofing needs. This growing northern Lee County community sits along the Highway 45 corridor, making it easy for our crews to respond promptly. From storm damage repairs to complete roof replacements, Smart Roof Pricing brings professional service and quality materials to every Guntown project. We understand the importance of protecting your home and family from Northeast Mississippi's challenging weather.`,
       weatherChallenges: [
         'Spring tornado season',
         'Severe thunderstorms',
@@ -359,7 +359,7 @@ const tupeloMetroCities: MSCity[] = [
     },
     testimonial: {
       name: 'Kevin and Lisa R.',
-      text: 'After a bad storm took shingles off our roof, Farrell Roofing was out the next morning. They tarped the damage right away and had us scheduled for a full repair within the week.',
+      text: 'After a bad storm took shingles off our roof, Smart Roof Pricing was out the next morning. They tarped the damage right away and had us scheduled for a full repair within the week.',
       projectType: 'Storm Damage Repair'
     },
     nearbyCities: ['tupelo', 'saltillo', 'baldwyn', 'booneville']
@@ -379,7 +379,7 @@ const tupeloMetroCities: MSCity[] = [
     metaDescription: 'Quality roofing services in Plantersville, Mississippi. Local contractor offering roof repairs, replacements, and inspections. Free estimates.',
     h1: 'Quality Roofing in Plantersville, Mississippi',
     localContent: {
-      intro: `Plantersville may be small, but the homes here deserve top-quality roofing service. Located in Lee County just east of Tupelo, this rural community is well within our service area. Farrell Roofing provides the same professional service to Plantersville residents that we offer throughout Northeast Mississippi. Whether you need routine maintenance, repairs after a storm, or a complete roof replacement, we're here to help protect your home.`,
+      intro: `Plantersville may be small, but the homes here deserve top-quality roofing service. Located in Lee County just east of Tupelo, this rural community is well within our service area. Smart Roof Pricing provides the same professional service to Plantersville residents that we offer throughout Northeast Mississippi. Whether you need routine maintenance, repairs after a storm, or a complete roof replacement, we're here to help protect your home.`,
       weatherChallenges: [
         'Severe weather exposure',
         'High humidity',
@@ -403,7 +403,7 @@ const tupeloMetroCities: MSCity[] = [
     },
     testimonial: {
       name: 'Martha S.',
-      text: 'Living out in the country, I was worried about finding a reliable roofer. Farrell Roofing drove out without hesitation and gave me an honest quote. Excellent service.',
+      text: 'Living out in the country, I was worried about finding a reliable roofer. Smart Roof Pricing drove out without hesitation and gave me an honest quote. Excellent service.',
       projectType: 'Roof Inspection'
     },
     nearbyCities: ['tupelo', 'verona', 'saltillo']
@@ -423,7 +423,7 @@ const tupeloMetroCities: MSCity[] = [
     metaDescription: 'Trusted roofing services in Nettleton, Mississippi. Professional roof repair and replacement serving Lee and Monroe Counties. Call for a free estimate.',
     h1: 'Trusted Roofing Services in Nettleton, Mississippi',
     localContent: {
-      intro: `Straddling the Lee and Monroe County line, Nettleton homeowners have trusted Farrell Roofing to protect their homes. Our team serves this community with the same dedication and quality workmanship we bring to every project. Nettleton's location in the heart of Northeast Mississippi means residents face all the typical weather challenges of the region, from spring storms to summer heat. We're here to ensure your roof can handle whatever comes its way.`,
+      intro: `Straddling the Lee and Monroe County line, Nettleton homeowners have trusted Smart Roof Pricing to protect their homes. Our team serves this community with the same dedication and quality workmanship we bring to every project. Nettleton's location in the heart of Northeast Mississippi means residents face all the typical weather challenges of the region, from spring storms to summer heat. We're here to ensure your roof can handle whatever comes its way.`,
       weatherChallenges: [
         'Spring severe weather',
         'Summer heat and humidity',
@@ -473,7 +473,7 @@ const secondaryMarketCities: MSCity[] = [
     metaDescription: 'Expert roofing services in Pontotoc, Mississippi. Trusted contractor for roof replacement, repair, and storm damage restoration in Pontotoc County.',
     h1: 'Expert Roofing Services in Pontotoc, Mississippi',
     localContent: {
-      intro: `Pontotoc homeowners have discovered why Farrell Roofing is Northeast Mississippi's preferred roofing contractor. Just a short drive west from our Tupelo headquarters, we serve Pontotoc County with the same commitment to quality and customer service. This charming county seat features historic downtown buildings alongside newer residential developments, each with unique roofing needs. Our team understands the local architecture and weather patterns, ensuring we recommend the right roofing solutions for Pontotoc homes.`,
+      intro: `Pontotoc homeowners have discovered why Smart Roof Pricing is Northeast Mississippi's preferred roofing contractor. Just a short drive west from our Tupelo headquarters, we serve Pontotoc County with the same commitment to quality and customer service. This charming county seat features historic downtown buildings alongside newer residential developments, each with unique roofing needs. Our team understands the local architecture and weather patterns, ensuring we recommend the right roofing solutions for Pontotoc homes.`,
       weatherChallenges: [
         'Severe thunderstorms with wind and hail',
         'Tornado risk during spring',
@@ -503,7 +503,7 @@ const secondaryMarketCities: MSCity[] = [
     },
     testimonial: {
       name: 'Michael D.',
-      text: 'Farrell Roofing came highly recommended, and they exceeded expectations. They replaced our roof on our historic downtown building with materials that match the character of our home.',
+      text: 'Smart Roof Pricing came highly recommended, and they exceeded expectations. They replaced our roof on our historic downtown building with materials that match the character of our home.',
       neighborhood: 'Downtown Pontotoc',
       projectType: 'Historic Roof Replacement'
     },
@@ -524,7 +524,7 @@ const secondaryMarketCities: MSCity[] = [
     metaDescription: 'Professional roofing services in New Albany, Mississippi. Quality roof repair, replacement, and inspections in Union County. Call for a free estimate.',
     h1: 'Quality Roofing Services in New Albany, Mississippi',
     localContent: {
-      intro: `New Albany, the birthplace of William Faulkner, deserves roofing services worthy of its literary heritage. As Union County's largest city, New Albany features a diverse mix of housing, from charming historic homes to modern developments. Farrell Roofing serves New Albany homeowners with the same expertise and dedication we bring to every community in Northeast Mississippi. Our team is familiar with the specific challenges that New Albany roofs face, from the humid summers to the occasional severe storm system.`,
+      intro: `New Albany, the birthplace of William Faulkner, deserves roofing services worthy of its literary heritage. As Union County's largest city, New Albany features a diverse mix of housing, from charming historic homes to modern developments. Smart Roof Pricing serves New Albany homeowners with the same expertise and dedication we bring to every community in Northeast Mississippi. Our team is familiar with the specific challenges that New Albany roofs face, from the humid summers to the occasional severe storm system.`,
       weatherChallenges: [
         'Severe spring storms',
         'High humidity and heat',
@@ -554,7 +554,7 @@ const secondaryMarketCities: MSCity[] = [
     },
     testimonial: {
       name: 'Sarah L.',
-      text: 'After comparing multiple bids, we chose Farrell Roofing for their honest assessment and fair pricing. The roof looks beautiful and they even fixed a ventilation issue we didn\'t know we had.',
+      text: 'After comparing multiple bids, we chose Smart Roof Pricing for their honest assessment and fair pricing. The roof looks beautiful and they even fixed a ventilation issue we didn\'t know we had.',
       projectType: 'Roof Replacement'
     },
     nearbyCities: ['oxford', 'pontotoc', 'booneville', 'tupelo']
@@ -574,7 +574,7 @@ const secondaryMarketCities: MSCity[] = [
     metaDescription: 'Expert roofing services in Booneville, Mississippi. Trusted for storm damage repair, roof replacement, and inspections in Prentiss County.',
     h1: 'Expert Roofing Services in Booneville, Mississippi',
     localContent: {
-      intro: `Booneville and Prentiss County homeowners trust Farrell Roofing for reliable roofing services. As the county seat, Booneville features a mix of residential properties from historic homes near the courthouse to newer subdivisions on the outskirts of town. Northeast Mississippi Community College brings additional housing needs to the area. Our team regularly serves Booneville, bringing professional workmanship and quality materials to every project. We understand the local weather patterns and building styles, ensuring optimal roofing solutions for every home.`,
+      intro: `Booneville and Prentiss County homeowners trust Smart Roof Pricing for reliable roofing services. As the county seat, Booneville features a mix of residential properties from historic homes near the courthouse to newer subdivisions on the outskirts of town. Northeast Mississippi Community College brings additional housing needs to the area. Our team regularly serves Booneville, bringing professional workmanship and quality materials to every project. We understand the local weather patterns and building styles, ensuring optimal roofing solutions for every home.`,
       weatherChallenges: [
         'Northern MS storm corridor',
         'Spring tornado season',
@@ -604,7 +604,7 @@ const secondaryMarketCities: MSCity[] = [
     },
     testimonial: {
       name: 'David K.',
-      text: 'The Farrell Roofing team handled our insurance claim professionally and made the whole process stress-free. Our new roof looks great and was done in just two days.',
+      text: 'The Smart Roof Pricing team handled our insurance claim professionally and made the whole process stress-free. Our new roof looks great and was done in just two days.',
       projectType: 'Insurance Claim Roof Replacement'
     },
     nearbyCities: ['corinth', 'baldwyn', 'saltillo', 'tupelo']
@@ -624,7 +624,7 @@ const secondaryMarketCities: MSCity[] = [
     metaDescription: 'Professional roofing services in Corinth, Mississippi. Historic and modern roof repair, replacement, and restoration in Alcorn County.',
     h1: 'Professional Roofing Services in Corinth, Mississippi',
     localContent: {
-      intro: `Corinth's rich Civil War history includes many historic homes that require specialized roofing care. As Alcorn County's largest city and one of Northeast Mississippi's major communities, Corinth presents unique roofing challenges and opportunities. From the preserved antebellum homes near the Corinth Civil War Interpretive Center to the newer developments along Highway 72, Farrell Roofing has the experience to handle any project. Our team appreciates Corinth's architectural heritage and uses appropriate materials and techniques to maintain the character of historic properties while ensuring modern protection.`,
+      intro: `Corinth's rich Civil War history includes many historic homes that require specialized roofing care. As Alcorn County's largest city and one of Northeast Mississippi's major communities, Corinth presents unique roofing challenges and opportunities. From the preserved antebellum homes near the Corinth Civil War Interpretive Center to the newer developments along Highway 72, Smart Roof Pricing has the experience to handle any project. Our team appreciates Corinth's architectural heritage and uses appropriate materials and techniques to maintain the character of historic properties while ensuring modern protection.`,
       weatherChallenges: [
         'Northern Mississippi storm systems',
         'Tornado risk',
@@ -657,7 +657,7 @@ const secondaryMarketCities: MSCity[] = [
     },
     testimonial: {
       name: 'Jennifer R.',
-      text: 'We own a historic home near downtown Corinth and needed roofers who understood preservation. Farrell Roofing delivered exactly what we needed while respecting the home\'s heritage.',
+      text: 'We own a historic home near downtown Corinth and needed roofers who understood preservation. Smart Roof Pricing delivered exactly what we needed while respecting the home\'s heritage.',
       neighborhood: 'Downtown Corinth',
       projectType: 'Historic Roof Restoration'
     },
@@ -678,7 +678,7 @@ const secondaryMarketCities: MSCity[] = [
     metaDescription: 'Quality roofing services in Fulton, Mississippi. Trusted contractor for roof repair and replacement in Itawamba County. Free estimates available.',
     h1: 'Quality Roofing Services in Fulton, Mississippi',
     localContent: {
-      intro: `Fulton, the seat of Itawamba County, is home to the main campus of Itawamba Community College and a tight-knit community that values quality work. Farrell Roofing serves Fulton residents with the same professionalism and expertise we bring to every Northeast Mississippi community. From the college area to the residential neighborhoods throughout town, we provide comprehensive roofing services designed to protect your investment and withstand local weather conditions.`,
+      intro: `Fulton, the seat of Itawamba County, is home to the main campus of Itawamba Community College and a tight-knit community that values quality work. Smart Roof Pricing serves Fulton residents with the same professionalism and expertise we bring to every Northeast Mississippi community. From the college area to the residential neighborhoods throughout town, we provide comprehensive roofing services designed to protect your investment and withstand local weather conditions.`,
       weatherChallenges: [
         'Severe thunderstorms',
         'Spring tornado season',
@@ -728,7 +728,7 @@ const secondaryMarketCities: MSCity[] = [
     metaDescription: 'Professional roofing services in Amory, Mississippi. Expert roof repair, replacement, and storm damage restoration in Monroe County.',
     h1: 'Professional Roofing in Amory, Mississippi',
     localContent: {
-      intro: `Amory, known as the "City of Beautiful Homes," deserves roofing services that match its reputation. Located in Monroe County along the Tombigbee River, Amory homeowners face unique challenges from the humid river valley climate. Farrell Roofing understands these conditions and provides roofing solutions that protect your beautiful home. From the historic districts to newer developments, we deliver quality workmanship and lasting results.`,
+      intro: `Amory, known as the "City of Beautiful Homes," deserves roofing services that match its reputation. Located in Monroe County along the Tombigbee River, Amory homeowners face unique challenges from the humid river valley climate. Smart Roof Pricing understands these conditions and provides roofing solutions that protect your beautiful home. From the historic districts to newer developments, we deliver quality workmanship and lasting results.`,
       weatherChallenges: [
         'River valley humidity',
         'Severe thunderstorms',
@@ -758,7 +758,7 @@ const secondaryMarketCities: MSCity[] = [
     },
     testimonial: {
       name: 'Thomas B.',
-      text: 'Farrell Roofing installed a beautiful new roof on our Amory home. They were professional, on time, and left our property cleaner than they found it.',
+      text: 'Smart Roof Pricing installed a beautiful new roof on our Amory home. They were professional, on time, and left our property cleaner than they found it.',
       projectType: 'Roof Replacement'
     },
     nearbyCities: ['tupelo', 'aberdeen', 'fulton', 'nettleton']
@@ -778,7 +778,7 @@ const secondaryMarketCities: MSCity[] = [
     metaDescription: 'Expert roofing services in Aberdeen, Mississippi. Specializing in historic and modern roof repair, replacement, and restoration in Monroe County.',
     h1: 'Expert Roofing Services in Aberdeen, Mississippi',
     localContent: {
-      intro: `Aberdeen's stunning collection of antebellum homes and historic architecture makes it one of Mississippi's most charming cities. The Monroe County seat requires roofing contractors who understand both historic preservation and modern building techniques. Farrell Roofing serves Aberdeen with specialized expertise in historic roof restoration alongside standard residential services. Whether your home dates to the 1800s or was built last year, we have the skills and materials to protect it.`,
+      intro: `Aberdeen's stunning collection of antebellum homes and historic architecture makes it one of Mississippi's most charming cities. The Monroe County seat requires roofing contractors who understand both historic preservation and modern building techniques. Smart Roof Pricing serves Aberdeen with specialized expertise in historic roof restoration alongside standard residential services. Whether your home dates to the 1800s or was built last year, we have the skills and materials to protect it.`,
       weatherChallenges: [
         'Tombigbee River valley humidity',
         'Severe weather systems',
@@ -810,7 +810,7 @@ const secondaryMarketCities: MSCity[] = [
     },
     testimonial: {
       name: 'Elizabeth M.',
-      text: 'Our 1850s home needed careful roof work. Farrell Roofing understood historic preservation requirements and did exceptional work. They even found original materials to match.',
+      text: 'Our 1850s home needed careful roof work. Smart Roof Pricing understood historic preservation requirements and did exceptional work. They even found original materials to match.',
       neighborhood: 'Historic District',
       projectType: 'Historic Roof Restoration'
     },
@@ -831,7 +831,7 @@ const secondaryMarketCities: MSCity[] = [
     metaDescription: 'Reliable roofing services in Houston, Mississippi. Professional roof repair and replacement serving Chickasaw County. Call for your free estimate.',
     h1: 'Reliable Roofing Services in Houston, Mississippi',
     localContent: {
-      intro: `Houston, the seat of Chickasaw County, is a welcoming community west of Tupelo that Farrell Roofing is proud to serve. This small city features friendly neighborhoods and homes that need protection from Northeast Mississippi's challenging weather. Our team regularly travels to Houston to provide the same quality roofing services we're known for throughout the region. From storm damage repairs to complete replacements, we're here to help Houston homeowners.`,
+      intro: `Houston, the seat of Chickasaw County, is a welcoming community west of Tupelo that Smart Roof Pricing is proud to serve. This small city features friendly neighborhoods and homes that need protection from Northeast Mississippi's challenging weather. Our team regularly travels to Houston to provide the same quality roofing services we're known for throughout the region. From storm damage repairs to complete replacements, we're here to help Houston homeowners.`,
       weatherChallenges: [
         'Severe thunderstorms',
         'Tornado exposure',
@@ -883,7 +883,7 @@ const tertiaryMarketCities: MSCity[] = [
     metaDescription: 'Premium roofing services in Oxford, Mississippi. Expert roof repair and replacement near Ole Miss. Serving Lafayette County homes and businesses.',
     h1: 'Premium Roofing Services in Oxford, Mississippi',
     localContent: {
-      intro: `Oxford, home to the University of Mississippi (Ole Miss), is one of Mississippi's most vibrant and sought-after communities. The city blends Southern charm with college-town energy, featuring everything from historic homes near the Square to modern developments throughout Lafayette County. Farrell Roofing serves Oxford's diverse housing stock with premium roofing services. Whether you're a longtime Oxford resident, a professor with a historic home, or an investor with rental properties near campus, we provide the quality and reliability Oxford homeowners expect.`,
+      intro: `Oxford, home to the University of Mississippi (Ole Miss), is one of Mississippi's most vibrant and sought-after communities. The city blends Southern charm with college-town energy, featuring everything from historic homes near the Square to modern developments throughout Lafayette County. Smart Roof Pricing serves Oxford's diverse housing stock with premium roofing services. Whether you're a longtime Oxford resident, a professor with a historic home, or an investor with rental properties near campus, we provide the quality and reliability Oxford homeowners expect.`,
       weatherChallenges: [
         'North Mississippi storm systems',
         'Spring severe weather',
@@ -919,7 +919,7 @@ const tertiaryMarketCities: MSCity[] = [
     },
     testimonial: {
       name: 'Dr. William P.',
-      text: 'As a homeowner near the Ole Miss campus, I needed contractors who understand historic architecture. Farrell Roofing exceeded my expectations with their attention to detail and quality materials.',
+      text: 'As a homeowner near the Ole Miss campus, I needed contractors who understand historic architecture. Smart Roof Pricing exceeded my expectations with their attention to detail and quality materials.',
       neighborhood: 'College Hill',
       projectType: 'Historic Roof Replacement'
     },
@@ -940,7 +940,7 @@ const tertiaryMarketCities: MSCity[] = [
     metaDescription: 'Professional roofing services in Starkville, Mississippi. Expert roof repair and replacement near Mississippi State. Serving Oktibbeha County.',
     h1: 'Professional Roofing Services in Starkville, Mississippi',
     localContent: {
-      intro: `Starkville, home to Mississippi State University, combines academic excellence with warm Southern hospitality. The Golden Triangle region's largest city features diverse housing from historic Craftsman homes to modern developments serving the university community. Farrell Roofing extends our Northeast Mississippi service area to reach Starkville homeowners who demand quality. We understand the unique needs of college-town properties, from family homes to rental investments, and deliver roofing solutions that last.`,
+      intro: `Starkville, home to Mississippi State University, combines academic excellence with warm Southern hospitality. The Golden Triangle region's largest city features diverse housing from historic Craftsman homes to modern developments serving the university community. Smart Roof Pricing extends our Northeast Mississippi service area to reach Starkville homeowners who demand quality. We understand the unique needs of college-town properties, from family homes to rental investments, and deliver roofing solutions that last.`,
       weatherChallenges: [
         'Central Mississippi storm corridor',
         'Severe thunderstorms',
@@ -975,7 +975,7 @@ const tertiaryMarketCities: MSCity[] = [
     },
     testimonial: {
       name: 'Coach Mark T.',
-      text: 'Needed a reliable roofing company for my investment properties near MSU. Farrell Roofing handled multiple properties efficiently and the tenants were impressed with the crews\' professionalism.',
+      text: 'Needed a reliable roofing company for my investment properties near MSU. Smart Roof Pricing handled multiple properties efficiently and the tenants were impressed with the crews\' professionalism.',
       projectType: 'Multi-Property Roof Replacement'
     },
     nearbyCities: ['columbus', 'west-point', 'aberdeen', 'houston']
@@ -995,7 +995,7 @@ const tertiaryMarketCities: MSCity[] = [
     metaDescription: 'Expert roofing services in Columbus, Mississippi. Specializing in historic antebellum and modern roof repair and replacement in Lowndes County.',
     h1: 'Expert Roofing Services in Columbus, Mississippi',
     localContent: {
-      intro: `Columbus, Mississippi preserves one of the finest collections of antebellum homes in the South. This Lowndes County city hosts the famous Pilgrimage tour each spring, showcasing stunning historic architecture that requires specialized roofing care. Beyond the historic district, Columbus Air Force Base brings additional housing diversity to the region. Farrell Roofing serves Columbus with expertise in both historic preservation and modern roofing systems. Whether maintaining a grand antebellum estate or replacing a roof on a contemporary home, we deliver excellence.`,
+      intro: `Columbus, Mississippi preserves one of the finest collections of antebellum homes in the South. This Lowndes County city hosts the famous Pilgrimage tour each spring, showcasing stunning historic architecture that requires specialized roofing care. Beyond the historic district, Columbus Air Force Base brings additional housing diversity to the region. Smart Roof Pricing serves Columbus with expertise in both historic preservation and modern roofing systems. Whether maintaining a grand antebellum estate or replacing a roof on a contemporary home, we deliver excellence.`,
       weatherChallenges: [
         'Tombigbee River valley weather',
         'Severe thunderstorms',
@@ -1031,7 +1031,7 @@ const tertiaryMarketCities: MSCity[] = [
     },
     testimonial: {
       name: 'Catherine S.',
-      text: 'Our 1847 home required expert handling. Farrell Roofing sourced period-appropriate materials and their craftsmen understood historic preservation. The result is stunning.',
+      text: 'Our 1847 home required expert handling. Smart Roof Pricing sourced period-appropriate materials and their craftsmen understood historic preservation. The result is stunning.',
       neighborhood: 'Northside Historic District',
       projectType: 'Antebellum Roof Restoration'
     },
@@ -1052,7 +1052,7 @@ const tertiaryMarketCities: MSCity[] = [
     metaDescription: 'Professional roofing services in West Point, Mississippi. Quality roof repair and replacement in Clay County. Free estimates available.',
     h1: 'Professional Roofing in West Point, Mississippi',
     localContent: {
-      intro: `West Point, situated in Clay County along the Tombigbee River, is a growing community that Farrell Roofing is pleased to serve. The city's location makes it accessible from our Tupelo base, allowing us to provide the same quality services West Point homeowners deserve. From older homes near downtown to newer developments, we offer comprehensive roofing solutions tailored to local needs and weather conditions.`,
+      intro: `West Point, situated in Clay County along the Tombigbee River, is a growing community that Smart Roof Pricing is pleased to serve. The city's location makes it accessible from our Tupelo base, allowing us to provide the same quality services West Point homeowners deserve. From older homes near downtown to newer developments, we offer comprehensive roofing solutions tailored to local needs and weather conditions.`,
       weatherChallenges: [
         'River valley humidity',
         'Severe thunderstorms',
@@ -1108,7 +1108,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Services in Lee County, MS | Tupelo Area Roofing Experts',
     metaDescription: 'Trusted roofing contractor serving all of Lee County, Mississippi. From Tupelo to Saltillo, Baldwyn to Verona. Free estimates for roof repair and replacement.',
     h1: 'Lee County, Mississippi Roofing Services',
-    intro: `Lee County is home to Farrell Roofing's headquarters in Tupelo, and we're proud to serve every community throughout the county. From the bustling city of Tupelo to the charming towns of Saltillo, Baldwyn, Verona, Shannon, Guntown, Plantersville, and Nettleton, we provide comprehensive roofing services to protect Lee County homes. Our familiarity with local building codes, weather patterns, and neighborhoods makes us the trusted choice for Lee County homeowners.`,
+    intro: `Lee County is home to Smart Roof Pricing's headquarters in Tupelo, and we're proud to serve every community throughout the county. From the bustling city of Tupelo to the charming towns of Saltillo, Baldwyn, Verona, Shannon, Guntown, Plantersville, and Nettleton, we provide comprehensive roofing services to protect Lee County homes. Our familiarity with local building codes, weather patterns, and neighborhoods makes us the trusted choice for Lee County homeowners.`,
     stats: {
       avgReplacementCost: '$7,500 - $15,000',
       totalHomes: '32,000+',
@@ -1125,7 +1125,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Contractor in Pontotoc County, MS | Professional Services',
     metaDescription: 'Professional roofing services throughout Pontotoc County, Mississippi. Expert roof repair and replacement in Pontotoc and surrounding areas.',
     h1: 'Pontotoc County, Mississippi Roofing Services',
-    intro: `Pontotoc County residents trust Farrell Roofing for all their roofing needs. Just west of our Tupelo headquarters, we serve the county seat of Pontotoc and surrounding communities with the same dedication to quality and customer service that has made us Northeast Mississippi's preferred roofing contractor.`,
+    intro: `Pontotoc County residents trust Smart Roof Pricing for all their roofing needs. Just west of our Tupelo headquarters, we serve the county seat of Pontotoc and surrounding communities with the same dedication to quality and customer service that has made us Northeast Mississippi's preferred roofing contractor.`,
     stats: {
       avgReplacementCost: '$8,000 - $14,000',
       totalHomes: '12,000+',
@@ -1142,7 +1142,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Services in Union County, MS | New Albany Area Experts',
     metaDescription: 'Expert roofing services in Union County, Mississippi. Serving New Albany and surrounding areas with quality roof repair and replacement.',
     h1: 'Union County, Mississippi Roofing Services',
-    intro: `Union County, home to the birthplace of William Faulkner, features charming communities that deserve quality roofing services. Farrell Roofing serves New Albany and all of Union County with professional roof repair, replacement, and storm damage restoration services.`,
+    intro: `Union County, home to the birthplace of William Faulkner, features charming communities that deserve quality roofing services. Smart Roof Pricing serves New Albany and all of Union County with professional roof repair, replacement, and storm damage restoration services.`,
     stats: {
       avgReplacementCost: '$8,000 - $14,500',
       totalHomes: '11,000+',
@@ -1159,7 +1159,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Contractor in Prentiss County, MS | Booneville Area Services',
     metaDescription: 'Trusted roofing contractor serving Prentiss County, Mississippi. Professional roof repair and replacement in Booneville and surrounding communities.',
     h1: 'Prentiss County, Mississippi Roofing Services',
-    intro: `Prentiss County homeowners rely on Farrell Roofing for dependable roofing services. From Booneville to the surrounding rural communities, we bring professional workmanship and quality materials to every project in Prentiss County.`,
+    intro: `Prentiss County homeowners rely on Smart Roof Pricing for dependable roofing services. From Booneville to the surrounding rural communities, we bring professional workmanship and quality materials to every project in Prentiss County.`,
     stats: {
       avgReplacementCost: '$7,500 - $13,500',
       totalHomes: '10,000+',
@@ -1176,7 +1176,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Services in Alcorn County, MS | Corinth Area Roof Experts',
     metaDescription: 'Professional roofing services throughout Alcorn County, Mississippi. Historic and modern roof repair, replacement, and restoration in Corinth.',
     h1: 'Alcorn County, Mississippi Roofing Services',
-    intro: `Alcorn County's rich Civil War heritage includes many historic homes requiring specialized roofing care. Farrell Roofing serves Corinth and all of Alcorn County with expertise in both historic preservation and modern roofing techniques.`,
+    intro: `Alcorn County's rich Civil War heritage includes many historic homes requiring specialized roofing care. Smart Roof Pricing serves Corinth and all of Alcorn County with expertise in both historic preservation and modern roofing techniques.`,
     stats: {
       avgReplacementCost: '$8,500 - $15,500',
       totalHomes: '15,000+',
@@ -1193,7 +1193,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Contractor in Itawamba County, MS | Fulton Area Services',
     metaDescription: 'Quality roofing services in Itawamba County, Mississippi. Professional roof repair and replacement serving Fulton and surrounding areas.',
     h1: 'Itawamba County, Mississippi Roofing Services',
-    intro: `Itawamba County, home to Itawamba Community College, features welcoming communities that trust Farrell Roofing. We serve Fulton and the entire county with comprehensive roofing services designed to protect your investment.`,
+    intro: `Itawamba County, home to Itawamba Community College, features welcoming communities that trust Smart Roof Pricing. We serve Fulton and the entire county with comprehensive roofing services designed to protect your investment.`,
     stats: {
       avgReplacementCost: '$7,500 - $13,000',
       totalHomes: '9,000+',
@@ -1210,7 +1210,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Services in Monroe County, MS | Amory & Aberdeen Area',
     metaDescription: 'Expert roofing services throughout Monroe County, Mississippi. Serving Amory, Aberdeen, and surrounding communities with quality roof care.',
     h1: 'Monroe County, Mississippi Roofing Services',
-    intro: `Monroe County features two distinct cities - Amory, "The City of Beautiful Homes," and Aberdeen with its stunning antebellum architecture. Farrell Roofing serves all of Monroe County with expertise in both historic preservation and modern residential roofing.`,
+    intro: `Monroe County features two distinct cities - Amory, "The City of Beautiful Homes," and Aberdeen with its stunning antebellum architecture. Smart Roof Pricing serves all of Monroe County with expertise in both historic preservation and modern residential roofing.`,
     stats: {
       avgReplacementCost: '$8,000 - $16,000',
       totalHomes: '14,000+',
@@ -1227,7 +1227,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Contractor in Chickasaw County, MS | Houston Area Services',
     metaDescription: 'Reliable roofing services in Chickasaw County, Mississippi. Professional roof repair and replacement in Houston and surrounding communities.',
     h1: 'Chickasaw County, Mississippi Roofing Services',
-    intro: `Chickasaw County homeowners west of Tupelo trust Farrell Roofing for dependable service. We regularly serve Houston and surrounding Chickasaw County communities with professional roofing solutions.`,
+    intro: `Chickasaw County homeowners west of Tupelo trust Smart Roof Pricing for dependable service. We regularly serve Houston and surrounding Chickasaw County communities with professional roofing solutions.`,
     stats: {
       avgReplacementCost: '$7,500 - $13,000',
       totalHomes: '7,000+',
@@ -1244,7 +1244,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Services in Lafayette County, MS | Oxford Area Roof Experts',
     metaDescription: 'Premium roofing services in Lafayette County, Mississippi. Expert roof repair and replacement in Oxford, home of Ole Miss.',
     h1: 'Lafayette County, Mississippi Roofing Services',
-    intro: `Lafayette County, home to the University of Mississippi and the charming city of Oxford, represents one of Mississippi's most desirable communities. Farrell Roofing extends our service area to serve Lafayette County homeowners with premium roofing services worthy of this exceptional community.`,
+    intro: `Lafayette County, home to the University of Mississippi and the charming city of Oxford, represents one of Mississippi's most desirable communities. Smart Roof Pricing extends our service area to serve Lafayette County homeowners with premium roofing services worthy of this exceptional community.`,
     stats: {
       avgReplacementCost: '$10,000 - $20,000',
       totalHomes: '22,000+',
@@ -1261,7 +1261,7 @@ export const msCounties: MSCounty[] = [
     metaTitle: 'Roofing Contractor in Oktibbeha County, MS | Starkville Area',
     metaDescription: 'Professional roofing services in Oktibbeha County, Mississippi. Serving Starkville and MS State area with quality roof repair and replacement.',
     h1: 'Oktibbeha County, Mississippi Roofing Services',
-    intro: `Oktibbeha County, home to Mississippi State University and Starkville, is a vibrant community that Farrell Roofing is proud to serve. We extend our Northeast Mississippi service area to reach Oktibbeha County homeowners who demand quality and reliability.`,
+    intro: `Oktibbeha County, home to Mississippi State University and Starkville, is a vibrant community that Smart Roof Pricing is proud to serve. We extend our Northeast Mississippi service area to reach Oktibbeha County homeowners who demand quality and reliability.`,
     stats: {
       avgReplacementCost: '$9,000 - $18,000',
       totalHomes: '19,000+',

@@ -6,7 +6,7 @@ test.describe('Customer Measurement Flow', () => {
       await page.goto('/')
 
       // Homepage should load with roofing content
-      await expect(page).toHaveTitle(/Farrell Roofing/)
+      await expect(page).toHaveTitle(/Smart Roof Pricing/)
 
       // Should have a call-to-action for estimates
       const ctaButton = page.getByRole('link', { name: /estimate|quote/i }).first()

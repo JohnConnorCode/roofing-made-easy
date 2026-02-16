@@ -84,6 +84,13 @@ export async function middleware(request: NextRequest) {
 
   // Skip auth checks if Supabase is not configured (mock mode)
   if (!hasValidSupabaseConfig()) {
+    // Block API routes when auth is not available
+    if (isApiRoute(pathname) && !isAuthApiRoute(pathname)) {
+      return NextResponse.json(
+        { error: 'Service unavailable' },
+        { status: 503 }
+      )
+    }
     // In mock mode, protect admin routes
     if (isAdminRoute(pathname)) {
       const url = request.nextUrl.clone()

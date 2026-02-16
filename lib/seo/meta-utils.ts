@@ -6,7 +6,7 @@ import { MSCity, MSCounty } from '@/lib/data/ms-locations'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
-const SITE_NAME = 'Farrell Roofing'
+const SITE_NAME = 'Smart Roof Pricing'
 const DEFAULT_IMAGE = '/images/og-default.jpg'
 
 interface BaseMetaParams {
@@ -294,7 +294,7 @@ export function optimizeDescription(description: string, maxLength: number = 155
 export function optimizeTitle(
   primary: string,
   secondary?: string,
-  brand: string = 'Farrell Roofing'
+  brand: string = 'Smart Roof Pricing'
 ): string {
   const maxLength = 60
 

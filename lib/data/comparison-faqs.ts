@@ -38,7 +38,7 @@ export function generateComparisonFaqs(city: MSCity): ComparisonFAQItem[] {
   if (isCollegeTown(city.slug)) {
     faqs.push({
       question: `Do ${city.name} roofers work on rental properties and student housing?`,
-      answer: `Yes, roofers in ${city.name} regularly work on rental properties and student housing near campus. Property investors and landlords should look for contractors experienced with multi-unit properties, fast turnaround times between tenants, and maintenance programs. Farrell Roofing offers property management partnerships for ${city.name} rental investors.`
+      answer: `Yes, roofers in ${city.name} regularly work on rental properties and student housing near campus. Property investors and landlords should look for contractors experienced with multi-unit properties, fast turnaround times between tenants, and maintenance programs. Smart Roof Pricing offers property management partnerships for ${city.name} rental investors.`
     })
     faqs.push({
       question: `When should ${city.name} property owners schedule roof work around the school year?`,
@@ -50,7 +50,7 @@ export function generateComparisonFaqs(city: MSCity): ComparisonFAQItem[] {
   if (isHighStormArea(city)) {
     faqs.push({
       question: `How do I handle storm damage claims in ${city.name}?`,
-      answer: `${city.name} is in a ${city.stats.stormDamageFrequency.toLowerCase()} storm damage area. After a storm: 1) Document damage with photos, 2) Contact your insurance company to file a claim, 3) Get a professional roof inspection, 4) Get repair estimates from licensed contractors. Many ${city.name} roofers, including Farrell Roofing, work directly with insurance adjusters.`
+      answer: `${city.name} is in a ${city.stats.stormDamageFrequency.toLowerCase()} storm damage area. After a storm: 1) Document damage with photos, 2) Contact your insurance company to file a claim, 3) Get a professional roof inspection, 4) Get repair estimates from licensed contractors. Many ${city.name} roofers, including Smart Roof Pricing, work directly with insurance adjusters.`
     })
     faqs.push({
       question: `What roofing materials hold up best to ${city.name}'s severe weather?`,

@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
+import { safeCompare } from '@/lib/utils'
 import { z } from 'zod'
 
 const leadIdSchema = z.string().uuid()
 
 /**
  * Public endpoint returning minimal lead data for the registration page.
- * No auth required — only returns non-sensitive fields (address, estimate, name, email, phone).
+ * Requires a valid share_token to prevent enumeration attacks.
+ * Returns non-sensitive fields: address, estimate amount, first name only.
  */
 export async function GET(
   request: NextRequest,
@@ -26,17 +28,28 @@ export async function GET(
       return NextResponse.json({ error: 'Invalid lead ID' }, { status: 400 })
     }
 
+    // Require share_token to prevent lead enumeration
+    const { searchParams } = new URL(request.url)
+    const token = searchParams.get('token')
+    if (!token) {
+      return NextResponse.json({ error: 'Token required' }, { status: 401 })
+    }
+
     const supabase = await createAdminClient()
 
-    // Fetch only the minimal fields needed for pre-filling the register form
+    // Validate share_token matches the lead
     const { data: lead, error } = await supabase
       .from('leads' as never)
-      .select('id')
+      .select('id, share_token')
       .eq('id', leadId)
       .single()
 
     if (error || !lead) {
       return NextResponse.json({ error: 'Lead not found' }, { status: 404 })
+    }
+
+    if (!safeCompare((lead as { share_token: string }).share_token || '', token)) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 403 })
     }
 
     // Fetch property, estimate, and contact in parallel
@@ -53,14 +66,14 @@ export async function GET(
         .single(),
       supabase
         .from('contacts' as never)
-        .select('first_name, last_name')
+        .select('first_name')
         .eq('lead_id', leadId)
         .single(),
     ])
 
     interface PropertyRow { formatted_address?: string; street_address?: string }
     interface EstimateRow { price_likely?: number }
-    interface ContactRow { first_name?: string; last_name?: string }
+    interface ContactRow { first_name?: string }
 
     const property = propertyResult.data as PropertyRow | null
     const estimate = estimateResult.data as EstimateRow | null
@@ -70,7 +83,6 @@ export async function GET(
       address: property?.formatted_address || property?.street_address || null,
       estimate: estimate?.price_likely || null,
       firstName: contact?.first_name || null,
-      lastName: contact?.last_name || null,
     })
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

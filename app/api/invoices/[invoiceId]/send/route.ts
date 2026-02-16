@@ -90,7 +90,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         <body>
           <div class="container">
             <div class="header">
-              <h1 style="color: #0c0f14; margin: 0;">Invoice from Farrell Roofing</h1>
+              <h1 style="color: #0c0f14; margin: 0;">Invoice from Smart Roof Pricing</h1>
             </div>
             <div class="content">
               <p>Hi ${recipientName},</p>
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
               <p>If you have any questions about this invoice, please don't hesitate to contact us.</p>
             </div>
             <div class="footer">
-              <p>Thank you for choosing Farrell Roofing!</p>
+              <p>Thank you for choosing Smart Roof Pricing!</p>
               <p>123 Main Street, Tupelo, MS 38801 | (662) 555-0123</p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // Send the email
     const emailResult = await sendEmail({
       to: recipientEmail,
-      subject: `Invoice ${invoiceData.invoice_number} from Farrell Roofing`,
+      subject: `Invoice ${invoiceData.invoice_number} from Smart Roof Pricing`,
       html,
     })
 

@@ -50,7 +50,7 @@ describe('SMS Templates', () => {
         '10:00 AM'
       )
 
-      expect(message).toContain('Farrell Roofing')
+      expect(message).toContain('Smart Roof Pricing')
     })
 
     it('includes call-to-action', () => {
@@ -109,7 +109,7 @@ describe('SMS Templates', () => {
         'https://example.com'
       )
 
-      expect(message).toContain('Farrell Roofing')
+      expect(message).toContain('Smart Roof Pricing')
     })
   })
 
@@ -141,7 +141,7 @@ describe('SMS Templates', () => {
     it('includes company name', () => {
       const message = SMS_TEMPLATES.paymentReceived('Customer', '$1,000')
 
-      expect(message).toContain('Farrell Roofing')
+      expect(message).toContain('Smart Roof Pricing')
     })
   })
 

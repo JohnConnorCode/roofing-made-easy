@@ -6,16 +6,16 @@ import { SiteHeader, SiteFooter } from '@/components/layout'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | Farrell Roofing',
-  description: 'Terms of Service for Farrell Roofing. Read our terms and conditions for using our roofing estimate and contractor services.',
+  title: 'Terms of Service | Smart Roof Pricing',
+  description: 'Terms of Service for Smart Roof Pricing, operated by Farrell Roofing LLC. Read our terms and conditions for using our roofing estimate services.',
   alternates: {
     canonical: `${BASE_URL}/terms`,
   },
   openGraph: {
-    title: 'Terms of Service | Farrell Roofing',
-    description: 'Terms and conditions for using Farrell Roofing services.',
+    title: 'Terms of Service | Smart Roof Pricing',
+    description: 'Terms and conditions for using Smart Roof Pricing services.',
     url: `${BASE_URL}/terms`,
-    siteName: 'Farrell Roofing',
+    siteName: 'Smart Roof Pricing',
     locale: 'en_US',
     type: 'website',
   },

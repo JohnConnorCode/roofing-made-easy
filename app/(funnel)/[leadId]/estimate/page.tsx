@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useAnalytics } from '@/lib/analytics'
 import { useFunnelStore } from '@/stores/funnelStore'
 import { useToast } from '@/components/ui/toast'
 import { formatCurrency } from '@/lib/utils'
@@ -48,27 +49,32 @@ export default function EstimatePage() {
     insuranceCompany,
     photos,
     address,
+    shareToken,
     setEstimate,
     resetFunnel,
   } = useFunnelStore()
 
   const { showToast } = useToast()
+  const { trackFunnelStep, trackEngagement, trackCTAClick } = useAnalytics(leadId)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [estimate, setEstimateData] = useState<EstimateData | null>(null)
 
   const handleScheduleConsultation = useCallback(() => {
+    trackCTAClick('schedule_consultation')
     if (CALENDLY_URL) {
       window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
     } else {
       showToast('Call us to schedule your free consultation', 'info')
     }
-  }, [showToast])
+  }, [showToast, trackCTAClick])
 
   const handleDownloadPDF = useCallback(async () => {
+    trackEngagement('pdf_downloaded')
     try {
       // Download PDF from API
-      const response = await fetch(`/api/leads/${leadId}/estimate/pdf`)
+      const pdfTokenParam = shareToken ? `?token=${encodeURIComponent(shareToken)}` : ''
+      const response = await fetch(`/api/leads/${leadId}/estimate/pdf${pdfTokenParam}`)
 
       if (!response.ok) {
         throw new Error('Failed to generate PDF')
@@ -91,7 +97,7 @@ export default function EstimatePage() {
       showToast('Opening print dialog instead...', 'info')
       window.print()
     }
-  }, [leadId, showToast])
+  }, [leadId, showToast, trackEngagement])
 
   const handleShare = useCallback(async () => {
     const shareUrl = window.location.href
@@ -129,8 +135,11 @@ export default function EstimatePage() {
   }, [resetFunnel])
 
   const handleCreateAccount = useCallback(() => {
-    router.push(`/customer/register?leadId=${leadId}&source=estimate`)
-  }, [router, leadId])
+    trackCTAClick('create_account')
+    const params = new URLSearchParams({ leadId, source: 'estimate' })
+    if (shareToken) params.set('token', shareToken)
+    router.push(`/customer/register?${params.toString()}`)
+  }, [router, leadId, shareToken, trackCTAClick])
 
   // Scroll to top on mount
   useEffect(() => {
@@ -140,7 +149,8 @@ export default function EstimatePage() {
   useEffect(() => {
     async function fetchEstimate() {
       try {
-        const response = await fetch(`/api/leads/${leadId}/estimate`)
+        const tokenParam = shareToken ? `?token=${encodeURIComponent(shareToken)}` : ''
+        const response = await fetch(`/api/leads/${leadId}/estimate${tokenParam}`)
         if (!response.ok) {
           throw new Error('Failed to fetch estimate')
         }
@@ -157,6 +167,7 @@ export default function EstimatePage() {
 
         setEstimateData(estimateData)
         setEstimate(estimateData)
+        trackFunnelStep(4, 'estimate_viewed')
       } catch {
         setError('We\'re having trouble loading your estimate. Your information has been saved \u2014 please try refreshing, or call us for immediate help.')
       } finally {
@@ -165,7 +176,7 @@ export default function EstimatePage() {
     }
 
     fetchEstimate()
-  }, [leadId, setEstimate])
+  }, [leadId, setEstimate, trackFunnelStep])
 
   if (isLoading) {
     return (

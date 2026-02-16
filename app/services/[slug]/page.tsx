@@ -40,7 +40,7 @@ export async function generateMetadata({
     return { title: 'Service Not Found' }
   }
 
-  const title = `${service.name} | Northeast Mississippi | Farrell Roofing`
+  const title = `${service.name} | Northeast Mississippi | Smart Roof Pricing`
   const description = `${service.fullDescription.slice(0, 150)}... Get a free estimate for ${service.name.toLowerCase()} in Tupelo and surrounding areas.`
   const url = `${BASE_URL}/services/${service.slug}`
   const ogImageUrl = `${BASE_URL}/api/og?type=service&title=${encodeURIComponent(service.name)}&subtitle=${encodeURIComponent(service.shortDescription)}`
@@ -65,7 +65,7 @@ export async function generateMetadata({
       title,
       description,
       url,
-      siteName: 'Farrell Roofing',
+      siteName: 'Smart Roof Pricing',
       locale: 'en_US',
       type: 'website',
       images: [
@@ -73,7 +73,7 @@ export async function generateMetadata({
           url: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: `${service.name} - Farrell Roofing`,
+          alt: `${service.name} - Smart Roof Pricing`,
           type: 'image/png',
         },
       ],

@@ -130,7 +130,7 @@ If you've identified one or more of these warning signs on your roof:
 
 Your home is likely your largest investment, and your roof protects it all. In Mississippi's demanding climate, staying ahead of roof problems saves money, prevents water damage, and maintains your home's value.
 
-If your roof is showing any of these warning signs, don't wait for a leak to appear. Contact Farrell Roofing for a free, no-obligation inspection. We'll provide an honest assessment of your roof's condition and help you understand your options—whether that's targeted repairs or planning for replacement.
+If your roof is showing any of these warning signs, don't wait for a leak to appear. Contact Smart Roof Pricing for a free, no-obligation inspection. We'll provide an honest assessment of your roof's condition and help you understand your options—whether that's targeted repairs or planning for replacement.
 
 [Schedule Your Free Roof Inspection](/services/roof-inspection) today to understand your roof's true condition.
     `,
@@ -326,7 +326,7 @@ While any qualified roofer can install asphalt shingles, metal roofing requires 
 
 The best roof for your Mississippi home depends on your specific situation. Both asphalt and metal roofing, properly installed, will protect your home effectively. The right choice balances your budget, timeline, and priorities.
 
-Ready to explore your options? [Contact Farrell Roofing](/contact) for a free consultation. We'll assess your current roof, discuss your goals, and provide detailed estimates for both asphalt and metal options—helping you make an informed decision for your home.
+Ready to explore your options? [Contact Smart Roof Pricing](/contact) for a free consultation. We'll assess your current roof, discuss your goals, and provide detailed estimates for both asphalt and metal options—helping you make an informed decision for your home.
 
 [Get Your Free Roofing Estimate](/) today to compare options for your specific home.
     `,
@@ -523,7 +523,7 @@ While homeowners can handle basic maintenance, some tasks require professional e
 - Gutter repair and cleaning
 - Any work requiring roof access
 
-Farrell Roofing offers comprehensive [roof maintenance services](/services/roof-maintenance) designed for Mississippi homes. Our maintenance program includes biannual inspections and priority scheduling for any needed repairs.
+Smart Roof Pricing offers comprehensive [roof maintenance services](/services/roof-maintenance) designed for Mississippi homes. Our maintenance program includes biannual inspections and priority scheduling for any needed repairs.
 
 ## Maintenance Schedule Summary
 
@@ -553,7 +553,7 @@ A qualified contractor can help you understand when it's time to transition from
 
 Don't let Mississippi's challenging climate shorten your roof's lifespan. A consistent maintenance program protects your investment and catches problems early.
 
-[Schedule a Maintenance Inspection](/) with Farrell Roofing. We'll assess your roof's current condition and recommend a maintenance schedule tailored to your specific roof type and age.
+[Schedule a Maintenance Inspection](/) with Smart Roof Pricing. We'll assess your roof's current condition and recommend a maintenance schedule tailored to your specific roof type and age.
     `,
     category: 'Maintenance',
     author: 'Lisa Farrell',
@@ -659,7 +659,7 @@ Your insurance policy requires you to mitigate further damage. Failure to do so 
 
 ### Emergency Tarping Services
 
-If you can't safely cover damage yourself, many roofing contractors offer emergency tarping services. At Farrell Roofing, we provide [emergency storm damage services](/services/emergency-repair) with quick response times throughout Northeast Mississippi.
+If you can't safely cover damage yourself, many roofing contractors offer emergency tarping services. At Smart Roof Pricing, we provide [emergency storm damage services](/services/emergency-repair) with quick response times throughout Northeast Mississippi.
 
 ## Step 3: File Your Claim Promptly
 
@@ -712,7 +712,7 @@ Request a detailed written report including:
 - Cost estimate for repairs
 - Professional certification/license information
 
-At Farrell Roofing, we provide comprehensive damage assessments with detailed documentation specifically designed to support insurance claims. [Schedule a free storm damage inspection](/).
+At Smart Roof Pricing, we provide comprehensive damage assessments with detailed documentation specifically designed to support insurance claims. [Schedule a free storm damage inspection](/).
 
 ## Step 5: Meet with the Insurance Adjuster
 
@@ -867,7 +867,7 @@ Once repairs are complete:
 
 ## We're Here to Help
 
-Navigating a roof insurance claim doesn't have to be stressful. Farrell Roofing has helped hundreds of Mississippi homeowners through the claim process, providing:
+Navigating a roof insurance claim doesn't have to be stressful. Smart Roof Pricing has helped hundreds of Mississippi homeowners through the claim process, providing:
 
 - Free storm damage inspections
 - Detailed documentation for insurance claims
@@ -1135,9 +1135,9 @@ When evaluating quotes:
 
 The cheapest quote often becomes the most expensive project due to hidden costs, shortcuts, or problems requiring correction.
 
-## Working with Farrell Roofing
+## Working with Smart Roof Pricing
 
-At Farrell Roofing, we welcome these questions and encourage homeowners to verify everything we tell them. We provide:
+At Smart Roof Pricing, we welcome these questions and encourage homeowners to verify everything we tell them. We provide:
 
 - Full Mississippi contractor licensing
 - Comprehensive insurance documentation
@@ -1289,7 +1289,7 @@ A new roof is a significant investment, but several options can make it manageab
 
 ### Roofing Contractor Financing
 
-Many contractors, including Farrell Roofing, offer [financing options](/financing) with:
+Many contractors, including Smart Roof Pricing, offer [financing options](/financing) with:
 - 0% interest promotional periods (12-24 months)
 - Low monthly payments
 - Quick approval process
@@ -1346,7 +1346,7 @@ A thorough [roof inspection](/services/roof-inspection) before committing to rep
 
 Every roof is different, and online calculators can only get you so far. For an accurate estimate tailored to your specific home, roof condition, and material preferences, schedule a free in-person assessment.
 
-At Farrell Roofing, we provide detailed, transparent estimates that break down every cost line item. No surprises, no hidden fees, and no pressure.
+At Smart Roof Pricing, we provide detailed, transparent estimates that break down every cost line item. No surprises, no hidden fees, and no pressure.
 
 **What's included in our free estimate:**
 - Complete roof measurement and assessment
@@ -1571,7 +1571,7 @@ Some Mississippi homeowners choose a middle path:
 
 Online cost calculators provide ballpark figures, but your actual cost depends on your specific roof's size, pitch, complexity, and condition. The only way to get real numbers is a professional assessment.
 
-At Farrell Roofing, we provide free, detailed estimates for both metal and asphalt options so you can compare side by side for your exact home.
+At Smart Roof Pricing, we provide free, detailed estimates for both metal and asphalt options so you can compare side by side for your exact home.
 
 [Get Your Free Roofing Estimate](/) to see real numbers for both options on your specific home. We serve [Tupelo](/tupelo-roofing), [Oxford](/oxford-roofing), [Starkville](/starkville-roofing), and all of Northeast Mississippi.
 
@@ -1724,7 +1724,7 @@ The roof deck (typically plywood or OSB sheathing) is the structural foundation 
 - Moderate repairs (6-15 sheets): $750-$2,250
 - Major deck replacement (15+ sheets): $2,250-$6,000+
 
-**Budget tip:** Most contractors include a reasonable allowance for minor deck repair in their estimates. Ask specifically about how deck repair is priced. Reputable contractors like Farrell Roofing communicate transparently about deck repair costs as they're discovered during the project.
+**Budget tip:** Most contractors include a reasonable allowance for minor deck repair in their estimates. Ask specifically about how deck repair is priced. Reputable contractors like Smart Roof Pricing communicate transparently about deck repair costs as they're discovered during the project.
 
 ## Factor 7: Material Choice
 
@@ -1830,7 +1830,7 @@ Understanding these factors helps you evaluate quotes, but every roof is unique.
 
 When comparing estimates, make sure each contractor is quoting the same scope. Use the factors above as a checklist to ensure nothing is missing or inconsistent between quotes.
 
-Ready to understand exactly what your [roof replacement](/services/roof-replacement) will cost? [Get your free estimate](/) from Farrell Roofing. We provide detailed, line-item quotes that explain every cost factor so there are no surprises.
+Ready to understand exactly what your [roof replacement](/services/roof-replacement) will cost? [Get your free estimate](/) from Smart Roof Pricing. We provide detailed, line-item quotes that explain every cost factor so there are no surprises.
     `,
     category: 'Guides',
     author: 'Lisa Farrell',
@@ -2060,7 +2060,7 @@ Follow these tips to maximize the value:
 
 ## Schedule Your Free Inspection
 
-At Farrell Roofing, our [free roof inspections](/services/roof-inspection) are exactly what they should be: thorough, honest, and truly no-obligation. We'll tell you what we find, answer your questions, and leave you with the information you need to make your own decision on your own timeline.
+At Smart Roof Pricing, our [free roof inspections](/services/roof-inspection) are exactly what they should be: thorough, honest, and truly no-obligation. We'll tell you what we find, answer your questions, and leave you with the information you need to make your own decision on your own timeline.
 
 Whether your roof needs attention now or simply needs monitoring, knowing its condition puts you in control.
 
@@ -2285,7 +2285,7 @@ Your policy requires you to mitigate additional damage:
 - **Keep all receipts** for emergency supplies and services
 - These mitigation costs are typically reimbursable
 
-If you can't safely tarp your roof, Farrell Roofing provides [emergency repair services](/services/emergency-repair) with rapid response throughout Northeast Mississippi.
+If you can't safely tarp your roof, Smart Roof Pricing provides [emergency repair services](/services/emergency-repair) with rapid response throughout Northeast Mississippi.
 
 ### Step 3: Call Your Insurance Company
 
@@ -2393,7 +2393,7 @@ Storm damage is a matter of when, not if, in Mississippi. The homeowners who nav
 - Understand your policy before you need it
 - Build a relationship with a trusted local contractor
 
-At Farrell Roofing, we've helped hundreds of Mississippi homeowners through the storm damage and insurance process. From emergency tarping to detailed damage documentation to working with adjusters and completing quality repairs, we're with you every step of the way.
+At Smart Roof Pricing, we've helped hundreds of Mississippi homeowners through the storm damage and insurance process. From emergency tarping to detailed damage documentation to working with adjusters and completing quality repairs, we're with you every step of the way.
 
 If you've experienced storm damage, or want a professional inspection to document your roof's current condition before the next storm, [contact us](/contact) or visit our [insurance help page](/insurance-help) for resources and guidance.
 

@@ -27,7 +27,13 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    let body: unknown
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
+    }
+
     const validation = updateSchema.safeParse(body)
 
     if (!validation.success) {
@@ -38,6 +44,12 @@ export async function PATCH(
     }
 
     const { id } = await params
+
+    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!UUID_RE.test(id)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 })
+    }
+
     const updates: Record<string, unknown> = {}
 
     if (validation.data.read) {
@@ -45,6 +57,10 @@ export async function PATCH(
     }
     if (validation.data.dismissed) {
       updates.dismissed_at = new Date().toISOString()
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return NextResponse.json({ error: 'No updates provided' }, { status: 400 })
     }
 
     // RLS ensures user can only update their own notifications

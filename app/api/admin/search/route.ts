@@ -30,7 +30,10 @@ export async function GET(request: NextRequest) {
 
     const supabase = await createClient()
     const results: SearchResult[] = []
-    const searchPattern = `%${q}%`
+
+    // Sanitize search input: escape PostgREST special characters to prevent filter injection
+    const sanitized = q.replace(/[%_\\(),.]/g, (c) => `\\${c}`)
+    const searchPattern = `%${sanitized}%`
 
     // Search contacts (linked to leads)
     const { data: contacts } = await supabase

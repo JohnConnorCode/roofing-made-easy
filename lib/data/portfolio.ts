@@ -180,7 +180,7 @@ export const portfolioProjects: PortfolioProject[] = [
     duration: '6 days',
     completedDate: '2026-01-10',
     testimonial: {
-      text: 'The combination of metal and shingles looks exactly like we envisioned. Farrell Roofing understood our vision and executed it perfectly.',
+      text: 'The combination of metal and shingles looks exactly like we envisioned. Smart Roof Pricing understood our vision and executed it perfectly.',
       author: 'The Morrison Family',
     },
   },

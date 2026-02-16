@@ -107,7 +107,7 @@ export default async function CityPage({ params }: CityPageProps) {
     },
     {
       question: `Do you offer free estimates in ${city.name}?`,
-      answer: `Yes! Farrell Roofing offers completely free, no-obligation roofing estimates for homeowners in ${city.name} and throughout ${city.county} County.`
+      answer: `Yes! Smart Roof Pricing offers completely free, no-obligation roofing estimates for homeowners in ${city.name} and throughout ${city.county} County.`
     },
     {
       question: `What roofing services do you offer in ${city.name}?`,
@@ -135,7 +135,7 @@ export default async function CityPage({ params }: CityPageProps) {
       {reviewData.length > 0 && (
         <ReviewSchema
           reviews={reviewData}
-          itemReviewed={{ name: `Farrell Roofing - ${city.name}`, type: 'LocalBusiness' }}
+          itemReviewed={{ name: `Smart Roof Pricing - ${city.name}`, type: 'LocalBusiness' }}
         />
       )}
 
@@ -204,7 +204,7 @@ export default async function CityPage({ params }: CityPageProps) {
             Ready to Protect Your {city.name} Home?
           </h2>
           <p className="text-gray-300 mb-8 max-w-xl mx-auto">
-            Contact Farrell Roofing today for a free, no-obligation estimate on your roofing project.
+            Contact Smart Roof Pricing today for a free, no-obligation estimate on your roofing project.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

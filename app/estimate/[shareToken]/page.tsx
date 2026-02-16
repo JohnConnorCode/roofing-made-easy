@@ -240,12 +240,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ogImageUrl = `${BASE_URL}/api/og/estimate?${ogParams.toString()}`
 
   const title = estimateData?.city
-    ? `Your Roofing Estimate for ${estimateData.city} | Farrell Roofing`
-    : 'Your Roofing Estimate | Farrell Roofing'
+    ? `Your Roofing Estimate for ${estimateData.city} | Smart Roof Pricing`
+    : 'Your Roofing Estimate | Smart Roof Pricing'
 
   const description = estimateData?.price
-    ? `View your personalized roofing estimate from Farrell Roofing. Get detailed pricing and schedule your free consultation.`
-    : 'View your personalized roofing estimate from Farrell Roofing.'
+    ? `View your personalized roofing estimate from Smart Roof Pricing. Get detailed pricing and schedule your free consultation.`
+    : 'View your personalized roofing estimate from Smart Roof Pricing.'
 
   return {
     title,
@@ -258,7 +258,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      siteName: 'Farrell Roofing',
+      siteName: 'Smart Roof Pricing',
       images: [
         {
           url: ogImageUrl,

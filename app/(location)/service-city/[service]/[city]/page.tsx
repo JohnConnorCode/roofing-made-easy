@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: ServiceCityPageProps): Promis
 
   if (!city || !service) return { title: 'Page Not Found' }
 
-  const title = `${service.serviceName} in ${city.name}, MS | Farrell Roofing`
+  const title = `${service.serviceName} in ${city.name}, MS | Smart Roof Pricing`
   const description = `Professional ${service.serviceName.toLowerCase()} services in ${city.name}, Mississippi. ${service.serviceDescription} Free estimates available.`
 
   return generateServiceCityMeta({

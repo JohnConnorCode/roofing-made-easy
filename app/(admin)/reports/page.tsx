@@ -12,10 +12,16 @@ import {
   Receipt,
   Hammer,
   Download,
-  RefreshCw,
   AlertTriangle,
   ArrowUpRight,
   Users,
+  Target,
+  Clock,
+  Shield,
+  Landmark,
+  FileCheck,
+  Package,
+  Crosshair,
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -83,7 +89,7 @@ export default function ReportsPage() {
         activeJobs,
       })
       if (funnelData) setFunnel(funnelData)
-    } catch (err) {
+    } catch {
       setError('Unable to load report data.')
     } finally {
       setIsLoading(false)
@@ -230,7 +236,26 @@ export default function ReportsPage() {
           )}
 
           {/* Report Links */}
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <Link href="/reports/funnel">
+              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-purple-100 p-2">
+                        <Target className="h-5 w-5 text-purple-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-900">Funnel Analytics</h3>
+                        <p className="text-sm text-slate-500">Drop-off rates, time per step, source attribution</p>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
             <Link href="/reports/revenue">
               <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
@@ -261,6 +286,158 @@ export default function ReportsPage() {
                       <div>
                         <h3 className="font-medium text-slate-900">AR Aging</h3>
                         <p className="text-sm text-slate-500">Aging bucket summary with drill-down invoice table</p>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/reports/lead-response">
+              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-blue-100 p-2">
+                        <Clock className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-900">Lead Response</h3>
+                        <p className="text-sm text-slate-500">Speed-to-lead metrics and follow-up performance</p>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/reports/operations">
+              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-indigo-100 p-2">
+                        <Hammer className="h-5 w-5 text-indigo-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-900">Operations</h3>
+                        <p className="text-sm text-slate-500">Schedule adherence, crew productivity, change orders</p>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/reports/team">
+              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-violet-100 p-2">
+                        <Users className="h-5 w-5 text-violet-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-900">Team Performance</h3>
+                        <p className="text-sm text-slate-500">Crew and project manager productivity and revenue</p>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/reports/insurance-claims">
+              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-rose-100 p-2">
+                        <Shield className="h-5 w-5 text-rose-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-900">Insurance Claims</h3>
+                        <p className="text-sm text-slate-500">Claims pipeline, carrier performance, stuck claims</p>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/reports/financing">
+              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-emerald-100 p-2">
+                        <Landmark className="h-5 w-5 text-emerald-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-900">Financing</h3>
+                        <p className="text-sm text-slate-500">Application pipeline, lender stats, conversion impact</p>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/reports/estimate-accuracy">
+              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-cyan-100 p-2">
+                        <Crosshair className="h-5 w-5 text-cyan-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-900">Estimate Accuracy</h3>
+                        <p className="text-sm text-slate-500">Estimate vs actual cost variance and trends</p>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/reports/document-compliance">
+              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-orange-100 p-2">
+                        <FileCheck className="h-5 w-5 text-orange-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-900">Document Compliance</h3>
+                        <p className="text-sm text-slate-500">Missing permits, contracts, and expiring documents</p>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/reports/material-costs">
+              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-slate-100 p-2">
+                        <Package className="h-5 w-5 text-slate-600" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-slate-900">Material Costs</h3>
+                        <p className="text-sm text-slate-500">Vendor spend, category breakdown, cost trends</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />

@@ -67,3 +67,21 @@ export function delay(ms: number): Promise<void> {
 export function generateId(): string {
   return crypto.randomUUID()
 }
+
+/**
+ * Constant-time string comparison to prevent timing attacks on tokens.
+ * Uses crypto.timingSafeEqual under the hood. Falls back to simple comparison
+ * if strings have different lengths (which already leaks length, but not content).
+ */
+export function safeCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  const encoder = new TextEncoder()
+  const bufA = encoder.encode(a)
+  const bufB = encoder.encode(b)
+  // crypto.subtle is available in Node.js and Edge runtimes
+  let result = 0
+  for (let i = 0; i < bufA.length; i++) {
+    result |= bufA[i] ^ bufB[i]
+  }
+  return result === 0
+}

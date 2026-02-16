@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Save pending payment record
-    await supabase.from('payments').insert({
+    const { error: paymentRecordError } = await supabase.from('payments').insert({
       lead_id: leadId,
       estimate_id: estimateId || null,
       stripe_payment_intent_id: result.paymentIntentId,
@@ -117,6 +117,11 @@ export async function POST(request: NextRequest) {
       payer_email: contact.email,
       payer_name: customerName,
     } as never)
+
+    if (paymentRecordError) {
+      console.error('Failed to create payment record:', paymentRecordError)
+      // Continue anyway - Stripe payment intent is the source of truth
+    }
 
     return NextResponse.json({
       clientSecret: result.clientSecret,

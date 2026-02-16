@@ -37,9 +37,9 @@ vi.mock('next/cache', () => ({
 // Mock business config loader (uses unstable_cache + Supabase internally)
 vi.mock('@/lib/config/business-loader', () => ({
   getBusinessConfigFromDB: vi.fn(async () => ({
-    name: 'Farrell Roofing',
+    name: 'Smart Roof Pricing',
     legalName: 'Farrell Roofing LLC',
-    tagline: "Northeast Mississippi's Trusted Roofing Experts",
+    tagline: "Northeast Mississippi's Smart Roofing Estimates",
     foundedYear: '2010',
     phone: { raw: '+1-662-555-0123', display: '(662) 555-0123', isReal: true },
     email: { primary: 'info@smartroofpricing.com', support: 'support@smartroofpricing.com' },

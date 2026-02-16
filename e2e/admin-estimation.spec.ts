@@ -21,7 +21,7 @@ test.describe('Admin Estimation Flow', () => {
       await page.goto('/')
 
       // Verify homepage loads
-      await expect(page).toHaveTitle(/Farrell Roofing/)
+      await expect(page).toHaveTitle(/Smart Roof Pricing/)
     })
   })
 

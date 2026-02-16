@@ -23,7 +23,7 @@ export function NearbyAreas({ city }: NearbyAreasProps) {
             Also Serving Nearby Areas
           </h2>
           <p className="text-slate-400 text-center mb-8">
-            In addition to {city.name}, Farrell Roofing serves these nearby communities in Northeast Mississippi.
+            In addition to {city.name}, Smart Roof Pricing serves these nearby communities in Northeast Mississippi.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
@@ -75,7 +75,7 @@ export function CountyAreas({ countySlug, countyName }: CountyAreasProps) {
             Cities We Serve in {countyName}
           </h2>
           <p className="text-slate-400 text-center mb-8">
-            Farrell Roofing provides comprehensive roofing services throughout {countyName}.
+            Smart Roof Pricing provides comprehensive roofing services throughout {countyName}.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

@@ -40,6 +40,10 @@ interface DashboardStats {
   estimatesGenerated: number
   wonDeals: number
   lostDeals: number
+  avgResponseMinutes: number | null
+  staleLeadCount: number
+  staleLeadIds: string[]
+  revenueMTD: number
 }
 
 interface RecentLead {
@@ -302,6 +306,113 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               </StaggerContainer>
+
+              {/* Speed-to-Lead & Revenue MTD */}
+              <StaggerContainer className="grid gap-4 md:grid-cols-3" staggerDelay={75}>
+                <Card className="bg-white border-slate-200">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-slate-500">Avg Response Time</p>
+                        <p className={`text-3xl font-bold ${
+                          stats?.avgResponseMinutes === null ? 'text-slate-400'
+                            : (stats?.avgResponseMinutes ?? 0) <= 15 ? 'text-green-600'
+                            : (stats?.avgResponseMinutes ?? 0) <= 60 ? 'text-amber-600'
+                            : 'text-red-600'
+                        }`}>
+                          {stats?.avgResponseMinutes == null ? 'N/A' : `${stats?.avgResponseMinutes}m`}
+                        </p>
+                      </div>
+                      <div className={`rounded-lg p-3 ${
+                        stats?.avgResponseMinutes === null ? 'bg-slate-100'
+                          : (stats?.avgResponseMinutes ?? 0) <= 15 ? 'bg-green-100'
+                          : (stats?.avgResponseMinutes ?? 0) <= 60 ? 'bg-amber-100'
+                          : 'bg-red-100'
+                      }`}>
+                        <Clock className={`h-6 w-6 ${
+                          stats?.avgResponseMinutes === null ? 'text-slate-400'
+                            : (stats?.avgResponseMinutes ?? 0) <= 15 ? 'text-green-600'
+                            : (stats?.avgResponseMinutes ?? 0) <= 60 ? 'text-amber-600'
+                            : 'text-red-600'
+                        }`} />
+                      </div>
+                    </div>
+                    <div className="mt-3 text-sm text-slate-400">
+                      Minutes to first contact (MTD)
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-white border-slate-200">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-slate-500">Revenue MTD</p>
+                        <p className="text-3xl font-bold text-green-600">
+                          {formatCurrency(stats?.revenueMTD || 0)}
+                        </p>
+                      </div>
+                      <div className="rounded-lg bg-green-100 p-3">
+                        <DollarSign className="h-6 w-6 text-green-600" />
+                      </div>
+                    </div>
+                    <div className="mt-3 text-sm text-slate-400">
+                      From completed jobs this month
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-white border-slate-200">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-slate-500">Stale Leads</p>
+                        <p className={`text-3xl font-bold ${
+                          (stats?.staleLeadCount || 0) > 0 ? 'text-red-600' : 'text-green-600'
+                        }`}>
+                          {stats?.staleLeadCount || 0}
+                        </p>
+                      </div>
+                      <div className={`rounded-lg p-3 ${
+                        (stats?.staleLeadCount || 0) > 0 ? 'bg-red-100' : 'bg-green-100'
+                      }`}>
+                        <AlertTriangle className={`h-6 w-6 ${
+                          (stats?.staleLeadCount || 0) > 0 ? 'text-red-600' : 'text-green-600'
+                        }`} />
+                      </div>
+                    </div>
+                    <div className="mt-3 text-sm text-slate-400">
+                      No activity in 48+ hours
+                    </div>
+                  </CardContent>
+                </Card>
+              </StaggerContainer>
+
+              {/* Stale Lead Alert Banner */}
+              {(stats?.staleLeadCount || 0) > 0 && (
+                <FadeInSection delay={300} animation="slide-up">
+                  <div className="rounded-lg border border-red-200 bg-red-50 p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <AlertTriangle className="h-5 w-5 text-red-600" />
+                        <div>
+                          <p className="font-medium text-red-800">
+                            {stats?.staleLeadCount} lead{(stats?.staleLeadCount || 0) !== 1 ? 's' : ''} with no activity in 48+ hours
+                          </p>
+                          <p className="text-sm text-red-600">These leads may be going cold. Follow up today.</p>
+                        </div>
+                      </div>
+                      <Link
+                        href="/leads"
+                        className="text-sm font-medium text-red-700 hover:text-red-900 flex items-center gap-1"
+                      >
+                        View Leads
+                        <ArrowUpRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </FadeInSection>
+              )}
 
               {/* Pipeline and Sources */}
               <FadeInSection delay={400} animation="slide-up">
