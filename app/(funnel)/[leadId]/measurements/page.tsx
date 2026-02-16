@@ -130,9 +130,8 @@ export default function MeasurementsPage() {
               measurement_source: 'manual',
             }),
           })
-        } catch (apiError) {
+        } catch {
           // Non-blocking - continue even if API fails
-          console.warn('Failed to save sketch:', apiError)
         }
       }
 

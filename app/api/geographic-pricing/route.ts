@@ -102,10 +102,9 @@ export async function POST(request: NextRequest) {
       is_active: parsed.data.is_active,
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (supabase as any)
-      .from('geographic_pricing')
-      .insert(newRegion)
+    const { data, error } = await supabase
+      .from('geographic_pricing' as never)
+      .insert(newRegion as never)
       .select()
       .single()
 

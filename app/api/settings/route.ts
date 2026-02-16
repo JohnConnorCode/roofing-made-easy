@@ -181,7 +181,7 @@ export async function GET(request: NextRequest) {
     // Fetch settings from database (single row with id=1)
     const { data, error } = await supabase
       .from('settings')
-      .select('*')
+      .select('company_name, company_legal_name, company_tagline, company_phone, company_email, company_website, address_street, address_city, address_state, address_zip, hours_weekdays_open, hours_weekdays_close, hours_saturday_open, hours_saturday_close, hours_sunday_open, hours_sunday_close, hours_emergency_available, pricing_overhead_percent, pricing_profit_margin_percent, pricing_tax_rate, notifications_new_lead_email, notifications_estimate_email, notifications_daily_digest, notifications_email_recipients, lead_sources')
       .eq('id', 1)
       .single()
 

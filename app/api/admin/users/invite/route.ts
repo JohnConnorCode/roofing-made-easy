@@ -174,11 +174,10 @@ export async function POST(request: NextRequest) {
       })
 
       if (!emailResponse.ok) {
-        console.warn('Failed to send invitation email, but invitation created')
+        // Email failed but invitation still created
       }
-    } catch (emailError) {
+    } catch {
       // Email sending is non-critical - invitation still created
-      console.warn('Email service unavailable:', emailError)
     }
 
     // Log activity

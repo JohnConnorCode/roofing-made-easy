@@ -114,7 +114,6 @@ async function handlePaymentSuccess(
     .maybeSingle()
 
   if (existingPayment) {
-    console.log(`[Payment Webhook] Already processed payment intent ${paymentIntent.id}, skipping`)
     return
   }
 

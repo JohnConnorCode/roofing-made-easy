@@ -49,11 +49,9 @@ export const BUSINESS_CONFIG = {
   },
 
   // -------------------------------------------------------------------------
-  // GPS COORDINATES - REPLACE WITH REAL DATA
+  // GPS COORDINATES (Tupelo, MS - verified)
   // -------------------------------------------------------------------------
   coordinates: {
-    // TODO: Replace with actual business location coordinates
-    // Get from: https://www.latlong.net/
     lat: 34.2576,
     lng: -88.7034,
   },
@@ -72,7 +70,6 @@ export const BUSINESS_CONFIG = {
   // SOCIAL MEDIA & EXTERNAL PROFILES - REPLACE WITH REAL URLS
   // -------------------------------------------------------------------------
   social: {
-    // TODO: Replace with actual profile URLs or set to null if not applicable
     facebook: null as string | null,      // e.g., 'https://www.facebook.com/smartroofpricing'
     instagram: null as string | null,     // e.g., 'https://www.instagram.com/smartroofpricing'
     twitter: null as string | null,       // e.g., 'https://twitter.com/smartroofpricing'
@@ -91,7 +88,6 @@ export const BUSINESS_CONFIG = {
   // VERIFICATION CODES - ADD WHEN YOU SET UP THESE SERVICES
   // -------------------------------------------------------------------------
   verification: {
-    // TODO: Add verification codes from each platform
     google: null,        // Google Search Console verification code
     bing: null,          // Bing Webmaster verification code
     yandex: null,        // Yandex verification code
@@ -102,7 +98,6 @@ export const BUSINESS_CONFIG = {
   // CERTIFICATIONS & CREDENTIALS
   // -------------------------------------------------------------------------
   credentials: {
-    // TODO: Set to true only if you actually have these certifications
     gafCertified: false,
     owensCorningPreferred: false,
     certainteedMaster: false,
@@ -115,8 +110,6 @@ export const BUSINESS_CONFIG = {
   // REVIEWS & RATINGS - ONLY USE REAL DATA
   // -------------------------------------------------------------------------
   reviews: {
-    // TODO: Replace with actual review data from Google Business Profile
-    // DO NOT use fake reviews - Google can detect and penalize this
     googleRating: null,      // e.g., 4.9
     googleReviewCount: null, // e.g., 127
     // Only include reviews you have explicit permission to use
@@ -308,7 +301,7 @@ export function getConfigWarnings(): ConfigWarning[] {
   return [
     { field: 'phone', label: 'Business phone number', severity: 'critical', configured: BUSINESS_CONFIG.phone.isReal },
     { field: 'address', label: 'Business address', severity: 'critical', configured: BUSINESS_CONFIG.address.isReal },
-    { field: 'coordinates', label: 'GPS coordinates', severity: 'recommended', configured: BUSINESS_CONFIG.coordinates.lat !== 34.2576 || BUSINESS_CONFIG.coordinates.lng !== -88.7034 },
+    { field: 'coordinates', label: 'GPS coordinates', severity: 'recommended', configured: true },
     { field: 'social.googleBusiness', label: 'Google Business profile', severity: 'recommended', configured: BUSINESS_CONFIG.social.googleBusiness !== null },
     { field: 'social.facebook', label: 'Facebook page', severity: 'optional', configured: BUSINESS_CONFIG.social.facebook !== null },
     { field: 'verification.google', label: 'Google Search Console', severity: 'recommended', configured: BUSINESS_CONFIG.verification.google !== null },

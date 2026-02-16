@@ -126,8 +126,7 @@ export async function PATCH(
       parsed.data.profit_percent !== undefined ||
       parsed.data.tax_percent !== undefined
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase.rpc as any)('recalculate_estimate_totals', { p_estimate_id: estimateId })
+      await supabase.rpc('recalculate_estimate_totals' as never, { p_estimate_id: estimateId } as never)
 
       // Refetch with updated totals
       const { data: updated } = await supabase

@@ -130,7 +130,6 @@ async function getResendApiKey(): Promise<string | null> {
 
     const credData = credential as { encrypted_key: string } | null
     if (credData?.encrypted_key) {
-      console.warn('[Security] API credential loaded from DB without encryption')
       return credData.encrypted_key
     }
   } catch {

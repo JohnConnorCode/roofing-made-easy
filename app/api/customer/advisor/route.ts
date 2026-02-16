@@ -234,11 +234,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Log AI usage for monitoring (not PII)
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`[advisor] topic=${topic} provider=${result.provider} latency=${result.latencyMs}ms`)
-    }
-
     // Persist AI response for the customer (fire-and-forget)
     persistAiContent({
       customerId: customer.id,

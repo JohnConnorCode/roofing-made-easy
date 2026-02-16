@@ -161,8 +161,8 @@ export async function POST(
           if (formula && item.quantity === undefined) {
             try {
               quantity = evaluateFormula(formula, variables)
-            } catch (e) {
-              console.warn(`Formula evaluation failed: ${e}`)
+            } catch {
+              // Formula evaluation failed, use default quantity
             }
           }
 
@@ -223,8 +223,7 @@ export async function POST(
       }
 
       // Recalculate estimate totals
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase.rpc as any)('recalculate_estimate_totals', { p_estimate_id: estimateId })
+      await supabase.rpc('recalculate_estimate_totals' as never, { p_estimate_id: estimateId } as never)
 
       return NextResponse.json({ lineItems }, { status: 201 })
     }
@@ -296,8 +295,8 @@ export async function POST(
     if (formula && parsed.data.quantity === undefined) {
       try {
         quantity = evaluateFormula(formula, estimateVars)
-      } catch (e) {
-        console.warn(`Formula evaluation failed: ${e}`)
+      } catch {
+        // Formula evaluation failed, use default quantity
       }
     }
 
@@ -354,8 +353,7 @@ export async function POST(
     }
 
     // Recalculate estimate totals
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase.rpc as any)('recalculate_estimate_totals', { p_estimate_id: estimateId })
+      await supabase.rpc('recalculate_estimate_totals' as never, { p_estimate_id: estimateId } as never)
 
     return NextResponse.json({ lineItem: estimateLineItem }, { status: 201 })
   } catch (error) {
@@ -461,8 +459,7 @@ export async function PATCH(
     }
 
     // Recalculate estimate totals
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase.rpc as any)('recalculate_estimate_totals', { p_estimate_id: estimateId })
+      await supabase.rpc('recalculate_estimate_totals' as never, { p_estimate_id: estimateId } as never)
 
     return NextResponse.json({ lineItem })
   } catch (error) {
@@ -507,8 +504,7 @@ export async function DELETE(
     }
 
     // Recalculate estimate totals
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase.rpc as any)('recalculate_estimate_totals', { p_estimate_id: estimateId })
+      await supabase.rpc('recalculate_estimate_totals' as never, { p_estimate_id: estimateId } as never)
 
     return NextResponse.json({ success: true })
   } catch (error) {

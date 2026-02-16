@@ -292,7 +292,7 @@ export default function LeadDetailPage() {
   const property = lead.properties?.[0]
   const intake = lead.intakes?.[0]
   // Find the most recent non-superseded estimate, or fall back to the first estimate
-  const estimate = lead.estimates?.find((e) => e && !(e as any).is_superseded) || lead.estimates?.[0]
+  const estimate = lead.estimates?.find((e) => e && !e.is_superseded) || lead.estimates?.[0]
 
   // Calculate lead score
   const scoreInput: LeadScoreInput = {

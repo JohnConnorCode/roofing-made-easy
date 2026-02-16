@@ -44,7 +44,7 @@ export async function GET(
     // Fetch activities for this lead
     const { data, error } = await supabase
       .from('lead_activities')
-      .select('*')
+      .select('id, lead_id, type, content, metadata, author_name, author_email, is_system_generated, pinned, created_at, updated_at')
       .eq('lead_id', leadId)
       .order('created_at', { ascending: false })
       .limit(100)

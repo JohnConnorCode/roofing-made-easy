@@ -77,8 +77,8 @@ export async function POST(
         try {
           const variables = (estimate as Record<string, unknown>).variables as RoofVariables
           quantity = evaluateFormula(item.quantity_formula, variables)
-        } catch (e) {
-          console.warn(`Formula evaluation failed for ${item.item_code}: ${e}`)
+        } catch {
+          // Formula evaluation failed, use default quantity
         }
       }
 
@@ -142,8 +142,7 @@ export async function POST(
     }
 
     // Recalculate estimate totals using database function
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (supabase.rpc as any)('recalculate_estimate_totals', { p_estimate_id: estimateId })
+    await supabase.rpc('recalculate_estimate_totals' as never, { p_estimate_id: estimateId } as never)
 
     // Fetch updated estimate
     const { data: updatedEstimate, error: refetchError } = await supabase

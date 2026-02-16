@@ -133,9 +133,8 @@ All work performed by licensed, bonded, and insured contractors.`,
     }
 
     // Generate PDF
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pdfBuffer = await renderToBuffer(
-      React.createElement(QuotePDFDocument, { data: quoteData }) as any
+      React.createElement(QuotePDFDocument, { data: quoteData }) as never
     )
 
     // Return PDF

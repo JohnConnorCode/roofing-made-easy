@@ -372,7 +372,7 @@ export default function MacrosPage() {
 
                       <div className="flex items-center justify-between text-sm text-slate-500 mb-3">
                         <span>
-                          {(macro as any).line_items?.length || 0} line items
+                          {(macro as unknown as Record<string, unknown>).line_items ? ((macro as unknown as Record<string, unknown>).line_items as unknown[]).length : 0} line items
                         </span>
                         <span>{macro.usage_count} uses</span>
                       </div>

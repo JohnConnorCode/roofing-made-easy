@@ -133,13 +133,13 @@ function ToastItem({
 }
 
 export const toast = {
-  success: (message: string) => {
-    console.warn('toast.success called outside ToastProvider - use useToast hook instead')
+  success: (_message: string) => {
+    // No-op: called outside ToastProvider
   },
-  error: (message: string) => {
-    console.warn('toast.error called outside ToastProvider - use useToast hook instead')
+  error: (_message: string) => {
+    // No-op: called outside ToastProvider
   },
-  info: (message: string) => {
-    console.warn('toast.info called outside ToastProvider - use useToast hook instead')
+  info: (_message: string) => {
+    // No-op: called outside ToastProvider
   },
 }

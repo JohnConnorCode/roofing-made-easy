@@ -35,7 +35,7 @@ export function CityLocationSchema({ city, baseUrl = 'https://www.smartroofprici
     '@type': 'LocalBusiness',
     '@id': `${baseUrl}/${city.slug}-roofing/#localbusiness`,
     name: `${BUSINESS_CONFIG.name} - ${city.name}`,
-    image: `${baseUrl}/images/smart-roof-pricing-${city.slug}.jpg`,
+    image: `${baseUrl}/images/locations/${city.slug}-roofing.jpg`,
     url: `${baseUrl}/${city.slug}-roofing`,
     telephone: BUSINESS_CONFIG.phone.raw,
     priceRange: '$$',

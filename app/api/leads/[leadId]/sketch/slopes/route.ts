@@ -35,9 +35,8 @@ export async function GET(
     const supabase = await createClient()
 
     // Get sketch first
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: sketch } = await (supabase as any)
-      .from('roof_sketches')
+    const { data: sketch } = await supabase
+      .from('roof_sketches' as never)
       .select('id')
       .eq('lead_id', leadId)
       .single()
@@ -49,9 +48,8 @@ export async function GET(
       )
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: slopes, error } = await (supabase as any)
-      .from('roof_slopes')
+    const { data: slopes, error } = await supabase
+      .from('roof_slopes' as never)
       .select('*')
       .eq('sketch_id', (sketch as { id: string }).id)
       .order('slope_number', { ascending: true })
@@ -137,15 +135,14 @@ export async function POST(
         { status: 404 }
       )
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: slope, error } = await (supabase as any)
-      .from('roof_slopes')
+    const { data: slope, error } = await supabase
+      .from('roof_slopes' as never)
       .insert({
         sketch_id: (sketch as { id: string }).id,
         ...parsed.data,
         pitch_multiplier: pitchMultiplier,
         has_steep_charge: hassteepCharge,
-      })
+      } as never)
       .select()
       .single()
 

@@ -43,7 +43,7 @@ export async function POST(
     // Fetch the upload record
     const { data, error: uploadError } = await supabase
       .from('uploads')
-      .select('*')
+      .select('id, storage_path')
       .eq('id', uploadId)
       .eq('lead_id', leadId)
       .single()

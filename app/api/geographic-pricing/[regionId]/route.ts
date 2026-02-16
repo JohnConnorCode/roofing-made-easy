@@ -102,10 +102,9 @@ export async function PATCH(
 
     updates.updated_at = new Date().toISOString()
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (supabase as any)
-      .from('geographic_pricing')
-      .update(updates)
+    const { data, error } = await supabase
+      .from('geographic_pricing' as never)
+      .update(updates as never)
       .eq('id', regionId)
       .select()
       .single()

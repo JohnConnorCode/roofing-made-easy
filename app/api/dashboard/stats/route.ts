@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
 
     // Conversion rate (leads with estimates / total leads)
     const leadsWithEstimates = leads.filter(l =>
-      l.estimates && (l.estimates as any[]).length > 0
+      l.estimates && (l.estimates as unknown[]).length > 0
     ).length
     const conversionRate = totalLeads > 0 ? Math.round((leadsWithEstimates / totalLeads) * 100) : 0
 

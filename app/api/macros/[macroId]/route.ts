@@ -122,14 +122,13 @@ export async function PATCH(
     const supabase = await createClient()
 
     // Check if system macro
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: existingForUpdate } = await (supabase as any)
-      .from('estimate_macros')
+    const { data: existingForUpdate } = await supabase
+      .from('estimate_macros' as never)
       .select('is_system')
       .eq('id', macroId)
       .single()
 
-    if ((existingForUpdate as { is_system?: boolean })?.is_system) {
+    if ((existingForUpdate as unknown as { is_system?: boolean })?.is_system) {
       return NextResponse.json(
         { error: 'Cannot modify system macros' },
         { status: 403 }
@@ -188,14 +187,13 @@ export async function DELETE(
     const supabase = await createClient()
 
     // Check if system macro
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: existingForDelete } = await (supabase as any)
-      .from('estimate_macros')
+    const { data: existingForDelete } = await supabase
+      .from('estimate_macros' as never)
       .select('is_system')
       .eq('id', macroId)
       .single()
 
-    if ((existingForDelete as { is_system?: boolean })?.is_system) {
+    if ((existingForDelete as unknown as { is_system?: boolean })?.is_system) {
       return NextResponse.json(
         { error: 'Cannot delete system macros' },
         { status: 403 }

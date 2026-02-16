@@ -128,8 +128,8 @@ export async function POST(
             slopes: (parsed.data.variables.slopes || {}) as Record<string, SlopeVariables>,
           }
           quantity = evaluateFormula(formula, vars)
-        } catch (e) {
-          console.warn(`Formula evaluation failed for ${lineItem.item_code}: ${e}`)
+        } catch {
+          // Formula evaluation failed, use default quantity
         }
       }
 
@@ -229,10 +229,9 @@ export async function POST(
       ...li,
     }))
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error: lineItemsError } = await (supabase as any)
-      .from('estimate_line_items')
-      .insert(lineItemsToInsert)
+    const { error: lineItemsError } = await supabase
+      .from('estimate_line_items' as never)
+      .insert(lineItemsToInsert as never)
 
     if (lineItemsError) {
       console.error('Error creating estimate line items:', lineItemsError)
@@ -240,13 +239,11 @@ export async function POST(
     }
 
     // Increment macro usage
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (supabase as any).rpc('increment_macro_usage', { p_macro_id: macroId })
+    await supabase.rpc('increment_macro_usage' as never, { p_macro_id: macroId } as never)
 
     // Fetch complete estimate with line items
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: completeEstimate } = await (supabase as any)
-      .from('detailed_estimates')
+    const { data: completeEstimate } = await supabase
+      .from('detailed_estimates' as never)
       .select(`
         *,
         line_items:estimate_line_items(*)
