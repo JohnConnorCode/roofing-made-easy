@@ -14,7 +14,13 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
-    "generate-assets": "node scripts/generate-assets.js"
+    "generate-assets": "node scripts/generate-assets.js",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "bash -c 'npx tsc --noEmit'"
+    ]
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
@@ -61,7 +67,9 @@
     "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^9",
     "eslint-config-next": "16.1.4",
+    "husky": "^9.1.7",
     "jsdom": "^27.4.0",
+    "lint-staged": "^16.2.7",
     "postgres": "^3.4.8",
     "sharp": "^0.34.5",
     "tailwindcss": "^4",
