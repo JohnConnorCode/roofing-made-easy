@@ -24,7 +24,7 @@ export const BUSINESS_CONFIG = {
     raw: '+1-662-555-0123',      // E.164 format for schema
     display: '(662) 555-0123',   // Display format
     // Set to true once you have updated with real phone number
-    isReal: true, // CHANGE TO false IF USING PLACEHOLDER
+    isReal: false, // CHANGE TO true AFTER setting real phone number
   },
 
   email: {
@@ -45,7 +45,7 @@ export const BUSINESS_CONFIG = {
     country: 'United States',
     countryCode: 'US',
     // Set to true once you have updated with real address
-    isReal: true, // CHANGE TO false IF USING PLACEHOLDER
+    isReal: false, // CHANGE TO true AFTER setting real address
   },
 
   // -------------------------------------------------------------------------

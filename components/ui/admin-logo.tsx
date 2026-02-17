@@ -18,7 +18,7 @@ export function AdminLogo({
   className = '',
 }: AdminLogoProps) {
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
+    <div className={`flex items-center gap-2 ${className}`}>
       <div className={`relative ${sizeMap[size]} rounded-xl overflow-hidden`}>
         <Image
           src="/logo.svg"
@@ -29,7 +29,7 @@ export function AdminLogo({
         />
       </div>
       <div>
-        <h1 className="text-lg font-bold text-white">Smart Roof Admin</h1>
+        <h1 className="text-sm font-semibold whitespace-nowrap text-white">Smart Roof Admin</h1>
         {showPortalLabel && (
           <p className="text-sm text-slate-400">Admin Portal</p>
         )}

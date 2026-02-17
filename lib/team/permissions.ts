@@ -85,17 +85,20 @@ export interface PermissionAuthResult {
  * Get user's effective permissions (from profile or default by role)
  */
 export function getEffectivePermissions(profile: UserProfile | null, user?: User): Permissions {
-  if (profile?.permissions) {
-    return profile.permissions as Permissions
-  }
-
-  // Fall back to role-based defaults
   const role = profile?.role ||
     (user?.user_metadata?.role as UserRole) ||
     (user?.app_metadata?.role as UserRole) ||
     'crew'
 
-  return getDefaultPermissions(role)
+  const defaults = getDefaultPermissions(role)
+
+  if (profile?.permissions) {
+    // Merge stored permissions with role defaults so newly added
+    // resource keys (e.g. jobs, calendar) are never missing
+    return { ...defaults, ...(profile.permissions as Permissions) }
+  }
+
+  return defaults
 }
 
 /**

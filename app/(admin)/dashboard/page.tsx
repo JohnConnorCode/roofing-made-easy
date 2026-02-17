@@ -86,20 +86,34 @@ export default function DashboardPage() {
   const [recentLeads, setRecentLeads] = useState<RecentLead[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [errorStatus, setErrorStatus] = useState<number | null>(null)
   const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'velocity'>('overview')
   const [allLeads, setAllLeads] = useState<any[]>([])
 
   const fetchDashboardData = useCallback(async () => {
     setIsLoading(true)
     setError(null)
+    setErrorStatus(null)
     try {
       // Fetch dashboard stats
       const statsResponse = await fetch('/api/dashboard/stats')
       // Fetch recent leads for display
       const recentResponse = await fetch('/api/leads?limit=10')
 
-      if (!statsResponse.ok || !recentResponse.ok) {
-        throw new Error('Failed to fetch dashboard data')
+      const failedResponse = !statsResponse.ok ? statsResponse : !recentResponse.ok ? recentResponse : null
+      if (failedResponse) {
+        const status = failedResponse.status
+        setErrorStatus(status)
+        if (status === 401) {
+          setError('Your session has expired. Please log in again.')
+        } else if (status === 403) {
+          setError('You do not have admin access to view the dashboard.')
+        } else if (status === 429) {
+          setError('Too many requests. Please wait a moment and try again.')
+        } else {
+          setError(`Unable to load dashboard data (error ${status}). Please try again.`)
+        }
+        return
       }
 
       const statsData = await statsResponse.json()
@@ -113,8 +127,8 @@ export default function DashboardPage() {
         setRecentLeads(recentData.leads)
         setAllLeads(recentData.leads) // For analytics view
       }
-    } catch (err) {
-      setError('Unable to load dashboard data. Please try again.')
+    } catch {
+      setError('Unable to load dashboard data. Please check your connection and try again.')
     } finally {
       setIsLoading(false)
     }
@@ -207,15 +221,27 @@ export default function DashboardPage() {
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <AlertTriangle className="h-12 w-12 text-gold" />
                 <p className="mt-4 text-slate-600">{error}</p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="mt-4"
-                  onClick={fetchDashboardData}
-                  leftIcon={<RefreshCw className="h-4 w-4" />}
-                >
-                  Try Again
-                </Button>
+                {errorStatus === 401 || errorStatus === 403 ? (
+                  <Link href="/login">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="mt-4"
+                    >
+                      Go to Login
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    className="mt-4"
+                    onClick={fetchDashboardData}
+                    leftIcon={<RefreshCw className="h-4 w-4" />}
+                  >
+                    Try Again
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ) : (

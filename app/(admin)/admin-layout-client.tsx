@@ -309,7 +309,7 @@ export default function AdminLayoutClient({
         {/* Desktop sidebar */}
         <aside className="hidden w-64 shrink-0 border-r bg-slate-800 md:block">
           <div className="sticky top-0 flex h-screen flex-col">
-            <div className="flex h-16 items-center justify-between border-b border-slate-700 px-6">
+            <div className="flex h-16 items-center justify-between border-b border-slate-700 px-4">
               <AdminLogo size="sm" />
               <div className="flex items-center gap-1">
                 <GlobalSearch />
