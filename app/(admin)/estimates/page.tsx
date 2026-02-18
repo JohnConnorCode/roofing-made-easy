@@ -29,6 +29,7 @@ import {
 } from 'lucide-react'
 import { SkeletonLeadsTable } from '@/components/ui/skeleton'
 import { EstimateComparisonModal } from '@/components/admin/EstimateComparisonModal'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface Estimate {
   id: string
@@ -192,7 +193,7 @@ export default function EstimatesPage() {
   ) || []
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Estimates</h1>
@@ -453,6 +454,6 @@ export default function EstimatesPage() {
         onClose={() => setIsCompareOpen(false)}
         estimates={selectedEstimateData}
       />
-    </div>
+    </AdminPageTransition>
   )
 }

@@ -13,6 +13,7 @@ import {
   TrendingUp,
   Clock,
 } from 'lucide-react'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 function titleCase(s: string): string {
   return s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
@@ -91,7 +92,7 @@ export default function FinancingPage() {
   }, [fetchData])
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -402,6 +403,6 @@ export default function FinancingPage() {
           </Card>
         </>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

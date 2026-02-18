@@ -23,6 +23,7 @@ import {
   UserX,
 } from 'lucide-react'
 import type { UserRole } from '@/lib/team/types'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface User {
   id: string
@@ -368,7 +369,7 @@ export default function TeamPage() {
   const inactiveUsers = filteredUsers.filter(u => !u.is_active)
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -1016,6 +1017,6 @@ export default function TeamPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

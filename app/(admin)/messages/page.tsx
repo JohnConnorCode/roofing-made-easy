@@ -24,6 +24,7 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface ScheduledMessage {
   id: string
@@ -151,7 +152,7 @@ export default function MessagesPage() {
   const currentPage = Math.floor(offset / LIMIT) + 1
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -399,6 +400,6 @@ export default function MessagesPage() {
         variant="danger"
         onConfirm={handleCancel}
       />
-    </div>
+    </AdminPageTransition>
   )
 }

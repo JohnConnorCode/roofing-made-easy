@@ -89,6 +89,7 @@ export default function DashboardPage() {
   const [errorStatus, setErrorStatus] = useState<number | null>(null)
   const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'velocity'>('overview')
   const [allLeads, setAllLeads] = useState<any[]>([])
+  const [analyticsLeadsLoaded, setAnalyticsLeadsLoaded] = useState(false)
 
   const fetchDashboardData = useCallback(async () => {
     setIsLoading(true)
@@ -125,7 +126,6 @@ export default function DashboardPage() {
 
       if (recentData.leads) {
         setRecentLeads(recentData.leads)
-        setAllLeads(recentData.leads) // For analytics view
       }
     } catch {
       setError('Unable to load dashboard data. Please check your connection and try again.')
@@ -137,6 +137,21 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchDashboardData()
   }, [fetchDashboardData])
+
+  // Fetch all leads when analytics tab is activated
+  useEffect(() => {
+    if (activeTab === 'analytics' && !analyticsLeadsLoaded) {
+      fetch('/api/leads?limit=500')
+        .then((res) => res.ok ? res.json() : null)
+        .then((data) => {
+          if (data?.leads) {
+            setAllLeads(data.leads)
+            setAnalyticsLeadsLoaded(true)
+          }
+        })
+        .catch(() => {})
+    }
+  }, [activeTab, analyticsLeadsLoaded])
 
   if (isLoading) {
     return <SkeletonDashboard />

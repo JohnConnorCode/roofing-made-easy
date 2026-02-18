@@ -28,6 +28,7 @@ import {
   ChevronRight,
 } from 'lucide-react'
 import type { TaskType, TaskPriority, TaskStatus } from '@/lib/team/types'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface User {
   id: string
@@ -271,7 +272,7 @@ export default function TasksPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -638,6 +639,6 @@ export default function TasksPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

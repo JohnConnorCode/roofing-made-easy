@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { formatCurrency } from '@/lib/utils'
 import { Save, RotateCcw } from 'lucide-react'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface PricingRule {
   id: string
@@ -99,7 +100,7 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Pricing Rules</h1>
@@ -229,6 +230,6 @@ export default function PricingPage() {
           </CardContent>
         </Card>
       ))}
-    </div>
+    </AdminPageTransition>
   )
 }

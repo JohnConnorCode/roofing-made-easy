@@ -16,6 +16,7 @@ import {
   AlertTriangle,
 } from 'lucide-react'
 import Link from 'next/link'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface CalendarEvent {
   id: string
@@ -153,7 +154,7 @@ export default function CalendarPage() {
   const selectedEvents = selectedDate ? getEventsForDate(selectedDate) : []
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -440,6 +441,6 @@ export default function CalendarPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

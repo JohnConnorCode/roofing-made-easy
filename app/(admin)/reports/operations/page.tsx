@@ -14,6 +14,7 @@ import {
   FileText,
   CloudRain,
 } from 'lucide-react'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface OperationsData {
   period: { days: number; since: string }
@@ -88,7 +89,7 @@ export default function OperationsPage() {
   const maxHours = Math.max(...(data?.crewProductivity.map(t => t.totalHours) || [1]))
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -399,6 +400,6 @@ export default function OperationsPage() {
           </Card>
         </>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

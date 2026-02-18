@@ -24,6 +24,7 @@ import {
   Crosshair,
 } from 'lucide-react'
 import Link from 'next/link'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface ReportSummary {
   currentMonth: {
@@ -101,7 +102,7 @@ export default function ReportsPage() {
   }, [fetchSummary])
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
@@ -448,6 +449,6 @@ export default function ReportsPage() {
           </div>
         </>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

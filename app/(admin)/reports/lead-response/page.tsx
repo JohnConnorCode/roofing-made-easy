@@ -16,6 +16,7 @@ import {
   Zap,
 } from 'lucide-react'
 import Link from 'next/link'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface LeadResponseData {
   period: { days: number; since: string }
@@ -94,7 +95,7 @@ export default function LeadResponsePage() {
   }, [fetchData])
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -424,6 +425,6 @@ export default function LeadResponsePage() {
           </Card>
         </>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

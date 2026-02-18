@@ -13,6 +13,7 @@ import {
   TrendingUp,
   BarChart3,
 } from 'lucide-react'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface TeamStats {
   id: string
@@ -70,7 +71,7 @@ export default function TeamPerformancePage() {
   const maxRevenue = Math.max(...(data?.teams.map(t => t.revenue) || [1]))
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -318,6 +319,6 @@ export default function TeamPerformancePage() {
           </Card>
         </>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

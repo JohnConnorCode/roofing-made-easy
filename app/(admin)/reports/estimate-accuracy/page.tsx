@@ -13,6 +13,7 @@ import {
   ArrowUp,
   ArrowDown,
 } from 'lucide-react'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface EstimateAccuracyData {
   summary: {
@@ -72,7 +73,7 @@ export default function EstimateAccuracyPage() {
   }, [fetchData])
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -290,6 +291,6 @@ export default function EstimateAccuracyPage() {
           </Card>
         </>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

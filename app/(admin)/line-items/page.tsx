@@ -10,6 +10,7 @@ import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 import { Skeleton } from '@/components/ui/skeleton'
 import { formatCurrency } from '@/lib/estimation/detailed-engine'
 import { Search, Plus, Edit2, Trash2, Package, X } from 'lucide-react'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 type LineItemCategory =
   | 'tear_off' | 'underlayment' | 'shingles' | 'metal_roofing' | 'tile_roofing'
@@ -236,7 +237,7 @@ export default function LineItemsPage() {
   }, {} as Record<string, LineItem[]>)
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -577,6 +578,6 @@ export default function LineItemsPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

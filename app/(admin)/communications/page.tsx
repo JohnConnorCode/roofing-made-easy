@@ -13,6 +13,7 @@ import {
 import { TemplateListPanel } from '@/components/admin/communications/TemplateListPanel'
 import { EstimateContentPanel } from '@/components/admin/communications/EstimateContentPanel'
 import { VariablesReference } from '@/components/admin/communications/VariablesReference'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 type TabId = 'email' | 'sms' | 'estimate' | 'variables'
 
@@ -49,7 +50,7 @@ export default function CommunicationsPage() {
   const handleEstimateTotal = useCallback((total: number) => handleTotalChange('estimate', total), [handleTotalChange])
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Communications</h1>
@@ -146,6 +147,6 @@ export default function CommunicationsPage() {
       <div id="panel-variables" role="tabpanel" className={activeTab !== 'variables' ? 'hidden' : undefined}>
         <VariablesReference />
       </div>
-    </div>
+    </AdminPageTransition>
   )
 }

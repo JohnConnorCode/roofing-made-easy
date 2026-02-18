@@ -28,6 +28,7 @@ import {
 } from 'lucide-react'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 import type { WorkflowTrigger, MessageChannel } from '@/lib/communication/types'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface Template {
   id: string
@@ -358,7 +359,7 @@ export default function WorkflowsPage() {
   const inactiveCount = workflows.filter(w => !w.is_active).length
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -857,6 +858,6 @@ export default function WorkflowsPage() {
         </div>
       )}
       <ConfirmDialog />
-    </div>
+    </AdminPageTransition>
   )
 }

@@ -439,7 +439,7 @@ describe('Quick Estimate API', () => {
       mockEstimates.set(estimate2Id, { id: estimate2Id, ...estimate2 })
 
       const request = createMockRequest(
-        `http://localhost:3000/api/leads/${lead.id}/estimate`
+        `http://localhost:3000/api/leads/${lead.id}/estimate?token=${lead.share_token}`
       )
       const context = createRouteContext({ leadId: lead.id })
       const response = await GET(request, context)
@@ -453,7 +453,7 @@ describe('Quick Estimate API', () => {
       const { lead } = createMockLead()
 
       const request = createMockRequest(
-        `http://localhost:3000/api/leads/${lead.id}/estimate`
+        `http://localhost:3000/api/leads/${lead.id}/estimate?token=${lead.share_token}`
       )
       const context = createRouteContext({ leadId: lead.id })
       const response = await GET(request, context)

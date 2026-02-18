@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
         property_city, property_state, created_at,
         team:assigned_team_id(name)
       `)
-      .not('status', 'eq', 'closed')
+      .not('status', 'in', '(cancelled)')
       .order('created_at', { ascending: false })
       .limit(100)
 

@@ -26,6 +26,8 @@ import {
   type JobStatus,
   type Job,
 } from '@/lib/jobs/types'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type ViewMode = 'table' | 'kanban'
 
@@ -88,7 +90,7 @@ export default function JobsPage() {
   const totalValue = jobs.reduce((sum, j) => sum + (j.contract_amount || 0), 0)
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -331,7 +333,7 @@ export default function JobsPage() {
                   </div>
                   <div className="space-y-3">
                     {isLoading ? (
-                      <div className="h-24 bg-slate-100 rounded-lg animate-pulse" />
+                      <Skeleton className="h-24 w-full rounded-lg" />
                     ) : columnJobs.length === 0 ? (
                       <div className="rounded-lg border-2 border-dashed border-slate-200 p-4 text-center text-sm text-slate-400">
                         No jobs
@@ -381,6 +383,6 @@ export default function JobsPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

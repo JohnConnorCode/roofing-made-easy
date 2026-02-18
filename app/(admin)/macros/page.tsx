@@ -9,6 +9,7 @@ import { useToast } from '@/components/ui/toast'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Plus, Edit2, Trash2, FileText, Star, Copy, X, Loader2 } from 'lucide-react'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 type MacroRoofType =
   | 'asphalt_shingle' | 'metal_standing_seam' | 'metal_corrugated'
@@ -259,7 +260,7 @@ export default function MacrosPage() {
   }, {} as Record<string, EstimateMacro[]>)
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -549,6 +550,6 @@ export default function MacrosPage() {
         </div>
       )}
       <ConfirmDialog />
-    </div>
+    </AdminPageTransition>
   )
 }

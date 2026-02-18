@@ -12,6 +12,7 @@ import {
   Download,
 } from 'lucide-react'
 import Link from 'next/link'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface AgingInvoice {
   invoice_id: string
@@ -84,7 +85,7 @@ export default function ARAgingPage() {
     : invoices
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/reports">
@@ -228,6 +229,6 @@ export default function ARAgingPage() {
           </Card>
         </>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }

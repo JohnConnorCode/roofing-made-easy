@@ -12,6 +12,7 @@ import {
   Clock,
   CheckCircle,
 } from 'lucide-react'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 function titleCase(s: string): string {
   return s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
@@ -87,7 +88,7 @@ export default function DocumentCompliancePage() {
   const complianceTextColor = complianceRate >= 80 ? 'text-green-600' : complianceRate >= 60 ? 'text-amber-600' : 'text-red-600'
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -357,6 +358,6 @@ export default function DocumentCompliancePage() {
           </Card>
         </>
       )}
-    </div>
+    </AdminPageTransition>
   )
 }
