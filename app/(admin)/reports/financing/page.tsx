@@ -14,6 +14,7 @@ import {
   Clock,
 } from 'lucide-react'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton, SkeletonReportContent } from '@/components/ui/skeleton'
 
 function titleCase(s: string): string {
   return s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
@@ -94,20 +95,22 @@ export default function FinancingPage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Financing Performance</h1>
-          <p className="text-slate-500">Application pipeline, lender stats, and conversion impact</p>
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Financing Performance</h1>
+            <p className="text-slate-500">Application pipeline, lender stats, and conversion impact</p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchData}
+            leftIcon={<RefreshCw className="h-4 w-4" />}
+          >
+            Refresh
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={fetchData}
-          leftIcon={<RefreshCw className="h-4 w-4" />}
-        >
-          Refresh
-        </Button>
-      </div>
+      </FadeInSection>
 
       {error && (
         <Card className="bg-white border-slate-200">
@@ -124,6 +127,7 @@ export default function FinancingPage() {
       {!error && (
         <>
           {/* KPI Cards */}
+          <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-white border-slate-200">
               <CardContent className="p-5">
@@ -131,7 +135,7 @@ export default function FinancingPage() {
                   <div>
                     <p className="text-sm text-slate-500">Total Applications</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : data?.summary.totalApplications || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.totalApplications || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-emerald-100 p-2">
@@ -149,7 +153,7 @@ export default function FinancingPage() {
                     <p className={`text-2xl font-bold ${
                       (data?.summary.approvalRate || 0) >= 60 ? 'text-green-600' : 'text-amber-600'
                     }`}>
-                      {isLoading ? '...' : `${data?.summary.approvalRate || 0}%`}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${data?.summary.approvalRate || 0}%`}
                     </p>
                   </div>
                   <div className="rounded-lg bg-green-100 p-2">
@@ -165,7 +169,7 @@ export default function FinancingPage() {
                   <div>
                     <p className="text-sm text-slate-500">Avg Approved Amount</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : formatCurrency(data?.summary.avgApprovedAmount || 0)}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : formatCurrency(data?.summary.avgApprovedAmount || 0)}
                     </p>
                   </div>
                   <div className="rounded-lg bg-blue-100 p-2">
@@ -183,7 +187,7 @@ export default function FinancingPage() {
                     <p className={`text-2xl font-bold ${
                       (data?.conversionImpact.liftPct || 0) > 0 ? 'text-green-600' : 'text-slate-900'
                     }`}>
-                      {isLoading ? '...' : data?.conversionImpact.liftPct != null
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.conversionImpact.liftPct != null
                         ? `${data.conversionImpact.liftPct > 0 ? '+' : ''}${data.conversionImpact.liftPct}%`
                         : 'N/A'}
                     </p>
@@ -195,8 +199,10 @@ export default function FinancingPage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
           {/* Total Approved Amount */}
+          <FadeInSection delay={200} animation="slide-up">
           {data?.summary.totalApprovedAmount != null && data.summary.totalApprovedAmount > 0 && (
             <Card className="bg-blue-50 border-blue-200">
               <CardContent className="p-4 flex items-center justify-between">
@@ -206,7 +212,10 @@ export default function FinancingPage() {
             </Card>
           )}
 
+          </FadeInSection>
+
           {/* Pipeline */}
+          <FadeInSection delay={300} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -216,7 +225,7 @@ export default function FinancingPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.pipeline && data.pipeline.length > 0 ? (
                 <BarChart
                   data={data.pipeline.map(p => ({
@@ -231,7 +240,10 @@ export default function FinancingPage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* Conversion Impact Callout */}
+          <FadeInSection delay={400} animation="slide-up">
           {data?.conversionImpact && data.conversionImpact.financedLeadCount > 0 && (
             <Card className="bg-emerald-50 border-emerald-200">
               <CardContent className="p-6">
@@ -250,7 +262,10 @@ export default function FinancingPage() {
             </Card>
           )}
 
+          </FadeInSection>
+
           {/* By Lender Table */}
+          <FadeInSection delay={500} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -260,7 +275,7 @@ export default function FinancingPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.byLender && data.byLender.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -302,7 +317,10 @@ export default function FinancingPage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* By Credit Range */}
+          <FadeInSection delay={600} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -312,7 +330,7 @@ export default function FinancingPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.byCreditRange && data.byCreditRange.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -352,7 +370,10 @@ export default function FinancingPage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* Pending Applications */}
+          <FadeInSection delay={700} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -362,7 +383,7 @@ export default function FinancingPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.pendingApplications && data.pendingApplications.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -401,6 +422,7 @@ export default function FinancingPage() {
               )}
             </CardContent>
           </Card>
+          </FadeInSection>
         </>
       )}
     </AdminPageTransition>

@@ -87,7 +87,10 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick, visibleFields
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onClick={onClick}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick?.() } }}
       className={`
         group relative bg-white rounded-lg border border-slate-200 p-3 shadow-sm cursor-pointer
         hover:border-gold-light hover:shadow-md transition-all
@@ -105,6 +108,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick, visibleFields
           onClick={onMoveClick}
           className="absolute right-1 top-1 p-1.5 rounded-md bg-slate-100 hover:bg-gold-light/20 text-slate-500 hover:text-gold-muted opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
           title="Move to..."
+          aria-label={`Move ${name} to another stage`}
         >
           <MoveRight className="h-3.5 w-3.5" />
         </button>

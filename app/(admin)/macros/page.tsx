@@ -261,6 +261,7 @@ export default function MacrosPage() {
 
   return (
     <AdminPageTransition className="space-y-6">
+      <FadeInSection delay={0} animation="fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -279,7 +280,9 @@ export default function MacrosPage() {
           Create Template
         </Button>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={100} animation="slide-up">
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
@@ -313,7 +316,9 @@ export default function MacrosPage() {
           </CardContent>
         </Card>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={200} animation="slide-up">
       {/* Templates */}
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -428,6 +433,7 @@ export default function MacrosPage() {
           ))}
         </div>
       )}
+      </FadeInSection>
 
       {/* Add/Edit Modal */}
       {isModalOpen && (

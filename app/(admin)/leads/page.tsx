@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -75,6 +75,18 @@ export default function LeadsPage() {
   const [selectedLeads, setSelectedLeads] = useState<Set<string>>(new Set())
   const [isProcessing, setIsProcessing] = useState(false)
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [debouncedSearch, setDebouncedSearch] = useState('')
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Debounce search input
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => {
+      setDebouncedSearch(search)
+      setOffset(0)
+    }, 300)
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
+  }, [search])
 
   const fetchLeads = useCallback(async () => {
     setIsLoading(true)
@@ -87,6 +99,7 @@ export default function LeadsPage() {
         direction: sortDirection,
       })
       if (status) params.set('status', status)
+      if (debouncedSearch) params.set('search', debouncedSearch)
 
       const response = await fetch(`/api/leads?${params}`)
       if (!response.ok) {
@@ -103,7 +116,7 @@ export default function LeadsPage() {
     } finally {
       setIsLoading(false)
     }
-  }, [status, offset, sortField, sortDirection])
+  }, [status, offset, sortField, sortDirection, debouncedSearch])
 
   useEffect(() => {
     fetchLeads()
@@ -114,21 +127,8 @@ export default function LeadsPage() {
     setSelectedLeads(new Set())
   }, [status, offset])
 
-  const filteredLeads = leads.filter((lead) => {
-    if (!search) return true
-    const contact = lead.contacts?.[0]
-    const property = lead.properties?.[0]
-    const searchLower = search.toLowerCase()
-    return (
-      contact?.first_name?.toLowerCase().includes(searchLower) ||
-      contact?.last_name?.toLowerCase().includes(searchLower) ||
-      contact?.email?.toLowerCase().includes(searchLower) ||
-      property?.city?.toLowerCase().includes(searchLower)
-    )
-  })
-
   // Sort leads
-  const sortedLeads = [...filteredLeads].sort((a, b) => {
+  const sortedLeads = [...leads].sort((a, b) => {
     let comparison = 0
     switch (sortField) {
       case 'created_at':
@@ -194,7 +194,7 @@ export default function LeadsPage() {
         lead.id === leadId ? { ...lead, status: newStatus } : lead
       ))
     } catch {
-      // Failed to update lead status
+      setError('Failed to update lead status. Please try again.')
     }
   }
 
@@ -219,7 +219,7 @@ export default function LeadsPage() {
       ))
       setSelectedLeads(new Set())
     } catch {
-      // Failed to bulk update
+      setError('Failed to update selected leads. Please try again.')
     } finally {
       setIsProcessing(false)
     }
@@ -365,7 +365,7 @@ export default function LeadsPage() {
                 Try Again
               </Button>
             </div>
-          ) : filteredLeads.length === 0 ? (
+          ) : leads.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8">
               <Inbox className="h-10 w-10 text-slate-300" />
               <p className="mt-3 text-slate-600">No leads found</p>

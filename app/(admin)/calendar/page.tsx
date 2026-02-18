@@ -156,6 +156,7 @@ export default function CalendarPage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
+      <FadeInSection delay={0} animation="fade-in">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Calendar</h1>
@@ -167,8 +168,10 @@ export default function CalendarPage() {
           </Button>
         </Link>
       </div>
+      </FadeInSection>
 
       {/* Controls */}
+      <FadeInSection delay={100} animation="slide-up">
       <Card className="bg-white border-slate-200">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
@@ -202,6 +205,7 @@ export default function CalendarPage() {
           </div>
         </CardContent>
       </Card>
+      </FadeInSection>
 
       {error && (
         <Card className="bg-white border-slate-200">
@@ -215,6 +219,7 @@ export default function CalendarPage() {
         </Card>
       )}
 
+      <FadeInSection delay={200} animation="slide-up">
       {!error && (
         <div className="grid gap-6 lg:grid-cols-4">
           {/* Calendar Grid */}
@@ -441,6 +446,7 @@ export default function CalendarPage() {
           </div>
         </div>
       )}
+      </FadeInSection>
     </AdminPageTransition>
   )
 }

@@ -37,6 +37,7 @@ import { FollowUpReminder } from '@/components/admin/follow-up-reminder'
 import { QuoteGenerator } from '@/components/admin/quote-generator'
 import { PhotoGallery } from '@/components/admin/photo-gallery'
 import { CommunicationTimeline } from '@/components/admin/communication-timeline'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface LeadDetail {
   id: string
@@ -306,8 +307,9 @@ export default function LeadDetailPage() {
   const scoreTier = getScoreTierDisplay(leadScore.tier)
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
+      <FadeInSection delay={0} animation="fade-in">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -352,7 +354,9 @@ export default function LeadDetailPage() {
           />
         </div>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={150} animation="slide-up">
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Contact Info */}
         <Card>
@@ -796,6 +800,7 @@ export default function LeadDetailPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+      </FadeInSection>
+    </AdminPageTransition>
   )
 }

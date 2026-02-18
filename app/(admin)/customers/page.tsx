@@ -18,6 +18,7 @@ import {
   Loader2
 } from 'lucide-react'
 import { AdminPageTransition, FadeInSection, StaggerContainer } from '@/components/admin/page-transition'
+import { SkeletonPageContent } from '@/components/ui/skeleton'
 
 const LIMIT = 20
 
@@ -174,9 +175,7 @@ export default function CustomersPage() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
-            </div>
+            <SkeletonPageContent />
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-8">
               <AlertTriangle className="h-10 w-10 text-amber-500" />

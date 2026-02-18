@@ -14,6 +14,7 @@ import {
   BarChart3,
 } from 'lucide-react'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton, SkeletonReportContent } from '@/components/ui/skeleton'
 
 interface TeamStats {
   id: string
@@ -73,20 +74,22 @@ export default function TeamPerformancePage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Team Performance</h1>
-          <p className="text-slate-500">Crew and project manager productivity and profitability</p>
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Team Performance</h1>
+            <p className="text-slate-500">Crew and project manager productivity and profitability</p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchData}
+            leftIcon={<RefreshCw className="h-4 w-4" />}
+          >
+            Refresh
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={fetchData}
-          leftIcon={<RefreshCw className="h-4 w-4" />}
-        >
-          Refresh
-        </Button>
-      </div>
+      </FadeInSection>
 
       {error && (
         <Card className="bg-white border-slate-200">
@@ -103,6 +106,7 @@ export default function TeamPerformancePage() {
       {!error && (
         <>
           {/* KPI Cards */}
+          <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-white border-slate-200">
               <CardContent className="p-5">
@@ -110,7 +114,7 @@ export default function TeamPerformancePage() {
                   <div>
                     <p className="text-sm text-slate-500">Total Teams</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : data?.teams.length || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.teams.length || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-blue-100 p-2">
@@ -126,7 +130,7 @@ export default function TeamPerformancePage() {
                   <div>
                     <p className="text-sm text-slate-500">Top Team</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : topTeam?.name || 'N/A'}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : topTeam?.name || 'N/A'}
                     </p>
                   </div>
                   <div className="rounded-lg bg-green-100 p-2">
@@ -145,7 +149,7 @@ export default function TeamPerformancePage() {
                   <div>
                     <p className="text-sm text-slate-500">Active Jobs</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : totalActive}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : totalActive}
                     </p>
                   </div>
                   <div className="rounded-lg bg-amber-100 p-2">
@@ -162,7 +166,7 @@ export default function TeamPerformancePage() {
                   <div>
                     <p className="text-sm text-slate-500">Total Revenue</p>
                     <p className="text-2xl font-bold text-green-600">
-                      {isLoading ? '...' : formatCurrency(totalRevenue)}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : formatCurrency(totalRevenue)}
                     </p>
                   </div>
                   <div className="rounded-lg bg-green-100 p-2">
@@ -172,8 +176,10 @@ export default function TeamPerformancePage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
           {/* Revenue by Team Chart */}
+          <FadeInSection delay={200} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -183,7 +189,7 @@ export default function TeamPerformancePage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.teams && data.teams.length > 0 ? (
                 <div className="space-y-3">
                   {data.teams.map(team => {
@@ -213,7 +219,10 @@ export default function TeamPerformancePage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* Team Breakdown Table */}
+          <FadeInSection delay={300} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -223,7 +232,7 @@ export default function TeamPerformancePage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.teams && data.teams.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -278,7 +287,10 @@ export default function TeamPerformancePage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* PM Breakdown Table */}
+          <FadeInSection delay={400} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -288,7 +300,7 @@ export default function TeamPerformancePage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.projectManagers && data.projectManagers.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -317,6 +329,7 @@ export default function TeamPerformancePage() {
               )}
             </CardContent>
           </Card>
+          </FadeInSection>
         </>
       )}
     </AdminPageTransition>

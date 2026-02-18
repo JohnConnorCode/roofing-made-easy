@@ -29,6 +29,7 @@ import {
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 import type { WorkflowTrigger, MessageChannel } from '@/lib/communication/types'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface Template {
   id: string
@@ -361,6 +362,7 @@ export default function WorkflowsPage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
+      <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Automation Workflows</h1>
@@ -374,6 +376,7 @@ export default function WorkflowsPage() {
           Create Workflow
         </Button>
       </div>
+      </FadeInSection>
 
       {/* Error message */}
       {error && (
@@ -381,14 +384,20 @@ export default function WorkflowsPage() {
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5" />
             <span>{error}</span>
-            <button onClick={() => setError(null)} className="ml-auto text-red-500 hover:text-red-700">
-              ×
-            </button>
+            <div className="ml-auto flex items-center gap-2">
+              <Button variant="ghost" size="sm" onClick={fetchWorkflows} leftIcon={<RefreshCw className="h-3 w-3" />}>
+                Try Again
+              </Button>
+              <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">
+                ×
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Summary Cards */}
+      <FadeInSection delay={100} animation="slide-up">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="bg-white border-slate-200">
           <CardContent className="p-4">
@@ -415,8 +424,10 @@ export default function WorkflowsPage() {
           </CardContent>
         </Card>
       </div>
+      </FadeInSection>
 
       {/* Filters */}
+      <FadeInSection delay={200} animation="slide-up">
       <Card className="bg-white border-slate-200">
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center">
@@ -444,8 +455,10 @@ export default function WorkflowsPage() {
           </div>
         </CardContent>
       </Card>
+      </FadeInSection>
 
       {/* Workflows List */}
+      <FadeInSection delay={300} animation="slide-up">
       <Card className="bg-white border-slate-200">
         <CardHeader>
           <CardTitle className="text-slate-900">
@@ -454,8 +467,27 @@ export default function WorkflowsPage() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="flex items-center justify-center py-8">
-              <RefreshCw className="h-6 w-6 animate-spin text-slate-400" />
+            <div className="space-y-3">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="rounded-lg border border-slate-200 p-4">
+                  <div className="flex items-start gap-3">
+                    <Skeleton className="h-5 w-5 mt-1 rounded-full" />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Skeleton className="h-4 w-44" />
+                        <Skeleton className="h-5 w-24 rounded-full" />
+                        <Skeleton className="h-3 w-12" />
+                      </div>
+                      <Skeleton className="h-3 w-56 mb-2" />
+                      <div className="flex items-center gap-4">
+                        <Skeleton className="h-3 w-20" />
+                        <Skeleton className="h-3 w-32" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-5 w-5" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : workflows.length === 0 ? (
             <div className="text-center py-8">
@@ -615,6 +647,7 @@ export default function WorkflowsPage() {
           )}
         </CardContent>
       </Card>
+      </FadeInSection>
 
       {/* Create/Edit Workflow Modal */}
       {showCreateModal && (

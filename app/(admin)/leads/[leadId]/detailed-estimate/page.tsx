@@ -20,6 +20,7 @@ import type {
   EstimateLineItem,
 } from '@/lib/supabase/types'
 import { ArrowLeft, Calculator, Save, FileText, RefreshCw } from 'lucide-react'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 type EstimateStep = 'measurements' | 'template' | 'line-items' | 'summary'
 
@@ -66,8 +67,8 @@ export default function DetailedEstimateBuilderPage() {
             setVariables(sketchVars)
           }
         }
-      } catch (error) {
-        console.error('Error fetching sketch:', error)
+      } catch {
+        // Sketch may not exist yet
       }
     }
 
@@ -113,8 +114,7 @@ export default function DetailedEstimateBuilderPage() {
       setLineItems(data.estimate.line_items || [])
       setCurrentStep('line-items')
       showToast('Template applied successfully', 'success')
-    } catch (error) {
-      console.error('Error applying macro:', error)
+    } catch {
       showToast('Failed to apply template', 'error')
     } finally {
       setIsLoading(false)
@@ -206,8 +206,8 @@ export default function DetailedEstimateBuilderPage() {
         setEstimate(data.estimate)
         setLineItems(data.estimate.line_items || [])
       }
-    } catch (error) {
-      console.error('Error recalculating:', error)
+    } catch {
+      // Recalculation failures are handled by stale data display
     }
   }
 
@@ -245,8 +245,9 @@ export default function DetailedEstimateBuilderPage() {
   ]
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
+      <FadeInSection delay={0} animation="fade-in">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -267,8 +268,10 @@ export default function DetailedEstimateBuilderPage() {
           </div>
         </div>
       </div>
+      </FadeInSection>
 
       {/* Progress Steps */}
+      <FadeInSection delay={100} animation="slide-up">
       <div className="flex items-center justify-center gap-2">
         {steps.map((step, index) => (
           <div key={step.id} className="flex items-center">
@@ -305,8 +308,10 @@ export default function DetailedEstimateBuilderPage() {
           </div>
         ))}
       </div>
+      </FadeInSection>
 
       {/* Step Content */}
+      <FadeInSection delay={200} animation="slide-up">
       <div className="max-w-6xl mx-auto">
         {/* Step 1: Measurements */}
         {currentStep === 'measurements' && (
@@ -494,6 +499,7 @@ export default function DetailedEstimateBuilderPage() {
           </div>
         )}
       </div>
-    </div>
+      </FadeInSection>
+    </AdminPageTransition>
   )
 }

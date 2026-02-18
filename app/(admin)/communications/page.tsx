@@ -52,10 +52,12 @@ export default function CommunicationsPage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
+      <FadeInSection delay={0} animation="fade-in">
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Communications</h1>
         <p className="text-slate-500">Manage email templates, SMS templates, and estimate content</p>
       </div>
+      </FadeInSection>
 
       {/* Messages */}
       {error && (
@@ -80,6 +82,7 @@ export default function CommunicationsPage() {
       )}
 
       {/* Tabs */}
+      <FadeInSection delay={100} animation="slide-up">
       <div className="border-b border-slate-200 -mx-4 px-4 md:mx-0 md:px-0">
         <nav className="flex gap-1 -mb-px overflow-x-auto scrollbar-hide" role="tablist">
           {TABS.map((tab) => {
@@ -116,8 +119,10 @@ export default function CommunicationsPage() {
           })}
         </nav>
       </div>
+      </FadeInSection>
 
       {/* Tab Panels - kept mounted with hidden to preserve state */}
+      <FadeInSection delay={200} animation="slide-up">
       <div id="panel-email" role="tabpanel" className={activeTab !== 'email' ? 'hidden' : undefined}>
         <TemplateListPanel
           lockedType="email"
@@ -147,6 +152,7 @@ export default function CommunicationsPage() {
       <div id="panel-variables" role="tabpanel" className={activeTab !== 'variables' ? 'hidden' : undefined}>
         <VariablesReference />
       </div>
+      </FadeInSection>
     </AdminPageTransition>
   )
 }

@@ -68,7 +68,8 @@ export async function GET(request: NextRequest) {
     const { data: currentMonthJobs } = await supabase
       .from('jobs')
       .select('contract_amount, material_cost, labor_cost, total_paid')
-      .gte('created_at', currentMonthStart)
+      .in('status', ['completed', 'warranty_active', 'closed'])
+      .gte('actual_end', currentMonthStart)
 
     const mtdRevenue = (currentMonthJobs || []).reduce((sum, j) => sum + ((j as { contract_amount: number }).contract_amount || 0), 0)
     const mtdCosts = (currentMonthJobs || []).reduce((sum, j) => {

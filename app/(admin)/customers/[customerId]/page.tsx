@@ -18,12 +18,15 @@ import {
   Calendar,
   Save,
   Loader2,
+  RefreshCw,
   AlertTriangle,
   ExternalLink,
   CheckCircle,
   Clock,
   XCircle
 } from 'lucide-react'
+import { SkeletonPageContent } from '@/components/ui/skeleton'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface CustomerLead {
   id: string
@@ -166,7 +169,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ custo
       setCustomer(prev => prev ? { ...prev, ...data.customer } : null)
       setIsEditing(false)
     } catch {
-      // Save failed silently
+      setError('Failed to save customer. Please try again.')
     } finally {
       setIsSaving(false)
     }
@@ -174,8 +177,8 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ custo
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-amber-600" />
+      <div className="space-y-6">
+        <SkeletonPageContent />
       </div>
     )
   }
@@ -185,13 +188,21 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ custo
       <div className="flex flex-col items-center justify-center min-h-[400px]">
         <AlertTriangle className="h-12 w-12 text-amber-500" />
         <p className="mt-4 text-slate-600">{error || 'Customer not found'}</p>
-        <Button
-          variant="outline"
-          className="mt-4"
-          onClick={() => router.push('/customers')}
-        >
-          Back to Customers
-        </Button>
+        <div className="mt-4 flex gap-3">
+          <Button
+            variant="outline"
+            onClick={fetchCustomer}
+            leftIcon={<RefreshCw className="h-4 w-4" />}
+          >
+            Try Again
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => router.push('/customers')}
+          >
+            Back to Customers
+          </Button>
+        </div>
       </div>
     )
   }
@@ -206,7 +217,8 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ custo
   }, 0)
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
+      <FadeInSection delay={0} animation="fade-in">
       {/* Header */}
       <div className="flex items-center gap-4">
         <Button
@@ -232,7 +244,9 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ custo
           )}
         </div>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={150} animation="slide-up">
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Main column */}
         <div className="lg:col-span-2 space-y-6">
@@ -486,6 +500,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ custo
           </Card>
         </div>
       </div>
-    </div>
+      </FadeInSection>
+    </AdminPageTransition>
   )
 }

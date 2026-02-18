@@ -35,6 +35,7 @@ import {
 } from '@/lib/styles/integration-status'
 import { getSectionNavClasses, adminSpinner, adminResult } from '@/lib/styles/admin-theme'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { SkeletonPageContent } from '@/components/ui/skeleton'
 
 interface IntegrationStatus {
   name: string
@@ -235,7 +236,7 @@ export default function SettingsPage() {
       setSaveSuccess(true)
       setTimeout(() => setSaveSuccess(false), 3000)
     } catch {
-      // Failed to save settings
+      setError('Failed to save settings. Please try again.')
     } finally {
       setIsSaving(false)
     }
@@ -407,9 +408,9 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className={`h-8 w-8 animate-spin ${adminSpinner}`} />
-      </div>
+      <AdminPageTransition className="space-y-6">
+        <SkeletonPageContent />
+      </AdminPageTransition>
     )
   }
 

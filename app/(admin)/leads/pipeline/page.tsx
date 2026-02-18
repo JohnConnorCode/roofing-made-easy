@@ -24,6 +24,8 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { JOB_TYPE_MAP } from '@/lib/constants/status'
+import { SkeletonPageContent } from '@/components/ui/skeleton'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface PipelineStats {
   totalLeads: number
@@ -277,15 +279,16 @@ export default function PipelinePage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-gold" />
+      <div className="space-y-6">
+        <SkeletonPageContent />
       </div>
     )
   }
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
       {/* Header */}
+      <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Pipeline</h1>
@@ -334,8 +337,10 @@ export default function PipelinePage() {
           </Button>
         </div>
       </div>
+      </FadeInSection>
 
       {/* Filters panel */}
+      <FadeInSection delay={100} animation="slide-up">
       {showFilters && (
         <Card className="bg-white border-slate-200">
           <CardContent className="p-4">
@@ -403,8 +408,10 @@ export default function PipelinePage() {
           </CardContent>
         </Card>
       )}
+      </FadeInSection>
 
       {/* Stats cards */}
+      <FadeInSection delay={200} animation="slide-up">
       {stats && (
         <div className="grid gap-4 md:grid-cols-4">
           <Card className="bg-white border-slate-200">
@@ -458,6 +465,7 @@ export default function PipelinePage() {
           </Card>
         </div>
       )}
+      </FadeInSection>
 
       {/* Update error notification */}
       {updateError && (
@@ -475,6 +483,7 @@ export default function PipelinePage() {
       )}
 
       {/* Pipeline board */}
+      <FadeInSection delay={300} animation="slide-up">
       {error ? (
         <Card className="bg-white border-slate-200">
           <CardContent className="flex flex-col items-center justify-center py-12">
@@ -500,6 +509,7 @@ export default function PipelinePage() {
           isUpdating={updatingLeadId}
         />
       )}
+      </FadeInSection>
 
       {/* Lead slide-over */}
       <LeadSlideOver
@@ -508,6 +518,6 @@ export default function PipelinePage() {
         onClose={() => setSelectedLead(null)}
         onStatusChange={handleStatusChange}
       />
-    </div>
+    </AdminPageTransition>
   )
 }

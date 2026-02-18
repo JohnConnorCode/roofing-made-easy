@@ -147,6 +147,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
 
     const status = searchParams.get('status')
+    const search = searchParams.get('search') || ''
     const { limit, offset } = parsePagination(searchParams)
 
     // Validate status parameter if provided
@@ -155,6 +156,20 @@ export async function GET(request: NextRequest) {
         { error: `Invalid status. Valid values: ${Array.from(VALID_STATUSES).join(', ')}` },
         { status: 400 }
       )
+    }
+
+    // If search is provided, find matching lead IDs via contacts first
+    let matchingLeadIds: string[] | null = null
+    if (search) {
+      const sanitizedSearch = search.replace(/[%_'"\\]/g, '').trim()
+      if (sanitizedSearch.length > 0) {
+        const { data: matchingContacts } = await supabase
+          .from('contacts')
+          .select('lead_id')
+          .or(`first_name.ilike.%${sanitizedSearch}%,last_name.ilike.%${sanitizedSearch}%,email.ilike.%${sanitizedSearch}%,phone.ilike.%${sanitizedSearch}%`)
+
+        matchingLeadIds = (matchingContacts || []).map(c => (c as { lead_id: string }).lead_id)
+      }
     }
 
     let query = supabase
@@ -171,6 +186,15 @@ export async function GET(request: NextRequest) {
 
     if (status) {
       query = query.eq('status', status)
+    }
+
+    // Filter by matching lead IDs from contact search
+    if (matchingLeadIds !== null) {
+      if (matchingLeadIds.length === 0) {
+        // No contacts matched - return empty results
+        return NextResponse.json({ leads: [], total: 0 })
+      }
+      query = query.in('id', matchingLeadIds)
     }
 
     const { data: leads, error, count } = await query

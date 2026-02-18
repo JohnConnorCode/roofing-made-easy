@@ -194,6 +194,7 @@ export default function EstimatesPage() {
 
   return (
     <AdminPageTransition className="space-y-6">
+      <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Estimates</h1>
@@ -210,8 +211,10 @@ export default function EstimatesPage() {
           )}
         </div>
       </div>
+      </FadeInSection>
 
       {/* Stats Cards */}
+      <FadeInSection delay={100} animation="slide-up">
       {data?.aggregates && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card className="bg-white border-slate-200">
@@ -248,8 +251,10 @@ export default function EstimatesPage() {
           </Card>
         </div>
       )}
+      </FadeInSection>
 
       {/* Filters */}
+      <FadeInSection delay={200} animation="slide-up">
       <Card className="bg-white border-slate-200">
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 md:flex-row">
@@ -271,8 +276,10 @@ export default function EstimatesPage() {
           </div>
         </CardContent>
       </Card>
+      </FadeInSection>
 
       {/* Estimates table */}
+      <FadeInSection delay={300} animation="slide-up">
       <Card className="bg-white border-slate-200">
         <CardHeader>
           <CardTitle className="text-slate-900">
@@ -447,6 +454,7 @@ export default function EstimatesPage() {
           )}
         </CardContent>
       </Card>
+      </FadeInSection>
 
       {/* Comparison Modal */}
       <EstimateComparisonModal

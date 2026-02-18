@@ -105,29 +105,31 @@ export default function RevenueReportPage() {
 
   return (
     <AdminPageTransition className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link href="/reports">
-            <Button variant="ghost" size="sm" leftIcon={<ArrowLeft className="h-4 w-4" />}>
-              Reports
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/reports">
+              <Button variant="ghost" size="sm" leftIcon={<ArrowLeft className="h-4 w-4" />}>
+                Reports
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">Revenue & Profitability</h1>
+              <p className="text-slate-500">Monthly trends, team performance, and expense analysis</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <a href="/api/admin/reports/export?type=jobs" download>
+              <Button variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+                Export CSV
+              </Button>
+            </a>
+            <Button variant="outline" size="sm" onClick={fetchData} leftIcon={<RefreshCw className="h-4 w-4" />}>
+              Refresh
             </Button>
-          </Link>
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">Revenue & Profitability</h1>
-            <p className="text-slate-500">Monthly trends, team performance, and expense analysis</p>
           </div>
         </div>
-        <div className="flex gap-2">
-          <a href="/api/admin/reports/export?type=jobs" download>
-            <Button variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
-              Export CSV
-            </Button>
-          </a>
-          <Button variant="outline" size="sm" onClick={fetchData} leftIcon={<RefreshCw className="h-4 w-4" />}>
-            Refresh
-          </Button>
-        </div>
-      </div>
+      </FadeInSection>
 
       {error && (
         <Card>
@@ -148,6 +150,7 @@ export default function RevenueReportPage() {
       {!error && !isLoading && (
         <>
           {/* Summary Cards */}
+          <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-4">
             <Card className="bg-white border-slate-200">
               <CardContent className="p-4">
@@ -182,8 +185,10 @@ export default function RevenueReportPage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
           {/* Charts */}
+          <FadeInSection delay={200} animation="slide-up">
           <div className="grid gap-6 lg:grid-cols-2">
             <Card className="bg-white border-slate-200">
               <CardHeader>
@@ -218,8 +223,10 @@ export default function RevenueReportPage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
           {/* Team Revenue */}
+          <FadeInSection delay={300} animation="slide-up">
           {teamRevenue.length > 0 && (
             <Card className="bg-white border-slate-200">
               <CardHeader>
@@ -239,8 +246,10 @@ export default function RevenueReportPage() {
               </CardContent>
             </Card>
           )}
+          </FadeInSection>
 
           {/* Job P&L Table */}
+          <FadeInSection delay={400} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle>Job-Level Profitability</CardTitle>
@@ -286,6 +295,7 @@ export default function RevenueReportPage() {
               </div>
             </CardContent>
           </Card>
+          </FadeInSection>
         </>
       )}
     </AdminPageTransition>

@@ -23,6 +23,7 @@ interface Lead {
   }>
   estimates?: Array<{
     price_likely?: number
+    is_superseded?: boolean
   }>
 }
 
@@ -65,9 +66,13 @@ export function SimpleAnalytics({ leads }: SimpleAnalyticsProps) {
     const wonLeads = leads.filter((l) => l.status === 'won')
     const winRate = convertedLeads.length > 0 ? (wonLeads.length / convertedLeads.length) * 100 : 0
 
+    // Helper to get the active (non-superseded) estimate
+    const getActiveEstimate = (lead: Lead) =>
+      lead.estimates?.find(e => !e.is_superseded) || lead.estimates?.[0]
+
     // Pipeline value (estimates)
     const pipelineValue = leads.reduce((sum, lead) => {
-      const estimate = lead.estimates?.[0]
+      const estimate = getActiveEstimate(lead)
       if (estimate?.price_likely && lead.status !== 'won' && lead.status !== 'lost' && lead.status !== 'archived') {
         return sum + estimate.price_likely
       }
@@ -76,7 +81,7 @@ export function SimpleAnalytics({ leads }: SimpleAnalyticsProps) {
 
     // Revenue (won deals)
     const revenue = wonLeads.reduce((sum, lead) => {
-      const estimate = lead.estimates?.[0]
+      const estimate = getActiveEstimate(lead)
       return sum + (estimate?.price_likely || 0)
     }, 0)
 
@@ -274,12 +279,12 @@ export function SimpleAnalytics({ leads }: SimpleAnalyticsProps) {
         <CardContent>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center p-4 bg-slate-50 rounded-lg">
-              <p className="text-sm text-slate-500 mb-1">Total Revenue</p>
+              <p className="text-sm text-slate-500 mb-1">Est. Closed Value</p>
               <p className="text-3xl font-bold text-green-600">
                 {formatCurrency(analytics.revenue)}
               </p>
               <p className="text-xs text-slate-400 mt-1">
-                From {leads.filter((l) => l.status === 'won').length} won projects
+                Based on estimates for {leads.filter((l) => l.status === 'won').length} won leads
               </p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">

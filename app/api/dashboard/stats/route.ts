@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
     }, 0)
 
     // Win rate
-    const closedDeals = wonLeads.length + statusCounts['lost'] || 0
+    const closedDeals = wonLeads.length + (statusCounts['lost'] || 0)
     const winRate = closedDeals > 0 ? Math.round((wonLeads.length / closedDeals) * 100) : 0
 
     // Conversion rate (leads with estimates / total leads)

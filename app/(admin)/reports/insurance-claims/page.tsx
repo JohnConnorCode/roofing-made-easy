@@ -14,6 +14,7 @@ import {
   Clock,
 } from 'lucide-react'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton, SkeletonReportContent } from '@/components/ui/skeleton'
 
 function titleCase(s: string): string {
   return s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
@@ -79,20 +80,22 @@ export default function InsuranceClaimsPage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Insurance Claims</h1>
-          <p className="text-slate-500">Claims pipeline, carrier performance, and stuck claims</p>
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Insurance Claims</h1>
+            <p className="text-slate-500">Claims pipeline, carrier performance, and stuck claims</p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchData}
+            leftIcon={<RefreshCw className="h-4 w-4" />}
+          >
+            Refresh
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={fetchData}
-          leftIcon={<RefreshCw className="h-4 w-4" />}
-        >
-          Refresh
-        </Button>
-      </div>
+      </FadeInSection>
 
       {error && (
         <Card className="bg-white border-slate-200">
@@ -109,6 +112,7 @@ export default function InsuranceClaimsPage() {
       {!error && (
         <>
           {/* KPI Cards */}
+          <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-white border-slate-200">
               <CardContent className="p-5">
@@ -116,7 +120,7 @@ export default function InsuranceClaimsPage() {
                   <div>
                     <p className="text-sm text-slate-500">Total Claims</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : data?.summary.totalClaims || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.totalClaims || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-rose-100 p-2">
@@ -134,7 +138,7 @@ export default function InsuranceClaimsPage() {
                     <p className={`text-2xl font-bold ${
                       approvalRate >= 70 ? 'text-green-600' : approvalRate >= 50 ? 'text-amber-600' : 'text-red-600'
                     }`}>
-                      {isLoading ? '...' : `${approvalRate}%`}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${approvalRate}%`}
                     </p>
                   </div>
                   <div className="rounded-lg bg-green-100 p-2">
@@ -153,7 +157,7 @@ export default function InsuranceClaimsPage() {
                   <div>
                     <p className="text-sm text-slate-500">Avg Payout</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : formatCurrency(data?.summary.avgApprovedAmount || 0)}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : formatCurrency(data?.summary.avgApprovedAmount || 0)}
                     </p>
                   </div>
                   <div className="rounded-lg bg-blue-100 p-2">
@@ -169,7 +173,7 @@ export default function InsuranceClaimsPage() {
                   <div>
                     <p className="text-sm text-slate-500">Avg Days to Approval</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : data?.summary.avgDaysToApproval != null
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.avgDaysToApproval != null
                         ? `${data.summary.avgDaysToApproval}d`
                         : 'N/A'}
                     </p>
@@ -181,8 +185,10 @@ export default function InsuranceClaimsPage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
           {/* Pipeline */}
+          <FadeInSection delay={200} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -192,7 +198,7 @@ export default function InsuranceClaimsPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.pipeline && data.pipeline.length > 0 ? (
                 <BarChart
                   data={data.pipeline.map(p => ({
@@ -207,7 +213,10 @@ export default function InsuranceClaimsPage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* By Carrier Table */}
+          <FadeInSection delay={300} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -217,7 +226,7 @@ export default function InsuranceClaimsPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.byCarrier && data.byCarrier.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -257,7 +266,10 @@ export default function InsuranceClaimsPage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* Stuck Claims */}
+          <FadeInSection delay={400} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -267,7 +279,7 @@ export default function InsuranceClaimsPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.stuckClaims && data.stuckClaims.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -309,7 +321,10 @@ export default function InsuranceClaimsPage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* Cause of Loss */}
+          <FadeInSection delay={500} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -319,7 +334,7 @@ export default function InsuranceClaimsPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.byCauseOfLoss && data.byCauseOfLoss.length > 0 ? (
                 <BarChart
                   data={data.byCauseOfLoss.map(c => ({
@@ -333,6 +348,7 @@ export default function InsuranceClaimsPage() {
               )}
             </CardContent>
           </Card>
+          </FadeInSection>
         </>
       )}
     </AdminPageTransition>

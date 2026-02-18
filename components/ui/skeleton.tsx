@@ -142,6 +142,66 @@ export function SkeletonLeadsTable() {
 }
 
 /**
+ * Skeleton for KPI stat cards (icon + label + value)
+ */
+export function SkeletonKPICard() {
+  return (
+    <div className="rounded-lg border border-slate-200 bg-white p-4">
+      <Skeleton className="h-3 w-24 mb-2" />
+      <Skeleton className="h-8 w-20" />
+    </div>
+  )
+}
+
+/**
+ * Skeleton for report card body (4 rows of label + value)
+ */
+export function SkeletonReportContent() {
+  return (
+    <div className="py-8 space-y-4">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="flex items-center justify-between">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-4 w-20" />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/**
+ * Skeleton for a full page with header and content cards
+ */
+export function SkeletonPageContent() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <Skeleton className="h-8 w-48 mb-2" />
+        <Skeleton className="h-4 w-64" />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <SkeletonKPICard key={i} />
+        ))}
+      </div>
+      <div className="rounded-lg border border-slate-200 bg-white p-6">
+        <Skeleton className="h-5 w-32 mb-4" />
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="flex items-center gap-4 py-3 border-b border-slate-100 last:border-0">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <div className="flex-1">
+              <Skeleton className="h-4 w-40 mb-1" />
+              <Skeleton className="h-3 w-28" />
+            </div>
+            <Skeleton className="h-6 w-16 rounded-full" />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/**
  * Skeleton for lead detail page
  */
 export function SkeletonLeadDetail() {

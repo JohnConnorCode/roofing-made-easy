@@ -73,8 +73,8 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
         const data = await res.json()
         setLeadData(data.lead)
       }
-    } catch (err) {
-      console.error('Failed to fetch lead:', err)
+    } catch {
+      // Lead data fetch failure is non-critical
     }
   }
 
@@ -168,7 +168,7 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
         await fetch(`/api/invoices/${invoice.id}/send`, { method: 'POST' })
       }
 
-      router.push(`/admin/invoices/${invoice.id}`)
+      router.push(`/invoices/${invoice.id}`)
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Failed to create invoice', 'error')
     } finally {

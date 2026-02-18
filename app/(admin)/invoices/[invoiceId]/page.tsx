@@ -10,7 +10,6 @@ import {
   ArrowLeft,
   Send,
   Download,
-  Edit,
   Trash2,
   CheckCircle,
   Clock,
@@ -25,6 +24,7 @@ import {
   ExternalLink,
   Banknote,
 } from 'lucide-react'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface InvoiceLineItem {
   id: string
@@ -177,7 +177,7 @@ export default function InvoiceDetailPage() {
     try {
       const res = await fetch(`/api/invoices/${invoice.id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error('Failed to delete invoice')
-      router.push('/admin/invoices')
+      router.push('/invoices')
     } catch (err) {
       showToast(err instanceof Error ? err.message : 'Failed to delete invoice', 'error')
     } finally {
@@ -239,8 +239,17 @@ export default function InvoiceDetailPage() {
   if (error || !invoice) {
     return (
       <div className="p-6">
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
-          {error || 'Invoice not found'}
+        <div className="flex flex-col items-center justify-center py-12">
+          <AlertCircle className="h-12 w-12 text-red-400" />
+          <p className="mt-4 text-lg font-medium text-slate-900">{error || 'Invoice not found'}</p>
+          <div className="mt-4 flex gap-3">
+            <Button variant="outline" onClick={fetchInvoice} leftIcon={<RefreshCw className="h-4 w-4" />}>
+              Try Again
+            </Button>
+            <Button variant="primary" onClick={() => router.push('/invoices')}>
+              Back to Invoices
+            </Button>
+          </div>
         </div>
       </div>
     )
@@ -252,12 +261,13 @@ export default function InvoiceDetailPage() {
   const property = invoice.leads?.properties?.[0]
 
   return (
-    <div className="p-6">
+    <AdminPageTransition className="p-6 space-y-6">
+      <FadeInSection delay={0} animation="fade-in">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => router.push('/admin/invoices')}
+            onClick={() => router.push('/invoices')}
             className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -305,7 +315,9 @@ export default function InvoiceDetailPage() {
           )}
         </div>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={150} animation="slide-up">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
@@ -350,7 +362,7 @@ export default function InvoiceDetailPage() {
                 )}
                 {invoice.lead_id && (
                   <a
-                    href={`/admin/leads/${invoice.lead_id}`}
+                    href={`/leads/${invoice.lead_id}`}
                     className="inline-flex items-center gap-1 text-sm text-gold-dark hover:text-gold mt-3"
                   >
                     View Lead <ExternalLink className="h-3.5 w-3.5" />
@@ -623,9 +635,10 @@ export default function InvoiceDetailPage() {
           )}
         </div>
       </div>
+      </FadeInSection>
 
       {/* Confirm Dialog */}
       <ConfirmDialog />
-    </div>
+    </AdminPageTransition>
   )
 }

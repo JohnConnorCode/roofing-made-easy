@@ -397,7 +397,6 @@ export function PipelineBoard({
 
       // If there were errors, return failure
       if (errors.length > 0) {
-        console.error('Pipeline stage save errors:', errors)
         return false
       }
 
@@ -411,7 +410,6 @@ export function PipelineBoard({
 
       return true
     } catch {
-      console.error('Failed to save pipeline stages')
       return false
     }
   }

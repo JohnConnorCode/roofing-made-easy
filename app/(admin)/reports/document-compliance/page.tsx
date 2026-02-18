@@ -13,6 +13,7 @@ import {
   CheckCircle,
 } from 'lucide-react'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton, SkeletonReportContent } from '@/components/ui/skeleton'
 
 function titleCase(s: string): string {
   return s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
@@ -90,20 +91,22 @@ export default function DocumentCompliancePage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Document Compliance</h1>
-          <p className="text-slate-500">Missing documents, permits, and expiring certifications</p>
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Document Compliance</h1>
+            <p className="text-slate-500">Missing documents, permits, and expiring certifications</p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchData}
+            leftIcon={<RefreshCw className="h-4 w-4" />}
+          >
+            Refresh
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={fetchData}
-          leftIcon={<RefreshCw className="h-4 w-4" />}
-        >
-          Refresh
-        </Button>
-      </div>
+      </FadeInSection>
 
       {error && (
         <Card className="bg-white border-slate-200">
@@ -120,6 +123,7 @@ export default function DocumentCompliancePage() {
       {!error && (
         <>
           {/* KPI Cards */}
+          <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-white border-slate-200">
               <CardContent className="p-5">
@@ -127,7 +131,7 @@ export default function DocumentCompliancePage() {
                   <div>
                     <p className="text-sm text-slate-500">Compliance Rate</p>
                     <p className={`text-2xl font-bold ${complianceTextColor}`}>
-                      {isLoading ? '...' : `${complianceRate}%`}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${complianceRate}%`}
                     </p>
                   </div>
                   <div className="rounded-lg bg-orange-100 p-2">
@@ -148,7 +152,7 @@ export default function DocumentCompliancePage() {
                     <p className={`text-2xl font-bold ${
                       (data?.summary.jobsMissingContract || 0) > 0 ? 'text-red-600' : 'text-green-600'
                     }`}>
-                      {isLoading ? '...' : data?.summary.jobsMissingContract || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.jobsMissingContract || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-red-100 p-2">
@@ -166,7 +170,7 @@ export default function DocumentCompliancePage() {
                     <p className={`text-2xl font-bold ${
                       (data?.summary.jobsMissingPermit || 0) > 0 ? 'text-amber-600' : 'text-green-600'
                     }`}>
-                      {isLoading ? '...' : data?.summary.jobsMissingPermit || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.jobsMissingPermit || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-amber-100 p-2">
@@ -184,7 +188,7 @@ export default function DocumentCompliancePage() {
                     <p className={`text-2xl font-bold ${
                       (data?.summary.expiredDocumentCount || 0) > 0 ? 'text-red-600' : 'text-green-600'
                     }`}>
-                      {isLoading ? '...' : data?.summary.expiredDocumentCount || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.expiredDocumentCount || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-red-100 p-2">
@@ -197,8 +201,10 @@ export default function DocumentCompliancePage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
           {/* Overall Compliance Progress Bar */}
+          <FadeInSection delay={200} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-2">
@@ -207,7 +213,7 @@ export default function DocumentCompliancePage() {
                   <span className="font-medium text-slate-700">Overall Compliance</span>
                 </div>
                 <span className={`text-lg font-bold ${complianceTextColor}`}>
-                  {isLoading ? '...' : `${complianceRate}%`}
+                  {isLoading ? <Skeleton className="h-6 w-16 inline-block" /> : `${complianceRate}%`}
                 </span>
               </div>
               <div className="h-4 bg-slate-100 rounded-full overflow-hidden">
@@ -219,7 +225,10 @@ export default function DocumentCompliancePage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* Non-Compliant Jobs Table */}
+          <FadeInSection delay={300} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -229,7 +238,7 @@ export default function DocumentCompliancePage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.nonCompliantJobs && data.nonCompliantJobs.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -282,7 +291,10 @@ export default function DocumentCompliancePage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* Document Coverage Chart */}
+          <FadeInSection delay={400} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -292,7 +304,7 @@ export default function DocumentCompliancePage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.documentCoverage && data.documentCoverage.length > 0 ? (
                 <BarChart
                   data={data.documentCoverage.map(d => ({
@@ -309,7 +321,10 @@ export default function DocumentCompliancePage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* Expiring Documents Table */}
+          <FadeInSection delay={500} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -319,7 +334,7 @@ export default function DocumentCompliancePage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.expiringDocuments && data.expiringDocuments.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -356,6 +371,7 @@ export default function DocumentCompliancePage() {
               )}
             </CardContent>
           </Card>
+          </FadeInSection>
         </>
       )}
     </AdminPageTransition>

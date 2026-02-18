@@ -41,6 +41,7 @@ import { CommunicationTimeline } from '@/components/admin/communication-timeline
 import { JobDocumentsTab } from '@/components/admin/job-documents-tab'
 import { TimeTrackingTab } from '@/components/admin/time-tracking-tab'
 import { ActivityLogPanel } from '@/components/admin/activity-log-panel'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 type TabId = 'overview' | 'documents' | 'daily-logs' | 'expenses' | 'history' | 'billing' | 'change-orders' | 'communications' | 'time-tracking'
 
@@ -102,8 +103,8 @@ export default function JobDetailPage() {
         setExpenses(data.expenses || [])
         setExpenseTotals(data.totals || {})
       }
-    } catch (err) {
-      console.error(`Failed to fetch ${tab}:`, err)
+    } catch {
+      // Tab data fetch failures are non-critical
     }
   }, [jobId])
 
@@ -180,7 +181,8 @@ export default function JobDetailPage() {
   const margin = job.contract_amount > 0 ? (grossProfit / job.contract_amount) * 100 : 0
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
+      <FadeInSection delay={0} animation="fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -207,7 +209,9 @@ export default function JobDetailPage() {
           />
         </div>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={100} animation="slide-up">
       {/* Tabs */}
       <div className="border-b border-slate-200">
         <div className="flex gap-1 -mb-px">
@@ -227,7 +231,9 @@ export default function JobDetailPage() {
           ))}
         </div>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={200} animation="slide-up">
       {/* Tab Content */}
       {activeTab === 'overview' && (
         <div className="grid gap-6 lg:grid-cols-2">
@@ -605,6 +611,7 @@ export default function JobDetailPage() {
           </CardContent>
         </Card>
       )}
-    </div>
+      </FadeInSection>
+    </AdminPageTransition>
   )
 }

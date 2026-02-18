@@ -86,29 +86,31 @@ export default function ARAgingPage() {
 
   return (
     <AdminPageTransition className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link href="/reports">
-            <Button variant="ghost" size="sm" leftIcon={<ArrowLeft className="h-4 w-4" />}>
-              Reports
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link href="/reports">
+              <Button variant="ghost" size="sm" leftIcon={<ArrowLeft className="h-4 w-4" />}>
+                Reports
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">Accounts Receivable Aging</h1>
+              <p className="text-slate-500">Outstanding invoices by aging bucket</p>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <a href="/api/admin/reports/export?type=invoices" download>
+              <Button variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+                Export CSV
+              </Button>
+            </a>
+            <Button variant="outline" size="sm" onClick={fetchData} leftIcon={<RefreshCw className="h-4 w-4" />}>
+              Refresh
             </Button>
-          </Link>
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900">Accounts Receivable Aging</h1>
-            <p className="text-slate-500">Outstanding invoices by aging bucket</p>
           </div>
         </div>
-        <div className="flex gap-2">
-          <a href="/api/admin/reports/export?type=invoices" download>
-            <Button variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
-              Export CSV
-            </Button>
-          </a>
-          <Button variant="outline" size="sm" onClick={fetchData} leftIcon={<RefreshCw className="h-4 w-4" />}>
-            Refresh
-          </Button>
-        </div>
-      </div>
+      </FadeInSection>
 
       {error && (
         <Card>
@@ -129,6 +131,7 @@ export default function ARAgingPage() {
       {!error && !isLoading && (
         <>
           {/* Total AR */}
+          <FadeInSection delay={100} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -142,8 +145,10 @@ export default function ARAgingPage() {
               </div>
             </CardContent>
           </Card>
+          </FadeInSection>
 
           {/* Aging Buckets */}
+          <FadeInSection delay={200} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-5">
             {Object.entries(BUCKET_LABELS).map(([key, label]) => {
               const bucket = buckets[key] || { count: 0, total: 0 }
@@ -169,8 +174,10 @@ export default function ARAgingPage() {
               )
             })}
           </div>
+          </FadeInSection>
 
           {/* Invoice Table */}
+          <FadeInSection delay={300} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle>
@@ -227,6 +234,7 @@ export default function ARAgingPage() {
               )}
             </CardContent>
           </Card>
+          </FadeInSection>
         </>
       )}
     </AdminPageTransition>

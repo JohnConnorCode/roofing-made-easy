@@ -14,6 +14,8 @@ import {
   ArrowLeft,
 } from 'lucide-react'
 import Link from 'next/link'
+import { SkeletonPageContent } from '@/components/ui/skeleton'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 interface ScheduleMember {
   id: string
@@ -127,7 +129,8 @@ export default function TeamSchedulePage() {
   }
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
+      <FadeInSection delay={0} animation="fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -142,7 +145,9 @@ export default function TeamSchedulePage() {
           </div>
         </div>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={100} animation="slide-up">
       {/* Week Navigation */}
       <Card className="bg-white border-slate-200">
         <CardContent className="p-4">
@@ -174,7 +179,9 @@ export default function TeamSchedulePage() {
           </div>
         </CardContent>
       </Card>
+      </FadeInSection>
 
+      <FadeInSection delay={200} animation="slide-up">
       {error && (
         <Card className="bg-white border-slate-200">
           <CardContent className="flex flex-col items-center justify-center py-12">
@@ -191,8 +198,8 @@ export default function TeamSchedulePage() {
         <Card className="bg-white border-slate-200">
           <CardContent className="p-0">
             {isLoading ? (
-              <div className="flex items-center justify-center py-12">
-                <RefreshCw className="h-6 w-6 animate-spin text-slate-400" />
+              <div className="p-6">
+                <SkeletonPageContent />
               </div>
             ) : schedule.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12">
@@ -279,6 +286,7 @@ export default function TeamSchedulePage() {
           </CardContent>
         </Card>
       )}
-    </div>
+      </FadeInSection>
+    </AdminPageTransition>
   )
 }

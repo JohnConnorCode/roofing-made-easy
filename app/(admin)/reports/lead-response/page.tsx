@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton, SkeletonReportContent } from '@/components/ui/skeleton'
 
 interface LeadResponseData {
   period: { days: number; since: string }
@@ -97,32 +98,34 @@ export default function LeadResponsePage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Lead Response</h1>
-          <p className="text-slate-500">Speed-to-lead metrics and follow-up performance</p>
-        </div>
-        <div className="flex items-center gap-2">
-          {[7, 14, 30, 60, 90].map(d => (
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Lead Response</h1>
+            <p className="text-slate-500">Speed-to-lead metrics and follow-up performance</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {[7, 14, 30, 60, 90].map(d => (
+              <Button
+                key={d}
+                variant={days === d ? 'primary' : 'outline'}
+                size="sm"
+                onClick={() => setDays(d)}
+              >
+                {d}d
+              </Button>
+            ))}
             <Button
-              key={d}
-              variant={days === d ? 'primary' : 'outline'}
+              variant="outline"
               size="sm"
-              onClick={() => setDays(d)}
+              onClick={fetchData}
+              leftIcon={<RefreshCw className="h-4 w-4" />}
             >
-              {d}d
+              Refresh
             </Button>
-          ))}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={fetchData}
-            leftIcon={<RefreshCw className="h-4 w-4" />}
-          >
-            Refresh
-          </Button>
+          </div>
         </div>
-      </div>
+      </FadeInSection>
 
       {error && (
         <Card className="bg-white border-slate-200">
@@ -139,6 +142,7 @@ export default function LeadResponsePage() {
       {!error && (
         <>
           {/* KPI Cards */}
+          <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-white border-slate-200">
               <CardContent className="p-5">
@@ -151,7 +155,7 @@ export default function LeadResponsePage() {
                         : (data?.speedToLead.avgMinutes ?? 0) <= 60 ? 'text-amber-600'
                         : 'text-red-600'
                     }`}>
-                      {isLoading ? '...' : formatResponseTime(data?.speedToLead.avgMinutes ?? null)}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : formatResponseTime(data?.speedToLead.avgMinutes ?? null)}
                     </p>
                   </div>
                   <div className="rounded-lg bg-blue-100 p-2">
@@ -167,7 +171,7 @@ export default function LeadResponsePage() {
                   <div>
                     <p className="text-sm text-slate-500">Under 5 Minutes</p>
                     <p className="text-2xl font-bold text-green-600">
-                      {isLoading ? '...' : `${data?.speedToLead.pctUnder5Min || 0}%`}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${data?.speedToLead.pctUnder5Min || 0}%`}
                     </p>
                   </div>
                   <div className="rounded-lg bg-green-100 p-2">
@@ -185,7 +189,7 @@ export default function LeadResponsePage() {
                     <p className={`text-2xl font-bold ${
                       (data?.staleLeadCount || 0) > 0 ? 'text-red-600' : 'text-green-600'
                     }`}>
-                      {isLoading ? '...' : data?.staleLeadCount || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.staleLeadCount || 0}
                     </p>
                   </div>
                   <div className={`rounded-lg p-2 ${
@@ -205,7 +209,7 @@ export default function LeadResponsePage() {
                   <div>
                     <p className="text-sm text-slate-500">Total Activities</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : data?.activityVolume.total.toLocaleString() || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.activityVolume.total.toLocaleString() || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-purple-100 p-2">
@@ -215,7 +219,9 @@ export default function LeadResponsePage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
+          <FadeInSection delay={200} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2">
             {/* Response by Source */}
             <Card className="bg-white border-slate-200">
@@ -227,7 +233,7 @@ export default function LeadResponsePage() {
               </CardHeader>
               <CardContent>
                 {isLoading ? (
-                  <div className="py-8 text-center text-slate-400">Loading...</div>
+                  <SkeletonReportContent />
                 ) : data?.responseBySource && data.responseBySource.length > 0 ? (
                   <div className="space-y-1">
                     <div className="grid grid-cols-5 text-xs font-medium text-slate-500 pb-2 border-b border-slate-100">
@@ -270,7 +276,7 @@ export default function LeadResponsePage() {
               </CardHeader>
               <CardContent>
                 {isLoading ? (
-                  <div className="py-8 text-center text-slate-400">Loading...</div>
+                  <SkeletonReportContent />
                 ) : data?.activityVolume.breakdown && Object.keys(data.activityVolume.breakdown).length > 0 ? (
                   <div className="space-y-3">
                     {Object.entries(data.activityVolume.breakdown)
@@ -304,8 +310,10 @@ export default function LeadResponsePage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
           {/* Daily Response Time Trend */}
+          <FadeInSection delay={300} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -315,7 +323,7 @@ export default function LeadResponsePage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.dailyTrends && data.dailyTrends.length > 0 ? (
                 <div className="overflow-x-auto">
                   <div className="min-w-[600px]">
@@ -361,7 +369,10 @@ export default function LeadResponsePage() {
             </CardContent>
           </Card>
 
+          </FadeInSection>
+
           {/* Stale Leads Table */}
+          <FadeInSection delay={400} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -371,7 +382,7 @@ export default function LeadResponsePage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.staleLeads && data.staleLeads.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -423,6 +434,7 @@ export default function LeadResponsePage() {
               )}
             </CardContent>
           </Card>
+          </FadeInSection>
         </>
       )}
     </AdminPageTransition>

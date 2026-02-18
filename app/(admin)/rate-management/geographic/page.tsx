@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import type { GeographicPricing } from '@/lib/supabase/types'
 import { Save, Plus, Trash2, MapPin, RefreshCw, Loader2 } from 'lucide-react'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
+import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
 const US_STATES = [
   'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
@@ -158,7 +159,8 @@ export default function GeographicPricingPage() {
   }, {} as Record<string, GeographicPricing[]>)
 
   return (
-    <div className="space-y-6">
+    <AdminPageTransition className="space-y-6">
+      <FadeInSection delay={0} animation="fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -186,6 +188,7 @@ export default function GeographicPricingPage() {
           </Button>
         </div>
       </div>
+      </FadeInSection>
 
       {/* Add Form */}
       {showAddForm && (
@@ -299,6 +302,7 @@ export default function GeographicPricingPage() {
         </Card>
       )}
 
+      <FadeInSection delay={100} animation="slide-up">
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
@@ -342,7 +346,9 @@ export default function GeographicPricingPage() {
           </CardContent>
         </Card>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={200} animation="slide-up">
       {/* Regions by State */}
       {isLoading ? (
         <div className="space-y-4">
@@ -595,7 +601,8 @@ export default function GeographicPricingPage() {
             ))}
         </div>
       )}
+      </FadeInSection>
       <ConfirmDialog />
-    </div>
+    </AdminPageTransition>
   )
 }

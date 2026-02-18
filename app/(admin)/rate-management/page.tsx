@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { formatCurrency } from '@/lib/utils'
 import { Save, RotateCcw } from 'lucide-react'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { SkeletonPageContent } from '@/components/ui/skeleton'
 
 interface PricingRule {
   id: string
@@ -27,6 +28,7 @@ export default function PricingPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function fetchRules() {
@@ -38,7 +40,7 @@ export default function PricingPage() {
           setOriginalRules(JSON.parse(JSON.stringify(data.rules)))
         }
       } catch {
-        // Failed to fetch pricing rules
+        setError('Failed to load pricing rules.')
       } finally {
         setIsLoading(false)
       }
@@ -82,7 +84,7 @@ export default function PricingPage() {
       setOriginalRules(JSON.parse(JSON.stringify(rules)))
       setHasChanges(false)
     } catch {
-      // Failed to save pricing rules
+      setError('Failed to save pricing rules. Please try again.')
     } finally {
       setIsSaving(false)
     }
@@ -96,38 +98,45 @@ export default function PricingPage() {
   const categories = [...new Set(rules.map((r) => r.rule_category))]
 
   if (isLoading) {
-    return <div className="text-slate-500">Loading pricing rules...</div>
+    return (
+      <AdminPageTransition className="space-y-6">
+        <SkeletonPageContent />
+      </AdminPageTransition>
+    )
   }
 
   return (
     <AdminPageTransition className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Pricing Rules</h1>
-          <p className="text-slate-500">Configure base rates, multipliers, and fees</p>
-        </div>
-
-        {hasChanges && (
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={handleReset}
-              leftIcon={<RotateCcw className="h-4 w-4" />}
-            >
-              Reset
-            </Button>
-            <Button
-              variant="primary"
-              onClick={handleSave}
-              isLoading={isSaving}
-              leftIcon={<Save className="h-4 w-4" />}
-            >
-              Save Changes
-            </Button>
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Pricing Rules</h1>
+            <p className="text-slate-500">Configure base rates, multipliers, and fees</p>
           </div>
-        )}
-      </div>
 
+          {hasChanges && (
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={handleReset}
+                leftIcon={<RotateCcw className="h-4 w-4" />}
+              >
+                Reset
+              </Button>
+              <Button
+                variant="primary"
+                onClick={handleSave}
+                isLoading={isSaving}
+                leftIcon={<Save className="h-4 w-4" />}
+              >
+                Save Changes
+              </Button>
+            </div>
+          )}
+        </div>
+      </FadeInSection>
+
+      <FadeInSection delay={150} animation="slide-up">
       {categories.map((category) => (
         <Card key={category}>
           <CardHeader>
@@ -230,6 +239,7 @@ export default function PricingPage() {
           </CardContent>
         </Card>
       ))}
+      </FadeInSection>
     </AdminPageTransition>
   )
 }

@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface ReportSummary {
   currentMonth: {
@@ -103,24 +104,26 @@ export default function ReportsPage() {
 
   return (
     <AdminPageTransition className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
-          <p className="text-slate-500">Financial overview and business intelligence</p>
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
+            <p className="text-slate-500">Financial overview and business intelligence</p>
+          </div>
+          <div className="flex gap-2">
+            <a href="/api/admin/reports/export?type=jobs" download>
+              <Button variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+                Export Jobs
+              </Button>
+            </a>
+            <a href="/api/admin/reports/export?type=invoices" download>
+              <Button variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
+                Export Invoices
+              </Button>
+            </a>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <a href="/api/admin/reports/export?type=jobs" download>
-            <Button variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
-              Export Jobs
-            </Button>
-          </a>
-          <a href="/api/admin/reports/export?type=invoices" download>
-            <Button variant="outline" size="sm" leftIcon={<Download className="h-4 w-4" />}>
-              Export Invoices
-            </Button>
-          </a>
-        </div>
-      </div>
+      </FadeInSection>
 
       {error && (
         <Card className="bg-white border-slate-200">
@@ -137,6 +140,7 @@ export default function ReportsPage() {
       {!error && (
         <>
           {/* KPI Cards */}
+          <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-white border-slate-200">
               <CardContent className="p-6">
@@ -144,7 +148,7 @@ export default function ReportsPage() {
                   <div>
                     <p className="text-sm text-slate-500">Revenue MTD</p>
                     <p className="text-3xl font-bold text-slate-900">
-                      {isLoading ? '...' : formatCurrency(summary?.currentMonth.revenue || 0)}
+                      {isLoading ? <Skeleton className="h-8 w-24 inline-block" /> : formatCurrency(summary?.currentMonth.revenue || 0)}
                     </p>
                   </div>
                   <div className="rounded-lg bg-green-100 p-3">
@@ -160,7 +164,7 @@ export default function ReportsPage() {
                   <div>
                     <p className="text-sm text-slate-500">Gross Margin MTD</p>
                     <p className="text-3xl font-bold text-slate-900">
-                      {isLoading ? '...' : `${(summary?.currentMonth.margin || 0).toFixed(1)}%`}
+                      {isLoading ? <Skeleton className="h-8 w-24 inline-block" /> : `${(summary?.currentMonth.margin || 0).toFixed(1)}%`}
                     </p>
                   </div>
                   <div className="rounded-lg bg-blue-100 p-3">
@@ -168,7 +172,7 @@ export default function ReportsPage() {
                   </div>
                 </div>
                 <p className="mt-2 text-sm text-slate-500">
-                  Profit: {isLoading ? '...' : formatCurrency(summary?.currentMonth.profit || 0)}
+                  Profit: {isLoading ? <Skeleton className="h-4 w-20 inline-block" /> : formatCurrency(summary?.currentMonth.profit || 0)}
                 </p>
               </CardContent>
             </Card>
@@ -179,7 +183,7 @@ export default function ReportsPage() {
                   <div>
                     <p className="text-sm text-slate-500">Outstanding AR</p>
                     <p className="text-3xl font-bold text-amber-600">
-                      {isLoading ? '...' : formatCurrency(summary?.arSummary.totalAR || 0)}
+                      {isLoading ? <Skeleton className="h-8 w-24 inline-block" /> : formatCurrency(summary?.arSummary.totalAR || 0)}
                     </p>
                   </div>
                   <div className="rounded-lg bg-amber-100 p-3">
@@ -198,7 +202,7 @@ export default function ReportsPage() {
                   <div>
                     <p className="text-sm text-slate-500">Active Jobs</p>
                     <p className="text-3xl font-bold text-slate-900">
-                      {isLoading ? '...' : summary?.activeJobs || 0}
+                      {isLoading ? <Skeleton className="h-8 w-24 inline-block" /> : summary?.activeJobs || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-indigo-100 p-3">
@@ -208,8 +212,10 @@ export default function ReportsPage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
           {/* Lead Conversion Funnel */}
+          <FadeInSection delay={200} animation="slide-up">
           {funnel && funnel.funnel.length > 0 && (
             <Card className="bg-white border-slate-200">
               <CardHeader>
@@ -235,8 +241,10 @@ export default function ReportsPage() {
               </CardContent>
             </Card>
           )}
+          </FadeInSection>
 
           {/* Report Links */}
+          <FadeInSection delay={300} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Link href="/reports/funnel">
               <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
@@ -447,6 +455,7 @@ export default function ReportsPage() {
               </Card>
             </Link>
           </div>
+          </FadeInSection>
         </>
       )}
     </AdminPageTransition>

@@ -14,6 +14,7 @@ import {
   ArrowDown,
 } from 'lucide-react'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton, SkeletonReportContent } from '@/components/ui/skeleton'
 
 interface EstimateAccuracyData {
   summary: {
@@ -75,20 +76,22 @@ export default function EstimateAccuracyPage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Estimate Accuracy</h1>
-          <p className="text-slate-500">Estimate vs actual cost variance analysis</p>
+      <FadeInSection delay={0} animation="fade-in">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900">Estimate Accuracy</h1>
+            <p className="text-slate-500">Estimate vs actual cost variance analysis</p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchData}
+            leftIcon={<RefreshCw className="h-4 w-4" />}
+          >
+            Refresh
+          </Button>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={fetchData}
-          leftIcon={<RefreshCw className="h-4 w-4" />}
-        >
-          Refresh
-        </Button>
-      </div>
+      </FadeInSection>
 
       {error && (
         <Card className="bg-white border-slate-200">
@@ -105,6 +108,7 @@ export default function EstimateAccuracyPage() {
       {!error && (
         <>
           {/* KPI Cards */}
+          <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="bg-white border-slate-200">
               <CardContent className="p-5">
@@ -112,7 +116,7 @@ export default function EstimateAccuracyPage() {
                   <div>
                     <p className="text-sm text-slate-500">Jobs Analyzed</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : data?.summary.jobsAnalyzed || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.jobsAnalyzed || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-cyan-100 p-2">
@@ -128,7 +132,7 @@ export default function EstimateAccuracyPage() {
                   <div>
                     <p className="text-sm text-slate-500">Avg Price Variance</p>
                     <p className={`text-2xl font-bold ${varianceColor(data?.summary.avgPriceVariancePct || 0)}`}>
-                      {isLoading ? '...' : `${(data?.summary.avgPriceVariancePct || 0) > 0 ? '+' : ''}${data?.summary.avgPriceVariancePct || 0}%`}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${(data?.summary.avgPriceVariancePct || 0) > 0 ? '+' : ''}${data?.summary.avgPriceVariancePct || 0}%`}
                     </p>
                   </div>
                   <div className="rounded-lg bg-blue-100 p-2">
@@ -144,7 +148,7 @@ export default function EstimateAccuracyPage() {
                   <div>
                     <p className="text-sm text-slate-500">Over-Estimates</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : data?.summary.overEstimateCount || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.overEstimateCount || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-green-100 p-2">
@@ -161,7 +165,7 @@ export default function EstimateAccuracyPage() {
                   <div>
                     <p className="text-sm text-slate-500">Under-Estimates</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      {isLoading ? '...' : data?.summary.underEstimateCount || 0}
+                      {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.underEstimateCount || 0}
                     </p>
                   </div>
                   <div className="rounded-lg bg-red-100 p-2">
@@ -172,7 +176,9 @@ export default function EstimateAccuracyPage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
+          <FadeInSection delay={200} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2">
             {/* Variance Distribution */}
             <Card className="bg-white border-slate-200">
@@ -184,7 +190,7 @@ export default function EstimateAccuracyPage() {
               </CardHeader>
               <CardContent>
                 {isLoading ? (
-                  <div className="py-8 text-center text-slate-400">Loading...</div>
+                  <SkeletonReportContent />
                 ) : data?.varianceDistribution && data.varianceDistribution.some(b => b.count > 0) ? (
                   <BarChart
                     data={data.varianceDistribution.map(b => ({
@@ -208,7 +214,7 @@ export default function EstimateAccuracyPage() {
               </CardHeader>
               <CardContent>
                 {isLoading ? (
-                  <div className="py-8 text-center text-slate-400">Loading...</div>
+                  <SkeletonReportContent />
                 ) : data?.trend && data.trend.length > 0 ? (
                   <BarChart
                     data={data.trend.map(t => ({
@@ -223,8 +229,10 @@ export default function EstimateAccuracyPage() {
               </CardContent>
             </Card>
           </div>
+          </FadeInSection>
 
           {/* Job Breakdown Table */}
+          <FadeInSection delay={300} animation="slide-up">
           <Card className="bg-white border-slate-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -234,7 +242,7 @@ export default function EstimateAccuracyPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="py-8 text-center text-slate-400">Loading...</div>
+                <SkeletonReportContent />
               ) : data?.jobs && data.jobs.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -289,6 +297,7 @@ export default function EstimateAccuracyPage() {
               )}
             </CardContent>
           </Card>
+          </FadeInSection>
         </>
       )}
     </AdminPageTransition>

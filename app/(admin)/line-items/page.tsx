@@ -238,6 +238,7 @@ export default function LineItemsPage() {
 
   return (
     <AdminPageTransition className="space-y-6">
+      <FadeInSection delay={0} animation="fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -254,7 +255,9 @@ export default function LineItemsPage() {
           Add Line Item
         </Button>
       </div>
+      </FadeInSection>
 
+      <FadeInSection delay={100} animation="slide-up">
       {/* Filters */}
       <Card>
         <CardContent className="pt-6">
@@ -283,7 +286,9 @@ export default function LineItemsPage() {
           </div>
         </CardContent>
       </Card>
+      </FadeInSection>
 
+      <FadeInSection delay={200} animation="slide-up">
       {/* Line Items Table */}
       {isLoading ? (
         <div className="space-y-4">
@@ -406,6 +411,7 @@ export default function LineItemsPage() {
           ))}
         </div>
       )}
+      </FadeInSection>
 
       {/* Add/Edit Modal */}
       {isModalOpen && (

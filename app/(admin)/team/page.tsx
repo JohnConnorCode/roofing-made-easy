@@ -18,12 +18,12 @@ import {
   Mail,
   Phone,
   Shield,
-  MoreVertical,
   Pencil,
   UserX,
 } from 'lucide-react'
 import type { UserRole } from '@/lib/team/types'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
+import { Skeleton, SkeletonCard } from '@/components/ui/skeleton'
 
 interface User {
   id: string
@@ -371,6 +371,7 @@ export default function TeamPage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
+      <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Team Management</h1>
@@ -394,6 +395,7 @@ export default function TeamPage() {
           </Button>
         </div>
       </div>
+      </FadeInSection>
 
       {/* Error message */}
       {error && (
@@ -401,14 +403,20 @@ export default function TeamPage() {
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5" />
             <span>{error}</span>
-            <button onClick={() => setError(null)} className="ml-auto text-red-500 hover:text-red-700">
-              ×
-            </button>
+            <div className="ml-auto flex items-center gap-2">
+              <Button variant="ghost" size="sm" onClick={fetchAll} leftIcon={<RefreshCw className="h-3 w-3" />}>
+                Try Again
+              </Button>
+              <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">
+                ×
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Tabs */}
+      <FadeInSection delay={100} animation="slide-up">
       <div className="flex border-b border-slate-200">
         <button
           className={`px-4 py-2 -mb-px text-sm font-medium border-b-2 transition-colors ${
@@ -441,8 +449,10 @@ export default function TeamPage() {
           Invitations ({invitations.length})
         </button>
       </div>
+      </FadeInSection>
 
       {/* Users Tab */}
+      <FadeInSection delay={200} animation="slide-up">
       {activeTab === 'users' && (
         <>
           {/* Filters */}
@@ -475,11 +485,21 @@ export default function TeamPage() {
             </CardHeader>
             <CardContent>
               {isLoading ? (
-                <div className="flex items-center justify-center py-8">
-                  <RefreshCw className="h-6 w-6 animate-spin text-slate-400" />
+                <div className="divide-y">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <div key={i} className="flex items-center gap-4 py-4">
+                      <Skeleton className="h-10 w-10 rounded-full" />
+                      <div className="flex-1">
+                        <Skeleton className="h-4 w-40 mb-1" />
+                        <Skeleton className="h-3 w-28" />
+                      </div>
+                      <Skeleton className="h-6 w-16 rounded-full" />
+                    </div>
+                  ))}
                 </div>
               ) : activeUsers.length === 0 ? (
                 <div className="text-center py-8 text-slate-500">
+                  <Users className="h-10 w-10 text-slate-300 mx-auto mb-2" />
                   No users found
                 </div>
               ) : (
@@ -491,7 +511,7 @@ export default function TeamPage() {
                         {user.avatar_url ? (
                           <img
                             src={user.avatar_url}
-                            alt=""
+                            alt={user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email}
                             className="h-10 w-10 rounded-full object-cover"
                           />
                         ) : (
@@ -543,9 +563,6 @@ export default function TeamPage() {
                         <Button variant="ghost" size="sm" onClick={() => handleEditUser(user)}>
                           <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
                       </div>
                     </div>
                   ))}
@@ -590,13 +607,11 @@ export default function TeamPage() {
       {activeTab === 'teams' && (
         <div className="space-y-4">
           {isLoading ? (
-            <Card className="bg-white border-slate-200">
-              <CardContent className="py-8">
-                <div className="flex items-center justify-center">
-                  <RefreshCw className="h-6 w-6 animate-spin text-slate-400" />
-                </div>
-              </CardContent>
-            </Card>
+            <div className="space-y-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
+            </div>
           ) : teams.length === 0 ? (
             <Card className="bg-white border-slate-200">
               <CardContent className="py-8 text-center">
@@ -648,7 +663,7 @@ export default function TeamPage() {
                         <p className="text-sm text-slate-600 mb-4">{team.description}</p>
                       )}
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" leftIcon={<UserPlus className="h-4 w-4" />}>
+                        <Button variant="outline" size="sm" leftIcon={<UserPlus className="h-4 w-4" />} onClick={() => { setInviteTeamId(team.id); setShowInviteModal(true); }}>
                           Add Member
                         </Button>
                         <Button variant="outline" size="sm" leftIcon={<Pencil className="h-4 w-4" />} onClick={() => handleEditTeam(team)}>
@@ -672,8 +687,17 @@ export default function TeamPage() {
           </CardHeader>
           <CardContent>
             {isLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <RefreshCw className="h-6 w-6 animate-spin text-slate-400" />
+              <div className="divide-y">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-4 py-4">
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <div className="flex-1">
+                      <Skeleton className="h-4 w-40 mb-1" />
+                      <Skeleton className="h-3 w-28" />
+                    </div>
+                    <Skeleton className="h-6 w-16 rounded-full" />
+                  </div>
+                ))}
               </div>
             ) : invitations.length === 0 ? (
               <div className="text-center py-8">
@@ -718,6 +742,8 @@ export default function TeamPage() {
           </CardContent>
         </Card>
       )}
+
+      </FadeInSection>
 
       {/* Invite User Modal */}
       {showInviteModal && (

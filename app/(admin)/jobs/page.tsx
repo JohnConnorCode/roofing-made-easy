@@ -27,7 +27,7 @@ import {
   type Job,
 } from '@/lib/jobs/types'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Skeleton, SkeletonPageContent } from '@/components/ui/skeleton'
 
 type ViewMode = 'table' | 'kanban'
 
@@ -92,6 +92,7 @@ export default function JobsPage() {
   return (
     <AdminPageTransition className="space-y-6">
       {/* Header */}
+      <FadeInSection delay={0} animation="fade-in">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">Jobs</h1>
@@ -118,8 +119,10 @@ export default function JobsPage() {
           </div>
         </div>
       </div>
+      </FadeInSection>
 
       {/* Summary Cards */}
+      <FadeInSection delay={100} animation="slide-up">
       <div className="grid gap-4 md:grid-cols-4">
         <Card className="bg-white border-slate-200">
           <CardContent className="p-4">
@@ -174,8 +177,10 @@ export default function JobsPage() {
           </CardContent>
         </Card>
       </div>
+      </FadeInSection>
 
       {/* Filters */}
+      <FadeInSection delay={200} animation="slide-up">
       <Card className="bg-white border-slate-200">
         <CardContent className="p-4">
           <div className="flex flex-wrap gap-3">
@@ -197,6 +202,7 @@ export default function JobsPage() {
           </div>
         </CardContent>
       </Card>
+      </FadeInSection>
 
       {/* Error State */}
       {error && (
@@ -212,12 +218,13 @@ export default function JobsPage() {
       )}
 
       {/* Content */}
+      <FadeInSection delay={300} animation="slide-up">
       {!error && viewMode === 'table' && (
         <Card className="bg-white border-slate-200">
           <CardContent className="p-0">
             {isLoading ? (
-              <div className="flex items-center justify-center py-12">
-                <RefreshCw className="h-6 w-6 animate-spin text-slate-400" />
+              <div className="p-6">
+                <SkeletonPageContent />
               </div>
             ) : jobs.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12">
@@ -383,6 +390,7 @@ export default function JobsPage() {
           </div>
         </div>
       )}
+      </FadeInSection>
     </AdminPageTransition>
   )
 }
