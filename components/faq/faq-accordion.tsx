@@ -12,6 +12,7 @@ export interface FAQItem {
 interface FAQAccordionProps {
   items: FAQItem[]
   className?: string
+  onItemToggle?: (question: string, isOpen: boolean) => void
 }
 
 /**
@@ -20,11 +21,15 @@ interface FAQAccordionProps {
  * Expandable accordion for frequently asked questions.
  * Builds trust, captures long-tail SEO, and answers common questions.
  */
-export function FAQAccordion({ items, className }: FAQAccordionProps) {
+export function FAQAccordion({ items, className, onItemToggle }: FAQAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const toggleItem = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index)
+    const willOpen = openIndex !== index
+    setOpenIndex(willOpen ? index : null)
+    if (onItemToggle) {
+      onItemToggle(items[index].question, willOpen)
+    }
   }
 
   return (

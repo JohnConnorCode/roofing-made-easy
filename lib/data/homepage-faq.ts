@@ -34,4 +34,12 @@ export const HOMEPAGE_FAQ_ITEMS: FAQItem[] = [
     question: 'Is this really free?',
     answer: "Yes, 100% free with no strings attached. No account required, no payment info needed. We believe homeowners deserve to know what their roof costs before making any decisions. The estimate tool will always be free.",
   },
+  {
+    question: 'What happens after I get my estimate?',
+    answer: "You get access to a personal dashboard where you can download your estimate as a PDF, share it with family or contractors, explore financing options with our payment calculator, check if your roof qualifies for insurance coverage, and browse 50+ assistance programs. Everything you need to go from estimate to new roof is in one place.",
+  },
+  {
+    question: 'How is this different from HomeAdvisor or Angi?',
+    answer: "Those sites are lead generators\u2014they collect your info and sell it to multiple contractors who then call you nonstop. We do the opposite. You get an instant price range powered by real data, keep your information private, and decide on your own terms whether to move forward. No middleman, no info selling, no pressure calls.",
+  },
 ]

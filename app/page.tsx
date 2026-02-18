@@ -8,7 +8,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofprici
 
 export const metadata: Metadata = {
   title: `${BUSINESS_CONFIG.name} | Free Instant Roofing Estimates - ${BUSINESS_CONFIG.address.city}, ${BUSINESS_CONFIG.address.stateCode}`,
-  description: `Get an instant, accurate roofing estimate in 2 minutes. No contractors calling, no pressure. ${BUSINESS_CONFIG.name} serves ${BUSINESS_CONFIG.serviceArea.region} with AI-powered pricing for roof repair and replacement.`,
+  description: `Get an instant, accurate roofing estimate in 2 minutes. Explore financing, insurance claim help, and 50+ assistance programs. ${BUSINESS_CONFIG.name} serves ${BUSINESS_CONFIG.serviceArea.region} with AI-powered pricing, a customer portal, and tools to go from estimate to new roof.`,
   keywords: [
     'roofing estimate',
     'roof cost calculator',

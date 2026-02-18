@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useReducedMotion } from '@/lib/hooks/use-reduced-motion'
 
 interface CountUpProps {
   end: number
@@ -11,10 +12,16 @@ interface CountUpProps {
 
 export function CountUp({ end, suffix = '', duration = 2000, className }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  const [value, setValue] = useState(0)
+  const prefersReducedMotion = useReducedMotion()
+  const [value, setValue] = useState(prefersReducedMotion ? end : 0)
   const hasAnimated = useRef(false)
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      setValue(end)
+      return
+    }
+
     const el = ref.current
     if (!el) return
 
@@ -39,7 +46,7 @@ export function CountUp({ end, suffix = '', duration = 2000, className }: CountU
 
     observer.observe(el)
     return () => observer.disconnect()
-  }, [end, duration])
+  }, [end, duration, prefersReducedMotion])
 
   const formatted = end >= 1000 ? value.toLocaleString() : value.toString()
 
