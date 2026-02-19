@@ -30,7 +30,7 @@ export function StartFunnelButton({ children, className, onClick, onError }: Sta
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           source: 'web_funnel',
-          referrerUrl: typeof window !== 'undefined' ? document.referrer : undefined,
+          referrerUrl: typeof window !== 'undefined' && document.referrer ? document.referrer : undefined,
         }),
       })
 

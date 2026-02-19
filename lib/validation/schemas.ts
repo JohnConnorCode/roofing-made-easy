@@ -173,7 +173,7 @@ export const createLeadSchema = z.object({
   utmSource: z.string().optional(),
   utmMedium: z.string().optional(),
   utmCampaign: z.string().optional(),
-  referrerUrl: z.string().url().optional(),
+  referrerUrl: z.union([z.string().url(), z.literal('')]).optional(),
 })
 
 export const updateLeadSchema = z.object({

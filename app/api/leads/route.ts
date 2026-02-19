@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
         utm_source: parsed.data.utmSource,
         utm_medium: parsed.data.utmMedium,
         utm_campaign: parsed.data.utmCampaign,
-        referrer_url: parsed.data.referrerUrl,
+        referrer_url: parsed.data.referrerUrl || undefined,
         status: 'new',
         current_step: 1,
         ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),

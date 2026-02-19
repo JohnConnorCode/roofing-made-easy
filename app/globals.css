@@ -224,58 +224,50 @@ body {
   }
 }
 
-/* Slide up with blur reveal */
+/* Slide up — smooth transform + opacity only (no blur for performance) */
 @keyframes slideUp {
   from {
     opacity: 0;
-    filter: blur(4px);
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    filter: blur(0);
     transform: translateY(0);
   }
 }
 
-/* Slide in from right with blur */
+/* Slide in from right */
 @keyframes slideInRight {
   from {
     opacity: 0;
-    filter: blur(4px);
-    transform: translateX(30px);
+    transform: translateX(20px);
   }
   to {
     opacity: 1;
-    filter: blur(0);
     transform: translateX(0);
   }
 }
 
-/* Slide in from left with blur */
+/* Slide in from left */
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    filter: blur(4px);
-    transform: translateX(-30px);
+    transform: translateX(-20px);
   }
   to {
     opacity: 1;
-    filter: blur(0);
     transform: translateX(0);
   }
 }
 
-/* Scale in with blur */
+/* Scale in */
 @keyframes scaleIn {
   from {
     opacity: 0;
-    filter: blur(4px);
-    transform: scale(0.92);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    filter: blur(0);
     transform: scale(1);
   }
 }
@@ -419,32 +411,38 @@ body {
 /* Elements with slide-up start hidden and animate in */
 .animate-slide-up {
   opacity: 0;
-  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .animate-slide-in-right {
   opacity: 0;
-  animation: slideInRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .animate-slide-in-left {
   opacity: 0;
-  animation: slideInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .animate-scale-in {
   opacity: 0;
-  animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .animate-rise-up {
   opacity: 0;
-  animation: riseUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: riseUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
 .animate-reveal-rotate {
   opacity: 0;
-  animation: revealRotate 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: revealRotate 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
 /* Hero-specific entrance classes */
@@ -495,7 +493,7 @@ body {
 .stagger-children > * {
   opacity: 0;
   animation: staggerFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 
 .stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
@@ -511,7 +509,7 @@ body {
 .stagger-children-hidden > * {
   opacity: 0;
   filter: blur(4px);
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 
 /* Simple stagger — no blur */
@@ -538,7 +536,8 @@ body {
 
 /* Page transition wrapper */
 .page-transition {
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 }
 
 /* Card hover lift effect */
@@ -750,6 +749,26 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+
+  /* Ensure animated elements are visible when animations are disabled */
+  .animate-slide-up,
+  .animate-slide-in-right,
+  .animate-slide-in-left,
+  .animate-scale-in,
+  .animate-rise-up,
+  .animate-reveal-rotate,
+  .animate-fade-up,
+  .animate-hero-badge,
+  .animate-hero-title,
+  .animate-hero-subtitle,
+  .animate-hero-cta,
+  .stagger-children > *,
+  .page-transition {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
 }
 

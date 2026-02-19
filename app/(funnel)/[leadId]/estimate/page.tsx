@@ -180,10 +180,62 @@ export default function EstimatePage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-[#c9a25c]" />
-        <p className="mt-4 text-lg text-slate-200">Preparing your estimate...</p>
-        <p className="text-sm text-slate-500">This usually takes a few seconds</p>
+      <div className="space-y-6 animate-slide-up">
+        {/* Header skeleton */}
+        <div className="text-center space-y-3 py-6">
+          <div className="mx-auto h-5 w-40 rounded-full bg-slate-700/60 animate-pulse" />
+          <div className="mx-auto h-8 w-64 rounded-lg bg-slate-700/60 animate-pulse" />
+          <div className="mx-auto h-4 w-48 rounded-full bg-slate-800/60 animate-pulse" />
+        </div>
+
+        {/* Price card skeleton */}
+        <div className="rounded-2xl border border-slate-700/50 bg-slate-800/40 p-8">
+          <div className="flex items-center justify-between gap-4">
+            <div className="space-y-2 flex-1">
+              <div className="h-4 w-20 rounded bg-slate-700/60 animate-pulse" />
+              <div className="h-10 w-32 rounded-lg bg-slate-700/60 animate-pulse" />
+            </div>
+            <div className="space-y-2 flex-1 text-center">
+              <div className="h-4 w-28 rounded bg-[#c9a25c]/20 animate-pulse mx-auto" />
+              <div className="h-14 w-44 rounded-lg bg-[#c9a25c]/15 animate-pulse mx-auto" />
+            </div>
+            <div className="space-y-2 flex-1 text-right">
+              <div className="h-4 w-20 rounded bg-slate-700/60 animate-pulse ml-auto" />
+              <div className="h-10 w-32 rounded-lg bg-slate-700/60 animate-pulse ml-auto" />
+            </div>
+          </div>
+        </div>
+
+        {/* Explanation skeleton */}
+        <div className="rounded-xl border border-slate-700/50 bg-slate-800/40 p-6 space-y-3">
+          <div className="h-5 w-36 rounded bg-slate-700/60 animate-pulse" />
+          <div className="h-4 w-full rounded bg-slate-800/60 animate-pulse" />
+          <div className="h-4 w-5/6 rounded bg-slate-800/60 animate-pulse" />
+          <div className="h-4 w-4/6 rounded bg-slate-800/60 animate-pulse" />
+        </div>
+
+        {/* Factors skeleton */}
+        <div className="rounded-xl border border-slate-700/50 bg-slate-800/40 p-6 space-y-4">
+          <div className="h-5 w-32 rounded bg-slate-700/60 animate-pulse" />
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center justify-between py-2">
+              <div className="h-4 w-40 rounded bg-slate-800/60 animate-pulse" />
+              <div className="h-4 w-16 rounded bg-slate-800/60 animate-pulse" />
+            </div>
+          ))}
+        </div>
+
+        {/* CTA skeleton */}
+        <div className="flex gap-3 justify-center pt-2">
+          <div className="h-12 w-48 rounded-lg bg-[#c9a25c]/15 animate-pulse" />
+          <div className="h-12 w-36 rounded-lg bg-slate-700/40 animate-pulse" />
+        </div>
+
+        {/* Loading indicator */}
+        <div className="flex items-center justify-center gap-2 pt-4">
+          <Loader2 className="h-4 w-4 animate-spin text-[#c9a25c]" />
+          <p className="text-sm text-slate-400">Loading your estimate...</p>
+        </div>
       </div>
     )
   }

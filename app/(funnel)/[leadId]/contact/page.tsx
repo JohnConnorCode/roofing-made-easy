@@ -45,6 +45,7 @@ export default function ContactPage() {
   }, [trackFunnelStep])
 
   const [isLoading, setIsLoading] = useState(false)
+  const [loadingPhase, setLoadingPhase] = useState<'saving' | 'generating' | null>(null)
   const [estimateFailed, setEstimateFailed] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const formRef = useRef<HTMLDivElement>(null)
@@ -96,6 +97,7 @@ export default function ContactPage() {
     }
 
     setIsLoading(true)
+    setLoadingPhase('saving')
     try {
       // Save contact data - warn but don't block if it fails
       try {
@@ -125,6 +127,7 @@ export default function ContactPage() {
       }
 
       // Generate estimate - BLOCK if this fails since the next page needs it
+      setLoadingPhase('generating')
       setEstimateFailed(false)
       try {
         const estimateResponse = await fetch(`/api/leads/${leadId}/estimate`, {
@@ -154,6 +157,7 @@ export default function ContactPage() {
       router.push(`/${leadId}/estimate`)
     } finally {
       setIsLoading(false)
+      setLoadingPhase(null)
     }
   }
 
@@ -183,7 +187,15 @@ export default function ContactPage() {
       onBack={handleBack}
       isNextDisabled={!isValid}
       isLoading={isLoading}
-      nextLabel={estimateFailed ? 'Retry Estimate' : 'Get My Estimate'}
+      nextLabel={
+        estimateFailed
+          ? 'Retry Estimate'
+          : loadingPhase === 'saving'
+            ? 'Saving info...'
+            : loadingPhase === 'generating'
+              ? 'Generating estimate...'
+              : 'Get My Estimate'
+      }
     >
       <div className="space-y-6" ref={formRef}>
         {estimateFailed && (
@@ -339,6 +351,39 @@ export default function ContactPage() {
             Free estimate
           </span>
         </div>
+
+        {/* Loading overlay during estimate generation */}
+        {isLoading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0c0f14]/80 backdrop-blur-sm animate-fade-in">
+            <div className="flex flex-col items-center gap-4 text-center px-6">
+              <div className="relative">
+                <div className="h-16 w-16 rounded-full border-2 border-slate-700" />
+                <div className="absolute inset-0 h-16 w-16 rounded-full border-2 border-t-[#c9a25c] animate-spin" />
+              </div>
+              <div className="space-y-2">
+                <p className="text-lg font-medium text-slate-100">
+                  {loadingPhase === 'saving' && 'Saving your information...'}
+                  {loadingPhase === 'generating' && 'Generating your estimate...'}
+                  {!loadingPhase && 'Please wait...'}
+                </p>
+                <p className="text-sm text-slate-400">
+                  {loadingPhase === 'saving' && 'This will only take a moment'}
+                  {loadingPhase === 'generating' && 'Our pricing engine is calculating your personalized estimate'}
+                  {!loadingPhase && 'Processing your request'}
+                </p>
+              </div>
+              {loadingPhase === 'generating' && (
+                <div className="mt-2 flex items-center gap-3">
+                  <div className="flex gap-1">
+                    <div className="h-2 w-2 rounded-full bg-[#c9a25c] animate-pulse" />
+                    <div className="h-2 w-2 rounded-full bg-[#c9a25c] animate-pulse delay-150" />
+                    <div className="h-2 w-2 rounded-full bg-[#c9a25c] animate-pulse delay-300" />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </StepContainer>
   )

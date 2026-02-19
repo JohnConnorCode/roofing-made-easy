@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { useShallow } from 'zustand/shallow'
 import type {
   JobType,
   RoofMaterial,
@@ -364,12 +365,12 @@ export const useFunnelStore = create<FunnelState & FunnelActions>()(
   )
 )
 
-// Selector hooks for better performance
+// Selector hooks with shallow equality for object selectors (prevents unnecessary re-renders)
 export const useLeadId = () => useFunnelStore((state) => state.leadId)
 export const useCurrentStep = () => useFunnelStore((state) => state.currentStep)
 export const useAddress = () => useFunnelStore((state) => state.address)
 export const useJobType = () => useFunnelStore((state) => state.jobType)
-export const useRoofDetails = () => useFunnelStore((state) => ({
+export const useRoofDetails = () => useFunnelStore(useShallow((state) => ({
   roofMaterial: state.roofMaterial,
   roofAgeYears: state.roofAgeYears,
   roofSizeSqft: state.roofSizeSqft,
@@ -378,19 +379,19 @@ export const useRoofDetails = () => useFunnelStore((state) => ({
   hasSkylights: state.hasSkylights,
   hasChimneys: state.hasChimneys,
   hasSolarPanels: state.hasSolarPanels,
-}))
-export const useIssues = () => useFunnelStore((state) => ({
+})))
+export const useIssues = () => useFunnelStore(useShallow((state) => ({
   issues: state.issues,
   issuesDescription: state.issuesDescription,
-}))
+})))
 export const usePhotos = () => useFunnelStore((state) => state.photos)
-export const useTimeline = () => useFunnelStore((state) => ({
+export const useTimeline = () => useFunnelStore(useShallow((state) => ({
   timelineUrgency: state.timelineUrgency,
   hasInsuranceClaim: state.hasInsuranceClaim,
   insuranceCompany: state.insuranceCompany,
   claimNumber: state.claimNumber,
-}))
-export const useContact = () => useFunnelStore((state) => ({
+})))
+export const useContact = () => useFunnelStore(useShallow((state) => ({
   firstName: state.firstName,
   lastName: state.lastName,
   email: state.email,
@@ -399,7 +400,7 @@ export const useContact = () => useFunnelStore((state) => ({
   consentMarketing: state.consentMarketing,
   consentSms: state.consentSms,
   consentTerms: state.consentTerms,
-}))
+})))
 export const useEstimate = () => useFunnelStore((state) => state.estimate)
 export const useRoofVariables = () => useFunnelStore((state) => state.roofVariables)
 export const useDetailedEstimate = () => useFunnelStore((state) => state.detailedEstimate)

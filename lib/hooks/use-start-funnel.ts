@@ -22,7 +22,7 @@ export function useStartFunnel() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           source: 'web_funnel',
-          referrerUrl: typeof window !== 'undefined' ? document.referrer : undefined,
+          referrerUrl: typeof window !== 'undefined' && document.referrer ? document.referrer : undefined,
         }),
       })
 

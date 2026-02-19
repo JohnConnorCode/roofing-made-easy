@@ -36,16 +36,20 @@ export async function autoCreateCustomerAccount(
   const supabase = await createAdminClient()
 
   try {
-    // 1. Check if auth user exists
-    const { data: existingUsers } = await supabase.auth.admin.listUsers()
-    const existingAuthUser = existingUsers?.users?.find(
-      (u) => u.email?.toLowerCase() === email.toLowerCase()
-    )
+    // 1. Check if customer already exists by email (fast DB query instead of scanning all auth users)
+    const { data: existingCustomerRaw } = await supabase
+      .from('customers')
+      .select('id, auth_user_id')
+      .eq('email', email.toLowerCase())
+      .single()
+
+    const existingCustomerByEmail = existingCustomerRaw as { id: string; auth_user_id: string | null } | null
+    const existingAuthUser = !!existingCustomerByEmail?.auth_user_id
 
     let authUserId: string
 
-    if (existingAuthUser) {
-      authUserId = existingAuthUser.id
+    if (existingCustomerByEmail?.auth_user_id) {
+      authUserId = existingCustomerByEmail.auth_user_id
     } else {
       // 2. Create auth user with a random password (they'll use magic link)
       const tempPassword = crypto.randomUUID() + crypto.randomUUID()
@@ -67,19 +71,11 @@ export async function autoCreateCustomerAccount(
       authUserId = newUser.user.id
     }
 
-    // 3. Check if customer record exists
-    const { data: existingCustomerData } = await supabase
-      .from('customers')
-      .select('id')
-      .eq('auth_user_id', authUserId)
-      .single()
-
-    const existingCustomer = existingCustomerData as { id: string } | null
-
+    // 3. Check if customer record exists (use already-fetched data if available)
     let customerId: string
 
-    if (existingCustomer) {
-      customerId = existingCustomer.id
+    if (existingCustomerByEmail) {
+      customerId = existingCustomerByEmail.id
     } else {
       // 4. Create customer record
       const { data: newCustomer, error: customerError } = await supabase
