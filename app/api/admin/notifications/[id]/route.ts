@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -66,7 +67,7 @@ export async function PATCH(
 
     return NextResponse.json({ notification })
   } catch (error) {
-    console.error('Notification PATCH error:', error)
+    logger.error('Notification PATCH error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

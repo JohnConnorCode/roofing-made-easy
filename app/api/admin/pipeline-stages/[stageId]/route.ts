@@ -31,7 +31,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   if (body.is_visible !== undefined) updates.is_visible = body.is_visible
 
   const { data, error: updateError } = await supabase
-    .from('custom_pipeline_stages' as never)
+    .from('custom_pipeline_stages')
     .update(updates as never)
     .eq('id', stageId)
     .select()
@@ -64,7 +64,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
 
   // Check if stage is a system stage (cannot delete)
   const { data: stage } = await supabase
-    .from('custom_pipeline_stages' as never)
+    .from('custom_pipeline_stages')
     .select('is_system')
     .eq('id', stageId)
     .single()
@@ -84,7 +84,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   }
 
   const { error: deleteError } = await supabase
-    .from('custom_pipeline_stages' as never)
+    .from('custom_pipeline_stages')
     .delete()
     .eq('id', stageId)
 

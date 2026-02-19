@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createDailyLogSchema = z.object({
   log_date: z.string().optional(),
@@ -50,13 +51,13 @@ export async function GET(
       .order('log_date', { ascending: false })
 
     if (error) {
-      console.error('Error fetching daily logs:', error)
+      logger.error('Error fetching daily logs', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch daily logs' }, { status: 500 })
     }
 
     return NextResponse.json({ logs })
   } catch (error) {
-    console.error('Job daily logs GET error:', error)
+    logger.error('Job daily logs GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -113,13 +114,13 @@ export async function POST(
       .single()
 
     if (createError || !log) {
-      console.error('Error creating daily log:', createError)
+      logger.error('Error creating daily log', { error: String(createError) })
       return NextResponse.json({ error: 'Failed to create daily log' }, { status: 500 })
     }
 
     return NextResponse.json({ log }, { status: 201 })
   } catch (error) {
-    console.error('Job daily logs POST error:', error)
+    logger.error('Job daily logs POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -10,6 +10,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { logActivity } from '@/lib/team/activity-logger'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateEventSchema = z.object({
   title: z.string().min(1).max(255).optional(),
@@ -60,7 +61,7 @@ export async function GET(
 
     return NextResponse.json({ event })
   } catch (error) {
-    console.error('Calendar event GET error:', error)
+    logger.error('Calendar event GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -119,7 +120,7 @@ export async function PATCH(
       .single()
 
     if (updateError || !event) {
-      console.error('Error updating calendar event:', updateError)
+      logger.error('Error updating calendar event', { error: String(updateError) })
       return NextResponse.json({ error: 'Failed to update event' }, { status: 500 })
     }
 
@@ -133,7 +134,7 @@ export async function PATCH(
 
     return NextResponse.json({ event })
   } catch (error) {
-    console.error('Calendar event PATCH error:', error)
+    logger.error('Calendar event PATCH error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -162,7 +163,7 @@ export async function DELETE(
       .eq('id', eventId)
 
     if (deleteError) {
-      console.error('Error deleting calendar event:', deleteError)
+      logger.error('Error deleting calendar event', { error: String(deleteError) })
       return NextResponse.json({ error: 'Failed to delete event' }, { status: 500 })
     }
 
@@ -176,7 +177,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Calendar event DELETE error:', error)
+    logger.error('Calendar event DELETE error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

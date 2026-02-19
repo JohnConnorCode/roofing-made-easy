@@ -19,7 +19,7 @@ export async function GET() {
   const supabase = await createClient()
 
   const { data, error: fetchError } = await supabase
-    .from('admin_preferences' as never)
+    .from('admin_preferences')
     .select('*')
     .eq('user_id', user!.id)
     .single()
@@ -61,7 +61,7 @@ export async function PUT(request: NextRequest) {
 
   // Upsert preferences
   const { data, error: upsertError } = await supabase
-    .from('admin_preferences' as never)
+    .from('admin_preferences')
     .upsert(
       {
         user_id: user!.id,

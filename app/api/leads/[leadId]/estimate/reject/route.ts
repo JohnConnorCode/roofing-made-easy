@@ -4,6 +4,7 @@ import { requireLeadOwnership } from '@/lib/api/auth'
 import { z } from 'zod'
 import { sendEmail } from '@/lib/email'
 import { escapeHtml } from '@/lib/communication/template-renderer'
+import { logger } from '@/lib/logger'
 
 interface RouteParams {
   params: Promise<{ leadId: string }>
@@ -95,7 +96,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         .select('id')
 
       if (updateError) {
-        console.error('Error rejecting quote:', updateError)
+        logger.error('Error rejecting quote', { error: String(updateError) })
         return NextResponse.json(
           { error: 'Failed to decline quote' },
           { status: 500 }
@@ -159,7 +160,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       .select('id')
 
     if (updateError) {
-      console.error('Error rejecting quote:', updateError)
+      logger.error('Error rejecting quote', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to decline quote' },
         { status: 500 }
@@ -204,7 +205,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       estimateId: estimate.id,
     })
   } catch (error) {
-    console.error('Quote rejection error:', error)
+    logger.error('Quote rejection error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -304,6 +305,6 @@ async function sendAdminNotification(
       })
     }
   } catch (error) {
-    console.error('Failed to send admin notification:', error)
+    logger.error('Failed to send admin notification', { error: String(error) })
   }
 }

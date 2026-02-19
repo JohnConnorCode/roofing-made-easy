@@ -335,7 +335,19 @@ export default function FinancingPage() {
                 <p className="text-sm text-slate-500 mb-2">Your Lender</p>
                 <p className="text-slate-200 font-medium">{existingApplication.lender_name}</p>
                 {existingApplication.lender_contact && (
-                  <p className="text-sm text-slate-400">{existingApplication.lender_contact}</p>
+                  <p className="text-sm text-slate-400">
+                    {existingApplication.lender_contact.includes('@') ? (
+                      <a href={`mailto:${existingApplication.lender_contact}`} className="text-gold-light hover:underline">
+                        {existingApplication.lender_contact}
+                      </a>
+                    ) : /[\d()-]/.test(existingApplication.lender_contact) ? (
+                      <a href={`tel:${existingApplication.lender_contact.replace(/\D/g, '')}`} className="text-gold-light hover:underline">
+                        {existingApplication.lender_contact}
+                      </a>
+                    ) : (
+                      existingApplication.lender_contact
+                    )}
+                  </p>
                 )}
               </div>
             )}

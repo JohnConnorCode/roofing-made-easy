@@ -4,6 +4,7 @@ import { requireAdmin, parsePagination } from '@/lib/api/auth'
 import { z } from 'zod'
 import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
 import { notifyAdmins } from '@/lib/notifications'
+import { logger } from '@/lib/logger'
 
 // Schema for creating an invoice
 const createInvoiceSchema = z.object({
@@ -78,7 +79,7 @@ export async function GET(request: NextRequest) {
     const { data: invoices, error, count } = await query
 
     if (error) {
-      console.error('Error fetching invoices:', error)
+      logger.error('Error fetching invoices', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch invoices' },
         { status: 500 }
@@ -90,7 +91,7 @@ export async function GET(request: NextRequest) {
       { headers: createRateLimitHeaders(rateLimitResult) }
     )
   } catch (error) {
-    console.error('Invoices fetch error:', error)
+    logger.error('Invoices fetch error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -194,7 +195,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (invoiceError || !invoice) {
-      console.error('Error creating invoice:', invoiceError)
+      logger.error('Error creating invoice', { error: String(invoiceError) })
       return NextResponse.json(
         { error: 'Failed to create invoice' },
         { status: 500 }
@@ -213,7 +214,7 @@ export async function POST(request: NextRequest) {
       )
 
     if (lineItemsError) {
-      console.error('Error creating line items:', lineItemsError)
+      logger.error('Error creating line items', { error: String(lineItemsError) })
       // Rollback invoice on line item failure
       await supabase.from('invoices').delete().eq('id', invoiceId)
       return NextResponse.json(
@@ -240,14 +241,14 @@ export async function POST(request: NextRequest) {
       `New Invoice: ${inv?.invoice_number || 'Draft'}`,
       `$${total.toLocaleString(undefined, { minimumFractionDigits: 2 })} for ${billName}`,
       '/invoices'
-    ).catch(err => console.error('Failed to notify admins of invoice creation:', err))
+    ).catch(err => logger.error('Failed to notify admins of invoice creation', { error: String(err) }))
 
     return NextResponse.json(
       { invoice: completeInvoice },
       { status: 201, headers: createRateLimitHeaders(rateLimitResult) }
     )
   } catch (error) {
-    console.error('Invoice creation error:', error)
+    logger.error('Invoice creation error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

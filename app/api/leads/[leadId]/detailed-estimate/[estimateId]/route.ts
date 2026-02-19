@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateEstimateSchema = z.object({
   name: z.string().optional(),
@@ -45,7 +46,7 @@ export async function GET(
           { status: 404 }
         )
       }
-      console.error('Error fetching estimate:', error)
+      logger.error('Error fetching estimate', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch estimate' },
         { status: 500 }
@@ -54,7 +55,7 @@ export async function GET(
 
     return NextResponse.json({ estimate })
   } catch (error) {
-    console.error('Error in GET /api/leads/[leadId]/detailed-estimate/[estimateId]:', error)
+    logger.error('Error in GET /api/leads/[leadId]/detailed-estimate/[estimateId]', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -113,7 +114,7 @@ export async function PATCH(
           { status: 404 }
         )
       }
-      console.error('Error updating estimate:', error)
+      logger.error('Error updating estimate', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to update estimate' },
         { status: 500 }
@@ -140,7 +141,7 @@ export async function PATCH(
 
     return NextResponse.json({ estimate })
   } catch (error) {
-    console.error('Error in PATCH /api/leads/[leadId]/detailed-estimate/[estimateId]:', error)
+    logger.error('Error in PATCH /api/leads/[leadId]/detailed-estimate/[estimateId]', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -190,7 +191,7 @@ export async function DELETE(
       .eq('lead_id', leadId)
 
     if (error) {
-      console.error('Error deleting estimate:', error)
+      logger.error('Error deleting estimate', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to delete estimate' },
         { status: 500 }
@@ -199,7 +200,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error in DELETE /api/leads/[leadId]/detailed-estimate/[estimateId]:', error)
+    logger.error('Error in DELETE /api/leads/[leadId]/detailed-estimate/[estimateId]', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
   // Build query with count option in the first .select() call
   // This avoids the bug where a second .select() would overwrite the joins
   let query = supabase
-    .from('estimates' as never)
+    .from('estimates')
     .select(`
       *,
       lead:leads!inner(

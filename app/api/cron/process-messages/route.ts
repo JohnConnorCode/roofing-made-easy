@@ -12,6 +12,7 @@ import { createClient } from '@/lib/supabase/server'
 import { sendEmail } from '@/lib/communication/send-email'
 import { sendSMS } from '@/lib/communication/send-sms'
 import { emailWrapper } from '@/lib/email/templates'
+import { logger } from '@/lib/logger'
 
 const CRON_SECRET = process.env.CRON_SECRET
 
@@ -79,7 +80,7 @@ export async function GET(request: NextRequest) {
       .limit(50) // Process in batches
 
     if (error) {
-      console.error('Error fetching scheduled messages:', error)
+      logger.error('Error fetching scheduled messages', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch scheduled messages' },
         { status: 500 }
@@ -192,7 +193,7 @@ export async function GET(request: NextRequest) {
       ...results,
     })
   } catch (error) {
-    console.error('Cron job error:', error)
+    logger.error('Cron job error', { error: String(error) })
     return NextResponse.json(
       { error: 'Cron job failed' },
       { status: 500 }

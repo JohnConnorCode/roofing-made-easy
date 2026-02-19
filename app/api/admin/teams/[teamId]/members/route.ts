@@ -10,6 +10,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requirePermission } from '@/lib/team/permissions'
 import { ActivityLogger } from '@/lib/team/activity-logger'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const addMemberSchema = z.object({
   user_id: z.string().uuid(),
@@ -105,7 +106,7 @@ export async function POST(
       } as never)
 
     if (insertError) {
-      console.error('Error adding team member:', insertError)
+      logger.error('Error adding team member', { error: String(insertError) })
       return NextResponse.json(
         { error: 'Failed to add team member' },
         { status: 500 }
@@ -125,7 +126,7 @@ export async function POST(
       { status: 201 }
     )
   } catch (error) {
-    console.error('Team member POST error:', error)
+    logger.error('Team member POST error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -183,7 +184,7 @@ export async function PATCH(
       .eq('user_id', user_id)
 
     if (updateError) {
-      console.error('Error updating team member:', updateError)
+      logger.error('Error updating team member', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to update team member' },
         { status: 500 }
@@ -192,7 +193,7 @@ export async function PATCH(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Team member PATCH error:', error)
+    logger.error('Team member PATCH error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -240,7 +241,7 @@ export async function DELETE(
       .eq('user_id', userId)
 
     if (deleteError) {
-      console.error('Error removing team member:', deleteError)
+      logger.error('Error removing team member', { error: String(deleteError) })
       return NextResponse.json(
         { error: 'Failed to remove team member' },
         { status: 500 }
@@ -257,7 +258,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Team member DELETE error:', error)
+    logger.error('Team member DELETE error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

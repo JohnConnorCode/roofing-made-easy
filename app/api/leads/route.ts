@@ -11,6 +11,7 @@ import { requireAdmin, parsePagination } from '@/lib/api/auth'
 import { triggerWorkflows } from '@/lib/communication/workflow-engine'
 import { notifyAdmins } from '@/lib/notifications'
 import { notifyNewLead } from '@/lib/email/notifications'
+import { logger } from '@/lib/logger'
 
 // Valid status values for filtering (must match LeadStatus type in lib/constants/status.ts)
 const VALID_STATUSES = new Set([
@@ -85,9 +86,9 @@ export async function POST(request: NextRequest) {
 
     const failures = relatedResults.filter(r => r.status === 'rejected')
     if (failures.length > 0) {
-      console.error('Partial lead initialization failure:', failures.map(f =>
+      logger.error('Partial lead initialization failure', { error: String(failures.map(f =>
         f.status === 'rejected' ? f.reason : null
-      ))
+      )) })
     }
 
     // If ALL related record inserts failed, clean up the orphaned lead
@@ -104,13 +105,13 @@ export async function POST(request: NextRequest) {
     triggerWorkflows('lead_created', {
       leadId,
       data: { source },
-    }).catch(err => console.error('Failed to trigger lead_created workflows:', err))
+    }).catch(err => logger.error('Failed to trigger lead_created workflows', { error: String(err) }))
 
     // Fire-and-forget notifications
     notifyAdmins('lead_new', 'New Lead Submitted', `New lead from ${source}`, `/leads/${leadId}`)
-      .catch(err => console.error('Failed to notify admins of new lead:', err))
+      .catch(err => logger.error('Failed to notify admins of new lead', { error: String(err) }))
     notifyNewLead({ leadId, source, createdAt: new Date().toISOString() })
-      .catch(err => console.error('Failed to send new lead email:', err))
+      .catch(err => logger.error('Failed to send new lead email', { error: String(err) }))
 
     return NextResponse.json(
       { lead },
@@ -120,7 +121,7 @@ export async function POST(request: NextRequest) {
       }
     )
   } catch (error) {
-    console.error('Lead creation error:', error)
+    logger.error('Lead creation error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -208,7 +209,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ leads, total: count })
   } catch (error) {
-    console.error('Leads fetch error:', error)
+    logger.error('Leads fetch error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

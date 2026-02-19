@@ -51,22 +51,22 @@ export async function GET(
       { data: programApplications },
     ] = await Promise.all([
       supabase
-        .from('customer_leads' as never)
+        .from('customer_leads')
         .select(`customer:customers(id, email, first_name, last_name, created_at)`)
         .eq('lead_id', leadId)
         .single(),
       supabase
-        .from('financing_applications' as never)
+        .from('financing_applications')
         .select('id, amount_requested, credit_range, income_range, status, created_at')
         .eq('lead_id', leadId)
         .order('created_at', { ascending: false }),
       supabase
-        .from('insurance_claims' as never)
+        .from('insurance_claims')
         .select('id, insurance_company, claim_number, status, created_at')
         .eq('lead_id', leadId)
         .order('created_at', { ascending: false }),
       supabase
-        .from('customer_program_applications' as never)
+        .from('customer_program_applications')
         .select('id, program_id, status, created_at')
         .eq('lead_id', leadId)
         .order('created_at', { ascending: false }),

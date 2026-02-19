@@ -4,6 +4,7 @@ import { createPaymentIntent, isStripeConfigured } from '@/lib/stripe'
 import { z } from 'zod'
 import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { requireAuth, requireLeadOwnership } from '@/lib/api/auth'
+import { logger } from '@/lib/logger'
 
 // Validation schema
 const createIntentSchema = z.object({
@@ -119,7 +120,7 @@ export async function POST(request: NextRequest) {
     } as never)
 
     if (paymentRecordError) {
-      console.error('Failed to create payment record:', paymentRecordError)
+      logger.error('Failed to create payment record', { error: String(paymentRecordError) })
       // Continue anyway - Stripe payment intent is the source of truth
     }
 

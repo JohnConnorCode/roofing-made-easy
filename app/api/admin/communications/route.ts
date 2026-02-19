@@ -13,6 +13,7 @@ import { sendSMS } from '@/lib/communication/send-sms'
 import { renderTemplate, getLeadVariables, getCompanyVariables } from '@/lib/communication/template-renderer'
 import type { MessageChannel, MessageDirection, SendMessageRequest } from '@/lib/communication/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const sendMessageSchema = z.object({
   channel: z.enum(['email', 'sms']),
@@ -84,7 +85,7 @@ export async function GET(request: NextRequest) {
     const { data: logs, error, count } = await query
 
     if (error) {
-      console.error('Error fetching communication logs:', error)
+      logger.error('Error fetching communication logs', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch communication logs' },
         { status: 500 }
@@ -98,7 +99,7 @@ export async function GET(request: NextRequest) {
       offset,
     })
   } catch (error) {
-    console.error('Communications GET error:', error)
+    logger.error('Communications GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -217,7 +218,7 @@ export async function POST(request: NextRequest) {
       status: result.status,
     })
   } catch (error) {
-    console.error('Communications POST error:', error)
+    logger.error('Communications POST error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

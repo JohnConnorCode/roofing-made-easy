@@ -25,6 +25,7 @@ const LIMIT = 20
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<CustomerData[]>([])
   const [total, setTotal] = useState(0)
+  const [globalStats, setGlobalStats] = useState({ totalLeads: 0, totalValue: 0, wonDeals: 0 })
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
@@ -57,6 +58,9 @@ export default function CustomersPage() {
       const data = await response.json()
       setCustomers(data.customers || [])
       setTotal(data.total || 0)
+      if (data.globalStats) {
+        setGlobalStats(data.globalStats)
+      }
     } catch (err) {
       setError('Unable to load customers. Please try again.')
     } finally {
@@ -71,12 +75,12 @@ export default function CustomersPage() {
   const totalPages = Math.ceil(total / LIMIT)
   const currentPage = Math.floor(offset / LIMIT) + 1
 
-  // Calculate aggregate stats
+  // Use global aggregate stats from API (not page-scoped)
   const stats = {
     totalCustomers: total,
-    totalLeads: customers.reduce((sum, c) => sum + c.leads_count, 0),
-    totalValue: customers.reduce((sum, c) => sum + c.total_value, 0),
-    wonDeals: customers.reduce((sum, c) => sum + c.won_leads, 0)
+    totalLeads: globalStats.totalLeads,
+    totalValue: globalStats.totalValue,
+    wonDeals: globalStats.wonDeals,
   }
 
   return (

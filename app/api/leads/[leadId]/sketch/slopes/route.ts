@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createSlopeSchema = z.object({
   name: z.string().default('Main'),
@@ -36,7 +37,7 @@ export async function GET(
 
     // Get sketch first
     const { data: sketch } = await supabase
-      .from('roof_sketches' as never)
+      .from('roof_sketches')
       .select('id')
       .eq('lead_id', leadId)
       .single()
@@ -49,13 +50,13 @@ export async function GET(
     }
 
     const { data: slopes, error } = await supabase
-      .from('roof_slopes' as never)
+      .from('roof_slopes')
       .select('*')
       .eq('sketch_id', (sketch as { id: string }).id)
       .order('slope_number', { ascending: true })
 
     if (error) {
-      console.error('Error fetching slopes:', error)
+      logger.error('Error fetching slopes', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch slopes' },
         { status: 500 }
@@ -64,7 +65,7 @@ export async function GET(
 
     return NextResponse.json({ slopes })
   } catch (error) {
-    console.error('Error in GET /api/leads/[leadId]/sketch/slopes:', error)
+    logger.error('Error in GET /api/leads/[leadId]/sketch/slopes', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -106,7 +107,7 @@ export async function POST(
         .single()
 
       if (createError) {
-        console.error('Error creating sketch:', createError)
+        logger.error('Error creating sketch', { error: String(createError) })
         return NextResponse.json(
           { error: 'Failed to create sketch' },
           { status: 500 }
@@ -136,7 +137,7 @@ export async function POST(
       )
     }
     const { data: slope, error } = await supabase
-      .from('roof_slopes' as never)
+      .from('roof_slopes')
       .insert({
         sketch_id: (sketch as { id: string }).id,
         ...parsed.data,
@@ -153,7 +154,7 @@ export async function POST(
           { status: 409 }
         )
       }
-      console.error('Error creating slope:', error)
+      logger.error('Error creating slope', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to create slope' },
         { status: 500 }
@@ -164,7 +165,7 @@ export async function POST(
 
     return NextResponse.json({ slope }, { status: 201 })
   } catch (error) {
-    console.error('Error in POST /api/leads/[leadId]/sketch/slopes:', error)
+    logger.error('Error in POST /api/leads/[leadId]/sketch/slopes', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -217,7 +218,7 @@ export async function PATCH(
           { status: 404 }
         )
       }
-      console.error('Error updating slope:', error)
+      logger.error('Error updating slope', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to update slope' },
         { status: 500 }
@@ -226,7 +227,7 @@ export async function PATCH(
 
     return NextResponse.json({ slope })
   } catch (error) {
-    console.error('Error in PATCH /api/leads/[leadId]/sketch/slopes:', error)
+    logger.error('Error in PATCH /api/leads/[leadId]/sketch/slopes', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -257,7 +258,7 @@ export async function DELETE(
       .eq('id', slopeId)
 
     if (error) {
-      console.error('Error deleting slope:', error)
+      logger.error('Error deleting slope', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to delete slope' },
         { status: 500 }
@@ -268,7 +269,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error in DELETE /api/leads/[leadId]/sketch/slopes:', error)
+    logger.error('Error in DELETE /api/leads/[leadId]/sketch/slopes', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

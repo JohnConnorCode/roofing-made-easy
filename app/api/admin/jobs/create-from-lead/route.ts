@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { logActivity } from '@/lib/team/activity-logger'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createFromLeadSchema = z.object({
   lead_id: z.string().uuid(),
@@ -122,7 +123,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError || !job) {
-      console.error('Error creating job from lead:', createError)
+      logger.error('Error creating job from lead', { error: String(createError) })
       return NextResponse.json({ error: 'Failed to create job' }, { status: 500 })
     }
 
@@ -138,7 +139,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ job }, { status: 201 })
   } catch (error) {
-    console.error('Create job from lead POST error:', error)
+    logger.error('Create job from lead POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

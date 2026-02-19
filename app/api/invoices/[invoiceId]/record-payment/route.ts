@@ -12,6 +12,7 @@ import { sendPaymentReceivedSms } from '@/lib/sms/twilio'
 import { triggerWorkflows } from '@/lib/communication/workflow-engine'
 import { logCommunication } from '@/lib/communication/log-direct-send'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const recordPaymentSchema = z.object({
   amount: z.number().positive(),
@@ -85,7 +86,7 @@ export async function POST(
       .single()
 
     if (insertError) {
-      console.error('Error recording payment:', insertError)
+      logger.error('Error recording payment', { error: String(insertError) })
       return NextResponse.json({ error: 'Failed to record payment' }, { status: 500 })
     }
 
@@ -111,7 +112,7 @@ export async function POST(
       `Payment Received: ${formattedAmount}`,
       `${details?.bill_to_name || 'Customer'} — ${details?.invoice_number || invoiceId}`,
       '/invoices'
-    ).catch(err => console.error('Failed to notify admins of payment:', err))
+    ).catch(err => logger.error('Failed to notify admins of payment', { error: String(err) }))
 
     if (details?.bill_to_email) {
       sendPaymentReceivedEmail({
@@ -126,7 +127,7 @@ export async function POST(
           leadId: details.lead_id || undefined, customerId: details.customer_id || undefined,
           category: 'payment_received',
         }).catch(() => {})
-      }).catch(err => console.error('Failed to send payment email:', err))
+      }).catch(err => logger.error('Failed to send payment email', { error: String(err) }))
     }
 
     if (details?.bill_to_phone) {
@@ -137,7 +138,7 @@ export async function POST(
             leadId: details.lead_id || undefined, customerId: details.customer_id || undefined,
             category: 'payment_received',
           }).catch(() => {})
-        }).catch(err => console.error('Failed to send payment SMS:', err))
+        }).catch(err => logger.error('Failed to send payment SMS', { error: String(err) }))
     }
 
     if (details?.lead_id) {
@@ -145,12 +146,12 @@ export async function POST(
         leadId: details.lead_id,
         customerId: details.customer_id || undefined,
         data: { amount, invoice_number: details.invoice_number },
-      }).catch(err => console.error('Failed to trigger payment workflows:', err))
+      }).catch(err => logger.error('Failed to trigger payment workflows', { error: String(err) }))
     }
 
     return NextResponse.json({ payment }, { status: 201 })
   } catch (error) {
-    console.error('Record payment POST error:', error)
+    logger.error('Record payment POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -45,7 +45,7 @@ export async function GET() {
   try {
     const supabase = await createAdminClient()
     const { data } = await supabase
-      .from('api_credentials' as never)
+      .from('api_credentials')
       .select('service_id, key_hint, last_tested_at, last_test_success, last_test_error')
 
     if (data) {

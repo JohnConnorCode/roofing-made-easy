@@ -5,6 +5,7 @@ import { notifyAdmins } from '@/lib/notifications'
 import { sendWelcomeEmail } from '@/lib/email/notifications'
 import { logCommunication } from '@/lib/communication/log-direct-send'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 // Validation schema for customer registration
 const registerSchema = z.object({
@@ -72,7 +73,7 @@ export async function POST(request: NextRequest) {
 
     // Create customer record
     const { data: customerData, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .insert({
         auth_user_id: authUserId,
         email,
@@ -101,7 +102,7 @@ export async function POST(request: NextRequest) {
     let leadLinked = true
     if (leadId && !leadId.startsWith('demo-') && customer) {
       const { error: linkError } = await supabase
-        .from('customer_leads' as never)
+        .from('customer_leads')
         .insert({
           customer_id: customer.id,
           lead_id: leadId,
@@ -110,7 +111,7 @@ export async function POST(request: NextRequest) {
 
       if (linkError) {
         leadLinked = false
-        console.error('Failed to link customer to lead:', {
+        logger.error('Failed to link customer to lead', {
           customerId: customer.id,
           leadId,
           error: linkError.message,
@@ -128,13 +129,13 @@ export async function POST(request: NextRequest) {
           leadId: leadId || undefined, category: 'welcome',
         }).catch(() => {})
       })
-      .catch(err => console.error('Failed to send welcome email:', err))
+      .catch(err => logger.error('Failed to send welcome email', { error: String(err) }))
     notifyAdmins(
       'customer_registered',
       'New Customer Registered',
       `${custName} (${email})`,
       '/customers'
-    ).catch(err => console.error('Failed to notify admins of registration:', err))
+    ).catch(err => logger.error('Failed to notify admins of registration', { error: String(err) }))
 
     return NextResponse.json({ customer, leadLinked }, { status: 201 })
   } catch {

@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const setAvailabilitySchema = z.object({
   user_id: z.string().uuid(),
@@ -63,13 +64,13 @@ export async function GET(request: NextRequest) {
     const { data: availability, error } = await query
 
     if (error) {
-      console.error('Error fetching crew availability:', error)
+      logger.error('Error fetching crew availability', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch availability' }, { status: 500 })
     }
 
     return NextResponse.json({ availability })
   } catch (error) {
-    console.error('Availability GET error:', error)
+    logger.error('Availability GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -116,13 +117,13 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (upsertError || !availability) {
-      console.error('Error setting availability:', upsertError)
+      logger.error('Error setting availability', { error: String(upsertError) })
       return NextResponse.json({ error: 'Failed to set availability' }, { status: 500 })
     }
 
     return NextResponse.json({ availability })
   } catch (error) {
-    console.error('Availability POST error:', error)
+    logger.error('Availability POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

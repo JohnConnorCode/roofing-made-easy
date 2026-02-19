@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 
   // Fetch stage history for velocity calculations
   const { data: stageHistory, error: historyError } = await supabase
-    .from('lead_stage_history' as never)
+    .from('lead_stage_history')
     .select('*')
     .gte('created_at', cutoffDate.toISOString())
     .order('created_at', { ascending: true })
@@ -118,7 +118,7 @@ export async function GET(request: NextRequest) {
 
   // Fetch leads for cohort analysis
   const { data: leads } = await supabase
-    .from('leads' as never)
+    .from('leads')
     .select('id, status, created_at')
     .gte('created_at', cutoffDate.toISOString())
 

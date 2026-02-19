@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const signedUrlSchema = z.object({
   filename: z.string().min(1).max(255),
@@ -44,7 +45,7 @@ export async function POST(
       .createSignedUploadUrl(storagePath)
 
     if (error || !data) {
-      console.error('Error creating signed URL:', error)
+      logger.error('Error creating signed URL', { error: String(error) })
       return NextResponse.json({ error: 'Failed to generate upload URL' }, { status: 500 })
     }
 
@@ -54,7 +55,7 @@ export async function POST(
       storagePath,
     })
   } catch (error) {
-    console.error('Signed URL error:', error)
+    logger.error('Signed URL error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

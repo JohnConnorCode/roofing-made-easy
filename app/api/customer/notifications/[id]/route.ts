@@ -65,7 +65,7 @@ export async function PATCH(
 
     // RLS ensures user can only update their own notifications
     const { error: updateError } = await supabase
-      .from('notifications' as never)
+      .from('notifications')
       .update(updates as never)
       .eq('id', id)
       .eq('user_id', user.id)

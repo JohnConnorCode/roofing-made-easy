@@ -542,6 +542,16 @@ export default function SettingsPage() {
                     />
                   </div>
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Website</label>
+                  <Input
+                    type="url"
+                    placeholder="https://www.example.com"
+                    value={settings.company.website || ''}
+                    onChange={(e) => updateCompany('website', e.target.value)}
+                    className="bg-white border-slate-300 text-slate-900"
+                  />
+                </div>
               </CardContent>
             </Card>
           )}

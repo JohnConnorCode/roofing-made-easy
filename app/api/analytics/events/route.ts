@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
+import { logger } from '@/lib/logger'
 import {
   checkRateLimit,
   getClientIP,
@@ -108,11 +109,11 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createAdminClient()
     const { error } = await supabase
-      .from('analytics_events' as never)
+      .from('analytics_events')
       .insert(validEvents as never)
 
     if (error) {
-      console.error('[Analytics] Insert error:', error.message)
+      logger.error('[Analytics] Insert error', { error: String(error.message) })
       return NextResponse.json({ error: 'Failed to store events' }, { status: 500 })
     }
 

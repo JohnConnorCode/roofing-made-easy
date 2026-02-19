@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireCustomer } from '@/lib/api/auth'
+import { logger } from '@/lib/logger'
 
 // GET - List customer's invoices
 export async function GET(request: NextRequest) {
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('Error fetching invoices:', error)
+      logger.error('Error fetching invoices', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch invoices' },
         { status: 500 }
@@ -53,7 +54,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ invoices: invoices || [] })
   } catch (error) {
-    console.error('Customer invoices fetch error:', error)
+    logger.error('Customer invoices fetch error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

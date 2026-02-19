@@ -123,7 +123,7 @@ export async function PATCH(
 
     // Check if system macro
     const { data: existingForUpdate } = await supabase
-      .from('estimate_macros' as never)
+      .from('estimate_macros')
       .select('is_system')
       .eq('id', macroId)
       .single()
@@ -188,7 +188,7 @@ export async function DELETE(
 
     // Check if system macro
     const { data: existingForDelete } = await supabase
-      .from('estimate_macros' as never)
+      .from('estimate_macros')
       .select('is_system')
       .eq('id', macroId)
       .single()

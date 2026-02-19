@@ -1514,6 +1514,286 @@ export type Database = {
           updated_at?: string
         }
       }
+      // ============================================
+      // ANALYTICS EVENTS (Migration 047)
+      // ============================================
+      analytics_events: {
+        Row: {
+          id: string
+          session_id: string
+          event_type: string
+          event_name: string
+          page_path: string
+          referrer: string | null
+          lead_id: string | null
+          funnel_step: number | null
+          utm_source: string | null
+          utm_medium: string | null
+          utm_campaign: string | null
+          entry_source: string | null
+          time_on_page_ms: number | null
+          metadata: Json
+          device_type: string | null
+          created_at: string
+          client_timestamp: string | null
+        }
+        Insert: {
+          id?: string
+          session_id: string
+          event_type: string
+          event_name: string
+          page_path: string
+          referrer?: string | null
+          lead_id?: string | null
+          funnel_step?: number | null
+          utm_source?: string | null
+          utm_medium?: string | null
+          utm_campaign?: string | null
+          entry_source?: string | null
+          time_on_page_ms?: number | null
+          metadata?: Json
+          device_type?: string | null
+          created_at?: string
+          client_timestamp?: string | null
+        }
+        Update: {
+          id?: string
+          session_id?: string
+          event_type?: string
+          event_name?: string
+          page_path?: string
+          referrer?: string | null
+          lead_id?: string | null
+          funnel_step?: number | null
+          utm_source?: string | null
+          utm_medium?: string | null
+          utm_campaign?: string | null
+          entry_source?: string | null
+          time_on_page_ms?: number | null
+          metadata?: Json
+          device_type?: string | null
+          created_at?: string
+          client_timestamp?: string | null
+        }
+      }
+      // ============================================
+      // API CREDENTIALS (Migration 014)
+      // ============================================
+      api_credentials: {
+        Row: {
+          service_id: string
+          encrypted_key: string
+          key_hint: string | null
+          last_tested_at: string | null
+          last_test_success: boolean | null
+          last_test_error: string | null
+          configured_by: string | null
+          configured_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          service_id: string
+          encrypted_key?: string
+          key_hint?: string | null
+          last_tested_at?: string | null
+          last_test_success?: boolean | null
+          last_test_error?: string | null
+          configured_by?: string | null
+          configured_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          service_id?: string
+          encrypted_key?: string
+          key_hint?: string | null
+          last_tested_at?: string | null
+          last_test_success?: boolean | null
+          last_test_error?: string | null
+          configured_by?: string | null
+          configured_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      // ============================================
+      // JOBS (Migration 034)
+      // ============================================
+      jobs: {
+        Row: {
+          id: string
+          job_number: string
+          lead_id: string | null
+          customer_id: string | null
+          estimate_id: string | null
+          status: string
+          scheduled_start: string | null
+          scheduled_end: string | null
+          actual_start: string | null
+          actual_end: string | null
+          assigned_team_id: string | null
+          project_manager_id: string | null
+          contract_amount: number
+          total_invoiced: number
+          total_paid: number
+          material_cost: number
+          labor_cost: number
+          property_address: string | null
+          property_city: string | null
+          property_state: string | null
+          property_zip: string | null
+          warranty_start_date: string | null
+          warranty_end_date: string | null
+          warranty_type: string | null
+          notes: string | null
+          internal_notes: string | null
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          job_number: string
+          lead_id?: string | null
+          customer_id?: string | null
+          estimate_id?: string | null
+          status?: string
+          scheduled_start?: string | null
+          scheduled_end?: string | null
+          actual_start?: string | null
+          actual_end?: string | null
+          assigned_team_id?: string | null
+          project_manager_id?: string | null
+          contract_amount?: number
+          total_invoiced?: number
+          total_paid?: number
+          material_cost?: number
+          labor_cost?: number
+          property_address?: string | null
+          property_city?: string | null
+          property_state?: string | null
+          property_zip?: string | null
+          warranty_start_date?: string | null
+          warranty_end_date?: string | null
+          warranty_type?: string | null
+          notes?: string | null
+          internal_notes?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          job_number?: string
+          lead_id?: string | null
+          customer_id?: string | null
+          estimate_id?: string | null
+          status?: string
+          scheduled_start?: string | null
+          scheduled_end?: string | null
+          actual_start?: string | null
+          actual_end?: string | null
+          assigned_team_id?: string | null
+          project_manager_id?: string | null
+          contract_amount?: number
+          total_invoiced?: number
+          total_paid?: number
+          material_cost?: number
+          labor_cost?: number
+          property_address?: string | null
+          property_city?: string | null
+          property_state?: string | null
+          property_zip?: string | null
+          warranty_start_date?: string | null
+          warranty_end_date?: string | null
+          warranty_type?: string | null
+          notes?: string | null
+          internal_notes?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      job_status_history: {
+        Row: {
+          id: string
+          job_id: string
+          old_status: string | null
+          new_status: string
+          changed_by: string | null
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          job_id: string
+          old_status?: string | null
+          new_status: string
+          changed_by?: string | null
+          notes?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          job_id?: string
+          old_status?: string | null
+          new_status?: string
+          changed_by?: string | null
+          notes?: string | null
+          created_at?: string
+        }
+      }
+      // ============================================
+      // NOTIFICATIONS (Migration 036)
+      // ============================================
+      notifications: {
+        Row: {
+          id: string
+          user_id: string
+          type: string
+          title: string
+          message: string | null
+          priority: string
+          action_url: string | null
+          action_label: string | null
+          entity_type: string | null
+          entity_id: string | null
+          read_at: string | null
+          dismissed_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: string
+          title: string
+          message?: string | null
+          priority?: string
+          action_url?: string | null
+          action_label?: string | null
+          entity_type?: string | null
+          entity_id?: string | null
+          read_at?: string | null
+          dismissed_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: string
+          title?: string
+          message?: string | null
+          priority?: string
+          action_url?: string | null
+          action_label?: string | null
+          entity_type?: string | null
+          entity_id?: string | null
+          read_at?: string | null
+          dismissed_at?: string | null
+          created_at?: string
+        }
+      }
       lead_stage_history: {
         Row: {
           id: string
@@ -1575,6 +1855,7 @@ export type LeadStatus =
   | 'intake_started'
   | 'intake_complete'
   | 'estimate_generated'
+  | 'estimate_sent'
   | 'consultation_scheduled'
   | 'quote_sent'
   | 'won'
@@ -1854,3 +2135,12 @@ export type EstimateLineItem = Database['public']['Tables']['estimate_line_items
 export type AdminPreferences = Database['public']['Tables']['admin_preferences']['Row']
 export type CustomPipelineStage = Database['public']['Tables']['custom_pipeline_stages']['Row']
 export type LeadStageHistory = Database['public']['Tables']['lead_stage_history']['Row']
+
+// ============================================
+// Helper types - Jobs, Notifications, Analytics, Integrations
+// ============================================
+export type Job = Database['public']['Tables']['jobs']['Row']
+export type JobStatusHistory = Database['public']['Tables']['job_status_history']['Row']
+export type Notification = Database['public']['Tables']['notifications']['Row']
+export type AnalyticsEvent = Database['public']['Tables']['analytics_events']['Row']
+export type ApiCredential = Database['public']['Tables']['api_credentials']['Row']

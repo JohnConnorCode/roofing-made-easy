@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import type { RoofVariables } from '@/lib/supabase/types'
+import { logger } from '@/lib/logger'
 
 // Type for line item from database (incomplete Supabase types)
 interface LineItemRow {
@@ -67,7 +68,7 @@ export async function GET(
       .order('sort_order', { ascending: true })
 
     if (error) {
-      console.error('Error fetching line items:', error)
+      logger.error('Error fetching line items', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch line items' },
         { status: 500 }
@@ -76,7 +77,7 @@ export async function GET(
 
     return NextResponse.json({ lineItems })
   } catch (error) {
-    console.error('Error in GET line-items:', error)
+    logger.error('Error in GET line-items', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -138,17 +139,20 @@ export async function POST(
       // Get estimate variables with type assertion
       const variables = (estimate as Record<string, unknown>).variables as RoofVariables
 
-      // Process each item
-      const itemsToInsert = await Promise.all(
-        parsed.data.items.map(async (item) => {
-          // Fetch line item
-          const { data: lineItemData } = await supabase
-            .from('line_items')
-            .select('*')
-            .eq('id', item.line_item_id)
-            .single()
+      // Batch-fetch all line items in a single query
+      const lineItemIds = parsed.data.items.map((item) => item.line_item_id)
+      const { data: lineItemsData } = await supabase
+        .from('line_items')
+        .select('*')
+        .in('id', lineItemIds)
 
-          const lineItem = lineItemData as LineItemRow | null
+      const lineItemMap = new Map(
+        ((lineItemsData || []) as LineItemRow[]).map((li) => [li.id, li])
+      )
+
+      // Process each item using the pre-fetched map
+      const itemsToInsert = parsed.data.items.map((item) => {
+          const lineItem = lineItemMap.get(item.line_item_id)
 
           if (!lineItem) {
             throw new Error(`Line item not found: ${item.line_item_id}`)
@@ -207,7 +211,6 @@ export async function POST(
             cost_override: item.material_unit_cost !== undefined || item.labor_unit_cost !== undefined,
           }
         })
-      )
 
       const { data: lineItems, error } = await supabase
         .from('estimate_line_items')
@@ -215,7 +218,7 @@ export async function POST(
         .select()
 
       if (error) {
-        console.error('Error inserting line items:', error)
+        logger.error('Error inserting line items', { error: String(error) })
         return NextResponse.json(
           { error: 'Failed to add line items' },
           { status: 500 }
@@ -345,7 +348,7 @@ export async function POST(
       .single()
 
     if (error) {
-      console.error('Error adding line item:', error)
+      logger.error('Error adding line item', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to add line item' },
         { status: 500 }
@@ -357,7 +360,7 @@ export async function POST(
 
     return NextResponse.json({ lineItem: estimateLineItem }, { status: 201 })
   } catch (error) {
-    console.error('Error in POST line-items:', error)
+    logger.error('Error in POST line-items', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -451,7 +454,7 @@ export async function PATCH(
           { status: 404 }
         )
       }
-      console.error('Error updating line item:', error)
+      logger.error('Error updating line item', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to update line item' },
         { status: 500 }
@@ -463,7 +466,7 @@ export async function PATCH(
 
     return NextResponse.json({ lineItem })
   } catch (error) {
-    console.error('Error in PATCH line-items:', error)
+    logger.error('Error in PATCH line-items', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -496,7 +499,7 @@ export async function DELETE(
       .eq('detailed_estimate_id', estimateId)
 
     if (error) {
-      console.error('Error deleting line item:', error)
+      logger.error('Error deleting line item', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to delete line item' },
         { status: 500 }
@@ -508,7 +511,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error in DELETE line-items:', error)
+    logger.error('Error in DELETE line-items', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

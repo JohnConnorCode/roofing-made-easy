@@ -21,7 +21,7 @@ export async function GET() {
   const supabase = await createClient()
 
   const { data, error: fetchError } = await supabase
-    .from('custom_pipeline_stages' as never)
+    .from('custom_pipeline_stages')
     .select('*')
     .order('position', { ascending: true })
 
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 
   // Get max position for ordering
   const { data: maxPos } = await supabase
-    .from('custom_pipeline_stages' as never)
+    .from('custom_pipeline_stages')
     .select('position')
     .order('position', { ascending: false })
     .limit(1)
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
   const nextPosition = ((maxPos as { position: number } | null)?.position ?? -1) + 1
 
   const { data, error: insertError } = await supabase
-    .from('custom_pipeline_stages' as never)
+    .from('custom_pipeline_stages')
     .insert({
       name: body.name,
       slug: body.slug,
@@ -123,7 +123,7 @@ export async function PUT(request: NextRequest) {
   // Update positions in bulk
   const updates = body.stages.map(({ id, position }) =>
     supabase
-      .from('custom_pipeline_stages' as never)
+      .from('custom_pipeline_stages')
       .update({ position, updated_at: new Date().toISOString() } as never)
       .eq('id', id)
   )
@@ -132,7 +132,7 @@ export async function PUT(request: NextRequest) {
 
   // Fetch updated stages
   const { data, error: fetchError } = await supabase
-    .from('custom_pipeline_stages' as never)
+    .from('custom_pipeline_stages')
     .select('*')
     .order('position', { ascending: true })
 

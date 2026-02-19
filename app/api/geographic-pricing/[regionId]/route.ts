@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
 import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
+import { logger } from '@/lib/logger'
 
 // Validation schema for updates
 const updateGeoPricingSchema = z.object({
@@ -44,7 +45,7 @@ export async function GET(
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Region not found' }, { status: 404 })
       }
-      console.error('Geographic pricing fetch error:', error)
+      logger.error('Geographic pricing fetch error', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch pricing region' }, { status: 500 })
     }
 
@@ -103,7 +104,7 @@ export async function PATCH(
     updates.updated_at = new Date().toISOString()
 
     const { data, error } = await supabase
-      .from('geographic_pricing' as never)
+      .from('geographic_pricing')
       .update(updates as never)
       .eq('id', regionId)
       .select()
@@ -113,7 +114,7 @@ export async function PATCH(
       if (error.code === 'PGRST116') {
         return NextResponse.json({ error: 'Region not found' }, { status: 404 })
       }
-      console.error('Geographic pricing update error:', error)
+      logger.error('Geographic pricing update error', { error: String(error) })
       return NextResponse.json({ error: 'Failed to update pricing region' }, { status: 500 })
     }
 
@@ -151,7 +152,7 @@ export async function DELETE(
       .eq('id', regionId)
 
     if (error) {
-      console.error('Geographic pricing delete error:', error)
+      logger.error('Geographic pricing delete error', { error: String(error) })
       return NextResponse.json({ error: 'Failed to delete pricing region' }, { status: 500 })
     }
 

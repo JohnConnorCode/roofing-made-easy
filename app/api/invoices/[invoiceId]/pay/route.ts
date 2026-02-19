@@ -4,6 +4,7 @@ import { createPaymentIntent, isStripeConfiguredAsync } from '@/lib/stripe/serve
 import { requireAuth } from '@/lib/api/auth'
 import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 interface RouteParams {
   params: Promise<{ invoiceId: string }>
@@ -83,7 +84,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     if (!isAdmin) {
       // Check if the user is linked to this invoice's customer
       const { data: customer } = await supabase
-        .from('customers' as never)
+        .from('customers')
         .select('id')
         .eq('auth_user_id', user!.id)
         .single()
@@ -137,7 +138,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     })
 
     if ('error' in paymentResult) {
-      console.error('Payment intent creation failed:', paymentResult.error)
+      logger.error('Payment intent creation failed', { error: String(paymentResult.error) })
       return NextResponse.json(
         { error: paymentResult.error },
         { status: 500 }
@@ -158,7 +159,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       } as never)
 
     if (paymentRecordError) {
-      console.error('Failed to create payment record:', paymentRecordError)
+      logger.error('Failed to create payment record', { error: String(paymentRecordError) })
       // Continue anyway - the payment intent exists
     }
 
@@ -176,7 +177,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       amount: paymentAmount,
     })
   } catch (error) {
-    console.error('Payment creation error:', error)
+    logger.error('Payment creation error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

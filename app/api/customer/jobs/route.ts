@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     // Get customer record
     const { data: customer, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id')
       .eq('auth_user_id', user.id)
       .single()
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
 
     // Build query for jobs — explicit column list
     let query = supabase
-      .from('jobs' as never)
+      .from('jobs')
       .select(JOB_SELECT)
       .eq('customer_id', customerId)
       .order('created_at', { ascending: false })
@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
     let statusHistory: Record<string, unknown>[] = []
     if (jobIds.length > 0) {
       const { data: history } = await supabase
-        .from('job_status_history' as never)
+        .from('job_status_history')
         .select(HISTORY_SELECT)
         .in('job_id', jobIds)
         .order('created_at', { ascending: false })

@@ -10,6 +10,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
 import { BILLING_TEMPLATES } from '@/lib/jobs/billing-types'
+import { logger } from '@/lib/logger'
 
 const milestoneSchema = z.object({
   milestone_name: z.string().min(1).max(255),
@@ -49,13 +50,13 @@ export async function GET(
       .order('sort_order', { ascending: true })
 
     if (error) {
-      console.error('Error fetching billing schedule:', error)
+      logger.error('Error fetching billing schedule', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch billing schedule' }, { status: 500 })
     }
 
     return NextResponse.json({ milestones })
   } catch (error) {
-    console.error('Billing schedule GET error:', error)
+    logger.error('Billing schedule GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -148,13 +149,13 @@ export async function POST(
       `)
 
     if (insertError) {
-      console.error('Error creating billing schedule:', insertError)
+      logger.error('Error creating billing schedule', { error: String(insertError) })
       return NextResponse.json({ error: 'Failed to create billing schedule' }, { status: 500 })
     }
 
     return NextResponse.json({ milestones: created }, { status: 201 })
   } catch (error) {
-    console.error('Billing schedule POST error:', error)
+    logger.error('Billing schedule POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -218,7 +219,7 @@ export async function PUT(
 
     return NextResponse.json({ milestones: updated })
   } catch (error) {
-    console.error('Billing schedule PUT error:', error)
+    logger.error('Billing schedule PUT error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -11,6 +11,7 @@ import { parsePagination } from '@/lib/api/auth'
 import { logActivity } from '@/lib/team/activity-logger'
 import type { JobStatus } from '@/lib/jobs/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createJobSchema = z.object({
   lead_id: z.string().uuid().optional(),
@@ -91,7 +92,7 @@ export async function GET(request: NextRequest) {
     const { data: jobs, error, count } = await query
 
     if (error) {
-      console.error('Error fetching jobs:', error)
+      logger.error('Error fetching jobs', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch jobs' }, { status: 500 })
     }
 
@@ -114,7 +115,7 @@ export async function GET(request: NextRequest) {
       summary: counts,
     })
   } catch (error) {
-    console.error('Jobs GET error:', error)
+    logger.error('Jobs GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -172,7 +173,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError || !job) {
-      console.error('Error creating job:', createError)
+      logger.error('Error creating job', { error: String(createError) })
       return NextResponse.json({ error: 'Failed to create job' }, { status: 500 })
     }
 
@@ -187,7 +188,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ job }, { status: 201 })
   } catch (error) {
-    console.error('Jobs POST error:', error)
+    logger.error('Jobs POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

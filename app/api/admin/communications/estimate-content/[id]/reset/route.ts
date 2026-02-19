@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requirePermission } from '@/lib/team/permissions'
 import { resetEstimateContent } from '@/lib/communications/estimate-content-service'
+import { logger } from '@/lib/logger'
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -35,7 +36,7 @@ export async function POST(
       message: 'Content reset to default successfully',
     })
   } catch (error) {
-    console.error('Estimate content reset error:', error)
+    logger.error('Estimate content reset error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

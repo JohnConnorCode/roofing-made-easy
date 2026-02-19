@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { createAdminClient } from '@/lib/supabase/server'
+import { logger } from '@/lib/logger'
 
 export async function GET(request: NextRequest) {
   const { error } = await requireAdmin()
@@ -15,14 +16,14 @@ export async function GET(request: NextRequest) {
   try {
     // Fetch all relevant events in the date range
     const { data: events, error: fetchError } = await supabase
-      .from('analytics_events' as never)
+      .from('analytics_events')
       .select('*' as never)
       .gte('created_at', since)
       .order('created_at', { ascending: true })
       .limit(10000)
 
     if (fetchError) {
-      console.error('[Funnel Analytics] Query error:', fetchError.message)
+      logger.error('[Funnel Analytics] Query error', { error: String(fetchError.message) })
       return NextResponse.json({ error: 'Failed to fetch analytics' }, { status: 500 })
     }
 
@@ -245,7 +246,7 @@ export async function GET(request: NextRequest) {
       ctaClicks,
     })
   } catch (err) {
-    console.error('[Funnel Analytics] Error:', err)
+    logger.error('[Funnel Analytics] Error', { error: String(err) })
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }

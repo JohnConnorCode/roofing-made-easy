@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
+import { logger } from '@/lib/logger'
 
 const FUNNEL_ORDER = [
   'new',
@@ -45,7 +46,7 @@ export async function GET(_request: NextRequest) {
       .select('status')
 
     if (error) {
-      console.error('Error fetching lead funnel:', error)
+      logger.error('Error fetching lead funnel', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch funnel data' }, { status: 500 })
     }
 
@@ -76,7 +77,7 @@ export async function GET(_request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('Lead funnel error:', error)
+    logger.error('Lead funnel error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

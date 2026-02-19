@@ -3,7 +3,9 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
+import { useToast } from '@/components/ui/toast'
 import { formatDate } from '@/lib/utils'
 import {
   ChevronLeft,
@@ -14,6 +16,9 @@ import {
   Clock,
   MapPin,
   AlertTriangle,
+  X,
+  Trash2,
+  Pencil,
 } from 'lucide-react'
 import Link from 'next/link'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
@@ -75,9 +80,116 @@ export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [viewMode, setViewMode] = useState<ViewMode>('month')
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  const [showEventModal, setShowEventModal] = useState(false)
+  const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null)
+  const [isSaving, setIsSaving] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [eventForm, setEventForm] = useState({
+    title: '',
+    event_type: 'appointment',
+    start_at: '',
+    end_at: '',
+    location: '',
+  })
+  const { showToast } = useToast()
+
+  const openAddModal = () => {
+    setEditingEvent(null)
+    setEventForm({ title: '', event_type: 'appointment', start_at: '', end_at: '', location: '' })
+    setShowDeleteConfirm(false)
+    setShowEventModal(true)
+  }
+
+  const openEditModal = (event: CalendarEvent) => {
+    setEditingEvent(event)
+    setEventForm({
+      title: event.title,
+      event_type: event.event_type,
+      start_at: new Date(event.start_at).toISOString().slice(0, 16),
+      end_at: new Date(event.end_at).toISOString().slice(0, 16),
+      location: event.location || '',
+    })
+    setShowDeleteConfirm(false)
+    setShowEventModal(true)
+  }
 
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
+
+  const handleSaveEvent = async () => {
+    if (!eventForm.title || !eventForm.start_at || !eventForm.end_at) {
+      showToast('Title, start, and end are required', 'error')
+      return
+    }
+    setIsSaving(true)
+    try {
+      const body = {
+        title: eventForm.title,
+        event_type: eventForm.event_type,
+        start_at: new Date(eventForm.start_at).toISOString(),
+        end_at: new Date(eventForm.end_at).toISOString(),
+        location: eventForm.location || null,
+      }
+
+      if (editingEvent) {
+        // Update existing event
+        const response = await fetch(`/api/admin/calendar/${editingEvent.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        })
+        if (!response.ok) {
+          const data = await response.json()
+          throw new Error(data.error || 'Failed to update event')
+        }
+        showToast('Event updated', 'success')
+      } else {
+        // Create new event
+        const response = await fetch('/api/admin/calendar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        })
+        if (!response.ok) {
+          const data = await response.json()
+          throw new Error(data.error || 'Failed to create event')
+        }
+        showToast('Event created', 'success')
+      }
+
+      setShowEventModal(false)
+      setEditingEvent(null)
+      fetchEvents()
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to save event', 'error')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const handleDeleteEvent = async () => {
+    if (!editingEvent) return
+    setIsDeleting(true)
+    try {
+      const response = await fetch(`/api/admin/calendar/${editingEvent.id}`, {
+        method: 'DELETE',
+      })
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to delete event')
+      }
+      showToast('Event deleted', 'success')
+      setShowEventModal(false)
+      setEditingEvent(null)
+      setShowDeleteConfirm(false)
+      fetchEvents()
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : 'Failed to delete event', 'error')
+    } finally {
+      setIsDeleting(false)
+    }
+  }
 
   const fetchEvents = useCallback(async () => {
     setIsLoading(true)
@@ -162,11 +274,20 @@ export default function CalendarPage() {
           <h1 className="text-2xl font-bold text-slate-900">Calendar</h1>
           <p className="text-slate-500">Schedule jobs, appointments, and team activities</p>
         </div>
-        <Link href="/calendar/team">
-          <Button variant="outline" size="sm">
-            Team Schedule
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            onClick={openAddModal}
+            leftIcon={<Plus className="h-4 w-4" />}
+          >
+            Add Event
           </Button>
-        </Link>
+          <Link href="/calendar/team">
+            <Button variant="outline" size="sm">
+              Team Schedule
+            </Button>
+          </Link>
+        </div>
       </div>
       </FadeInSection>
 
@@ -278,9 +399,10 @@ export default function CalendarPage() {
                               {dayEvents.slice(0, 3).map((event) => (
                                 <div
                                   key={event.id}
-                                  className="text-[10px] leading-tight px-1 py-0.5 rounded truncate text-white"
+                                  className="text-[10px] leading-tight px-1 py-0.5 rounded truncate text-white cursor-pointer hover:opacity-80"
                                   style={{ backgroundColor: event.color || EVENT_TYPE_COLORS[event.event_type] || '#94a3b8' }}
                                   title={event.title}
+                                  onClick={(e) => { e.stopPropagation(); openEditModal(event) }}
                                 >
                                   {event.title}
                                 </div>
@@ -320,7 +442,11 @@ export default function CalendarPage() {
                           ) : (
                             <div className="space-y-1">
                               {dayEvents.map((event) => (
-                                <div key={event.id} className="flex items-center gap-2 text-sm">
+                                <div
+                                  key={event.id}
+                                  className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 rounded px-1 -mx-1 transition-colors"
+                                  onClick={() => openEditModal(event)}
+                                >
                                   <span
                                     className="h-2 w-2 rounded-full shrink-0"
                                     style={{ backgroundColor: event.color || EVENT_TYPE_COLORS[event.event_type] }}
@@ -352,7 +478,7 @@ export default function CalendarPage() {
                       </div>
                     ) : (
                       events.map((event) => (
-                        <div key={event.id} className="rounded-lg border border-slate-200 p-4">
+                        <div key={event.id} className="rounded-lg border border-slate-200 p-4 cursor-pointer hover:border-slate-300 transition-colors" onClick={() => openEditModal(event)}>
                           <div className="flex items-start justify-between">
                             <div>
                               <div className="flex items-center gap-2">
@@ -409,7 +535,7 @@ export default function CalendarPage() {
                 ) : (
                   <div className="space-y-3">
                     {selectedEvents.map((event) => (
-                      <div key={event.id} className="border-l-2 pl-3 py-1" style={{ borderColor: event.color || EVENT_TYPE_COLORS[event.event_type] }}>
+                      <div key={event.id} className="border-l-2 pl-3 py-1 cursor-pointer hover:bg-slate-50 rounded-r transition-colors" style={{ borderColor: event.color || EVENT_TYPE_COLORS[event.event_type] }} onClick={() => openEditModal(event)}>
                         <p className="text-sm font-medium text-slate-900">{event.title}</p>
                         <p className="text-xs text-slate-500">
                           {event.all_day ? 'All day' : new Date(event.start_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
@@ -447,6 +573,113 @@ export default function CalendarPage() {
         </div>
       )}
       </FadeInSection>
+      {/* Event Modal (Add / Edit) */}
+      {showEventModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h2 className="text-lg font-bold text-slate-900">
+                {editingEvent ? 'Edit Event' : 'Add Event'}
+              </h2>
+              <button onClick={() => setShowEventModal(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="p-4 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
+                <Input
+                  placeholder="Event title"
+                  value={eventForm.title}
+                  onChange={(e) => setEventForm({ ...eventForm, title: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                <Select
+                  options={Object.entries(EVENT_TYPE_LABELS).map(([value, label]) => ({ value, label }))}
+                  value={eventForm.event_type}
+                  onChange={(val) => setEventForm({ ...eventForm, event_type: val })}
+                />
+              </div>
+              <div className="grid gap-4 grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Start</label>
+                  <Input
+                    type="datetime-local"
+                    value={eventForm.start_at}
+                    onChange={(e) => setEventForm({ ...eventForm, start_at: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">End</label>
+                  <Input
+                    type="datetime-local"
+                    value={eventForm.end_at}
+                    onChange={(e) => setEventForm({ ...eventForm, end_at: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Location (optional)</label>
+                <Input
+                  placeholder="e.g., 123 Main St"
+                  value={eventForm.location}
+                  onChange={(e) => setEventForm({ ...eventForm, location: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-between p-4 border-t">
+              <div>
+                {editingEvent && !showDeleteConfirm && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="text-red-600 border-red-200 hover:bg-red-50"
+                    leftIcon={<Trash2 className="h-4 w-4" />}
+                  >
+                    Delete
+                  </Button>
+                )}
+                {editingEvent && showDeleteConfirm && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-red-600">Delete this event?</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleDeleteEvent}
+                      disabled={isDeleting}
+                      className="text-red-600 border-red-300 hover:bg-red-50"
+                    >
+                      {isDeleting ? 'Deleting...' : 'Yes, Delete'}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowDeleteConfirm(false)}
+                    >
+                      No
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <div className="flex gap-3">
+                <Button variant="outline" onClick={() => setShowEventModal(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSaveEvent}
+                  disabled={isSaving || !eventForm.title}
+                  leftIcon={isSaving ? <RefreshCw className="h-4 w-4 animate-spin" /> : editingEvent ? <Pencil className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                >
+                  {isSaving ? 'Saving...' : editingEvent ? 'Save Changes' : 'Create Event'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </AdminPageTransition>
   )
 }

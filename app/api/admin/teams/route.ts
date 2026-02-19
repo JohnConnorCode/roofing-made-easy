@@ -10,6 +10,7 @@ import { requirePermission } from '@/lib/team/permissions'
 import { ActivityLogger } from '@/lib/team/activity-logger'
 import type { CreateTeamRequest } from '@/lib/team/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createTeamSchema = z.object({
   name: z.string().min(1).max(100),
@@ -32,7 +33,7 @@ export async function GET(request: NextRequest) {
     const managerId = searchParams.get('manager_id')
     const search = searchParams.get('search')
 
-    // Build query
+    // Build query — include members with their profile info
     let query = supabase
       .from('teams')
       .select(`
@@ -41,6 +42,14 @@ export async function GET(request: NextRequest) {
           id,
           first_name,
           last_name
+        ),
+        team_members(
+          user:user_id(
+            id,
+            first_name,
+            last_name,
+            role
+          )
         )
       `, { count: 'exact' })
       .order('name', { ascending: true })
@@ -60,7 +69,7 @@ export async function GET(request: NextRequest) {
     const { data: teams, error, count } = await query
 
     if (error) {
-      console.error('Error fetching teams:', error)
+      logger.error('Error fetching teams', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch teams' },
         { status: 500 }
@@ -94,7 +103,7 @@ export async function GET(request: NextRequest) {
       total: count,
     })
   } catch (error) {
-    console.error('Teams GET error:', error)
+    logger.error('Teams GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -160,7 +169,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError || !team) {
-      console.error('Error creating team:', createError)
+      logger.error('Error creating team', { error: String(createError) })
       return NextResponse.json(
         { error: 'Failed to create team' },
         { status: 500 }
@@ -186,7 +195,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Teams POST error:', error)
+    logger.error('Teams POST error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

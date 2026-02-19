@@ -37,6 +37,7 @@ export interface ExplanationInput {
     hasSkylights?: boolean
     hasChimneys?: boolean
     hasSolarPanels?: boolean
+    hasInsuranceClaim?: boolean
   }
   adjustments: Array<{
     name: string

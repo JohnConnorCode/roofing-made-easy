@@ -11,6 +11,7 @@ import { createAdminClient } from '@/lib/supabase/server'
 import { encrypt, maskKey, isEncryptionConfigured } from '@/lib/crypto/encryption'
 import { invalidateCredentialCache } from '@/lib/credentials/loader'
 import { getServiceFields } from '@/lib/integrations/testers'
+import { logger } from '@/lib/logger'
 
 // Valid service IDs
 const VALID_SERVICES = ['resend', 'stripe', 'twilio', 'openai'] as const
@@ -89,7 +90,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     // Update in database
     const supabase = await createAdminClient()
     const { error: dbError } = await supabase
-      .from('api_credentials' as never)
+      .from('api_credentials')
       .update({
         encrypted_key: encryptedKey,
         key_hint: keyHint,
@@ -100,7 +101,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       .eq('service_id', serviceId)
 
     if (dbError) {
-      console.error('Database error saving credentials:', dbError)
+      logger.error('Database error saving credentials', { error: String(dbError) })
       return NextResponse.json(
         { error: 'Failed to save credentials' },
         { status: 500 }
@@ -108,7 +109,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     }
 
     // Log to audit
-    await supabase.from('audit_logs' as never).insert({
+    await supabase.from('audit_logs').insert({
       action: 'credentials_updated',
       table_name: 'api_credentials',
       record_id: serviceId,
@@ -129,7 +130,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       message: `${serviceId} credentials saved successfully`,
     })
   } catch (error) {
-    console.error('Error saving credentials:', error)
+    logger.error('Error saving credentials', { error: String(error) })
     return NextResponse.json(
       { error: 'Failed to save credentials' },
       { status: 500 }
@@ -159,7 +160,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     // Clear credentials in database
     const supabase = await createAdminClient()
     const { error: dbError } = await supabase
-      .from('api_credentials' as never)
+      .from('api_credentials')
       .update({
         encrypted_key: '',
         key_hint: '',
@@ -173,7 +174,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       .eq('service_id', serviceId)
 
     if (dbError) {
-      console.error('Database error clearing credentials:', dbError)
+      logger.error('Database error clearing credentials', { error: String(dbError) })
       return NextResponse.json(
         { error: 'Failed to clear credentials' },
         { status: 500 }
@@ -181,7 +182,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     }
 
     // Log to audit
-    await supabase.from('audit_logs' as never).insert({
+    await supabase.from('audit_logs').insert({
       action: 'credentials_removed',
       table_name: 'api_credentials',
       record_id: serviceId,
@@ -200,7 +201,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       message: `${serviceId} credentials removed. Will fall back to environment variables if configured.`,
     })
   } catch (error) {
-    console.error('Error clearing credentials:', error)
+    logger.error('Error clearing credentials', { error: String(error) })
     return NextResponse.json(
       { error: 'Failed to clear credentials' },
       { status: 500 }

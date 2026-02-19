@@ -435,6 +435,28 @@ export default function DetailsPage() {
                       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60">
                         <AlertCircle className="h-5 w-5 text-red-400" />
                         <span className="mt-1 text-xs text-red-400">Failed</span>
+                        {photo.file && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              const retryFile = photo.file!
+                              updatePhoto(photo.id, { status: 'uploading', progress: 0 })
+                              const formData = new FormData()
+                              formData.append('file', retryFile)
+                              formData.append('leadId', leadId)
+                              fetch('/api/uploads/complete', { method: 'POST', body: formData })
+                                .then((res) => {
+                                  if (res.ok) return res.json()
+                                  throw new Error('Upload failed')
+                                })
+                                .then((data) => updatePhoto(photo.id, { status: 'uploaded', storagePath: data.storagePath, progress: 100 }))
+                                .catch(() => updatePhoto(photo.id, { status: 'failed' }))
+                            }}
+                            className="mt-1.5 rounded bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-white/30 transition-colors"
+                          >
+                            Retry
+                          </button>
+                        )}
                       </div>
                     )}
                     <button

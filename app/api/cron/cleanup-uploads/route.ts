@@ -9,6 +9,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { logger } from '@/lib/logger'
 
 const CRON_SECRET = process.env.CRON_SECRET
 
@@ -50,7 +51,7 @@ export async function GET(request: NextRequest) {
       .limit(100)
 
     if (fetchError) {
-      console.error('[Cleanup] Failed to fetch abandoned uploads:', fetchError)
+      logger.error('[Cleanup] Failed to fetch abandoned uploads', { error: String(fetchError) })
       return NextResponse.json(
         { error: 'Failed to fetch uploads' },
         { status: 500 }
@@ -99,7 +100,7 @@ export async function GET(request: NextRequest) {
       ...results,
     })
   } catch (error) {
-    console.error('[Cleanup] Cron job error:', error)
+    logger.error('[Cleanup] Cron job error', { error: String(error) })
     return NextResponse.json(
       { error: 'Cleanup job failed' },
       { status: 500 }

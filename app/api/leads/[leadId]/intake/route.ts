@@ -3,6 +3,7 @@ import { createAdminClient } from '@/lib/supabase/server'
 import { notifyNewLead } from '@/lib/email'
 import { triggerWorkflows } from '@/lib/communication/workflow-engine'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 // Validation schemas
 const propertySchema = z.object({
@@ -136,7 +137,7 @@ export async function PATCH(
         )
 
       if (propertyError) {
-        console.error('Property update failed:', propertyError)
+        logger.error('Property update failed', { error: String(propertyError) })
         return NextResponse.json(
           { error: 'Failed to save property data' },
           { status: 500 }
@@ -173,7 +174,7 @@ export async function PATCH(
         )
 
       if (intakeError) {
-        console.error('Intake update failed:', intakeError)
+        logger.error('Intake update failed', { error: String(intakeError) })
         return NextResponse.json(
           { error: 'Failed to save intake data' },
           { status: 500 }
@@ -244,7 +245,7 @@ export async function PATCH(
         jobType: intake?.job_type || undefined,
         urgency: intake?.timeline_urgency || undefined,
       }).catch((err) => {
-        console.error('[Intake] Failed to send new lead notification:', {
+        logger.error('[Intake] Failed to send new lead notification', {
           leadId,
           error: err instanceof Error ? err.message : 'Unknown error',
         })
@@ -259,12 +260,12 @@ export async function PATCH(
           email: body.contact?.email,
           phone: body.contact?.phone,
         },
-      }).catch(err => console.error('Failed to trigger intake_completed workflows:', err))
+      }).catch(err => logger.error('Failed to trigger intake_completed workflows', { error: String(err) }))
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Intake PATCH error:', error)
+    logger.error('Intake PATCH error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

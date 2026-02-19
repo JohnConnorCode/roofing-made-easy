@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import type { RoofVariables, SlopeVariables } from '@/lib/supabase/types'
+import { logger } from '@/lib/logger'
 
 const applyMacroSchema = z.object({
   lead_id: z.string().uuid(),
@@ -216,7 +217,7 @@ export async function POST(
       .single()
 
     if (estimateError) {
-      console.error('Error creating estimate:', estimateError)
+      logger.error('Error creating estimate', { error: String(estimateError) })
       return NextResponse.json(
         { error: 'Failed to create estimate' },
         { status: 500 }
@@ -230,11 +231,11 @@ export async function POST(
     }))
 
     const { error: lineItemsError } = await supabase
-      .from('estimate_line_items' as never)
+      .from('estimate_line_items')
       .insert(lineItemsToInsert as never)
 
     if (lineItemsError) {
-      console.error('Error creating estimate line items:', lineItemsError)
+      logger.error('Error creating estimate line items', { error: String(lineItemsError) })
       // Don't fail the request, estimate was created successfully
     }
 
@@ -243,7 +244,7 @@ export async function POST(
 
     // Fetch complete estimate with line items
     const { data: completeEstimate } = await supabase
-      .from('detailed_estimates' as never)
+      .from('detailed_estimates')
       .select(`
         *,
         line_items:estimate_line_items(*)
@@ -253,7 +254,7 @@ export async function POST(
 
     return NextResponse.json({ estimate: completeEstimate }, { status: 201 })
   } catch (error) {
-    console.error('Error in POST /api/macros/[macroId]/apply:', error)
+    logger.error('Error in POST /api/macros/[macroId]/apply', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

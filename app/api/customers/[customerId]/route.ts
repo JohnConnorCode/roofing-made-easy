@@ -50,7 +50,7 @@ export async function GET(
 
     // Get linked leads
     const { data: customerLeads } = await supabase
-      .from('customer_leads' as never)
+      .from('customer_leads')
       .select(`
         id,
         is_primary,

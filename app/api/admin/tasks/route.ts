@@ -11,6 +11,7 @@ import { parsePagination } from '@/lib/api/auth'
 import { ActivityLogger } from '@/lib/team/activity-logger'
 import type { TaskType, TaskPriority, TaskStatus, CreateTaskRequest } from '@/lib/team/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createTaskSchema = z.object({
   title: z.string().min(1).max(200),
@@ -115,7 +116,7 @@ export async function GET(request: NextRequest) {
     const { data: tasks, error, count } = await query
 
     if (error) {
-      console.error('Error fetching tasks:', error)
+      logger.error('Error fetching tasks', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch tasks' },
         { status: 500 }
@@ -151,7 +152,7 @@ export async function GET(request: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('Tasks GET error:', error)
+    logger.error('Tasks GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -224,7 +225,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError || !task) {
-      console.error('Error creating task:', createError)
+      logger.error('Error creating task', { error: String(createError) })
       return NextResponse.json(
         { error: 'Failed to create task' },
         { status: 500 }
@@ -241,7 +242,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ task }, { status: 201 })
   } catch (error) {
-    console.error('Tasks POST error:', error)
+    logger.error('Tasks POST error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

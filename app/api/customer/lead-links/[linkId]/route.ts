@@ -32,7 +32,7 @@ export async function PATCH(
 
     // Get customer record
     const { data: customerData, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id')
       .eq('auth_user_id', user.id)
       .single()
@@ -48,7 +48,7 @@ export async function PATCH(
 
     // Verify customer owns this lead link
     const { data: existingLink, error: linkError } = await supabase
-      .from('customer_leads' as never)
+      .from('customer_leads')
       .select('*')
       .eq('id', linkId)
       .eq('customer_id', customer.id)
@@ -82,14 +82,14 @@ export async function PATCH(
     // If setting as primary, unset other primaries first
     if (isPrimary) {
       await supabase
-        .from('customer_leads' as never)
+        .from('customer_leads')
         .update({ is_primary: false } as never)
         .eq('customer_id', customer.id)
         .neq('id', linkId)
     }
 
     const { data: link, error: updateError } = await supabase
-      .from('customer_leads' as never)
+      .from('customer_leads')
       .update(updates as never)
       .eq('id', linkId)
       .select()
@@ -128,7 +128,7 @@ export async function DELETE(
 
     // Get customer record
     const { data: customerData2, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id')
       .eq('auth_user_id', user.id)
       .single()
@@ -144,7 +144,7 @@ export async function DELETE(
 
     // Delete the link
     const { error: deleteError } = await supabase
-      .from('customer_leads' as never)
+      .from('customer_leads')
       .delete()
       .eq('id', linkId)
       .eq('customer_id', customer.id)

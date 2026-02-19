@@ -108,6 +108,9 @@ export interface FunnelState {
     }>
   } | null
 
+  // Account creation status (set after estimate generation)
+  accountStatus: 'created' | 'existed' | 'failed' | null
+
   // Advanced Estimation (Xactimate-style)
   roofVariables: RoofVariables | null
   detailedEstimate: DetailedEstimate | null
@@ -178,6 +181,7 @@ export interface FunnelActions {
 
   // Step 8
   setEstimate: (estimate: FunnelState['estimate']) => void
+  setAccountStatus: (status: FunnelState['accountStatus']) => void
 
   // Advanced Estimation
   setRoofVariables: (variables: RoofVariables) => void
@@ -221,6 +225,7 @@ const initialState: FunnelState = {
   consentSms: false,
   consentTerms: false,
   estimate: null,
+  accountStatus: null,
   roofVariables: null,
   detailedEstimate: null,
   sketchId: null,
@@ -311,6 +316,7 @@ export const useFunnelStore = create<FunnelState & FunnelActions>()(
 
       // Step 8
       setEstimate: (estimate) => set({ estimate }),
+      setAccountStatus: (accountStatus) => set({ accountStatus }),
 
       // Advanced Estimation
       setRoofVariables: (roofVariables) => set({ roofVariables }),
@@ -358,6 +364,7 @@ export const useFunnelStore = create<FunnelState & FunnelActions>()(
         consentMarketing: state.consentMarketing,
         consentSms: state.consentSms,
         consentTerms: state.consentTerms,
+        accountStatus: state.accountStatus,
         roofVariables: state.roofVariables,
         sketchId: state.sketchId,
       }),
@@ -402,6 +409,7 @@ export const useContact = () => useFunnelStore(useShallow((state) => ({
   consentTerms: state.consentTerms,
 })))
 export const useEstimate = () => useFunnelStore((state) => state.estimate)
+export const useAccountStatus = () => useFunnelStore((state) => state.accountStatus)
 export const useRoofVariables = () => useFunnelStore((state) => state.roofVariables)
 export const useDetailedEstimate = () => useFunnelStore((state) => state.detailedEstimate)
 export const useSketchId = () => useFunnelStore((state) => state.sketchId)

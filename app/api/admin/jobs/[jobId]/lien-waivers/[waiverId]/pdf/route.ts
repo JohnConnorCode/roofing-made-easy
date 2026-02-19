@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { generateLienWaiverPdf } from '@/lib/pdf/lien-waiver-pdf'
 import type { LienWaiverPDFData } from '@/lib/pdf/lien-waiver-pdf'
+import { logger } from '@/lib/logger'
 
 export async function GET(
   _request: NextRequest,
@@ -68,7 +69,7 @@ export async function GET(
       },
     })
   } catch (error) {
-    console.error('Lien waiver PDF error:', error)
+    logger.error('Lien waiver PDF error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

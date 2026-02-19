@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 
     // RLS filters by user_id = auth.uid()
     const { count, error } = await supabase
-      .from('notifications' as never)
+      .from('notifications')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', user.id)
       .is('read_at', null)

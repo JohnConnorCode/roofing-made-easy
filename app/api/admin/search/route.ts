@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
+import { logger } from '@/lib/logger'
 
 interface SearchResult {
   type: 'lead' | 'job' | 'invoice' | 'customer'
@@ -120,7 +121,7 @@ export async function GET(request: NextRequest) {
     // Trim total results
     return NextResponse.json({ results: results.slice(0, limit) })
   } catch (error) {
-    console.error('Search error:', error)
+    logger.error('Search error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

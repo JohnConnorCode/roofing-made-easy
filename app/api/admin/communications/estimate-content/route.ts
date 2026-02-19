@@ -6,6 +6,7 @@
 import { NextResponse } from 'next/server'
 import { requirePermission } from '@/lib/team/permissions'
 import { getAllEstimateContent } from '@/lib/communications/estimate-content-service'
+import { logger } from '@/lib/logger'
 
 // GET /api/admin/communications/estimate-content
 export async function GET() {
@@ -32,7 +33,7 @@ export async function GET() {
       total: content.length,
     })
   } catch (error) {
-    console.error('Estimate content GET error:', error)
+    logger.error('Estimate content GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

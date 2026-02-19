@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { sendEmail } from '@/lib/email'
+import { logger } from '@/lib/logger'
 
 interface RouteParams {
   params: Promise<{ invoiceId: string }>
@@ -121,7 +122,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     })
 
     if (!emailResult.success) {
-      console.error('Failed to send invoice email:', emailResult.error)
+      logger.error('Failed to send invoice email', { error: String(emailResult.error) })
       return NextResponse.json(
         { error: 'Failed to send invoice email' },
         { status: 500 }
@@ -138,7 +139,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       .eq('id', invoiceId)
 
     if (updateError) {
-      console.error('Failed to update invoice status:', updateError)
+      logger.error('Failed to update invoice status', { error: String(updateError) })
       // Email was sent, so don't return error
     }
 
@@ -147,7 +148,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       message: `Invoice sent to ${recipientEmail}`,
     })
   } catch (error) {
-    console.error('Invoice send error:', error)
+    logger.error('Invoice send error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

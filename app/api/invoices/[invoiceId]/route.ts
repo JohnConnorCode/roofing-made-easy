@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 // Schema for updating an invoice
 const updateInvoiceSchema = z.object({
@@ -59,7 +60,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ invoice })
   } catch (error) {
-    console.error('Invoice fetch error:', error)
+    logger.error('Invoice fetch error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -134,7 +135,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .single()
 
     if (updateError || !invoice) {
-      console.error('Error updating invoice:', updateError)
+      logger.error('Error updating invoice', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to update invoice' },
         { status: 500 }
@@ -143,7 +144,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ invoice })
   } catch (error) {
-    console.error('Invoice update error:', error)
+    logger.error('Invoice update error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -188,7 +189,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       .eq('id', invoiceId)
 
     if (deleteError) {
-      console.error('Error deleting invoice:', deleteError)
+      logger.error('Error deleting invoice', { error: String(deleteError) })
       return NextResponse.json(
         { error: 'Failed to delete invoice' },
         { status: 500 }
@@ -197,7 +198,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Invoice delete error:', error)
+    logger.error('Invoice delete error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

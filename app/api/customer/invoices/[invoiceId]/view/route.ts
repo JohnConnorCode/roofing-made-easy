@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireCustomer } from '@/lib/api/auth'
+import { logger } from '@/lib/logger'
 
 interface RouteParams {
   params: Promise<{ invoiceId: string }>
@@ -63,7 +64,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Invoice view error:', error)
+    logger.error('Invoice view error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

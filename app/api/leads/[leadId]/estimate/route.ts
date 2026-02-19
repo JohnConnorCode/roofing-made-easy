@@ -5,7 +5,7 @@ import { generateExplanation } from '@/lib/ai'
 import { safeCompare } from '@/lib/utils'
 import { notifyEstimateGenerated, sendCustomerEstimateEmail } from '@/lib/email'
 import { sendEstimateReadySms } from '@/lib/sms'
-import { autoCreateCustomerAccount } from '@/lib/customer/auto-create'
+import { autoCreateCustomerAccount, type AutoCreateCustomerResult } from '@/lib/customer/auto-create'
 import { triggerWorkflows } from '@/lib/communication/workflow-engine'
 import type { PricingRule, Intake, Property, Contact } from '@/lib/supabase/types'
 import {
@@ -14,6 +14,7 @@ import {
   rateLimitResponse,
   createRateLimitHeaders,
 } from '@/lib/rate-limit'
+import { logger } from '@/lib/logger'
 
 interface LeadWithRelations {
   id: string
@@ -141,6 +142,7 @@ export async function POST(
         hasSkylights: intake?.has_skylights || undefined,
         hasChimneys: intake?.has_chimneys || undefined,
         hasSolarPanels: intake?.has_solar_panels || undefined,
+        hasInsuranceClaim: intake?.has_insurance_claim || undefined,
       },
       adjustments: result.adjustments,
     })
@@ -160,7 +162,7 @@ export async function POST(
       .eq('is_superseded', false)
 
     if (supersedeError) {
-      console.error('Failed to supersede previous estimates:', supersedeError)
+      logger.error('Failed to supersede previous estimates', { error: String(supersedeError) })
       return NextResponse.json(
         { error: 'Failed to prepare estimate. Please try again.' },
         { status: 500 }
@@ -207,7 +209,7 @@ export async function POST(
         }
       }
 
-      console.error('Failed to save estimate:', estimateError)
+      logger.error('Failed to save estimate', { error: String(estimateError) })
       return NextResponse.json(
         { error: 'Failed to save estimate' },
         { status: 500 }
@@ -267,13 +269,17 @@ export async function POST(
     // Track which critical ops succeeded/failed, retry once on failure
     const notificationResults: Record<string, string> = {}
     const retryOps: Array<{ name: string; promise: Promise<unknown> }> = []
+    let accountResult: AutoCreateCustomerResult | null = null
 
     criticalOps.forEach((op, i) => {
       const opResult = criticalResults[i]
       if (opResult.status === 'fulfilled') {
         notificationResults[op.name] = 'success'
+        if (op.name === 'customer_account') {
+          accountResult = opResult.value as AutoCreateCustomerResult
+        }
       } else {
-        console.error(`[Estimate] ${op.name} failed (will retry):`, opResult.reason instanceof Error ? opResult.reason.message : 'Unknown error')
+        logger.error(`[Estimate] ${op.name} failed (will retry)`, { error: String(opResult.reason instanceof Error ? opResult.reason.message : 'Unknown error') })
         retryOps.push(op)
       }
     })
@@ -286,8 +292,11 @@ export async function POST(
       retryOps.forEach((op, i) => {
         const retryResult = retryResults[i]
         notificationResults[op.name] = retryResult.status === 'fulfilled' ? 'success' : 'failed'
+        if (retryResult.status === 'fulfilled' && op.name === 'customer_account') {
+          accountResult = retryResult.value as AutoCreateCustomerResult
+        }
         if (retryResult.status === 'rejected') {
-          console.error(`[Estimate] ${op.name} retry failed:`, retryResult.reason instanceof Error ? retryResult.reason.message : 'Unknown error')
+          logger.error(`[Estimate] ${op.name} retry failed`, { error: String(retryResult.reason instanceof Error ? retryResult.reason.message : 'Unknown error') })
         }
       })
     }
@@ -319,7 +328,7 @@ export async function POST(
         estimateTotal: result.priceLikely,
         shareToken: lead.share_token,
       },
-    }).catch(err => console.error('Failed to trigger estimate_generated workflows:', err))
+    }).catch(err => logger.error('Failed to trigger estimate_generated workflows', { error: String(err) }))
 
     notifyEstimateGenerated({
       leadId,
@@ -336,7 +345,7 @@ export async function POST(
       priceLikely: result.priceLikely,
       priceHigh: result.priceHigh,
     }).catch((err) => {
-      console.error('[Estimate] Admin notification failed:', err instanceof Error ? err.message : 'Unknown error')
+      logger.error('[Estimate] Admin notification failed', { error: String(err instanceof Error ? err.message : 'Unknown error') })
     })
 
     if (contact?.phone && contact.consent_sms && lead.share_token) {
@@ -346,7 +355,7 @@ export async function POST(
         customerName || 'there',
         estimateUrl
       ).catch((err) => {
-        console.error('[Estimate] SMS notification failed:', err instanceof Error ? err.message : 'Unknown error')
+        logger.error('[Estimate] SMS notification failed', { error: String(err instanceof Error ? err.message : 'Unknown error') })
       })
     }
 
@@ -373,12 +382,14 @@ export async function POST(
       ...estimate as Record<string, unknown>,
       share_token: lead.share_token,
       notification_results: notificationResults,
+      account_created: (accountResult as AutoCreateCustomerResult | null)?.success && !(accountResult as AutoCreateCustomerResult | null)?.alreadyExists,
+      account_already_existed: (accountResult as AutoCreateCustomerResult | null)?.alreadyExists ?? false,
     }, {
       status: 201,
       headers: createRateLimitHeaders(rateLimitResult),
     })
   } catch (error) {
-    console.error('Estimate generation error:', error)
+    logger.error('Estimate generation error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -437,7 +448,7 @@ export async function GET(
       const isAdmin = user.user_metadata?.role === 'admin'
       if (!isAdmin) {
         const { data: customerRow } = await supabase
-          .from('customers' as never)
+          .from('customers')
           .select('id')
           .eq('auth_user_id', user.id)
           .single()
@@ -451,7 +462,7 @@ export async function GET(
         }
 
         const { data: customerLink } = await supabase
-          .from('customer_leads' as never)
+          .from('customer_leads')
           .select('id')
           .eq('lead_id', leadId)
           .eq('customer_id', customerId)
@@ -490,7 +501,7 @@ export async function GET(
 
     return NextResponse.json(estimate)
   } catch (error) {
-    console.error('Estimate fetch error:', error)
+    logger.error('Estimate fetch error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

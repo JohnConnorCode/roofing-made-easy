@@ -5,6 +5,7 @@ import { sendPaymentReceivedEmail } from '@/lib/email'
 import { sendPaymentReceivedSms } from '@/lib/sms'
 import { z } from 'zod'
 import type Stripe from 'stripe'
+import { logger } from '@/lib/logger'
 
 // Schema for validating payment intent metadata
 const paymentMetadataSchema = z.object({
@@ -73,10 +74,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ received: true })
   } catch (error) {
-    console.error('[Stripe Webhook] Critical error processing webhook:', {
+    logger.error('[Stripe Webhook] Critical error processing webhook', {
       error: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
     })
     return NextResponse.json(
       { error: 'Webhook handler failed' },
@@ -92,7 +92,7 @@ async function handlePaymentSuccess(
   // Validate metadata structure
   const metadataResult = paymentMetadataSchema.safeParse(paymentIntent.metadata)
   if (!metadataResult.success) {
-    console.error('[Payment Webhook] Invalid metadata structure:', {
+    logger.error('[Payment Webhook] Invalid metadata structure', {
       paymentIntentId: paymentIntent.id,
       metadata: paymentIntent.metadata,
       errors: metadataResult.error.flatten(),
@@ -211,7 +211,7 @@ async function handlePaymentSuccess(
       portalUrl: `${BASE_URL}/portal`,
       receiptUrl,
     }).catch((err) => {
-      console.error('[Payment Webhook] Failed to send payment confirmation email:', {
+      logger.error('[Payment Webhook] Failed to send payment confirmation email', {
         paymentIntentId: paymentIntent.id,
         email: paymentIntent.receipt_email,
         error: err instanceof Error ? err.message : 'Unknown error',
@@ -231,7 +231,7 @@ async function handlePaymentSuccess(
       customer_name || contactData?.first_name || 'there',
       formattedAmount
     ).catch((err) => {
-      console.error('[Payment Webhook] Failed to send payment confirmation SMS:', {
+      logger.error('[Payment Webhook] Failed to send payment confirmation SMS', {
         paymentIntentId: paymentIntent.id,
         phone: contactData.phone,
         error: err instanceof Error ? err.message : 'Unknown error',

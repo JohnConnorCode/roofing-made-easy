@@ -11,6 +11,7 @@ import { requirePermission } from '@/lib/team/permissions'
 import { ActivityLogger } from '@/lib/team/activity-logger'
 import type { UpdateTeamRequest, Team } from '@/lib/team/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateTeamSchema = z.object({
   name: z.string().min(1).max(100).optional(),
@@ -131,7 +132,7 @@ export async function GET(
       members: formattedMembers,
     })
   } catch (error) {
-    console.error('Team GET error:', error)
+    logger.error('Team GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -212,7 +213,7 @@ export async function PATCH(
       .eq('id', teamId)
 
     if (updateError) {
-      console.error('Error updating team:', updateError)
+      logger.error('Error updating team', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to update team' },
         { status: 500 }
@@ -285,7 +286,7 @@ export async function PATCH(
 
     return NextResponse.json({ team: updatedTeam })
   } catch (error) {
-    console.error('Team PATCH error:', error)
+    logger.error('Team PATCH error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -329,7 +330,7 @@ export async function DELETE(
       .eq('id', teamId)
 
     if (updateError) {
-      console.error('Error deactivating team:', updateError)
+      logger.error('Error deactivating team', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to deactivate team' },
         { status: 500 }
@@ -346,7 +347,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Team DELETE error:', error)
+    logger.error('Team DELETE error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

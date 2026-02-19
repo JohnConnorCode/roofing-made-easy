@@ -8,6 +8,7 @@ import { requirePermission } from '@/lib/team/permissions'
 import { emailWrapper } from '@/lib/email/templates'
 import { getEmailCompanyInfo } from '@/lib/email/brand-config'
 import { createClient } from '@/lib/supabase/server'
+import { logger } from '@/lib/logger'
 
 // Sample data for template preview
 async function getSampleData() {
@@ -163,7 +164,7 @@ export async function POST(request: NextRequest) {
       sampleData, // Return sample data so UI can show what variables were used
     })
   } catch (error) {
-    console.error('Email preview error:', error)
+    logger.error('Email preview error', { error: String(error) })
     return NextResponse.json(
       { error: 'Failed to generate preview' },
       { status: 500 }

@@ -169,7 +169,7 @@ export default function DashboardPage() {
     .slice(0, 4)
 
   // Calculate pipeline statuses for visualization
-  const pipelineStatuses = ['new', 'estimate_generated', 'consultation_scheduled', 'quote_sent', 'won']
+  const pipelineStatuses = ['new', 'intake_started', 'intake_complete', 'estimate_generated', 'consultation_scheduled', 'quote_sent', 'won', 'lost', 'archived']
   const maxStatusCount = Math.max(...Object.values(statusCounts), 1)
 
   return (

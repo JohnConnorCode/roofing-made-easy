@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data: customerData, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id, first_name, last_name')
       .eq('auth_user_id', user.id)
       .single()
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     // Verify customer owns this lead
     const { data: leadLink, error: linkError } = await supabase
-      .from('customer_leads' as never)
+      .from('customer_leads')
       .select('id')
       .eq('customer_id', customer.id)
       .eq('lead_id', leadId)
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
 
     // Get claim data
     const { data: claimData } = await supabase
-      .from('insurance_claims' as never)
+      .from('insurance_claims')
       .select('insurance_company, claim_number, policy_number, date_of_loss, cause_of_loss, customer_notes, claim_amount_approved')
       .eq('customer_id', customer.id)
       .eq('lead_id', leadId)
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
 
     // Get estimate
     const { data: estimateData } = await supabase
-      .from('estimates' as never)
+      .from('estimates')
       .select('price_likely')
       .eq('lead_id', leadId)
       .single()
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
 
     // Get property
     const { data: propertyData } = await supabase
-      .from('properties' as never)
+      .from('properties')
       .select('street_address, city, state, zip')
       .eq('lead_id', leadId)
       .single()

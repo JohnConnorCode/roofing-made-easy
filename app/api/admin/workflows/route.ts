@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requirePermission } from '@/lib/team/permissions'
 import type { WorkflowTrigger, CreateWorkflowRequest } from '@/lib/communication/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createWorkflowSchema = z.object({
   name: z.string().min(1).max(100),
@@ -87,7 +88,7 @@ export async function GET(request: NextRequest) {
     const { data: workflows, error, count } = await query
 
     if (error) {
-      console.error('Error fetching workflows:', error)
+      logger.error('Error fetching workflows', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch workflows' },
         { status: 500 }
@@ -118,7 +119,7 @@ export async function GET(request: NextRequest) {
       countsByTrigger,
     })
   } catch (error) {
-    console.error('Workflows GET error:', error)
+    logger.error('Workflows GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -195,7 +196,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError || !workflow) {
-      console.error('Error creating workflow:', createError)
+      logger.error('Error creating workflow', { error: String(createError) })
       return NextResponse.json(
         { error: 'Failed to create workflow' },
         { status: 500 }
@@ -204,7 +205,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ workflow }, { status: 201 })
   } catch (error) {
-    console.error('Workflows POST error:', error)
+    logger.error('Workflows POST error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

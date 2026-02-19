@@ -6,6 +6,7 @@ import type { AdvisorInput } from '@/lib/ai/provider'
 import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 import { z } from 'zod'
 import { persistAiContent } from '@/lib/ai/persist-content'
+import { logger } from '@/lib/logger'
 
 const advisorSchema = z.object({
   topic: z.enum(['financing', 'insurance', 'assistance']),
@@ -77,7 +78,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data: customerData, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id')
       .eq('auth_user_id', user.id)
       .single()
@@ -104,7 +105,7 @@ export async function POST(request: NextRequest) {
     if (leadId) {
       // Get lead data
       const { data: linkData } = await supabase
-        .from('customer_leads' as never)
+        .from('customer_leads')
         .select('lead_id, lead:leads(estimate:estimates(*), property:properties(*), intake:intakes(*))')
         .eq('customer_id', customer.id)
         .eq('lead_id', leadId)
@@ -131,19 +132,19 @@ export async function POST(request: NextRequest) {
       // Fetch all three data sources in parallel for cross-topic awareness
       const [financingResult, claimResult, programsResult] = await Promise.all([
         supabase
-          .from('financing_applications' as never)
+          .from('financing_applications')
           .select('credit_range, income_range, status')
           .eq('customer_id', customer.id)
           .eq('lead_id', leadId)
           .single(),
         supabase
-          .from('insurance_claims' as never)
+          .from('insurance_claims')
           .select('insurance_company, cause_of_loss, status, claim_amount_approved, deductible')
           .eq('customer_id', customer.id)
           .eq('lead_id', leadId)
           .single(),
         supabase
-          .from('customer_program_applications' as never)
+          .from('customer_program_applications')
           .select('program_id, status, approved_amount, program:assistance_programs(name)')
           .eq('customer_id', customer.id)
           .eq('lead_id', leadId),
@@ -227,7 +228,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!result.success) {
-      console.error(`[advisor] topic=${topic} provider=${result.provider} error="${result.error}"`)
+      logger.error(`[advisor] topic=${topic} provider=${result.provider} error="${result.error}"`)
       return NextResponse.json(
         { error: 'Failed to generate response' },
         { status: 500 }

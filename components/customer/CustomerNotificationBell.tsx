@@ -51,7 +51,7 @@ export function CustomerNotificationBell() {
   const fetchNotifications = useCallback(async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/customer/notifications?limit=10')
+      const response = await fetch('/api/customer/notifications?limit=20')
       if (response.ok) {
         const data = await response.json()
         setNotifications(data.notifications || [])
@@ -144,6 +144,28 @@ export function CustomerNotificationBell() {
     }
   }
 
+  const markAllRead = async () => {
+    const unreadNotifications = notifications.filter((n) => !n.read_at)
+    if (unreadNotifications.length === 0) return
+    try {
+      await Promise.all(
+        unreadNotifications.map((n) =>
+          fetch(`/api/customer/notifications/${n.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ read: true }),
+          })
+        )
+      )
+      setNotifications((prev) =>
+        prev.map((n) => (n.read_at ? n : { ...n, read_at: new Date().toISOString() }))
+      )
+      setUnreadCount(0)
+    } catch {
+      // Non-critical
+    }
+  }
+
   return (
     <div className="relative" ref={panelRef}>
       <button
@@ -171,6 +193,14 @@ export function CustomerNotificationBell() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700">
             <h3 className="text-sm font-semibold text-slate-100">Notifications</h3>
+            {unreadCount > 0 && (
+              <button
+                onClick={markAllRead}
+                className="text-xs text-gold-light hover:text-gold transition-colors"
+              >
+                Mark all read
+              </button>
+            )}
           </div>
 
           {/* Notification list */}

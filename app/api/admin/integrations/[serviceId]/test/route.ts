@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { createAdminClient } from '@/lib/supabase/server'
 import { testServiceConnection, getServiceFields } from '@/lib/integrations/testers'
+import { logger } from '@/lib/logger'
 
 // Valid service IDs
 const VALID_SERVICES = ['resend', 'stripe', 'twilio', 'openai'] as const
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
     // Update test result in database
     const supabase = await createAdminClient()
     await supabase
-      .from('api_credentials' as never)
+      .from('api_credentials')
       .update({
         last_tested_at: new Date().toISOString(),
         last_test_success: result.success,
@@ -95,7 +96,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
       )
     }
   } catch (error) {
-    console.error('Error testing connection:', error)
+    logger.error('Error testing connection', { error: String(error) })
     return NextResponse.json(
       {
         success: false,

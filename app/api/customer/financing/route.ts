@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     // Get customer record
     const { data: customerData, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id')
       .eq('auth_user_id', user.id)
       .single()
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     // Verify customer owns this lead
     const { data: leadLink, error: linkError } = await supabase
-      .from('customer_leads' as never)
+      .from('customer_leads')
       .select('id')
       .eq('customer_id', customer.id)
       .eq('lead_id', leadId)
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
 
     // Check for existing application
     const { data: existing } = await supabase
-      .from('financing_applications' as never)
+      .from('financing_applications')
       .select('id')
       .eq('customer_id', customer.id)
       .eq('lead_id', leadId)
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
 
     // Create financing application
     const { data: application, error: createError } = await supabase
-      .from('financing_applications' as never)
+      .from('financing_applications')
       .insert({
         customer_id: customer.id,
         lead_id: leadId,
@@ -157,7 +157,7 @@ export async function GET(request: NextRequest) {
 
     // Get customer record
     const { data: customerData, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id')
       .eq('auth_user_id', user.id)
       .single()
@@ -173,7 +173,7 @@ export async function GET(request: NextRequest) {
 
     // Get all financing applications for this customer
     const { data: applications, error: fetchError } = await supabase
-      .from('financing_applications' as never)
+      .from('financing_applications')
       .select('*')
       .eq('customer_id', customer.id)
       .order('created_at', { ascending: false })

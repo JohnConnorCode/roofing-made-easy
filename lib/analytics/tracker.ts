@@ -21,6 +21,8 @@ interface AnalyticsEvent {
 const BATCH_SIZE = 10
 const FLUSH_INTERVAL_MS = 5000
 const SESSION_KEY = 'analytics_session_id'
+const SESSION_ACTIVITY_KEY = 'analytics_last_activity'
+const SESSION_TIMEOUT_MS = 30 * 60 * 1000 // 30 minutes
 const UTM_KEY = 'analytics_utm'
 
 function generateId(): string {
@@ -29,11 +31,19 @@ function generateId(): string {
 
 function getSessionId(): string {
   if (typeof window === 'undefined') return ''
-  let id = localStorage.getItem(SESSION_KEY)
-  if (!id) {
+
+  const now = Date.now()
+  const lastActivity = sessionStorage.getItem(SESSION_ACTIVITY_KEY)
+  const isExpired = lastActivity && (now - parseInt(lastActivity, 10)) > SESSION_TIMEOUT_MS
+
+  let id = sessionStorage.getItem(SESSION_KEY)
+  if (!id || isExpired) {
     id = generateId()
-    localStorage.setItem(SESSION_KEY, id)
+    sessionStorage.setItem(SESSION_KEY, id)
   }
+
+  // Update last activity timestamp
+  sessionStorage.setItem(SESSION_ACTIVITY_KEY, now.toString())
   return id
 }
 

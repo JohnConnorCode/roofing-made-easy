@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
 
     // Get customer record
     const { data: customerData, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('*')
       .eq('auth_user_id', user.id)
       .single()
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
       { data: programApplications },
     ] = await Promise.all([
       supabase
-        .from('customer_leads' as never)
+        .from('customer_leads')
         .select(`
           *,
           lead:leads (
@@ -89,17 +89,17 @@ export async function GET(request: NextRequest) {
         .order('is_primary', { ascending: false })
         .order('created_at', { ascending: false }),
       supabase
-        .from('financing_applications' as never)
+        .from('financing_applications')
         .select('*')
         .eq('customer_id', customer.id)
         .order('created_at', { ascending: false }),
       supabase
-        .from('insurance_claims' as never)
+        .from('insurance_claims')
         .select('*')
         .eq('customer_id', customer.id)
         .order('created_at', { ascending: false }),
       supabase
-        .from('customer_program_applications' as never)
+        .from('customer_program_applications')
         .select('*')
         .eq('customer_id', customer.id)
         .order('created_at', { ascending: false }),
@@ -165,7 +165,7 @@ export async function PATCH(request: NextRequest) {
     if (notification_preferences !== undefined) updates.notification_preferences = notification_preferences
 
     const { data: customer, error: updateError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .update(updates as never)
       .eq('auth_user_id', user.id)
       .select()

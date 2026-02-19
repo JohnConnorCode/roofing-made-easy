@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requirePermission } from '@/lib/team/permissions'
 import { parsePagination } from '@/lib/api/auth'
+import { logger } from '@/lib/logger'
 
 interface RouteParams {
   params: Promise<{ leadId: string }>
@@ -55,7 +56,7 @@ export async function GET(
       .range(offset, offset + limit - 1)
 
     if (error) {
-      console.error('Error fetching lead communications:', error)
+      logger.error('Error fetching lead communications', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch communications' },
         { status: 500 }
@@ -91,7 +92,7 @@ export async function GET(
       offset,
     })
   } catch (error) {
-    console.error('Lead communications GET error:', error)
+    logger.error('Lead communications GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

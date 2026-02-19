@@ -19,6 +19,7 @@ import { emailWrapper } from '@/lib/email/templates'
 import { notifyUser } from '@/lib/notifications'
 import { sendConsultationReminderEmail } from '@/lib/email/notifications'
 import { sendConsultationReminder as sendConsultationReminderSms } from '@/lib/sms/twilio'
+import { logger } from '@/lib/logger'
 
 const CRON_SECRET = process.env.CRON_SECRET
 const ABANDONED_UPLOAD_HOURS = 24
@@ -281,7 +282,7 @@ async function sendCalendarReminders(
     // Notify the assigned user
     if (evt.assigned_to) {
       notifyUser(evt.assigned_to, 'calendar_reminder', `Reminder: ${evt.title}`, `Tomorrow at ${timeStr}`, `/calendar`)
-        .catch(err => console.error(`[Cron] Failed to notify user ${evt.assigned_to}:`, err instanceof Error ? err.message : err))
+        .catch(err => logger.error(`[Cron] Failed to notify user ${evt.assigned_to}`, { error: String(err instanceof Error ? err.message : err) }))
     }
 
     // Email attendee
@@ -291,13 +292,13 @@ async function sendCalendarReminders(
         customerName: evt.attendee_name || undefined,
         consultationDate: dateStr,
         consultationTime: timeStr,
-      }).catch(err => console.error(`[Cron] Failed to send reminder email to ${evt.attendee_email}:`, err instanceof Error ? err.message : err))
+      }).catch(err => logger.error(`[Cron] Failed to send reminder email to ${evt.attendee_email}`, { error: String(err instanceof Error ? err.message : err) }))
     }
 
     // SMS attendee
     if (evt.attendee_phone) {
       sendConsultationReminderSms(evt.attendee_phone, evt.attendee_name || 'there', dateStr, timeStr)
-        .catch(err => console.error(`[Cron] Failed to send reminder SMS to ${evt.attendee_phone}:`, err instanceof Error ? err.message : err))
+        .catch(err => logger.error(`[Cron] Failed to send reminder SMS to ${evt.attendee_phone}`, { error: String(err instanceof Error ? err.message : err) }))
     }
 
     // Mark reminder as sent

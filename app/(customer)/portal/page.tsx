@@ -244,15 +244,19 @@ export default function CustomerPortalPage() {
   // Check if quote was accepted
   const quoteAccepted = !!(currentLead?.lead as Record<string, unknown>)?.quote_accepted
 
-  // Check for appointment
-  const hasAppointment = false // Derived from activities if available
+  // Derive progress from lead status
+  const leadStatus = currentLead?.lead?.status
+  const hasAppointment = leadStatus === 'consultation_scheduled'
+  // hasEstimate: true if estimate record exists OR lead status implies one was generated
+  const statusImpliesEstimate = !!leadStatus && ['estimate_generated', 'estimate_sent', 'consultation_scheduled', 'quote_sent', 'won'].includes(leadStatus)
+  const hasEstimate = !!estimate || statusImpliesEstimate
 
   // Check for storm damage from intake
   const hasStormDamage = !!intake?.has_insurance_claim
 
   // Build data-driven progress timeline
   const progressSteps = computeJourneySteps({
-    hasEstimate: !!estimate,
+    hasEstimate,
     estimatePrice: estimate?.price_likely,
     quoteAccepted,
     hasFinancingApp: !!currentFinancing,
@@ -374,7 +378,7 @@ export default function CustomerPortalPage() {
 
           {/* Next Step Hero */}
           <NextStepHero
-            hasEstimate={!!estimate}
+            hasEstimate={hasEstimate}
             estimatePrice={estimate?.price_likely}
             quoteAccepted={quoteAccepted}
             hasFinancingApp={!!currentFinancing}

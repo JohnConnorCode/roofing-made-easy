@@ -35,6 +35,7 @@ export default function ContactPage() {
     setContact,
     setCurrentStep,
     setShareToken,
+    setAccountStatus,
   } = useFunnelStore()
 
   const { showToast } = useToast()
@@ -49,6 +50,25 @@ export default function ContactPage() {
   const [estimateFailed, setEstimateFailed] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const formRef = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
+
+  // Focus trap for loading overlay (accessibility)
+  useEffect(() => {
+    if (!isLoading) return
+    const previouslyFocused = document.activeElement as HTMLElement | null
+    overlayRef.current?.focus()
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        e.preventDefault()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      previouslyFocused?.focus()
+    }
+  }, [isLoading])
 
   const clearError = (field: string) => {
     if (errors[field]) {
@@ -139,10 +159,17 @@ export default function ContactPage() {
           setIsLoading(false)
           return
         }
-        // Store share_token for authenticated estimate retrieval
+        // Store share_token and account creation status
         const estimateData = await estimateResponse.json()
         if (estimateData.share_token) {
           setShareToken(estimateData.share_token)
+        }
+        if (estimateData.account_created) {
+          setAccountStatus('created')
+        } else if (estimateData.account_already_existed) {
+          setAccountStatus('existed')
+        } else {
+          setAccountStatus('failed')
         }
       } catch (err) {
         console.error('Failed to generate estimate:', err)
@@ -354,7 +381,13 @@ export default function ContactPage() {
 
         {/* Loading overlay during estimate generation */}
         {isLoading && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0c0f14]/80 backdrop-blur-sm animate-fade-in">
+          <div
+            ref={overlayRef}
+            tabIndex={-1}
+            role="alertdialog"
+            aria-label={loadingPhase === 'saving' ? 'Saving your information' : loadingPhase === 'generating' ? 'Generating your estimate' : 'Processing'}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[#0c0f14]/80 backdrop-blur-sm animate-fade-in outline-none"
+          >
             <div className="flex flex-col items-center gap-4 text-center px-6">
               <div className="relative">
                 <div className="h-16 w-16 rounded-full border-2 border-slate-700" />

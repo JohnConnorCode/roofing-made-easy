@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const clockInSchema = z.object({
   notes: z.string().max(2000).optional(),
@@ -35,7 +36,7 @@ export async function GET(
       .order('clock_in', { ascending: false })
 
     if (error) {
-      console.error('Error fetching time entries:', error)
+      logger.error('Error fetching time entries', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch time entries' }, { status: 500 })
     }
 
@@ -83,7 +84,7 @@ export async function GET(
       },
     })
   } catch (error) {
-    console.error('Time entries GET error:', error)
+    logger.error('Time entries GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -139,7 +140,7 @@ export async function POST(
       .single()
 
     if (insertError || !entry) {
-      console.error('Error creating time entry:', insertError)
+      logger.error('Error creating time entry', { error: String(insertError) })
       return NextResponse.json({ error: 'Failed to clock in' }, { status: 500 })
     }
 
@@ -154,7 +155,7 @@ export async function POST(
       entry: { ...(entry as Record<string, unknown>), user: profileData || null },
     }, { status: 201 })
   } catch (error) {
-    console.error('Time entries POST error:', error)
+    logger.error('Time entries POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

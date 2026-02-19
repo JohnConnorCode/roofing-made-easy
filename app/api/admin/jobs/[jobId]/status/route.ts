@@ -11,6 +11,7 @@ import { JOB_STATUS_TRANSITIONS, type JobStatus } from '@/lib/jobs/types'
 import { notifyAdmins, notifyJobStatusChange } from '@/lib/notifications'
 import { triggerWorkflows } from '@/lib/communication/workflow-engine'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const statusUpdateSchema = z.object({
   status: z.enum([
@@ -101,7 +102,7 @@ export async function PATCH(
       .single()
 
     if (updateError || !job) {
-      console.error('Error updating job status:', updateError)
+      logger.error('Error updating job status', { error: String(updateError) })
       return NextResponse.json({ error: 'Failed to update status' }, { status: 500 })
     }
 
@@ -136,13 +137,13 @@ export async function PATCH(
       `Job ${jobNumber} status changed`,
       `${currentStatus.replace(/_/g, ' ')} → ${newStatus.replace(/_/g, ' ')}`,
       `/jobs/${jobId}`
-    ).catch(err => console.error('Failed to notify admins of job status change:', err))
+    ).catch(err => logger.error('Failed to notify admins of job status change', { error: String(err) }))
 
     // Notify PM if assigned and not the actor
     const pm = (job as { project_manager_id?: string }).project_manager_id
     if (pm && pm !== user!.id) {
       notifyJobStatusChange(pm, jobNumber, jobId, currentStatus, newStatus)
-        .catch(err => console.error('Failed to notify PM of job status change:', err))
+        .catch(err => logger.error('Failed to notify PM of job status change', { error: String(err) }))
     }
 
     // Trigger workflows for downstream automation
@@ -151,7 +152,7 @@ export async function PATCH(
       leadId: fullJobData.lead_id || '',
       customerId: fullJobData.customer_id || undefined,
       data: { status: newStatus, old_status: currentStatus },
-    }).catch(err => console.error('Failed to trigger job status workflows:', err))
+    }).catch(err => logger.error('Failed to trigger job status workflows', { error: String(err) }))
 
     // Auto-create invoices for billing milestones triggered by this status
     try {
@@ -242,12 +243,12 @@ export async function PATCH(
       }
     } catch (autoInvoiceError) {
       // Don't fail the status update if auto-invoicing fails
-      console.error('Auto-invoicing error (non-fatal):', autoInvoiceError)
+      logger.error('Auto-invoicing error (non-fatal)', { error: String(autoInvoiceError) })
     }
 
     return NextResponse.json({ job })
   } catch (error) {
-    console.error('Job status PATCH error:', error)
+    logger.error('Job status PATCH error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

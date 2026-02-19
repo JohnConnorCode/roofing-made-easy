@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const statusUpdateSchema = z.object({
   status: z.enum(['draft', 'sent', 'signed']),
@@ -90,7 +91,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
         .single()
 
       if (updateError) {
-        console.error('Error updating lien waiver:', updateError)
+        logger.error('Error updating lien waiver', { error: String(updateError) })
         return NextResponse.json({ error: 'Failed to update lien waiver' }, { status: 500 })
       }
 
@@ -132,7 +133,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     return NextResponse.json({ waiver: edited })
   } catch (error) {
-    console.error('Lien waiver PATCH error:', error)
+    logger.error('Lien waiver PATCH error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -158,7 +159,7 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
       .select()
 
     if (error) {
-      console.error('Error deleting lien waiver:', error)
+      logger.error('Error deleting lien waiver', { error: String(error) })
       return NextResponse.json({ error: 'Failed to delete lien waiver' }, { status: 500 })
     }
 
@@ -171,7 +172,7 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
 
     return NextResponse.json({ deleted: true })
   } catch (error) {
-    console.error('Lien waiver DELETE error:', error)
+    logger.error('Lien waiver DELETE error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

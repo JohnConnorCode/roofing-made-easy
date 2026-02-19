@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireCustomer } from '@/lib/api/auth'
+import { logger } from '@/lib/logger'
 
 interface RouteParams {
   params: Promise<{ invoiceId: string }>
@@ -80,7 +81,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ invoice })
   } catch (error) {
-    console.error('Customer invoice fetch error:', error)
+    logger.error('Customer invoice fetch error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -11,6 +11,7 @@ import { requirePermission } from '@/lib/team/permissions'
 import { triggerManualWorkflow } from '@/lib/communication/workflow-engine'
 import type { UpdateWorkflowRequest } from '@/lib/communication/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateWorkflowSchema = z.object({
   name: z.string().min(1).max(100).optional(),
@@ -103,7 +104,7 @@ export async function GET(
       stats: executionStats,
     })
   } catch (error) {
-    console.error('Workflow GET error:', error)
+    logger.error('Workflow GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -188,7 +189,7 @@ export async function PATCH(
       .eq('id', workflowId)
 
     if (updateError) {
-      console.error('Error updating workflow:', updateError)
+      logger.error('Error updating workflow', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to update workflow' },
         { status: 500 }
@@ -212,7 +213,7 @@ export async function PATCH(
 
     return NextResponse.json({ workflow: updatedWorkflow })
   } catch (error) {
-    console.error('Workflow PATCH error:', error)
+    logger.error('Workflow PATCH error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -239,7 +240,7 @@ export async function DELETE(
       .eq('id', workflowId)
 
     if (deleteError) {
-      console.error('Error deleting workflow:', deleteError)
+      logger.error('Error deleting workflow', { error: String(deleteError) })
       return NextResponse.json(
         { error: 'Failed to delete workflow' },
         { status: 500 }
@@ -248,7 +249,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Workflow DELETE error:', error)
+    logger.error('Workflow DELETE error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -304,7 +305,7 @@ export async function POST(
       executions: result.executions,
     })
   } catch (error) {
-    console.error('Workflow POST (trigger) error:', error)
+    logger.error('Workflow POST (trigger) error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

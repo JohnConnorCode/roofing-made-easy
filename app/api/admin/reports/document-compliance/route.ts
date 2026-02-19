@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
+import { logger } from '@/lib/logger'
 
 // Compliance rules by job status progression
 const REQUIRED_DOCS: Record<string, string[]> = {
@@ -187,7 +188,7 @@ export async function GET(_request: NextRequest) {
       expiringDocuments: expiringDocuments.sort((a, b) => a.daysLeft - b.daysLeft),
     })
   } catch (error) {
-    console.error('Document compliance report error:', error)
+    logger.error('Document compliance report error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

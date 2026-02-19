@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     // Get customer record
     const { data: customerData, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id')
       .eq('auth_user_id', user.id)
       .single()
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     // Verify customer owns this lead
     const { data: leadLink, error: linkError } = await supabase
-      .from('customer_leads' as never)
+      .from('customer_leads')
       .select('id')
       .eq('customer_id', customer.id)
       .eq('lead_id', leadId)
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
 
     // Check for existing claim
     const { data: existing } = await supabase
-      .from('insurance_claims' as never)
+      .from('insurance_claims')
       .select('id')
       .eq('customer_id', customer.id)
       .eq('lead_id', leadId)
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
 
     // Create insurance claim
     const { data: claim, error: createError } = await supabase
-      .from('insurance_claims' as never)
+      .from('insurance_claims')
       .insert({
         customer_id: customer.id,
         lead_id: leadId,
@@ -165,7 +165,7 @@ export async function GET(request: NextRequest) {
 
     // Get customer record
     const { data: customerData2, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id')
       .eq('auth_user_id', user.id)
       .single()
@@ -181,7 +181,7 @@ export async function GET(request: NextRequest) {
 
     // Get all insurance claims for this customer
     const { data: claims, error: fetchError } = await supabase
-      .from('insurance_claims' as never)
+      .from('insurance_claims')
       .select('*')
       .eq('customer_id', customer.id)
       .order('created_at', { ascending: false })

@@ -89,9 +89,41 @@ export async function GET(request: NextRequest) {
       }
     }) || []
 
+    // Compute global aggregate stats (not limited to current page)
+    const { data: allCustomers } = await supabase
+      .from('customers')
+      .select(`
+        customer_leads(
+          lead:leads(
+            status,
+            estimates(price_likely)
+          )
+        )
+      `)
+
+    let globalTotalLeads = 0
+    let globalTotalValue = 0
+    let globalWonDeals = 0
+
+    if (allCustomers) {
+      for (const c of allCustomers as Array<{ customer_leads: Array<{ lead: { status: string; estimates: { price_likely: number }[] | null } }> }>) {
+        const leads = (c.customer_leads || []).map(cl => cl.lead).filter(Boolean)
+        globalTotalLeads += leads.length
+        for (const lead of leads) {
+          globalTotalValue += lead.estimates?.[0]?.price_likely || 0
+          if (lead.status === 'won') globalWonDeals++
+        }
+      }
+    }
+
     return NextResponse.json({
       customers: transformedCustomers,
-      total: count || 0
+      total: count || 0,
+      globalStats: {
+        totalLeads: globalTotalLeads,
+        totalValue: globalTotalValue,
+        wonDeals: globalWonDeals,
+      }
     })
   } catch {
     return NextResponse.json(

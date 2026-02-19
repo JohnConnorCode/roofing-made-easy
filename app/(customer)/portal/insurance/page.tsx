@@ -188,8 +188,15 @@ export default function InsurancePage() {
     }
   }
 
-  // Detected issues placeholder (intake table doesn't store photo_analysis)
+  // Derive detected issues from intake data
   const detectedIssues: Array<{ issue: string; confidence: number; description?: string }> = []
+  if (intake?.has_insurance_claim) {
+    detectedIssues.push({
+      issue: 'Storm / Weather Damage',
+      confidence: 0.85,
+      description: 'Insurance claim indicator was flagged during your intake. This suggests storm or weather-related damage that may be covered by your policy.',
+    })
+  }
 
   return (
     <div className="space-y-6">

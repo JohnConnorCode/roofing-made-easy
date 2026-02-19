@@ -50,6 +50,7 @@ export default function EstimatePage() {
     photos,
     address,
     shareToken,
+    accountStatus,
     setEstimate,
     resetFunnel,
   } = useFunnelStore()
@@ -59,6 +60,7 @@ export default function EstimatePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [estimate, setEstimateData] = useState<EstimateData | null>(null)
+  const [isDownloading, setIsDownloading] = useState(false)
 
   const handleScheduleConsultation = useCallback(() => {
     trackCTAClick('schedule_consultation')
@@ -70,6 +72,8 @@ export default function EstimatePage() {
   }, [showToast, trackCTAClick])
 
   const handleDownloadPDF = useCallback(async () => {
+    if (isDownloading) return
+    setIsDownloading(true)
     trackEngagement('pdf_downloaded')
     try {
       // Download PDF from API
@@ -96,8 +100,10 @@ export default function EstimatePage() {
       // Fallback to print if PDF generation fails
       showToast('Opening print dialog instead...', 'info')
       window.print()
+    } finally {
+      setIsDownloading(false)
     }
-  }, [leadId, showToast, trackEngagement])
+  }, [leadId, shareToken, showToast, trackEngagement, isDownloading])
 
   const handleShare = useCallback(async () => {
     const shareUrl = window.location.href
@@ -136,10 +142,14 @@ export default function EstimatePage() {
 
   const handleCreateAccount = useCallback(() => {
     trackCTAClick('create_account')
-    const params = new URLSearchParams({ leadId, source: 'estimate' })
-    if (shareToken) params.set('token', shareToken)
-    router.push(`/customer/register?${params.toString()}`)
-  }, [router, leadId, shareToken, trackCTAClick])
+    if (accountStatus === 'created' || accountStatus === 'existed') {
+      router.push('/customer/login')
+    } else {
+      const params = new URLSearchParams({ leadId, source: 'estimate' })
+      if (shareToken) params.set('token', shareToken)
+      router.push(`/customer/register?${params.toString()}`)
+    }
+  }, [router, leadId, shareToken, trackCTAClick, accountStatus])
 
   // Scroll to top on mount
   useEffect(() => {
@@ -298,6 +308,8 @@ export default function EstimatePage() {
       onStartNew={handleStartNew}
       onCreateAccount={handleCreateAccount}
       calendlyUrl={CALENDLY_URL}
+      accountStatus={accountStatus}
+      isDownloading={isDownloading}
       // Project details
       roofAgeYears={roofAgeYears}
       roofPitch={roofPitch}

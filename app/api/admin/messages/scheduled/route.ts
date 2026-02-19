@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requirePermission } from '@/lib/team/permissions'
 import { parsePagination } from '@/lib/api/auth'
 import type { MessageStatus, MessageChannel } from '@/lib/communication/types'
+import { logger } from '@/lib/logger'
 
 // GET /api/admin/messages/scheduled - List scheduled messages
 export async function GET(request: NextRequest) {
@@ -63,7 +64,7 @@ export async function GET(request: NextRequest) {
     const { data: messages, error, count } = await query
 
     if (error) {
-      console.error('Error fetching scheduled messages:', error)
+      logger.error('Error fetching scheduled messages', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch scheduled messages' },
         { status: 500 }
@@ -89,7 +90,7 @@ export async function GET(request: NextRequest) {
       counts,
     })
   } catch (error) {
-    console.error('Scheduled messages GET error:', error)
+    logger.error('Scheduled messages GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -150,7 +151,7 @@ export async function DELETE(request: NextRequest) {
       .eq('id', messageId)
 
     if (updateError) {
-      console.error('Error cancelling message:', updateError)
+      logger.error('Error cancelling message', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to cancel message' },
         { status: 500 }
@@ -159,7 +160,7 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Scheduled messages DELETE error:', error)
+    logger.error('Scheduled messages DELETE error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

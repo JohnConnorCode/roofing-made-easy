@@ -10,6 +10,7 @@ import { requirePermission } from '@/lib/team/permissions'
 import type { MessageChannel, CreateTemplateRequest } from '@/lib/communication/types'
 import { extractAllVariables } from '@/lib/communication/utils'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createTemplateSchema = z.object({
   name: z.string().min(1).max(100),
@@ -73,7 +74,7 @@ export async function GET(request: NextRequest) {
     const { data: templates, error, count } = await query
 
     if (error) {
-      console.error('Error fetching templates:', error)
+      logger.error('Error fetching templates', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch templates' },
         { status: 500 }
@@ -95,7 +96,7 @@ export async function GET(request: NextRequest) {
       categories: uniqueCategories,
     })
   } catch (error) {
-    console.error('Templates GET error:', error)
+    logger.error('Templates GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -161,7 +162,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError || !template) {
-      console.error('Error creating template:', createError)
+      logger.error('Error creating template', { error: String(createError) })
       return NextResponse.json(
         { error: 'Failed to create template' },
         { status: 500 }
@@ -170,7 +171,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ template }, { status: 201 })
   } catch (error) {
-    console.error('Templates POST error:', error)
+    logger.error('Templates POST error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

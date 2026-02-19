@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
+import { logger } from '@/lib/logger'
 
 export async function GET(request: NextRequest) {
   try {
@@ -28,7 +29,7 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       // If the view doesn't exist yet, fall back to direct query
-      console.error('AR aging view error:', error)
+      logger.error('AR aging view error', { error: String(error) })
 
       // Fallback: query invoices directly
       const { data: invoices } = await supabase
@@ -74,7 +75,7 @@ export async function GET(request: NextRequest) {
 
     return buildResponse(arData || [])
   } catch (error) {
-    console.error('AR aging report GET error:', error)
+    logger.error('AR aging report GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

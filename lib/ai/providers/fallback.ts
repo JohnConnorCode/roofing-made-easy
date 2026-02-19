@@ -50,17 +50,79 @@ export class FallbackProvider implements AiProvider {
   async generateExplanation(input: ExplanationInput): Promise<AiResult<string>> {
     const { estimate, intake, adjustments } = input
 
-    // Generate a rule-based explanation
+    // Generate a rule-based explanation referencing all available intake data
     const parts: string[] = []
 
-    // Opening
-    parts.push(
-      `Based on the information you provided, your estimated cost for ${
-        intake.jobType?.replace('_', ' ') || 'roofing work'
-      } ranges from $${estimate.priceLow.toLocaleString()} to $${estimate.priceHigh.toLocaleString()}, with $${estimate.priceLikely.toLocaleString()} being the most likely price.`
-    )
+    const jobLabel = intake.jobType?.replace(/_/g, ' ') || 'roofing work'
 
-    // Factors
+    // Material-specific context
+    const materialNotes: Record<string, string> = {
+      asphalt_shingle: 'Asphalt shingles offer the best balance of cost, durability, and curb appeal — they\'re the most popular choice among homeowners for good reason.',
+      metal: 'Metal roofing is a premium, long-lasting choice that can last 40-70 years with minimal maintenance, and it offers excellent energy efficiency.',
+      tile: 'Tile roofing provides exceptional durability and a distinctive look. While the upfront cost is higher, tile roofs can last 50+ years.',
+      slate: 'Slate is one of the most durable and elegant roofing materials available, with a lifespan that can exceed 100 years.',
+      wood_shake: 'Wood shake gives your home a beautiful, natural appearance. It requires more maintenance but offers great insulation properties.',
+      flat_membrane: 'Flat/membrane roofing systems are ideal for low-slope roofs, providing excellent waterproofing and modern aesthetics.',
+    }
+
+    // Opening — warm and personal
+    if (intake.roofSizeSqft) {
+      parts.push(
+        `Your ${intake.roofSizeSqft.toLocaleString()} sq ft roof ${jobLabel} is estimated between $${estimate.priceLow.toLocaleString()} and $${estimate.priceHigh.toLocaleString()}, with $${estimate.priceLikely.toLocaleString()} as the most likely cost.`
+      )
+    } else {
+      parts.push(
+        `Based on your property details, your ${jobLabel} is estimated between $${estimate.priceLow.toLocaleString()} and $${estimate.priceHigh.toLocaleString()}, with $${estimate.priceLikely.toLocaleString()} as the most likely cost.`
+      )
+    }
+
+    // Material-specific note
+    if (intake.roofMaterial && materialNotes[intake.roofMaterial]) {
+      parts.push(materialNotes[intake.roofMaterial])
+    } else if (intake.roofSizeSqft) {
+      parts.push('This pricing is tailored to your roof size and local market rates.')
+    }
+
+    // Pitch and access difficulty
+    if (intake.roofPitch === 'steep' || intake.roofPitch === 'very_steep') {
+      parts.push(
+        `Your ${intake.roofPitch.replace('_', ' ')} roof pitch adds complexity to the project, requiring additional safety equipment and labor time.`
+      )
+    }
+
+    // Multi-story access
+    if (intake.stories && intake.stories >= 2) {
+      parts.push(
+        `As a ${intake.stories}-story property, additional scaffolding and equipment are factored into the estimate for safe access.`
+      )
+    }
+
+    // Roof features requiring special attention
+    const features: string[] = []
+    if (intake.hasSkylights) features.push('skylights')
+    if (intake.hasChimneys) features.push('chimneys')
+    if (intake.hasSolarPanels) features.push('solar panels')
+    if (features.length > 0) {
+      const featureList = features.length === 1
+        ? features[0]
+        : features.slice(0, -1).join(', ') + ' and ' + features[features.length - 1]
+      parts.push(
+        `Your roof includes ${featureList}, which require${features.length === 1 ? 's' : ''} specialized flashing, sealing, or coordination to ensure a watertight result.`
+      )
+    }
+
+    // Issues reported
+    if (intake.issues && intake.issues.length > 0) {
+      const issueLabels = intake.issues.map(i => i.replace(/_/g, ' '))
+      const issueList = issueLabels.length === 1
+        ? issueLabels[0]
+        : issueLabels.slice(0, -1).join(', ') + ' and ' + issueLabels[issueLabels.length - 1]
+      parts.push(
+        `The reported issues — ${issueList} — have been considered in the scope and pricing of this estimate.`
+      )
+    }
+
+    // Significant pricing factors
     const significantFactors = adjustments.filter((a) => Math.abs(a.impact) >= 100)
     if (significantFactors.length > 0) {
       const factorList = significantFactors
@@ -71,21 +133,39 @@ export class FallbackProvider implements AiProvider {
       )
     }
 
-    // Size mention
-    if (intake.roofSizeSqft) {
+    // Timeline urgency
+    if (intake.timelineUrgency) {
+      const urgencyLabels: Record<string, string> = {
+        emergency: 'Given the emergency nature of your request, we prioritize rapid response and can expedite scheduling.',
+        asap: 'With your ASAP timeline, we can prioritize scheduling to get your project underway quickly.',
+        within_month: 'Your timeline of completing this within the month aligns well with our typical scheduling.',
+        within_3_months: 'Your flexible timeline within the next three months gives us room to coordinate the ideal crew and materials.',
+        flexible: 'Your flexible timeline allows us to schedule at the most convenient time and potentially offer better material availability.',
+        just_exploring: 'Since you\'re exploring options, this estimate gives you a solid baseline for comparison. It\'s valid for 30 days.',
+      }
+      const urgencyNote = urgencyLabels[intake.timelineUrgency]
+      if (urgencyNote) {
+        parts.push(urgencyNote)
+      }
+    }
+
+    // Insurance claim
+    if (intake.hasInsuranceClaim) {
       parts.push(
-        `Your ${intake.roofSizeSqft.toLocaleString()} square foot roof ${
-          intake.roofMaterial
-            ? `with ${intake.roofMaterial.replace('_', ' ')} material`
-            : ''
-        } falls within typical pricing ranges for your area.`
+        'Since you have an active insurance claim, our team can work directly with your adjuster and provide the documentation needed to support your claim.'
       )
     }
 
-    // Closing
-    parts.push(
-      'This is an automated estimate based on the information provided. For an exact quote, schedule a free on-site consultation where we can assess your specific needs and provide detailed pricing.'
-    )
+    // Closing — consultation value prop
+    if (intake.timelineUrgency === 'emergency' || intake.timelineUrgency === 'asap') {
+      parts.push(
+        'A free on-site consultation will give you an exact quote and let us begin planning your project right away — we\'re ready when you are.'
+      )
+    } else {
+      parts.push(
+        'Schedule a free on-site consultation to get an exact quote tailored to your home. Our roofing expert will walk through every detail so you can make a confident decision.'
+      )
+    }
 
     return {
       success: true,

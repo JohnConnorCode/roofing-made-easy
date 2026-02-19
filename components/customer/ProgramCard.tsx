@@ -38,6 +38,7 @@ interface ProgramCardProps {
   estimateAmount?: number
   onApply?: () => void
   onTrack?: () => void
+  onStatusChange?: (newStatus: ApplicationStatus) => void
   compact?: boolean
   expandable?: boolean
 }
@@ -49,6 +50,7 @@ export function ProgramCard({
   estimateAmount,
   onApply,
   onTrack,
+  onStatusChange,
   compact = false,
   expandable = false,
 }: ProgramCardProps) {
@@ -316,6 +318,23 @@ export function ProgramCard({
                 Apply Online
               </a>
             )}
+          </div>
+        )}
+
+        {/* Status update */}
+        {applicationStatus && onStatusChange && (
+          <div className="flex items-center gap-3 pt-2 border-t border-slate-700">
+            <span className="text-xs text-slate-500">Update status:</span>
+            <select
+              value={applicationStatus}
+              onChange={(e) => onStatusChange(e.target.value as ApplicationStatus)}
+              onClick={(e) => e.stopPropagation()}
+              className="flex-1 rounded-md border border-slate-600 bg-slate-800 px-2 py-1.5 text-xs text-slate-200 focus:border-gold-light focus:outline-none"
+            >
+              {Object.entries(APPLICATION_STATUS_LABELS).map(([value, info]) => (
+                <option key={value} value={value}>{info.label}</option>
+              ))}
+            </select>
           </div>
         )}
 

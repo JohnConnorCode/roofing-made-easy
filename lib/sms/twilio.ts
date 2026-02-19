@@ -1,5 +1,6 @@
 import twilio from 'twilio'
 import { getTwilioCredentials } from '@/lib/credentials/loader'
+import { BUSINESS_CONFIG } from '@/lib/config/business'
 
 // Cached Twilio client
 let cachedClient: ReturnType<typeof twilio> | null = null
@@ -109,7 +110,7 @@ function normalizePhoneNumber(phone: string): string | null {
 // SMS Templates
 export const SMS_TEMPLATES = {
   consultationReminder: (customerName: string, date: string, time: string) =>
-    `Hi ${customerName}! This is a reminder that your roofing consultation with Smart Roof Pricing is tomorrow (${date}) at ${time}. Reply CONFIRM to confirm or call (662) 555-0123 to reschedule.`,
+    `Hi ${customerName}! This is a reminder that your roofing consultation with Smart Roof Pricing is tomorrow (${date}) at ${time}. Reply CONFIRM to confirm or call ${BUSINESS_CONFIG.phone.display} to reschedule.`,
 
   estimateReady: (customerName: string, url: string) =>
     `Hi ${customerName}! Your roofing estimate from Smart Roof Pricing is ready. View it here: ${url}`,

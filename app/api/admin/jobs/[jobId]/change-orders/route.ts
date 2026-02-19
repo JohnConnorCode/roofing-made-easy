@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { notifyAdmins } from '@/lib/notifications'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createChangeOrderSchema = z.object({
   description: z.string().min(1).max(2000),
@@ -41,7 +42,7 @@ export async function GET(
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('Error fetching change orders:', error)
+      logger.error('Error fetching change orders', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch change orders' }, { status: 500 })
     }
 
@@ -55,7 +56,7 @@ export async function GET(
 
     return NextResponse.json({ changeOrders, netDelta })
   } catch (error) {
-    console.error('Change orders GET error:', error)
+    logger.error('Change orders GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -111,7 +112,7 @@ export async function POST(
       .single()
 
     if (insertError) {
-      console.error('Error creating change order:', insertError)
+      logger.error('Error creating change order', { error: String(insertError) })
       return NextResponse.json({ error: 'Failed to create change order' }, { status: 500 })
     }
 
@@ -129,11 +130,11 @@ export async function POST(
       `Change Order Created: Job ${jobNumber}`,
       `$${sign}${delta.toLocaleString(undefined, { minimumFractionDigits: 2 })} — ${parsed.data.description.slice(0, 80)}`,
       `/jobs/${jobId}`
-    ).catch(err => console.error('Failed to notify admins of change order:', err))
+    ).catch(err => logger.error('Failed to notify admins of change order', { error: String(err) }))
 
     return NextResponse.json({ changeOrder }, { status: 201 })
   } catch (error) {
-    console.error('Change orders POST error:', error)
+    logger.error('Change orders POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

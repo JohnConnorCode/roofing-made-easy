@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { sendContactFormEmails } from '@/lib/email'
 import { z } from 'zod'
 import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
+import { logger } from '@/lib/logger'
 
 // Validation schema for contact form
 const contactSchema = z.object({
@@ -79,7 +80,7 @@ export async function POST(request: NextRequest) {
     }).catch((err) => {
       const [localPart, domain] = email.split('@')
       const maskedEmail = localPart ? `${localPart[0]}***@${domain}` : '***'
-      console.error('[Contact Form] Failed to send contact form emails:', {
+      logger.error('[Contact Form] Failed to send contact form emails', {
         submissionId: submissionData.id,
         email: maskedEmail,
         error: err instanceof Error ? err.message : 'Unknown error',
@@ -95,7 +96,7 @@ export async function POST(request: NextRequest) {
       { status: 201, headers: createRateLimitHeaders(rateLimitResult) }
     )
   } catch (error) {
-    console.error('[Contact Form] Error:', error instanceof Error ? error.message : 'Unknown error')
+    logger.error('[Contact Form] Error', { error: String(error instanceof Error ? error.message : 'Unknown error') })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

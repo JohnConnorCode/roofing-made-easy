@@ -11,6 +11,7 @@ import { parsePagination } from '@/lib/api/auth'
 import { ActivityLogger } from '@/lib/team/activity-logger'
 import type { UserRole, CreateUserRequest } from '@/lib/team/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createUserSchema = z.object({
   email: z.string().email(),
@@ -64,7 +65,7 @@ export async function GET(request: NextRequest) {
     const { data: users, error, count } = await query
 
     if (error) {
-      console.error('Error fetching users:', error)
+      logger.error('Error fetching users', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch users' },
         { status: 500 }
@@ -78,7 +79,7 @@ export async function GET(request: NextRequest) {
       offset,
     })
   } catch (error) {
-    console.error('Users GET error:', error)
+    logger.error('Users GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -127,7 +128,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (authCreateError || !authData.user) {
-      console.error('Error creating auth user:', authCreateError)
+      logger.error('Error creating auth user', { error: String(authCreateError) })
       return NextResponse.json(
         { error: authCreateError?.message || 'Failed to create user' },
         { status: 400 }
@@ -151,7 +152,7 @@ export async function POST(request: NextRequest) {
       .eq('id', newUserId)
 
     if (profileError) {
-      console.error('Error updating user profile:', profileError)
+      logger.error('Error updating user profile', { error: String(profileError) })
       // Non-critical - profile trigger should have created basic profile
     }
 
@@ -166,7 +167,7 @@ export async function POST(request: NextRequest) {
         } as never)
 
       if (teamError) {
-        console.error('Error adding user to team:', teamError)
+        logger.error('Error adding user to team', { error: String(teamError) })
         // Non-critical
       }
     }
@@ -182,7 +183,7 @@ export async function POST(request: NextRequest) {
         redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || ''}/auth/reset-password`,
       })
       if (resetError) {
-        console.error('Error sending password reset email:', resetError)
+        logger.error('Error sending password reset email', { error: String(resetError) })
       } else {
         resetEmailSent = true
       }
@@ -206,7 +207,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Users POST error:', error)
+    logger.error('Users POST error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

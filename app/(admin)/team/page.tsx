@@ -39,6 +39,15 @@ interface User {
   team_names: string[] | null
 }
 
+interface TeamMember {
+  user: {
+    id: string
+    first_name: string | null
+    last_name: string | null
+    role: string
+  }
+}
+
 interface Team {
   id: string
   name: string
@@ -52,6 +61,7 @@ interface Team {
     first_name: string | null
     last_name: string | null
   } | null
+  team_members?: TeamMember[]
 }
 
 interface Invitation {
@@ -662,6 +672,28 @@ export default function TeamPage() {
                       {team.description && (
                         <p className="text-sm text-slate-600 mb-4">{team.description}</p>
                       )}
+
+                      {/* Team members list */}
+                      {team.team_members && team.team_members.length > 0 && (
+                        <div className="mb-4">
+                          <p className="text-xs font-medium text-slate-500 mb-2">Members</p>
+                          <div className="flex flex-wrap gap-2">
+                            {team.team_members.map((m) => (
+                              <div key={m.user.id} className="flex items-center gap-1.5 rounded-full bg-slate-50 border border-slate-200 px-3 py-1">
+                                <span className="text-sm text-slate-700">
+                                  {m.user.first_name && m.user.last_name
+                                    ? `${m.user.first_name} ${m.user.last_name}`
+                                    : 'Unknown'}
+                                </span>
+                                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-medium ${ROLE_COLORS[m.user.role as UserRole] || 'bg-slate-100 text-slate-600'}`}>
+                                  {ROLE_LABELS[m.user.role as UserRole] || m.user.role}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       <div className="flex gap-2">
                         <Button variant="outline" size="sm" leftIcon={<UserPlus className="h-4 w-4" />} onClick={() => { setInviteTeamId(team.id); setShowInviteModal(true); }}>
                           Add Member

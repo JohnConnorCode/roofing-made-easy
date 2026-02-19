@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createDocumentSchema = z.object({
   document_type: z.enum(['contract', 'permit', 'insurance_cert', 'inspection_report', 'photo', 'warranty_cert', 'other']),
@@ -53,13 +54,13 @@ export async function GET(
     const { data: documents, error } = await query
 
     if (error) {
-      console.error('Error fetching job documents:', error)
+      logger.error('Error fetching job documents', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch documents' }, { status: 500 })
     }
 
     return NextResponse.json({ documents })
   } catch (error) {
-    console.error('Job documents GET error:', error)
+    logger.error('Job documents GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -111,13 +112,13 @@ export async function POST(
       .single()
 
     if (createError || !document) {
-      console.error('Error creating job document:', createError)
+      logger.error('Error creating job document', { error: String(createError) })
       return NextResponse.json({ error: 'Failed to create document' }, { status: 500 })
     }
 
     return NextResponse.json({ document }, { status: 201 })
   } catch (error) {
-    console.error('Job documents POST error:', error)
+    logger.error('Job documents POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

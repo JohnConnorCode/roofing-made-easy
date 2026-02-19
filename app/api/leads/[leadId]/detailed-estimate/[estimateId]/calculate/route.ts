@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type { RoofVariables } from '@/lib/supabase/types'
+import { logger } from '@/lib/logger'
 
 /**
  * Recalculate all line items in an estimate based on current variables
@@ -64,6 +65,23 @@ export async function POST(
     }>
     const updates: Array<{ id: string; updates: Record<string, unknown> }> = []
 
+    // Batch-fetch base costs for all non-overridden line items
+    const nonOverriddenIds = lineItems
+      .filter((item) => !item.cost_override)
+      .map((item) => item.line_item_id)
+
+    const baseCostMap = new Map<string, { base_material_cost: number; base_labor_cost: number; base_equipment_cost: number }>()
+    if (nonOverriddenIds.length > 0) {
+      const { data: baseCosts } = await supabase
+        .from('line_items')
+        .select('id, base_material_cost, base_labor_cost, base_equipment_cost')
+        .in('id', nonOverriddenIds)
+
+      for (const item of (baseCosts || []) as Array<{ id: string; base_material_cost: number; base_labor_cost: number; base_equipment_cost: number }>) {
+        baseCostMap.set(item.id, item)
+      }
+    }
+
     for (const item of lineItems) {
       // Skip items with manual quantity override
       if (item.quantity_override && !item.quantity_formula) {
@@ -91,19 +109,7 @@ export async function POST(
       let equipmentUnitCost = item.equipment_unit_cost
 
       if (!item.cost_override) {
-        // Fetch base costs from line item
-        const { data: lineItemData } = await supabase
-          .from('line_items')
-          .select('base_material_cost, base_labor_cost, base_equipment_cost')
-          .eq('id', item.line_item_id)
-          .single()
-
-        // Type assertion for line item costs
-        const lineItem = lineItemData as {
-          base_material_cost: number
-          base_labor_cost: number
-          base_equipment_cost: number
-        } | null
+        const lineItem = baseCostMap.get(item.line_item_id)
 
         if (lineItem) {
           materialUnitCost = lineItem.base_material_cost * geoMultipliers.material
@@ -155,7 +161,7 @@ export async function POST(
       .single()
 
     if (refetchError) {
-      console.error('Error refetching estimate:', refetchError)
+      logger.error('Error refetching estimate', { error: String(refetchError) })
       return NextResponse.json(
         { error: 'Failed to refetch estimate' },
         { status: 500 }
@@ -167,7 +173,7 @@ export async function POST(
       recalculated: updates.length,
     })
   } catch (error) {
-    console.error('Error in POST calculate:', error)
+    logger.error('Error in POST calculate', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

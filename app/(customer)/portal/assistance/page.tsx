@@ -69,6 +69,7 @@ export default function AssistancePage() {
     eligiblePrograms,
     setEligiblePrograms,
     addProgramApplication,
+    updateProgramApplication,
   } = useCustomerStore()
 
   const [showFilters, setShowFilters] = useState(false)
@@ -197,6 +198,31 @@ export default function AssistancePage() {
       }
     } catch (error) {
       showToast(error instanceof Error ? error.message : 'Failed to track', 'error')
+    }
+  }
+
+  const handleUpdateStatus = async (programId: string, newStatus: string) => {
+    const application = programApplications.find(
+      (a) => a.program_id === programId && a.lead_id === selectedLeadId
+    )
+    if (!application) return
+
+    try {
+      const response = await fetch('/api/customer/programs', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          applicationId: application.id,
+          status: newStatus,
+        }),
+      })
+
+      if (!response.ok) throw new Error('Failed to update status')
+      const data = await response.json()
+      updateProgramApplication(application.id, data)
+      showToast(`Status updated to ${newStatus.replace('_', ' ')}`, 'success')
+    } catch {
+      showToast('Failed to update status', 'error')
     }
   }
 
@@ -443,6 +469,7 @@ export default function AssistancePage() {
                     window.open(program.applicationUrl, '_blank', 'noopener,noreferrer')
                   }
                 }}
+                onStatusChange={applicationStatus ? (newStatus) => handleUpdateStatus(program.id, newStatus) : undefined}
                 compact
               />
             ))}
@@ -589,6 +616,8 @@ export default function AssistancePage() {
                   window.open(program.applicationUrl, '_blank', 'noopener,noreferrer')
                 }
               }}
+              onStatusChange={applicationStatus ? (newStatus) => handleUpdateStatus(program.id, newStatus) : undefined}
+              expandable
             />
           ))}
         </div>

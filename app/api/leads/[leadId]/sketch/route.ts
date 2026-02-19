@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const sketchDataSchema = z.object({
   planes: z.array(z.object({
@@ -78,7 +79,7 @@ export async function GET(
           { status: 200 }
         )
       }
-      console.error('Error fetching sketch:', error)
+      logger.error('Error fetching sketch', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch sketch' },
         { status: 500 }
@@ -87,7 +88,7 @@ export async function GET(
 
     return NextResponse.json({ sketch })
   } catch (error) {
-    console.error('Error in GET /api/leads/[leadId]/sketch:', error)
+    logger.error('Error in GET /api/leads/[leadId]/sketch', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -152,7 +153,7 @@ export async function POST(
       .single()
 
     if (error) {
-      console.error('Error creating sketch:', error)
+      logger.error('Error creating sketch', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to create sketch' },
         { status: 500 }
@@ -161,7 +162,7 @@ export async function POST(
 
     return NextResponse.json({ sketch }, { status: 201 })
   } catch (error) {
-    console.error('Error in POST /api/leads/[leadId]/sketch:', error)
+    logger.error('Error in POST /api/leads/[leadId]/sketch', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -204,7 +205,7 @@ export async function PATCH(
           { status: 404 }
         )
       }
-      console.error('Error updating sketch:', error)
+      logger.error('Error updating sketch', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to update sketch' },
         { status: 500 }
@@ -213,7 +214,7 @@ export async function PATCH(
 
     return NextResponse.json({ sketch })
   } catch (error) {
-    console.error('Error in PATCH /api/leads/[leadId]/sketch:', error)
+    logger.error('Error in PATCH /api/leads/[leadId]/sketch', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

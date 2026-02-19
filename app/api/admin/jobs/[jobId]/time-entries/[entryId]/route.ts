@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateSchema = z.object({
   clock_out: z.boolean().optional(), // true = clock out now
@@ -65,7 +66,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
       .single()
 
     if (updateError || !entry) {
-      console.error('Error updating time entry:', updateError)
+      logger.error('Error updating time entry', { error: String(updateError) })
       return NextResponse.json({ error: 'Failed to update time entry' }, { status: 500 })
     }
 
@@ -79,7 +80,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     return NextResponse.json({ entry: { ...(entry as Record<string, unknown>), user: profileData || null } })
   } catch (error) {
-    console.error('Time entry PATCH error:', error)
+    logger.error('Time entry PATCH error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -103,13 +104,13 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
       .eq('job_id', jobId)
 
     if (updateError) {
-      console.error('Error voiding time entry:', updateError)
+      logger.error('Error voiding time entry', { error: String(updateError) })
       return NextResponse.json({ error: 'Failed to void time entry' }, { status: 500 })
     }
 
     return NextResponse.json({ voided: true })
   } catch (error) {
-    console.error('Time entry DELETE error:', error)
+    logger.error('Time entry DELETE error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

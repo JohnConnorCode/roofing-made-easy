@@ -11,6 +11,7 @@ import {
   updateEstimateContent,
 } from '@/lib/communications/estimate-content-service'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateContentSchema = z.object({
   title: z.string().min(1).max(200).optional(),
@@ -44,7 +45,7 @@ export async function GET(
 
     return NextResponse.json({ content })
   } catch (error) {
-    console.error('Estimate content GET error:', error)
+    logger.error('Estimate content GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -89,7 +90,7 @@ export async function PUT(
 
     return NextResponse.json({ content: updatedContent })
   } catch (error) {
-    console.error('Estimate content PUT error:', error)
+    logger.error('Estimate content PUT error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

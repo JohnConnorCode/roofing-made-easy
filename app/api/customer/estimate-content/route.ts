@@ -5,6 +5,7 @@
 
 import { NextResponse } from 'next/server'
 import { getGroupedEstimateContent } from '@/lib/communications/estimate-content-service'
+import { logger } from '@/lib/logger'
 
 export async function GET() {
   try {
@@ -18,7 +19,7 @@ export async function GET() {
 
     return NextResponse.json({ items })
   } catch (error) {
-    console.error('Customer estimate content error:', error)
+    logger.error('Customer estimate content error', { error: String(error) })
     return NextResponse.json(
       { error: 'Failed to load estimate content', items: [] },
       { status: 500 }

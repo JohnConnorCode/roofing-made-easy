@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { logActivity } from '@/lib/team/activity-logger'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createEventSchema = z.object({
   title: z.string().min(1).max(255),
@@ -88,13 +89,13 @@ export async function GET(request: NextRequest) {
     const { data: events, error } = await query
 
     if (error) {
-      console.error('Error fetching calendar events:', error)
+      logger.error('Error fetching calendar events', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch events' }, { status: 500 })
     }
 
     return NextResponse.json({ events })
   } catch (error) {
-    console.error('Calendar GET error:', error)
+    logger.error('Calendar GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -153,7 +154,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (createError || !event) {
-      console.error('Error creating calendar event:', createError)
+      logger.error('Error creating calendar event', { error: String(createError) })
       return NextResponse.json({ error: 'Failed to create event' }, { status: 500 })
     }
 
@@ -168,7 +169,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ event }, { status: 201 })
   } catch (error) {
-    console.error('Calendar POST error:', error)
+    logger.error('Calendar POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

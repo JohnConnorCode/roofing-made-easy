@@ -10,6 +10,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { logActivity } from '@/lib/team/activity-logger'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateJobSchema = z.object({
   status: z.enum([
@@ -77,7 +78,7 @@ export async function GET(
 
     return NextResponse.json({ job, statusHistory: statusHistory || [] })
   } catch (error) {
-    console.error('Job GET error:', error)
+    logger.error('Job GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -150,7 +151,7 @@ export async function PATCH(
       .single()
 
     if (updateError || !job) {
-      console.error('Error updating job:', updateError)
+      logger.error('Error updating job', { error: String(updateError) })
       return NextResponse.json({ error: 'Failed to update job' }, { status: 500 })
     }
 
@@ -167,7 +168,7 @@ export async function PATCH(
 
     return NextResponse.json({ job })
   } catch (error) {
-    console.error('Job PATCH error:', error)
+    logger.error('Job PATCH error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -203,7 +204,7 @@ export async function DELETE(
       .eq('id', jobId)
 
     if (deleteError) {
-      console.error('Error deleting job:', deleteError)
+      logger.error('Error deleting job', { error: String(deleteError) })
       return NextResponse.json({ error: 'Failed to delete job' }, { status: 500 })
     }
 
@@ -220,7 +221,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Job DELETE error:', error)
+    logger.error('Job DELETE error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

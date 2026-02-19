@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/server'
 import { requireManagerOrAbove } from '@/lib/team/permissions'
 import { parsePagination } from '@/lib/api/auth'
 import type { ActivityCategory } from '@/lib/team/types'
+import { logger } from '@/lib/logger'
 
 // GET /api/admin/activity - Get activity logs
 export async function GET(request: NextRequest) {
@@ -65,7 +66,7 @@ export async function GET(request: NextRequest) {
     const { data: activities, error, count } = await query
 
     if (error) {
-      console.error('Error fetching activities:', error)
+      logger.error('Error fetching activities', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch activity logs' },
         { status: 500 }
@@ -110,7 +111,7 @@ export async function GET(request: NextRequest) {
       offset,
     })
   } catch (error) {
-    console.error('Activity GET error:', error)
+    logger.error('Activity GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

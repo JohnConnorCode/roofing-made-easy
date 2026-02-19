@@ -11,6 +11,7 @@ import { ActivityLogger } from '@/lib/team/activity-logger'
 import type { UserRole, InviteUserRequest } from '@/lib/team/types'
 import { z } from 'zod'
 import crypto from 'crypto'
+import { logger } from '@/lib/logger'
 
 const inviteUserSchema = z.object({
   email: z.string().email(),
@@ -56,7 +57,7 @@ export async function GET(request: NextRequest) {
     const { data: invitations, error } = await query
 
     if (error) {
-      console.error('Error fetching invitations:', error)
+      logger.error('Error fetching invitations', { error: String(error) })
       return NextResponse.json(
         { error: 'Failed to fetch invitations' },
         { status: 500 }
@@ -65,7 +66,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ invitations })
   } catch (error) {
-    console.error('Invitations GET error:', error)
+    logger.error('Invitations GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -144,7 +145,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (inviteError || !invitation) {
-      console.error('Error creating invitation:', inviteError)
+      logger.error('Error creating invitation', { error: String(inviteError) })
       return NextResponse.json(
         { error: 'Failed to create invitation' },
         { status: 500 }
@@ -193,7 +194,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Invitation POST error:', error)
+    logger.error('Invitation POST error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -226,7 +227,7 @@ export async function DELETE(request: NextRequest) {
       .is('accepted_at', null)
 
     if (deleteError) {
-      console.error('Error deleting invitation:', deleteError)
+      logger.error('Error deleting invitation', { error: String(deleteError) })
       return NextResponse.json(
         { error: 'Failed to cancel invitation' },
         { status: 500 }
@@ -235,7 +236,7 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Invitation DELETE error:', error)
+    logger.error('Invitation DELETE error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

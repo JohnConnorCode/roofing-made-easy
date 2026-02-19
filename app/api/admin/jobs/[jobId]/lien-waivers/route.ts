@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createWaiverSchema = z.object({
   waiver_type: z.enum(['conditional', 'unconditional']),
@@ -45,13 +46,13 @@ export async function GET(
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error('Error fetching lien waivers:', error)
+      logger.error('Error fetching lien waivers', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch lien waivers' }, { status: 500 })
     }
 
     return NextResponse.json({ waivers })
   } catch (error) {
-    console.error('Lien waivers GET error:', error)
+    logger.error('Lien waivers GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -112,13 +113,13 @@ export async function POST(
       .single()
 
     if (insertError) {
-      console.error('Error creating lien waiver:', insertError)
+      logger.error('Error creating lien waiver', { error: String(insertError) })
       return NextResponse.json({ error: 'Failed to create lien waiver' }, { status: 500 })
     }
 
     return NextResponse.json({ waiver }, { status: 201 })
   } catch (error) {
-    console.error('Lien waivers POST error:', error)
+    logger.error('Lien waivers POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

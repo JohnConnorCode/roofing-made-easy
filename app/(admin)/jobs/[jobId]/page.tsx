@@ -4,6 +4,8 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { Select } from '@/components/ui/select'
 import { useToast } from '@/components/ui/toast'
 import { formatCurrency, formatDate } from '@/lib/utils'
@@ -72,6 +74,28 @@ export default function JobDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<TabId>('overview')
   const [isSaving, setIsSaving] = useState(false)
+
+  // Add Daily Log form state
+  const [showLogForm, setShowLogForm] = useState(false)
+  const [isAddingLog, setIsAddingLog] = useState(false)
+  const [logForm, setLogForm] = useState({
+    log_date: new Date().toISOString().split('T')[0],
+    work_performed: '',
+    hours_worked: '',
+    weather_conditions: '',
+    work_delayed: false,
+  })
+
+  // Add Expense form state
+  const [showExpenseForm, setShowExpenseForm] = useState(false)
+  const [isAddingExpense, setIsAddingExpense] = useState(false)
+  const [expenseForm, setExpenseForm] = useState({
+    expense_date: new Date().toISOString().split('T')[0],
+    category: 'materials',
+    description: '',
+    amount: '',
+    vendor: '',
+  })
 
   const fetchJob = useCallback(async () => {
     setIsLoading(true)
@@ -142,6 +166,66 @@ export default function JobDetailPage() {
       showToast(msg, 'error')
     } finally {
       setIsSaving(false)
+    }
+  }
+
+  const handleAddLog = async () => {
+    if (!logForm.work_performed) {
+      showToast('Work performed is required', 'error')
+      return
+    }
+    setIsAddingLog(true)
+    try {
+      const response = await fetch(`/api/admin/jobs/${jobId}/daily-logs`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          log_date: logForm.log_date || undefined,
+          work_performed: logForm.work_performed,
+          hours_worked: logForm.hours_worked ? parseFloat(logForm.hours_worked) : undefined,
+          weather_conditions: logForm.weather_conditions || undefined,
+          work_delayed: logForm.work_delayed,
+        }),
+      })
+      if (!response.ok) throw new Error('Failed to add log')
+      showToast('Daily log added', 'success')
+      setShowLogForm(false)
+      setLogForm({ log_date: new Date().toISOString().split('T')[0], work_performed: '', hours_worked: '', weather_conditions: '', work_delayed: false })
+      fetchTabData('daily-logs')
+    } catch {
+      showToast('Failed to add daily log', 'error')
+    } finally {
+      setIsAddingLog(false)
+    }
+  }
+
+  const handleAddExpense = async () => {
+    if (!expenseForm.description || !expenseForm.amount) {
+      showToast('Description and amount are required', 'error')
+      return
+    }
+    setIsAddingExpense(true)
+    try {
+      const response = await fetch(`/api/admin/jobs/${jobId}/expenses`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          expense_date: expenseForm.expense_date || undefined,
+          category: expenseForm.category,
+          description: expenseForm.description,
+          amount: parseFloat(expenseForm.amount),
+          vendor: expenseForm.vendor || undefined,
+        }),
+      })
+      if (!response.ok) throw new Error('Failed to add expense')
+      showToast('Expense added', 'success')
+      setShowExpenseForm(false)
+      setExpenseForm({ expense_date: new Date().toISOString().split('T')[0], category: 'materials', description: '', amount: '', vendor: '' })
+      fetchTabData('expenses')
+    } catch {
+      showToast('Failed to add expense', 'error')
+    } finally {
+      setIsAddingExpense(false)
     }
   }
 
@@ -395,7 +479,59 @@ export default function JobDetailPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Daily Logs ({dailyLogs.length})</CardTitle>
+            <Button size="sm" onClick={() => setShowLogForm(!showLogForm)} leftIcon={<Plus className="h-4 w-4" />}>
+              Add Log
+            </Button>
           </CardHeader>
+          {showLogForm && (
+            <div className="px-6 pb-4 border-b space-y-3">
+              <div className="grid gap-3 md:grid-cols-3">
+                <Input
+                  type="date"
+                  label="Date"
+                  value={logForm.log_date}
+                  onChange={(e) => setLogForm({ ...logForm, log_date: e.target.value })}
+                />
+                <Input
+                  type="number"
+                  label="Hours Worked"
+                  placeholder="8"
+                  value={logForm.hours_worked}
+                  onChange={(e) => setLogForm({ ...logForm, hours_worked: e.target.value })}
+                />
+                <Input
+                  label="Weather"
+                  placeholder="Sunny, 75F"
+                  value={logForm.weather_conditions}
+                  onChange={(e) => setLogForm({ ...logForm, weather_conditions: e.target.value })}
+                />
+              </div>
+              <Textarea
+                label="Work Performed"
+                placeholder="Describe work completed today..."
+                value={logForm.work_performed}
+                onChange={(e) => setLogForm({ ...logForm, work_performed: e.target.value })}
+                rows={3}
+              />
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-sm text-slate-600">
+                  <input
+                    type="checkbox"
+                    checked={logForm.work_delayed}
+                    onChange={(e) => setLogForm({ ...logForm, work_delayed: e.target.checked })}
+                    className="rounded border-slate-300"
+                  />
+                  Work was delayed
+                </label>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => setShowLogForm(false)}>Cancel</Button>
+                  <Button size="sm" onClick={handleAddLog} disabled={isAddingLog}>
+                    {isAddingLog ? 'Saving...' : 'Save Log'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
           <CardContent>
             {dailyLogs.length === 0 ? (
               <p className="text-slate-500 text-center py-8">No daily logs recorded yet</p>
@@ -475,7 +611,65 @@ export default function JobDetailPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>Expenses ({expenses.length})</CardTitle>
+              <Button size="sm" onClick={() => setShowExpenseForm(!showExpenseForm)} leftIcon={<Plus className="h-4 w-4" />}>
+                Add Expense
+              </Button>
             </CardHeader>
+            {showExpenseForm && (
+              <div className="px-6 pb-4 border-b space-y-3">
+                <div className="grid gap-3 md:grid-cols-3">
+                  <Input
+                    type="date"
+                    label="Date"
+                    value={expenseForm.expense_date}
+                    onChange={(e) => setExpenseForm({ ...expenseForm, expense_date: e.target.value })}
+                  />
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
+                    <Select
+                      options={[
+                        { value: 'materials', label: 'Materials' },
+                        { value: 'labor', label: 'Labor' },
+                        { value: 'subcontractor', label: 'Subcontractor' },
+                        { value: 'permit', label: 'Permit' },
+                        { value: 'equipment', label: 'Equipment' },
+                        { value: 'disposal', label: 'Disposal' },
+                        { value: 'other', label: 'Other' },
+                      ]}
+                      value={expenseForm.category}
+                      onChange={(val) => setExpenseForm({ ...expenseForm, category: val })}
+                    />
+                  </div>
+                  <Input
+                    type="number"
+                    label="Amount ($)"
+                    placeholder="0.00"
+                    value={expenseForm.amount}
+                    onChange={(e) => setExpenseForm({ ...expenseForm, amount: e.target.value })}
+                  />
+                </div>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <Input
+                    label="Description"
+                    placeholder="What was this expense for?"
+                    value={expenseForm.description}
+                    onChange={(e) => setExpenseForm({ ...expenseForm, description: e.target.value })}
+                  />
+                  <Input
+                    label="Vendor (optional)"
+                    placeholder="Vendor name"
+                    value={expenseForm.vendor}
+                    onChange={(e) => setExpenseForm({ ...expenseForm, vendor: e.target.value })}
+                  />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button variant="outline" size="sm" onClick={() => setShowExpenseForm(false)}>Cancel</Button>
+                  <Button size="sm" onClick={handleAddExpense} disabled={isAddingExpense}>
+                    {isAddingExpense ? 'Saving...' : 'Save Expense'}
+                  </Button>
+                </div>
+              </div>
+            )}
             <CardContent>
               {expenses.length === 0 ? (
                 <p className="text-slate-500 text-center py-8">No expenses recorded yet</p>

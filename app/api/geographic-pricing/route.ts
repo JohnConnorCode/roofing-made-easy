@@ -4,6 +4,7 @@ import type { GeographicPricing } from '@/lib/supabase/types'
 import { requireAdmin } from '@/lib/api/auth'
 import { z } from 'zod'
 import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
+import { logger } from '@/lib/logger'
 
 // Validation schema for geographic pricing
 const geoPricingSchema = z.object({
@@ -53,7 +54,7 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query
 
     if (error) {
-      console.error('Geographic pricing fetch error:', error)
+      logger.error('Geographic pricing fetch error', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch pricing regions' }, { status: 500 })
     }
 
@@ -103,13 +104,13 @@ export async function POST(request: NextRequest) {
     }
 
     const { data, error } = await supabase
-      .from('geographic_pricing' as never)
+      .from('geographic_pricing')
       .insert(newRegion as never)
       .select()
       .single()
 
     if (error) {
-      console.error('Geographic pricing create error:', error)
+      logger.error('Geographic pricing create error', { error: String(error) })
       return NextResponse.json({ error: 'Failed to create pricing region' }, { status: 500 })
     }
 

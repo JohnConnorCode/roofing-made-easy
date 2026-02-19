@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
+import { logger } from '@/lib/logger'
 
 export async function GET(request: NextRequest) {
   try {
@@ -106,7 +107,7 @@ export async function GET(request: NextRequest) {
       projectManagers: Object.values(pmStats).sort((a, b) => b.revenue - a.revenue),
     })
   } catch (error) {
-    console.error('Team performance report GET error:', error)
+    logger.error('Team performance report GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

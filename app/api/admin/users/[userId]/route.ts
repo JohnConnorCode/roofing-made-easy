@@ -11,6 +11,7 @@ import { requirePermission, getDefaultPermissions } from '@/lib/team/permissions
 import { ActivityLogger } from '@/lib/team/activity-logger'
 import type { UserRole, UpdateUserRequest, UserProfile } from '@/lib/team/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateUserSchema = z.object({
   role: z.enum(['admin', 'manager', 'sales', 'crew_lead', 'crew']).optional(),
@@ -94,7 +95,7 @@ export async function GET(
       })) || [],
     })
   } catch (error) {
-    console.error('User GET error:', error)
+    logger.error('User GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -174,7 +175,7 @@ export async function PATCH(
       .eq('id', userId)
 
     if (updateError) {
-      console.error('Error updating user:', updateError)
+      logger.error('Error updating user', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to update user' },
         { status: 500 }
@@ -225,7 +226,7 @@ export async function PATCH(
 
     return NextResponse.json({ user: updatedUser })
   } catch (error) {
-    console.error('User PATCH error:', error)
+    logger.error('User PATCH error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -280,7 +281,7 @@ export async function DELETE(
       .eq('id', userId)
 
     if (updateError) {
-      console.error('Error deactivating user:', updateError)
+      logger.error('Error deactivating user', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to deactivate user' },
         { status: 500 }
@@ -292,7 +293,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('User DELETE error:', error)
+    logger.error('User DELETE error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

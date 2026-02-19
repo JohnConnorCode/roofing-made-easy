@@ -54,7 +54,7 @@ export async function PATCH(
 
     // Get customer record
     const { data: customerData, error: customerError } = await supabase
-      .from('customers' as never)
+      .from('customers')
       .select('id')
       .eq('auth_user_id', user.id)
       .single()
@@ -70,7 +70,7 @@ export async function PATCH(
 
     // Verify customer owns this claim
     const { data: existingClaimData, error: claimError } = await supabase
-      .from('insurance_claims' as never)
+      .from('insurance_claims')
       .select('*')
       .eq('id', claimId)
       .eq('customer_id', customer.id)
@@ -135,7 +135,7 @@ export async function PATCH(
     if (notes && !status) updates.customer_notes = notes
 
     const { data: claim, error: updateError } = await supabase
-      .from('insurance_claims' as never)
+      .from('insurance_claims')
       .update(updates as never)
       .eq('id', claimId)
       .select()

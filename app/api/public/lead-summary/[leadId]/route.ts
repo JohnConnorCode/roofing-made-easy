@@ -39,7 +39,7 @@ export async function GET(
 
     // Validate share_token matches the lead
     const { data: lead, error } = await supabase
-      .from('leads' as never)
+      .from('leads')
       .select('id, share_token')
       .eq('id', leadId)
       .single()
@@ -55,17 +55,17 @@ export async function GET(
     // Fetch property, estimate, and contact in parallel
     const [propertyResult, estimateResult, contactResult] = await Promise.all([
       supabase
-        .from('properties' as never)
+        .from('properties')
         .select('formatted_address, street_address')
         .eq('lead_id', leadId)
         .single(),
       supabase
-        .from('estimates' as never)
+        .from('estimates')
         .select('price_likely')
         .eq('lead_id', leadId)
         .single(),
       supabase
-        .from('contacts' as never)
+        .from('contacts')
         .select('first_name')
         .eq('lead_id', leadId)
         .single(),

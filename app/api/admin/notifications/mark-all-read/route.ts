@@ -6,6 +6,7 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
+import { logger } from '@/lib/logger'
 
 export async function POST() {
   try {
@@ -21,13 +22,13 @@ export async function POST() {
       .is('read_at', null)
 
     if (updateError) {
-      console.error('Error marking all read:', updateError)
+      logger.error('Error marking all read', { error: String(updateError) })
       return NextResponse.json({ error: 'Failed to mark all as read' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Mark all read POST error:', error)
+    logger.error('Mark all read POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

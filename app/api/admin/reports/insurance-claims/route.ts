@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
+import { logger } from '@/lib/logger'
 
 export async function GET(_request: NextRequest) {
   try {
@@ -136,7 +137,7 @@ export async function GET(_request: NextRequest) {
       byCauseOfLoss,
     })
   } catch (error) {
-    console.error('Insurance claims report error:', error)
+    logger.error('Insurance claims report error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

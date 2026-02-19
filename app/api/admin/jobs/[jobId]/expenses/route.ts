@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const createExpenseSchema = z.object({
   category: z.enum(['materials', 'labor', 'subcontractor', 'permit', 'equipment', 'disposal', 'other']),
@@ -64,7 +65,7 @@ export async function GET(
     const { data: expenses, error } = await query
 
     if (error) {
-      console.error('Error fetching job expenses:', error)
+      logger.error('Error fetching job expenses', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch expenses' }, { status: 500 })
     }
 
@@ -78,7 +79,7 @@ export async function GET(
 
     return NextResponse.json({ expenses, totals })
   } catch (error) {
-    console.error('Job expenses GET error:', error)
+    logger.error('Job expenses GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -128,13 +129,13 @@ export async function POST(
       .single()
 
     if (createError || !expense) {
-      console.error('Error creating expense:', createError)
+      logger.error('Error creating expense', { error: String(createError) })
       return NextResponse.json({ error: 'Failed to create expense' }, { status: 500 })
     }
 
     return NextResponse.json({ expense }, { status: 201 })
   } catch (error) {
-    console.error('Job expenses POST error:', error)
+    logger.error('Job expenses POST error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -185,13 +186,13 @@ export async function PATCH(
       .single()
 
     if (updateError || !expense) {
-      console.error('Error updating expense:', updateError)
+      logger.error('Error updating expense', { error: String(updateError) })
       return NextResponse.json({ error: 'Failed to update expense' }, { status: 500 })
     }
 
     return NextResponse.json({ expense })
   } catch (error) {
-    console.error('Job expenses PATCH error:', error)
+    logger.error('Job expenses PATCH error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

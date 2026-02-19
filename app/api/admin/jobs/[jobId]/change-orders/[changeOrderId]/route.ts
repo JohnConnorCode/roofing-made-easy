@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { notifyAdmins } from '@/lib/notifications'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const statusUpdateSchema = z.object({
   status: z.enum(['approved', 'rejected']),
@@ -89,7 +90,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
         `Change Order ${statusLabel}: Job ${jobNumber}`,
         `$${(updated as { cost_delta: number }).cost_delta.toLocaleString(undefined, { minimumFractionDigits: 2 })} — ${(updated as { description: string }).description.slice(0, 80)}`,
         `/jobs/${jobId}`
-      ).catch(err => console.error('Failed to notify admins of change order update:', err))
+      ).catch(err => logger.error('Failed to notify admins of change order update', { error: String(err) }))
 
       // If approved, update job contract_amount and recalculate billing schedule
       if (newStatus === 'approved') {
@@ -164,7 +165,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     return NextResponse.json({ changeOrder: edited })
   } catch (error) {
-    console.error('Change order PATCH error:', error)
+    logger.error('Change order PATCH error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -190,7 +191,7 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
       .select()
 
     if (error) {
-      console.error('Error deleting change order:', error)
+      logger.error('Error deleting change order', { error: String(error) })
       return NextResponse.json({ error: 'Failed to delete change order' }, { status: 500 })
     }
 
@@ -203,7 +204,7 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
 
     return NextResponse.json({ deleted: true })
   } catch (error) {
-    console.error('Change order DELETE error:', error)
+    logger.error('Change order DELETE error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -12,6 +12,7 @@ import { previewTemplate } from '@/lib/communication/template-renderer'
 import type { UpdateTemplateRequest, MessageTemplate } from '@/lib/communication/types'
 import { extractAllVariables } from '@/lib/communication/utils'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateTemplateSchema = z.object({
   name: z.string().min(1).max(100).optional(),
@@ -73,7 +74,7 @@ export async function GET(
       preview,
     })
   } catch (error) {
-    console.error('Template GET error:', error)
+    logger.error('Template GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -154,7 +155,7 @@ export async function PATCH(
       .eq('id', templateId)
 
     if (updateError) {
-      console.error('Error updating template:', updateError)
+      logger.error('Error updating template', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to update template' },
         { status: 500 }
@@ -170,7 +171,7 @@ export async function PATCH(
 
     return NextResponse.json({ template: updatedTemplate })
   } catch (error) {
-    console.error('Template PATCH error:', error)
+    logger.error('Template PATCH error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -231,7 +232,7 @@ export async function DELETE(
       .eq('id', templateId)
 
     if (deleteError) {
-      console.error('Error deleting template:', deleteError)
+      logger.error('Error deleting template', { error: String(deleteError) })
       return NextResponse.json(
         { error: 'Failed to delete template' },
         { status: 500 }
@@ -240,7 +241,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Template DELETE error:', error)
+    logger.error('Template DELETE error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

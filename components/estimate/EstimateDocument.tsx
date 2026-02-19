@@ -7,8 +7,6 @@ import { Logo } from '@/components/ui/logo'
 import { formatCurrency } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 import { useContact } from '@/lib/hooks/use-contact'
-import { useBusinessConfig } from '@/lib/config/business-provider'
-import { COMPANY_INFO } from '@/lib/data/estimate-content'
 import type { JobType, RoofMaterial } from '@/lib/supabase/types'
 import {
   CheckCircle,
@@ -18,10 +16,7 @@ import {
   Download,
   Share2,
   ExternalLink,
-  Shield,
-  Clock,
   MapPin,
-  Star,
   ArrowRight,
   Home,
   Layers,
@@ -32,7 +27,11 @@ import {
   MessageSquare,
   Handshake,
   UserPlus,
+  LogIn,
+  Mail,
+  Loader2,
 } from 'lucide-react'
+import { TrustSignals } from './TrustSignals'
 import type { RoofPitch, TimelineUrgency } from '@/lib/supabase/types'
 
 function getIncludedItems(jobType: JobType | null): string[] {
@@ -115,6 +114,8 @@ export interface EstimateDocumentProps {
   calendlyUrl?: string
   isPublicView?: boolean
   onCreateAccount?: () => void
+  accountStatus?: 'created' | 'existed' | 'failed' | null
+  isDownloading?: boolean
   // Project details
   roofAgeYears?: number | null
   roofPitch?: RoofPitch | null
@@ -270,6 +271,8 @@ export function EstimateDocument({
   calendlyUrl,
   isPublicView,
   onCreateAccount,
+  accountStatus,
+  isDownloading = false,
   // Project details
   roofAgeYears,
   roofPitch,
@@ -286,7 +289,6 @@ export function EstimateDocument({
   estimateDate,
 }: EstimateDocumentProps) {
   const { phoneDisplay, phoneLink } = useContact()
-  const businessConfig = useBusinessConfig()
 
   const handleCallNow = useCallback(() => {
     window.location.href = phoneLink
@@ -512,20 +514,7 @@ export function EstimateDocument({
       {/* ================================================================
           SECTION 7: TRUST SIGNALS - Build confidence
           ================================================================ */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
-        <div className="flex flex-col items-center p-3 sm:p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
-          <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d7a5a] mb-1.5" />
-          <p className="text-xs sm:text-sm font-medium text-slate-200">Licensed & Insured</p>
-        </div>
-        <div className="flex flex-col items-center p-3 sm:p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
-          <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d7a5a] mb-1.5" />
-          <p className="text-xs sm:text-sm font-medium text-slate-200">Since {businessConfig.foundedYear}</p>
-        </div>
-        <div className="flex flex-col items-center p-3 sm:p-4 rounded-lg bg-[#1a1f2e] border border-slate-700/50 text-center">
-          <Star className="h-5 w-5 sm:h-6 sm:w-6 text-[#3d7a5a] mb-1.5" />
-          <p className="text-xs sm:text-sm font-medium text-slate-200">Local Experts</p>
-        </div>
-      </div>
+      <TrustSignals />
 
       {/* ================================================================
           SECTION 8: PROJECT DETAILS - For detail-oriented customers
@@ -705,29 +694,75 @@ export function EstimateDocument({
       </Card>
 
       {/* ================================================================
-          SECTION 10b: CREATE ACCOUNT CTA - Convert funnel visitor to portal user
+          SECTION 10b: ACCOUNT / PORTAL CTA
           ================================================================ */}
       {onCreateAccount && (
         <Card className="border-[#3d7a5a]/30 bg-gradient-to-b from-[#3d7a5a]/10 to-[#161a23] print:hidden">
           <CardContent className="p-6 text-center">
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#3d7a5a]/15 border border-[#3d7a5a]/30">
-              <UserPlus className="h-6 w-6 text-[#3d7a5a]" />
-            </div>
-            <h3 className="text-lg font-semibold text-slate-100 mb-2">
-              Save &amp; Track Your Project
-            </h3>
-            <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto">
-              Create a free account to access your estimate anytime, explore financing options, and track your project progress.
-            </p>
-            <Button
-              variant="primary"
-              size="lg"
-              className="bg-[#3d7a5a] hover:bg-[#4a9068] text-white border-0"
-              leftIcon={<UserPlus className="h-5 w-5" />}
-              onClick={onCreateAccount}
-            >
-              Create Free Account
-            </Button>
+            {accountStatus === 'created' ? (
+              <>
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#3d7a5a]/15 border border-[#3d7a5a]/30">
+                  <Mail className="h-6 w-6 text-[#3d7a5a]" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-100 mb-2">
+                  Your Project Portal is Ready
+                </h3>
+                <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto">
+                  We&apos;ve set up your project portal — check your email for access. View your estimate, explore financing options, and track your project anytime.
+                </p>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="bg-[#3d7a5a] hover:bg-[#4a9068] text-white border-0"
+                  leftIcon={<LogIn className="h-5 w-5" />}
+                  onClick={onCreateAccount}
+                >
+                  Access Your Portal
+                </Button>
+              </>
+            ) : accountStatus === 'existed' ? (
+              <>
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#3d7a5a]/15 border border-[#3d7a5a]/30">
+                  <LogIn className="h-6 w-6 text-[#3d7a5a]" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-100 mb-2">
+                  Welcome Back
+                </h3>
+                <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto">
+                  Your project portal is already set up. Log in to view all your estimates, explore financing options, and track your project.
+                </p>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="bg-[#3d7a5a] hover:bg-[#4a9068] text-white border-0"
+                  leftIcon={<LogIn className="h-5 w-5" />}
+                  onClick={onCreateAccount}
+                >
+                  Access Your Portal
+                </Button>
+              </>
+            ) : (
+              <>
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#3d7a5a]/15 border border-[#3d7a5a]/30">
+                  <UserPlus className="h-6 w-6 text-[#3d7a5a]" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-100 mb-2">
+                  Save &amp; Track Your Project
+                </h3>
+                <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto">
+                  Create a free account to access your estimate anytime, explore financing options, and track your project progress.
+                </p>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="bg-[#3d7a5a] hover:bg-[#4a9068] text-white border-0"
+                  leftIcon={<UserPlus className="h-5 w-5" />}
+                  onClick={onCreateAccount}
+                >
+                  Create Free Account
+                </Button>
+              </>
+            )}
           </CardContent>
         </Card>
       )}
@@ -740,10 +775,11 @@ export function EstimateDocument({
           variant="ghost"
           size="md"
           className="flex-1 text-slate-400 hover:text-slate-100 hover:bg-slate-800"
-          leftIcon={<Download className="h-5 w-5" />}
+          leftIcon={isDownloading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
           onClick={onDownload}
+          disabled={isDownloading}
         >
-          Save PDF
+          {isDownloading ? 'Generating PDF...' : 'Save PDF'}
         </Button>
         <Button
           variant="ghost"

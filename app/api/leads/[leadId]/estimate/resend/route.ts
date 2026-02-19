@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/api/auth'
 import { sendCustomerEstimateEmail } from '@/lib/email'
 import { sendEstimateReadySms } from '@/lib/sms'
 import type { Intake, Property, Contact } from '@/lib/supabase/types'
+import { logger } from '@/lib/logger'
 
 interface LeadWithRelations {
   id: string
@@ -156,7 +157,7 @@ export async function POST(
       results,
     })
   } catch (error) {
-    console.error('[Estimate Resend] Error:', error instanceof Error ? error.message : 'Unknown error')
+    logger.error('[Estimate Resend] Error', { error: String(error instanceof Error ? error.message : 'Unknown error') })
     return NextResponse.json(
       { error: 'Failed to resend estimate' },
       { status: 500 }

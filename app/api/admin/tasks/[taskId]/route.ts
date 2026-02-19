@@ -11,6 +11,7 @@ import { getUserWithProfile, hasPermission, isUserManagerOrAbove } from '@/lib/t
 import { ActivityLogger } from '@/lib/team/activity-logger'
 import type { UpdateTaskRequest, Task } from '@/lib/team/types'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 const updateTaskSchema = z.object({
   title: z.string().min(1).max(200).optional(),
@@ -93,7 +94,7 @@ export async function GET(
 
     return NextResponse.json({ task })
   } catch (error) {
-    console.error('Task GET error:', error)
+    logger.error('Task GET error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -197,7 +198,7 @@ export async function PATCH(
       .eq('id', taskId)
 
     if (updateError) {
-      console.error('Error updating task:', updateError)
+      logger.error('Error updating task', { error: String(updateError) })
       return NextResponse.json(
         { error: 'Failed to update task' },
         { status: 500 }
@@ -245,7 +246,7 @@ export async function PATCH(
 
     return NextResponse.json({ task: updatedTask })
   } catch (error) {
-    console.error('Task PATCH error:', error)
+    logger.error('Task PATCH error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -297,7 +298,7 @@ export async function DELETE(
       .eq('id', taskId)
 
     if (deleteError) {
-      console.error('Error deleting task:', deleteError)
+      logger.error('Error deleting task', { error: String(deleteError) })
       return NextResponse.json(
         { error: 'Failed to delete task' },
         { status: 500 }
@@ -309,7 +310,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Task DELETE error:', error)
+    logger.error('Task DELETE error', { error: String(error) })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin, parsePagination } from '@/lib/api/auth'
+import { logger } from '@/lib/logger'
 
 export async function GET(request: NextRequest) {
   try {
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest) {
     const { data: notifications, error, count } = await query
 
     if (error) {
-      console.error('Error fetching notifications:', error)
+      logger.error('Error fetching notifications', { error: String(error) })
       return NextResponse.json({ error: 'Failed to fetch notifications' }, { status: 500 })
     }
 
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
       offset,
     })
   } catch (error) {
-    console.error('Notifications GET error:', error)
+    logger.error('Notifications GET error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

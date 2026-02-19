@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
     // RLS on notifications table already filters by user_id = auth.uid()
     const { data: notifications, error } = await supabase
-      .from('notifications' as never)
+      .from('notifications')
       .select(NOTIFICATION_SELECT)
       .eq('user_id', user.id)
       .is('dismissed_at', null)

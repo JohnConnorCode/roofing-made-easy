@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
+import { logger } from '@/lib/logger'
 
 type Params = { params: Promise<{ jobId: string; docId: string }> }
 
@@ -49,13 +50,13 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
       .eq('job_id', jobId)
 
     if (deleteError) {
-      console.error('Error deleting document:', deleteError)
+      logger.error('Error deleting document', { error: String(deleteError) })
       return NextResponse.json({ error: 'Failed to delete document' }, { status: 500 })
     }
 
     return NextResponse.json({ deleted: true })
   } catch (error) {
-    console.error('Document DELETE error:', error)
+    logger.error('Document DELETE error', { error: String(error) })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
