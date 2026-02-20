@@ -257,7 +257,7 @@ function validateProductionConfig(): void {
   // VERCEL_ENV is set by Vercel during deployment (production, preview, or development)
   // This distinguishes actual Vercel deployments from local `npm run build`
   const isVercelProduction = process.env.VERCEL_ENV === 'production'
-  const bypassCheck = process.env.BYPASS_CONFIG_CHECK === 'true'
+  const bypassCheck = process.env.BYPASS_CONFIG_CHECK?.trim() === 'true'
 
   // Only block on actual Vercel production deployments, not local builds
   if (isVercelProduction && !bypassCheck) {
