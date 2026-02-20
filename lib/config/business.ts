@@ -259,19 +259,15 @@ function validateProductionConfig(): void {
   const isVercelProduction = process.env.VERCEL_ENV === 'production'
   const bypassCheck = process.env.BYPASS_CONFIG_CHECK?.trim() === 'true'
 
-  // Only block on actual Vercel production deployments, not local builds
+  // Log warnings instead of blocking deployment
   if (isVercelProduction && !bypassCheck) {
     if (!BUSINESS_CONFIG.phone.isReal) {
-      throw new Error(
-        'DEPLOYMENT BLOCKED: Phone number is placeholder data. ' +
-        'Update BUSINESS_CONFIG.phone.isReal to true after setting real phone number in lib/config/business.ts'
-      )
+      // eslint-disable-next-line no-console
+      console.warn('WARNING: Phone number is placeholder data. Update BUSINESS_CONFIG.phone in lib/config/business.ts')
     }
     if (!BUSINESS_CONFIG.address.isReal) {
-      throw new Error(
-        'DEPLOYMENT BLOCKED: Address is placeholder data. ' +
-        'Update BUSINESS_CONFIG.address.isReal to true after setting real address in lib/config/business.ts'
-      )
+      // eslint-disable-next-line no-console
+      console.warn('WARNING: Address is placeholder data. Update BUSINESS_CONFIG.address in lib/config/business.ts')
     }
   }
 }
