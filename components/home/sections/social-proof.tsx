@@ -136,7 +136,7 @@ export function SocialProof() {
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.id}
-              className={`min-w-[85vw] sm:min-w-[340px] md:min-w-[360px] snap-center bg-[#1a1f2e] border border-slate-700/50 rounded-2xl p-6 card-inner-glow card-hover-premium flex-shrink-0 ${index === 0 ? 'testimonial-featured' : ''}`}
+              className={`w-[85vw] sm:w-[340px] md:w-[380px] snap-center bg-[#1a1f2e] border border-slate-700/50 rounded-2xl p-6 card-inner-glow card-hover-premium flex-shrink-0 ${index === 0 ? 'testimonial-featured' : ''}`}
             >
               <Quote className="h-8 w-8 text-[#c9a25c]/50 mb-4" />
               <p className="text-slate-300 mb-4 leading-relaxed line-clamp-4">
