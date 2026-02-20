@@ -20,10 +20,7 @@ export async function createClient() {
   // SECURITY: In production, NEVER fall back to mock
   if (process.env.NODE_ENV === 'production') {
     if (!hasValidSupabaseConfig()) {
-      throw new Error(
-        'FATAL: Supabase is not configured in production. ' +
-        'Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-      )
+      throw new Error('Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.')
     }
     // Never check mock mode in production - always use real Supabase
     const cookieStore = await cookies()
@@ -85,16 +82,11 @@ export async function createAdminClient() {
   // SECURITY: In production, NEVER fall back to mock
   if (process.env.NODE_ENV === 'production') {
     if (!hasValidSupabaseConfig()) {
-      throw new Error(
-        'FATAL: Supabase is not configured in production. ' +
-        'Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY environment variables.'
-      )
+      throw new Error('Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.')
     }
 
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      throw new Error(
-        'FATAL: SUPABASE_SERVICE_ROLE_KEY is not set in production.'
-      )
+      throw new Error('SUPABASE_SERVICE_ROLE_KEY is not set.')
     }
 
     const cookieStore = await cookies()

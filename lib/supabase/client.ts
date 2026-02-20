@@ -20,10 +20,7 @@ export function createClient() {
   // SECURITY: In production, NEVER fall back to mock
   if (process.env.NODE_ENV === 'production') {
     if (!hasValidSupabaseConfig()) {
-      throw new Error(
-        'FATAL: Supabase is not configured in production. ' +
-        'Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.'
-      )
+      throw new Error('Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.')
     }
     // Never check mock mode in production - always use real Supabase
     return createBrowserClient<Database>(

@@ -71,7 +71,13 @@ interface LeadWithRelations {
 // This is a server component that fetches data and passes to client
 export default async function SharedEstimatePage({ params }: Props) {
   const { shareToken } = await params
-  const supabase = await createAdminClient()
+
+  let supabase
+  try {
+    supabase = await createAdminClient()
+  } catch {
+    notFound()
+  }
 
   // Fetch lead by share token (no auth required)
   // Note: share_token column is new and may not be in generated types
@@ -137,14 +143,18 @@ export default async function SharedEstimatePage({ params }: Props) {
   }
 
   // Track estimate view (non-blocking)
-  const viewClient = await createAdminClient()
-  await viewClient
-    .from('estimates')
-    .update({
-      viewed_at: new Date().toISOString(),
-      view_count: (estimate.view_count || 0) + 1,
-    } as never)
-    .eq('id', estimate.id)
+  try {
+    const viewClient = await createAdminClient()
+    await viewClient
+      .from('estimates')
+      .update({
+        viewed_at: new Date().toISOString(),
+        view_count: (estimate.view_count || 0) + 1,
+      } as never)
+      .eq('id', estimate.id)
+  } catch {
+    // Non-critical - view tracking can fail silently
+  }
 
   // Get contact and property info
   const contact = Array.isArray(lead.contacts) ? lead.contacts[0] : lead.contacts
@@ -189,7 +199,12 @@ interface MetadataLeadData {
 
 // Helper to fetch estimate data for metadata
 async function getEstimateData(shareToken: string) {
-  const supabase = await createAdminClient()
+  let supabase
+  try {
+    supabase = await createAdminClient()
+  } catch {
+    return null
+  }
 
   const { data } = await supabase
     .from('leads')
