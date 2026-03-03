@@ -2457,7 +2457,7 @@ The most affordable option on the market, 3-tab shingles are a single layer of a
 The most popular choice in Mississippi, architectural shingles use multiple layers of asphalt laminated together. They're thicker, heavier, and significantly more durable than 3-tab.
 
 **Performance in Mississippi:**
-- **Lifespan:** 18-25 years depending on brand and installation quality
+- **Lifespan:** 18-22 years depending on brand and installation quality
 - **Wind rating:** 110-130 mph. Most quality brands meet or exceed this.
 - **Hail resistance:** Class 2-3 (fair to good). The thicker construction absorbs impact better.
 - **Heat tolerance:** Good. Higher-end lines include reflective granules for better heat performance.
@@ -2541,7 +2541,7 @@ Engineered from recycled polymers and rubber, synthetic roofing mimics the look 
 - **Heat tolerance:** Good. UV-stabilized formulations resist sun degradation.
 - **Cost:** $8-12 per square foot installed
 
-**Honest take:** Synthetic roofing is an interesting option that's gaining ground. The Class 4 impact rating and light weight are genuine advantages. The concern is long-term track record — we don't yet have 30 years of real-world data on how these materials hold up in Mississippi's climate specifically. The manufacturers I've worked with stand behind their products, but if you go synthetic, choose a company with a solid warranty and proven installations in the Southeast.
+**Honest take:** Synthetic roofing is an interesting option that's gaining ground. The Class 4 impact rating and light weight are genuine advantages. The concern is long-term track record — we don't yet have 30 years of real-world data on how these materials hold up in Mississippi's climate specifically. The manufacturers we've worked with stand behind their products, but if you go synthetic, choose a company with a solid warranty and proven installations in the Southeast.
 
 **Best for:** Homeowners who want the look of premium natural materials with better impact resistance and lower weight.
 
@@ -2565,7 +2565,7 @@ The most durable roofing material available, slate is quarried stone that can la
 | Material | Lifespan (MS) | Wind Rating | Hail Class | Cost/sq ft | Insurance Discount |
 |----------|--------------|-------------|------------|------------|-------------------|
 | 3-Tab Asphalt | 12-15 yrs | 60-70 mph | 1-2 | $3-4 | None |
-| Architectural | 18-25 yrs | 110-130 mph | 2-3 | $4-7 | Sometimes |
+| Architectural | 18-22 yrs | 110-130 mph | 2-3 | $4-7 | Sometimes |
 | Impact-Resistant | 25-30 yrs | 130+ mph | 4 | $6-9 | 10-28% |
 | Standing Seam Metal | 40-60+ yrs | 140-160 mph | Excellent | $9-14 | 10-35% |
 | Exposed Fastener Metal | 25-40 yrs | 110-140 mph | Good | $5-8 | 5-15% |
