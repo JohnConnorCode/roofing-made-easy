@@ -5,14 +5,14 @@ import { ScrollAnimate } from '@/components/scroll-animate'
 
 export function ProblemSolution() {
   return (
-    <section className="py-20 md:py-28 bg-mesh-dark">
+    <section aria-label="Problem and solution comparison" className="py-20 md:py-28 bg-mesh-dark">
       <div className="mx-auto max-w-6xl px-4">
         <ScrollAnimate className="text-center mb-12">
           <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
             Sound Familiar?
           </h2>
           <p className="mt-4 text-xl text-slate-400 max-w-2xl mx-auto">
-            The traditional way of getting a roofing estimate is broken.
+            Getting a fair roof price shouldn&apos;t be this hard.
           </p>
         </ScrollAnimate>
 
@@ -39,7 +39,7 @@ export function ProblemSolution() {
                     </div>
                     <div>
                       <p className="text-slate-300 font-medium">{item.title}</p>
-                      <p className="text-slate-500 text-sm">{item.desc}</p>
+                      <p className="text-slate-400 text-sm">{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -57,7 +57,7 @@ export function ProblemSolution() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#c9a25c]/15 border border-[#c9a25c]/30">
                   <CheckCircle className="h-6 w-6 text-[#c9a25c]" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-100">Our Way</h3>
+                <h3 className="text-xl font-bold text-slate-100">The Smart Way</h3>
               </div>
 
               <div className="space-y-4">
@@ -73,7 +73,7 @@ export function ProblemSolution() {
                     </div>
                     <div>
                       <p className="text-slate-300 font-medium">{item.title}</p>
-                      <p className="text-slate-500 text-sm">{item.desc}</p>
+                      <p className="text-slate-400 text-sm">{item.desc}</p>
                     </div>
                   </div>
                 ))}

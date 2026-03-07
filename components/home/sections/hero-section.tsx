@@ -1,6 +1,6 @@
 'use client'
 
-import { Loader2, ArrowRight, Star, Zap } from 'lucide-react'
+import { Loader2, ArrowRight, Star, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 import { HeroSlider } from '../hero-slider'
@@ -16,12 +16,12 @@ export function HeroSection({ onGetStarted, isCreating, error }: HeroSectionProp
   const { trackCTAClick } = useAnalytics()
 
   const scrollToPreview = () => {
-    trackCTAClick('hero_see_how_it_works')
+    trackCTAClick('hero_see_sample')
     document.getElementById('estimate-preview')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <section id="hero" className="relative overflow-hidden min-h-[100svh] md:min-h-[700px] flex items-center">
+    <section id="hero" aria-label="Hero" className="relative overflow-hidden min-h-[100svh] md:min-h-[700px] flex items-center">
       <div className="absolute inset-0">
         <HeroSlider />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/90 via-[#0c0f14]/75 to-[#0c0f14]/95" />
@@ -29,28 +29,30 @@ export function HeroSection({ onGetStarted, isCreating, error }: HeroSectionProp
 
       <div className="relative mx-auto max-w-6xl px-4 py-20 md:py-28">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 rounded-full glass-card border-[#c9a25c]/40 px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 text-[#c9a25c] mb-6 md:mb-6 animate-hero-badge">
-            <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
-            AI-powered from 50,000+ roofing projects
-          </div>
-
-          <h1 className="text-4xl leading-[1.1] font-bold tracking-tight text-slate-100 sm:text-5xl md:text-6xl lg:text-7xl animate-hero-title delay-100 font-display">
-            Know Your Roof Cost
+          <h1 className="text-4xl leading-[1.1] font-bold tracking-tight text-slate-100 sm:text-5xl md:text-6xl lg:text-7xl animate-hero-title font-display">
+            Your Roof Shouldn&apos;t
             <br className="sm:hidden" />
-            {' '}in <span className="bg-gradient-to-r from-[#d4b06c] to-[#c9a25c] bg-clip-text text-transparent">2 Minutes</span>, Not 2 Weeks
+            {' '}Keep You Up{' '}
+            <span className="bg-gradient-to-r from-[#d4b06c] to-[#c9a25c] bg-clip-text text-transparent">at Night</span>
           </h1>
 
-          <p className="mt-5 md:mt-6 text-base md:text-xl text-slate-300 leading-relaxed animate-hero-subtitle delay-200 max-w-3xl mx-auto">
-            Stop guessing what your roof costs. Get a real estimate based on your actual roof and local prices—instantly.
+          <p className="mt-5 md:mt-6 text-base md:text-xl text-slate-300 leading-relaxed animate-hero-subtitle delay-100 max-w-3xl mx-auto">
+            Get a detailed roof estimate in 2 minutes &mdash; then see how insurance, financing,
+            and assistance programs can cover the cost. Free. Private. No strings.
           </p>
 
-          <div className="mt-10 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-hero-cta delay-300">
+          {/* Founder line */}
+          <p className="mt-3 text-sm text-slate-400 animate-hero-subtitle delay-150">
+            Built by {BUSINESS_CONFIG.legalName.replace(' LLC', '')} &mdash; {BUSINESS_CONFIG.foundedYear ? `${new Date().getFullYear() - parseInt(BUSINESS_CONFIG.foundedYear)}+ years` : '20+ years'} roofing in {BUSINESS_CONFIG.serviceArea.region}
+          </p>
+
+          <div className="mt-10 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center animate-hero-cta delay-200">
             <Button
               variant="primary"
               size="xl"
               onClick={onGetStarted}
               disabled={isCreating}
-              className="text-lg btn-press shadow-lg glow-gold btn-shimmer"
+              className="text-lg btn-press shadow-lg glow-gold btn-shimmer hero-cta-pulse"
             >
               {isCreating ? (
                 <>
@@ -59,20 +61,29 @@ export function HeroSection({ onGetStarted, isCreating, error }: HeroSectionProp
                 </>
               ) : (
                 <>
-                  Get My Instant Estimate
+                  Get My Free Estimate
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </>
               )}
             </Button>
+            <Button
+              variant="ghost"
+              size="xl"
+              onClick={scrollToPreview}
+              className="text-lg text-slate-300 hover:text-slate-100 border border-slate-600 hover:border-slate-500"
+            >
+              See a Sample Estimate
+              <ChevronDown className="ml-2 h-5 w-5" />
+            </Button>
           </div>
 
           {error && (
-            <div className="mt-4 bg-red-950 border border-red-800 rounded-lg px-4 py-3 text-center animate-fade-up">
+            <div className="mt-4 bg-red-950 border border-red-800 rounded-lg px-4 py-3 text-center animate-fade-up" role="alert">
               <p className="text-red-100 text-sm">{error}</p>
             </div>
           )}
 
-          <div className="mt-8 flex flex-col items-center gap-3 animate-hero-subtitle delay-400">
+          <div className="mt-8 flex flex-col items-center gap-3 animate-hero-subtitle delay-300">
             {BUSINESS_CONFIG.reviews.googleRating && BUSINESS_CONFIG.reviews.googleReviewCount ? (
               <div className="flex items-center gap-1.5">
                 {[...Array(5)].map((_, i) => (
@@ -85,15 +96,9 @@ export function HeroSection({ onGetStarted, isCreating, error }: HeroSectionProp
             ) : (
               <p className="text-sm text-slate-300">Trusted by Mississippi homeowners</p>
             )}
-            <p className="text-sm text-slate-500">
-              Free forever • No account required • No contractors calling you
+            <p className="text-sm text-slate-400">
+              Free forever &bull; No account needed &bull; Your info stays private
             </p>
-            <button
-              onClick={scrollToPreview}
-              className="mt-1 text-sm text-[#c9a25c]/80 hover:text-[#c9a25c] transition-colors cursor-pointer"
-            >
-              See how it works ↓
-            </button>
           </div>
         </div>
       </div>

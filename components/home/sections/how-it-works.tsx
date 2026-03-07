@@ -24,7 +24,7 @@ const STEPS = [
     icon: Compass,
     title: 'Explore your options',
     time: 'Your pace',
-    description: 'Finance it, file an insurance claim, check assistance programs, or share with your family\u2014all from your personal dashboard.',
+    description: 'See financing options, file an insurance claim, check assistance programs, or share your estimate — all from your dashboard.',
   },
 ]
 
@@ -35,14 +35,14 @@ interface HowItWorksProps {
 
 export function HowItWorks({ onGetStarted, isCreating }: HowItWorksProps) {
   return (
-    <section className="py-16 md:py-24 bg-glow-cool border-t border-slate-800">
+    <section aria-label="How it works" className="py-16 md:py-24 bg-glow-cool border-t border-slate-800">
       <div className="mx-auto max-w-6xl px-4">
         <ScrollAnimate className="text-center mb-12">
           <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
             How It Works
           </h2>
           <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
-            From question to quote in three simple steps.
+            From first click to full estimate in under 2 minutes.
           </p>
         </ScrollAnimate>
 
@@ -65,7 +65,7 @@ export function HowItWorks({ onGetStarted, isCreating }: HowItWorksProps) {
                     <span className="w-7 h-7 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center">
                       {step.number}
                     </span>
-                    <span className="text-xs text-slate-500 uppercase tracking-wider">{step.time}</span>
+                    <span className="text-xs text-slate-400 uppercase tracking-wider">{step.time}</span>
                   </div>
                   <h3 className="text-lg font-bold text-slate-100 mb-2">{step.title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{step.description}</p>
@@ -95,7 +95,7 @@ export function HowItWorks({ onGetStarted, isCreating }: HowItWorksProps) {
                     <span className="w-6 h-6 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center">
                       {step.number}
                     </span>
-                    <span className="text-xs text-slate-500 uppercase tracking-wider">{step.time}</span>
+                    <span className="text-xs text-slate-400 uppercase tracking-wider">{step.time}</span>
                   </div>
                   <h3 className="text-lg font-bold text-slate-100 mb-1">{step.title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{step.description}</p>
@@ -113,7 +113,7 @@ export function HowItWorks({ onGetStarted, isCreating }: HowItWorksProps) {
             disabled={isCreating}
             className="btn-press"
           >
-            {isCreating ? 'Starting...' : 'Calculate My Estimate'}
+            {isCreating ? 'Starting...' : 'Get My Free Estimate'}
           </Button>
         </div>
       </div>

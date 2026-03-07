@@ -1,6 +1,6 @@
 'use client'
 
-import { FileText, HandHeart, CreditCard, LayoutDashboard, ArrowRight, Shield, Sparkles } from 'lucide-react'
+import { HandHeart, CreditCard, LayoutDashboard, ArrowRight, Shield, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
 import { CountUp } from '@/components/ui/count-up'
@@ -54,14 +54,14 @@ const QUICK_LINKS = [
 
 export function FundingWaterfall() {
   return (
-    <section className="py-14 md:py-20 bg-glow-warm border-t border-slate-800">
+    <section aria-label="Funding breakdown" className="py-14 md:py-20 bg-glow-warm border-t border-slate-800">
       <div className="mx-auto max-w-6xl px-4">
         <ScrollAnimate className="text-center mb-12">
           <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
-            See How Funding Stacks Up
+            You Shouldn&apos;t Pay Full Price
           </h2>
           <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
-            Insurance, assistance programs, and financing work together so you never pay full price out of pocket.
+            Most homeowners qualify for help they don&apos;t know about. Here&apos;s how insurance, assistance programs, and financing work together.
           </p>
         </ScrollAnimate>
 
@@ -128,7 +128,7 @@ export function FundingWaterfall() {
                 <div className="flex items-center gap-2 bg-[#1a1f2e] border border-slate-700/50 rounded-xl px-3 py-2.5 hover:border-[#c9a25c]/30 transition-colors group">
                   <Icon className="h-4 w-4 text-[#c9a25c] flex-shrink-0" />
                   <span className="text-xs text-slate-300">{label}</span>
-                  {href && <ArrowRight className="h-3 w-3 text-slate-500 ml-auto group-hover:text-[#c9a25c] transition-colors" />}
+                  {href && <ArrowRight className="h-3 w-3 text-slate-400 ml-auto group-hover:text-[#c9a25c] transition-colors" />}
                 </div>
               )
               if (href) {

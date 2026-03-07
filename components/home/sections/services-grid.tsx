@@ -16,14 +16,14 @@ const iconMap: Record<string, React.ReactNode> = {
 
 export function ServicesGrid() {
   return (
-    <section className="py-16 md:py-24 bg-glow-cool border-t border-slate-800">
+    <section aria-label="Roofing services" className="py-16 md:py-24 bg-glow-cool border-t border-slate-800">
       <div className="mx-auto max-w-6xl px-4">
         <ScrollAnimate className="text-center mb-12">
           <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
             Our Roofing Services
           </h2>
           <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
-            From minor repairs to full replacements, we handle it all with 20+ years of local expertise.
+            Get an instant estimate for any roofing project, backed by 20+ years of local expertise.
           </p>
         </ScrollAnimate>
 
