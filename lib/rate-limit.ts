@@ -7,7 +7,7 @@
 import { Redis } from '@upstash/redis'
 import { Ratelimit } from '@upstash/ratelimit'
 
-interface RateLimitConfig {
+interface _RateLimitConfig {
   windowMs: number // Time window in milliseconds
   maxRequests: number // Max requests per window
 }
@@ -40,7 +40,7 @@ function cleanup() {
 
 // Pre-configured rate limiters
 export const RATE_LIMITS = {
-  leadCreation: { windowMs: 60 * 1000, maxRequests: 5 }, // 5 per minute (reduced for abuse prevention)
+  leadCreation: { windowMs: 60 * 1000, maxRequests: 20 }, // 20 per minute — real users may test, double-click, or retry
   estimateCalculation: { windowMs: 60 * 1000, maxRequests: 5 }, // 5 per minute
   general: { windowMs: 60 * 1000, maxRequests: 20 }, // 20 per minute
   api: { windowMs: 60 * 1000, maxRequests: 100 }, // 100 per minute for API routes

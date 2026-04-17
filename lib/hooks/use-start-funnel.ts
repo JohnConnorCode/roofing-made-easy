@@ -31,7 +31,27 @@ export function useStartFunnel() {
         trackConversion('lead_created', { lead_id: data.lead.id })
         router.push(`/${data.lead.id}/property`)
       } else {
-        const msg = 'Unable to start your estimate. Please try again.'
+        let msg = 'Unable to start your estimate. Please try again.'
+        let serverDetail: string | undefined
+        try {
+          const body = (await response.json()) as { error?: string; message?: string; retryAfter?: number; detail?: string }
+          if (response.status === 429) {
+            const wait = typeof body.retryAfter === 'number' ? Math.max(1, body.retryAfter) : 30
+            msg = `Please wait ${wait}s and try again.`
+          } else if (body.message) {
+            msg = body.message
+          } else if (body.error) {
+            msg = body.error
+          }
+          if (process.env.NODE_ENV !== 'production' && body.detail) {
+            serverDetail = body.detail
+          }
+        } catch {
+          // response wasn't JSON; keep the generic message
+        }
+        if (serverDetail) {
+          console.error('[use-start-funnel]', response.status, serverDetail)
+        }
         setError(msg)
         showToast(msg, 'error')
         setIsCreating(false)

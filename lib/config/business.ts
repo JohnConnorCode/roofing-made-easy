@@ -173,8 +173,8 @@ export function getShortAddress(): string {
   return `${city}, ${stateCode}`
 }
 
-export function getSocialLinks(): string[] {
-  return Object.values(BUSINESS_CONFIG.social).filter((url): url is string => url !== null)
+export function getSocialLinks(config: BusinessConfig = BUSINESS_CONFIG): string[] {
+  return Object.values(config.social).filter((url): url is string => url !== null)
 }
 
 export function hasRealContactInfo(): boolean {
@@ -232,19 +232,19 @@ export function runBusinessConfigValidation(): void {
   const warnings = validateBusinessConfig()
 
   if (warnings.length > 0) {
-    // eslint-disable-next-line no-console
+     
     console.log('\n' + '='.repeat(60))
-    // eslint-disable-next-line no-console
+     
     console.log('BUSINESS CONFIGURATION WARNINGS')
-    // eslint-disable-next-line no-console
+     
     console.log('='.repeat(60))
-    // eslint-disable-next-line no-console
+     
     warnings.forEach((warning) => console.log(`  ${warning}`))
-    // eslint-disable-next-line no-console
+     
     console.log('='.repeat(60))
-    // eslint-disable-next-line no-console
+     
     console.log('Update lib/config/business.ts before production deployment')
-    // eslint-disable-next-line no-console
+     
     console.log('='.repeat(60) + '\n')
   }
 }
@@ -262,11 +262,11 @@ function validateProductionConfig(): void {
   // Log warnings instead of blocking deployment
   if (isVercelProduction && !bypassCheck) {
     if (!BUSINESS_CONFIG.phone.isReal) {
-      // eslint-disable-next-line no-console
+       
       console.warn('WARNING: Phone number is placeholder data. Update BUSINESS_CONFIG.phone in lib/config/business.ts')
     }
     if (!BUSINESS_CONFIG.address.isReal) {
-      // eslint-disable-next-line no-console
+       
       console.warn('WARNING: Address is placeholder data. Update BUSINESS_CONFIG.address in lib/config/business.ts')
     }
   }

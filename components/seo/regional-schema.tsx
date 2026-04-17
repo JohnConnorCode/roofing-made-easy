@@ -6,13 +6,14 @@ import {
   BUSINESS_CONFIG,
   getSocialLinks,
   hasRealContactInfo,
-  hasVerifiedReviews,
 } from '@/lib/config/business'
+import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 // Complete Service Area Schema - Lists ALL served locations
-export function ServiceAreaSchema() {
+export async function ServiceAreaSchema() {
+  const config = await getBusinessConfigFromDB()
   const cities = getAllCities()
   const counties = getAllCounties()
 
@@ -24,7 +25,7 @@ export function ServiceAreaSchema() {
     provider: {
       '@type': 'RoofingContractor',
       '@id': `${BASE_URL}/#organization`,
-      name: BUSINESS_CONFIG.name,
+      name: config.name,
     },
     areaServed: [
       // All cities
@@ -75,8 +76,9 @@ export function ServiceAreaSchema() {
 }
 
 // Professional Credentials Schema - Only include verified credentials
-export function ProfessionalCredentialsSchema() {
-  const credentials = BUSINESS_CONFIG.credentials
+export async function ProfessionalCredentialsSchema() {
+  const config = await getBusinessConfigFromDB()
+  const credentials = config.credentials
   // Check if any credential is truthy (true for booleans or non-null string for license)
   const hasAnyCredentials = Object.values(credentials).some(v => Boolean(v))
 
@@ -147,7 +149,7 @@ export function ProfessionalCredentialsSchema() {
     '@context': 'https://schema.org',
     '@type': 'RoofingContractor',
     '@id': `${BASE_URL}/#credentials`,
-    name: BUSINESS_CONFIG.name,
+    name: config.name,
     hasCredential: credentialList,
   }
 
@@ -280,7 +282,7 @@ interface SpeakableSchemaProps {
   url: string
 }
 
-export function SpeakableSchema({ headline, summary, url }: SpeakableSchemaProps) {
+export function SpeakableSchema({ headline, summary: _summary, url }: SpeakableSchemaProps) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -386,7 +388,8 @@ export function ImageGallerySchema({ images, galleryName }: ImageGallerySchemaPr
 }
 
 // Geo Shape Schema for precise service area
-export function ServiceAreaGeoSchema() {
+export async function ServiceAreaGeoSchema() {
+  const config = await getBusinessConfigFromDB()
   const cities = getAllCities()
 
   // Create a bounding box around all service area cities
@@ -404,7 +407,7 @@ export function ServiceAreaGeoSchema() {
     name: 'Roofing Services',
     provider: {
       '@type': 'RoofingContractor',
-      name: BUSINESS_CONFIG.name,
+      name: config.name,
     },
     areaServed: {
       '@type': 'GeoShape',
@@ -412,7 +415,7 @@ export function ServiceAreaGeoSchema() {
     },
     serviceArea: {
       '@type': 'AdministrativeArea',
-      name: BUSINESS_CONFIG.serviceArea.region,
+      name: config.serviceArea.region,
       containedInPlace: {
         '@type': 'State',
         name: 'Mississippi',
@@ -429,8 +432,9 @@ export function ServiceAreaGeoSchema() {
 }
 
 // Same-As Links for brand consistency - Only if real profiles exist
-export function BrandSameAsSchema() {
-  const socialLinks = getSocialLinks()
+export async function BrandSameAsSchema() {
+  const config = await getBusinessConfigFromDB()
+  const socialLinks = getSocialLinks(config)
 
   // Don't render if no social links configured
   if (socialLinks.length === 0) {
@@ -441,7 +445,7 @@ export function BrandSameAsSchema() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': `${BASE_URL}/#brand`,
-    name: BUSINESS_CONFIG.name,
+    name: config.name,
     url: BASE_URL,
     sameAs: socialLinks,
   }

@@ -7,13 +7,11 @@ import {
   HeroSection,
   TrustBar,
   EstimatePreview,
-  ProblemSolution,
   FundingWaterfall,
   HowItWorks,
   SocialProof,
-  ServicesGrid,
-  FAQSection,
-  FinalCTA,
+  WhyHomeowners,
+  FaqCta,
 } from './sections'
 
 export function HomePageContent() {
@@ -26,40 +24,51 @@ export function HomePageContent() {
   const handleFinalCTA = trackCTAWithAttribution('final_cta', handleGetStarted)
 
   return (
-    <div className="min-h-screen bg-gradient-dark">
+    <div className="min-h-screen bg-[#0c0f14]">
       <SiteHeader />
       <MobileCTABar />
 
-      <div ref={trackSectionRef('hero')}>
-        <HeroSection onGetStarted={handleHeroCTA} isCreating={isCreating} error={error} />
-      </div>
-      <div ref={trackSectionRef('trust_bar')}>
-        <TrustBar />
-      </div>
-      <div ref={trackSectionRef('estimate_preview')}>
-        <EstimatePreview onGetStarted={handlePreviewCTA} isCreating={isCreating} />
-      </div>
-      <div ref={trackSectionRef('problem_solution')}>
-        <ProblemSolution />
-      </div>
-      <div ref={trackSectionRef('funding_waterfall')}>
-        <FundingWaterfall />
-      </div>
-      <div ref={trackSectionRef('how_it_works')}>
-        <HowItWorks onGetStarted={handleHowItWorksCTA} isCreating={isCreating} />
-      </div>
-      <div ref={trackSectionRef('social_proof')}>
-        <SocialProof />
-      </div>
-      <div ref={trackSectionRef('services_grid')}>
-        <ServicesGrid />
-      </div>
-      <div ref={trackSectionRef('faq')}>
-        <FAQSection />
-      </div>
-      <div ref={trackSectionRef('final_cta')}>
-        <FinalCTA onGetStarted={handleFinalCTA} isCreating={isCreating} />
-      </div>
+      <main id="main-content">
+        {/* 1. Hero */}
+        <div ref={trackSectionRef('hero')}>
+          <HeroSection onGetStarted={handleHeroCTA} isCreating={isCreating} error={error} />
+        </div>
+
+        {/* 2. Honest trust strip */}
+        <div ref={trackSectionRef('trust_bar')}>
+          <TrustBar />
+        </div>
+
+        {/* 3. Try the tool (interactive proof) */}
+        <div ref={trackSectionRef('estimate_preview')}>
+          <EstimatePreview onGetStarted={handlePreviewCTA} isCreating={isCreating} />
+        </div>
+
+        {/* 4. Recent work — photo proof of real jobs */}
+        <div ref={trackSectionRef('recent_work')}>
+          <SocialProof />
+        </div>
+
+        {/* 5. Why homeowners pick us (bento) */}
+        <div ref={trackSectionRef('why_homeowners')}>
+          <WhyHomeowners />
+        </div>
+
+        {/* 6. How it works */}
+        <div ref={trackSectionRef('how_it_works')}>
+          <HowItWorks onGetStarted={handleHowItWorksCTA} isCreating={isCreating} />
+        </div>
+
+        {/* 7. Ways to pay */}
+        <div ref={trackSectionRef('funding_waterfall')}>
+          <FundingWaterfall />
+        </div>
+
+        {/* 8. FAQ + Final CTA (merged) */}
+        <div ref={trackSectionRef('faq_cta')}>
+          <FaqCta onGetStarted={handleFinalCTA} isCreating={isCreating} />
+        </div>
+      </main>
 
       <SiteFooter />
       <div className="h-[60px] lg:hidden" aria-hidden="true" />

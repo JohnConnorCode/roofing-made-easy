@@ -41,107 +41,101 @@ export const viewport: Viewport = {
   ],
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
-  title: {
-    default: "Smart Roof Pricing | Tupelo MS Roofing Estimates | Free & Instant",
-    template: "%s | Smart Roof Pricing",
-  },
-  description:
-    "Trusted roofing contractor serving Tupelo and Northeast Mississippi since 2010. Professional roof replacement, repair, and storm damage restoration. Free estimates available.",
-  keywords: [
-    "Tupelo roofing",
-    "Mississippi roofing contractor",
-    "roof repair Tupelo",
-    "roof replacement Mississippi",
-    "storm damage repair",
-    "free roofing estimate",
-    "Northeast Mississippi roofer",
-    "Lee County roofing",
-    "Oxford roofing",
-    "Starkville roofing",
-  ],
-  authors: [{ name: "Smart Roof Pricing", url: BASE_URL }],
-  creator: "Smart Roof Pricing",
-  publisher: "Smart Roof Pricing",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  category: "Home Services",
-  classification: "Roofing Contractor",
-  referrer: "origin-when-cross-origin",
-  openGraph: {
-    title: "Smart Roof Pricing | Instant Roofing Estimates in Mississippi",
-    description:
-      "Know your roof cost in 2 minutes. AI-powered roofing estimates for Tupelo and Northeast Mississippi. Free, instant, no contractors calling.",
-    type: "website",
-    locale: "en_US",
-    url: BASE_URL,
-    siteName: "Smart Roof Pricing",
-    images: [
-      {
-        url: "/images/og-default.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Smart Roof Pricing - Instant Roofing Estimates for Mississippi",
-        type: "image/jpeg",
-      },
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getBusinessConfigFromDB();
+  const city = config.address.city;
+  const stateCode = config.address.stateCode;
+  const region = config.serviceArea.region;
+  const name = config.name;
+
+  return {
+    metadataBase: new URL(BASE_URL),
+    title: {
+      default: `${name} | ${city} ${stateCode} Roofing Estimates | Free & Instant`,
+      template: `%s | ${name}`,
+    },
+    description: `Trusted roofing contractor serving ${city} and ${region}. Professional roof replacement, repair, and storm damage restoration. Free estimates available.`,
+    keywords: [
+      `${city} roofing`,
+      `${region} roofing`,
+      `roof repair ${city}`,
+      `roof replacement ${stateCode}`,
+      "storm damage repair",
+      "free roofing estimate",
+      `${region} roofer`,
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Smart Roof Pricing | Instant Roofing Estimates in Mississippi",
-    description:
-      "Know your roof cost in 2 minutes. Free, instant roofing estimates for Northeast Mississippi.",
-    site: "@smartroofpricing",
-    creator: "@smartroofpricing",
-    images: ["/images/og-default.jpg"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
+    authors: [{ name, url: BASE_URL }],
+    creator: name,
+    publisher: name,
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    category: "Home Services",
+    classification: "Roofing Contractor",
+    referrer: "origin-when-cross-origin",
+    openGraph: {
+      title: `${name} | Instant Roofing Estimates in ${stateCode}`,
+      description: `Know your roof cost in 2 minutes. Honest roofing estimates for ${city} and ${region}. Free, instant, no contractors calling.`,
+      type: "website",
+      locale: "en_US",
+      url: BASE_URL,
+      siteName: name,
+      images: [
+        {
+          url: "/images/og-default.jpg",
+          width: 1200,
+          height: 630,
+          alt: `${name} - Instant Roofing Estimates for ${region}`,
+          type: "image/jpeg",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${name} | Instant Roofing Estimates in ${stateCode}`,
+      description: `Know your roof cost in 2 minutes. Free, instant roofing estimates for ${region}.`,
+      images: ["/images/og-default.jpg"],
+    },
+    robots: {
       index: true,
       follow: true,
-      noimageindex: false,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-  },
-  manifest: "/manifest.json",
-  alternates: {
-    canonical: BASE_URL,
-  },
-  other: {
-    "geo.region": "US-MS",
-    "geo.placename": "Tupelo",
-    "geo.position": "34.2576;-88.7034",
-    "ICBM": "34.2576, -88.7034",
-    "business:contact_data:locality": "Tupelo",
-    "business:contact_data:region": "MS",
-    "business:contact_data:country_name": "United States",
-    "business:contact_data:postal_code": "38801",
-  },
-  verification: {
-    // Add your verification codes here
-    // google: "google-site-verification-code",
-    // yandex: "yandex-verification-code",
-    // bing: "bing-verification-code",
-  },
-};
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/icon.svg", type: "image/svg+xml" },
+      ],
+      apple: [
+        { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      ],
+    },
+    manifest: "/manifest.json",
+    alternates: {
+      canonical: BASE_URL,
+    },
+    other: {
+      "geo.region": `US-${stateCode}`,
+      "geo.placename": city,
+      "geo.position": `${config.coordinates.lat};${config.coordinates.lng}`,
+      "ICBM": `${config.coordinates.lat}, ${config.coordinates.lng}`,
+      "business:contact_data:locality": city,
+      "business:contact_data:region": stateCode,
+      "business:contact_data:country_name": config.address.country,
+      "business:contact_data:postal_code": config.address.zip,
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
@@ -154,7 +148,7 @@ export default async function RootLayout({
     <html lang="en-US" dir="ltr">
       <head>
         {/* RSS Feed Discovery */}
-        <link rel="alternate" type="application/rss+xml" title="Smart Roof Pricing Blog" href="/feed.xml" />
+        <link rel="alternate" type="application/rss+xml" title={`${config.name} Blog`} href="/feed.xml" />
 
         {/* Preconnect to important origins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -177,6 +171,9 @@ export default async function RootLayout({
         <MinimalNAPSchema />
       </head>
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-[#c9a25c] focus:text-[#0c0f14] focus:rounded-md focus:font-semibold">
+          Skip to main content
+        </a>
         <GoogleAnalytics />
         <Analytics />
         <SpeedInsights />

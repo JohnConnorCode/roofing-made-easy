@@ -9,6 +9,7 @@ import {
   getSocialLinks,
   hasRealContactInfo,
 } from '@/lib/config/business'
+import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
@@ -109,10 +110,12 @@ export function NAPSchema({ city, pageType = 'home' }: NAPSchemaProps) {
 }
 
 // Minimal NAP for footer/header (visible on every page)
-export function MinimalNAPSchema() {
+export async function MinimalNAPSchema() {
   if (process.env.NODE_ENV === 'production' && !hasRealContactInfo()) {
     return null
   }
+
+  const config = await getBusinessConfigFromDB()
 
   return (
     <script
@@ -122,15 +125,15 @@ export function MinimalNAPSchema() {
           '@context': 'https://schema.org',
           '@type': 'LocalBusiness',
           '@id': `${BASE_URL}/#footer-nap`,
-          name: BUSINESS_CONFIG.name,
-          telephone: BUSINESS_CONFIG.phone.raw,
+          name: config.name,
+          telephone: config.phone.raw,
           address: {
             '@type': 'PostalAddress',
-            streetAddress: BUSINESS_CONFIG.address.street,
-            addressLocality: BUSINESS_CONFIG.address.city,
-            addressRegion: BUSINESS_CONFIG.address.stateCode,
-            postalCode: BUSINESS_CONFIG.address.zip,
-            addressCountry: BUSINESS_CONFIG.address.countryCode,
+            streetAddress: config.address.street,
+            addressLocality: config.address.city,
+            addressRegion: config.address.stateCode,
+            postalCode: config.address.zip,
+            addressCountry: config.address.countryCode,
           },
         }),
       }}

@@ -11,9 +11,9 @@
 import {
   BUSINESS_CONFIG,
   hasRealContactInfo,
-  hasVerifiedReviews,
   getSocialLinks,
 } from '@/lib/config/business'
+import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 
 interface LocalBusinessSchemaProps {
   name?: string
@@ -29,58 +29,54 @@ interface LocalBusinessSchemaProps {
  * NOTE: Returns null in production if real contact info is not configured.
  * This prevents Google penalties for fabricated structured data.
  */
-export function LocalBusinessSchema({
-  name = BUSINESS_CONFIG.name,
-  description = 'Trusted roofing contractor serving Tupelo and Northeast Mississippi. Professional roof repair, replacement, and storm damage restoration with free estimates.',
+export async function LocalBusinessSchema({
+  name,
+  description,
   url = 'https://www.smartroofpricing.com',
   priceRange = '$$',
-}: LocalBusinessSchemaProps) {
+}: LocalBusinessSchemaProps = {}) {
+  const config = await getBusinessConfigFromDB()
+
   // SAFETY: Don't render LocalBusiness schema with fake contact info in production
   if (process.env.NODE_ENV === 'production' && !hasRealContactInfo()) {
     return null
   }
 
-  const socialLinks = getSocialLinks()
+  const resolvedName = name ?? config.name
+  const resolvedDescription =
+    description ??
+    `Trusted roofing contractor serving ${config.address.city} and ${config.serviceArea.region}. Roof repair, replacement, and storm damage restoration with free estimates.`
 
-  // Build the schema object
+  const socialLinks = getSocialLinks(config)
+
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'RoofingContractor',
-    name,
-    description,
+    name: resolvedName,
+    description: resolvedDescription,
     '@id': `${url}/#organization`,
     url,
     priceRange,
     image: `${url}/images/og-default.jpg`,
     logo: `${url}/images/og-default.jpg`,
-    telephone: BUSINESS_CONFIG.phone.raw,
+    telephone: config.phone.raw,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: BUSINESS_CONFIG.address.street,
-      addressLocality: BUSINESS_CONFIG.address.city,
-      addressRegion: BUSINESS_CONFIG.address.stateCode,
-      postalCode: BUSINESS_CONFIG.address.zip,
-      addressCountry: BUSINESS_CONFIG.address.countryCode,
+      streetAddress: config.address.street,
+      addressLocality: config.address.city,
+      addressRegion: config.address.stateCode,
+      postalCode: config.address.zip,
+      addressCountry: config.address.countryCode,
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: BUSINESS_CONFIG.coordinates.lat,
-      longitude: BUSINESS_CONFIG.coordinates.lng,
+      latitude: config.coordinates.lat,
+      longitude: config.coordinates.lng,
     },
     areaServed: [
       {
         '@type': 'State',
-        name: 'Mississippi',
-        containsPlace: [
-          { '@type': 'City', name: 'Tupelo' },
-          { '@type': 'City', name: 'Oxford' },
-          { '@type': 'City', name: 'Starkville' },
-          { '@type': 'City', name: 'Columbus' },
-          { '@type': 'City', name: 'Corinth' },
-          { '@type': 'City', name: 'New Albany' },
-          { '@type': 'City', name: 'Pontotoc' },
-          { '@type': 'City', name: 'Booneville' },
-        ],
+        name: config.address.state,
       },
     ],
     serviceType: [
@@ -95,30 +91,32 @@ export function LocalBusinessSchema({
       {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: BUSINESS_CONFIG.hours.weekdays.open,
-        closes: BUSINESS_CONFIG.hours.weekdays.close,
+        opens: config.hours.weekdays.open,
+        closes: config.hours.weekdays.close,
       },
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: 'Saturday',
-        opens: BUSINESS_CONFIG.hours.saturday.open,
-        closes: BUSINESS_CONFIG.hours.saturday.close,
-      },
+      ...(config.hours.saturday
+        ? [
+            {
+              '@type': 'OpeningHoursSpecification',
+              dayOfWeek: 'Saturday',
+              opens: config.hours.saturday.open,
+              closes: config.hours.saturday.close,
+            },
+          ]
+        : []),
     ],
   }
 
-  // SAFETY: Only include aggregateRating if we have verified reviews
-  if (hasVerifiedReviews()) {
+  if (config.reviews.googleRating !== null && config.reviews.googleReviewCount !== null) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
-      ratingValue: String(BUSINESS_CONFIG.reviews.googleRating),
-      reviewCount: String(BUSINESS_CONFIG.reviews.googleReviewCount),
+      ratingValue: String(config.reviews.googleRating),
+      reviewCount: String(config.reviews.googleReviewCount),
       bestRating: '5',
       worstRating: '1',
     }
   }
 
-  // Only include social links if we have real ones configured
   if (socialLinks.length > 0) {
     schema.sameAs = socialLinks
   }
@@ -141,31 +139,37 @@ interface ServiceSchemaProps {
 /**
  * Service schema for the roofing estimate service
  */
-export function ServiceSchema({
+export async function ServiceSchema({
   name = 'Free Roofing Estimate',
-  description = 'Get an instant, accurate roofing estimate for your Northeast Mississippi home. No contractors calling, no pressure. Just honest pricing for roof repair or replacement.',
-  provider = BUSINESS_CONFIG.name,
+  description,
+  provider,
   url = 'https://www.smartroofpricing.com',
-}: ServiceSchemaProps) {
+}: ServiceSchemaProps = {}) {
+  const config = await getBusinessConfigFromDB()
+  const resolvedDescription =
+    description ??
+    `Get an instant, accurate roofing estimate for your ${config.serviceArea.region} home. No contractors calling, no pressure. Just honest pricing for roof repair or replacement.`
+  const resolvedProvider = provider ?? config.name
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name,
-    description,
+    description: resolvedDescription,
     provider: {
       '@type': 'RoofingContractor',
-      name: provider,
+      name: resolvedProvider,
       address: {
         '@type': 'PostalAddress',
-        addressLocality: BUSINESS_CONFIG.address.city,
-        addressRegion: BUSINESS_CONFIG.address.stateCode,
-        addressCountry: BUSINESS_CONFIG.address.countryCode,
+        addressLocality: config.address.city,
+        addressRegion: config.address.stateCode,
+        addressCountry: config.address.countryCode,
       },
     },
     serviceType: 'Roofing Estimate',
     areaServed: {
       '@type': 'State',
-      name: BUSINESS_CONFIG.address.state,
+      name: config.address.state,
     },
     url,
     offers: {

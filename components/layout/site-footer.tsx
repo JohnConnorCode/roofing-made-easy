@@ -59,7 +59,7 @@ function FooterAccordion({ title, children }: { title: string; children: React.R
         <h3 className="text-sm font-semibold text-slate-200 uppercase tracking-wider">
           {title}
         </h3>
-        <ChevronDown className={cn('h-4 w-4 text-slate-500 transition-transform duration-200', open && 'rotate-180')} />
+        <ChevronDown className={cn('h-4 w-4 text-slate-400 transition-transform duration-200', open && 'rotate-180')} />
       </button>
       {/* Desktop: accented heading */}
       <FooterColumnHeading title={title} />
@@ -109,7 +109,7 @@ export function SiteFooter() {
               </div>
               <div className="h-px w-16 bg-gold/30 mt-3 mb-4" />
               <p className="text-slate-300 text-sm leading-relaxed mb-4 max-w-sm">
-                Northeast Mississippi&apos;s trusted roofing contractor. Proudly serving Tupelo and surrounding communities since 2010.
+                {config.serviceArea.region}&rsquo;s trusted roofing contractor. Proudly serving {config.address.city} and surrounding communities{config.foundedYear ? ` since ${config.foundedYear}` : ''}.
               </p>
               {/* Contact info with separator */}
               <div className="mt-5 pt-5 border-t border-slate-800/50">
@@ -131,12 +131,12 @@ export function SiteFooter() {
               {(config.social.facebook || config.social.instagram) && (
               <div className="flex gap-3 mt-4">
                 {config.social.facebook && (
-                <a href={config.social.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold hover:-translate-y-0.5 transition-all" aria-label="Facebook">
+                <a href={config.social.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-400 hover:border-gold/50 hover:text-gold hover:-translate-y-0.5 transition-all" aria-label="Facebook">
                   <Facebook className="w-5 h-5" />
                 </a>
                 )}
                 {config.social.instagram && (
-                <a href={config.social.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-500 hover:border-gold/50 hover:text-gold hover:-translate-y-0.5 transition-all" aria-label="Instagram">
+                <a href={config.social.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-700 text-slate-400 hover:border-gold/50 hover:text-gold hover:-translate-y-0.5 transition-all" aria-label="Instagram">
                   <Instagram className="w-5 h-5" />
                 </a>
                 )}
@@ -241,7 +241,7 @@ export function SiteFooter() {
                         <li key={city.slug}>
                           <Link
                             href={`/${city.slug}-roofing`}
-                            className="text-sm text-slate-500 hover:text-slate-300 transition-colors"
+                            className="text-sm text-slate-400 hover:text-slate-300 transition-colors"
                           >
                             {city.name}
                           </Link>
@@ -258,7 +258,7 @@ export function SiteFooter() {
                       <li key={county.slug}>
                         <Link
                           href={`/${county.slug}-roofing`}
-                          className="text-sm text-slate-500 hover:text-slate-300 transition-colors"
+                          className="text-sm text-slate-400 hover:text-slate-300 transition-colors"
                         >
                           {county.name}
                         </Link>
@@ -282,7 +282,7 @@ export function SiteFooter() {
         {/* Bottom Bar */}
         <div className="border-t border-slate-800 safe-bottom">
           <div className="mx-auto max-w-6xl px-4 py-4">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-400">
               <p>&copy; {new Date().getFullYear()} {config.name}. All rights reserved.</p>
               <div className="flex gap-4">
                 <Link href="/terms" className="hover:text-gold transition-colors py-2 min-h-[48px] flex items-center">Terms of Service</Link>

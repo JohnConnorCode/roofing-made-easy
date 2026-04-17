@@ -1,135 +1,90 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
-import { Star, Quote } from 'lucide-react'
+import Image from 'next/image'
 import { ScrollAnimate } from '@/components/scroll-animate'
-import { getAllTestimonials } from '@/lib/data/testimonials'
-import { useReducedMotion } from '@/lib/hooks/use-reduced-motion'
+import { useBusinessConfig } from '@/lib/config/business-provider'
 
-const AVATAR_COLORS = [
-  'bg-[#c9a25c]',
-  'bg-[#5b7fa4]',
-  'bg-[#3d7a5a]',
-  'bg-[#8b6cc1]',
-  'bg-[#c97a5c]',
-  'bg-[#4a8f8f]',
-  'bg-[#a65c7a]',
-  'bg-[#6b8a3d]',
-] as const
+/**
+ * "Recent work" gallery — grounded social proof via the company's own
+ * photos. We intentionally don't ship fabricated testimonials; real
+ * customer quotes will replace this once they're collected with consent.
+ */
+
+const PROJECTS = [
+  {
+    src: '/images/work/replacement-after.webp',
+    alt: 'Aerial view of a completed residential shingle roof replacement',
+    caption: 'Full replacement',
+    detail: 'Tear-off, underlayment, and architectural shingles',
+  },
+  {
+    src: '/images/work/metal-conversion.webp',
+    alt: 'Residential metal roof installation',
+    caption: 'Shingle-to-metal conversion',
+    detail: 'Standing seam, coco brown',
+  },
+  {
+    src: '/images/work/large-residential.webp',
+    alt: 'Large home with new architectural shingle roof',
+    caption: 'Large residential',
+    detail: '8,100 sq ft estate grey architectural',
+  },
+  {
+    src: '/images/work/aerial-wide.webp',
+    alt: 'Aerial drone photo of a completed roof',
+    caption: 'Recent completion',
+    detail: 'Drone documentation, full project record',
+  },
+]
 
 export function SocialProof() {
-  const testimonials = getAllTestimonials()
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [isPaused, setIsPaused] = useState(false)
-  const [activeCard, setActiveCard] = useState(0)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
-  const prefersReducedMotion = useReducedMotion()
-
-  const scrollNext = useCallback(() => {
-    const container = scrollRef.current
-    if (!container) return
-    const cardWidth = container.firstElementChild?.clientWidth ?? 0
-    const gap = 16
-    const maxScroll = container.scrollWidth - container.clientWidth
-    if (container.scrollLeft >= maxScroll - 10) {
-      container.scrollTo({ left: 0, behavior: 'smooth' })
-    } else {
-      container.scrollBy({ left: cardWidth + gap, behavior: 'smooth' })
-    }
-  }, [])
-
-  useEffect(() => {
-    if (isPaused || prefersReducedMotion) return
-    intervalRef.current = setInterval(scrollNext, 6000)
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
-  }, [isPaused, prefersReducedMotion, scrollNext])
-
-  useEffect(() => {
-    const container = scrollRef.current
-    if (!container) return
-
-    const handleScroll = () => {
-      const cardWidth = container.firstElementChild?.clientWidth ?? 0
-      const gap = 16
-      if (cardWidth === 0) return
-      const index = Math.round(container.scrollLeft / (cardWidth + gap))
-      setActiveCard(Math.min(index, testimonials.length - 1))
-    }
-
-    container.addEventListener('scroll', handleScroll, { passive: true })
-    return () => container.removeEventListener('scroll', handleScroll)
-  }, [testimonials.length])
-
-  const scrollToCard = (index: number) => {
-    const container = scrollRef.current
-    if (!container) return
-    const cardWidth = container.firstElementChild?.clientWidth ?? 0
-    const gap = 16
-    container.scrollTo({ left: index * (cardWidth + gap), behavior: 'smooth' })
-  }
+  const { serviceArea } = useBusinessConfig()
 
   return (
-    <section aria-label="Customer testimonials" className="py-20 md:py-28 bg-diagonal-dark">
+    <section
+      aria-label="Recent work"
+      className="py-24 md:py-32 bg-[#0c0f14] border-t border-slate-900"
+    >
       <div className="mx-auto max-w-6xl px-4">
-        <ScrollAnimate className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
-            What Homeowners Say
-          </h2>
-          <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
-            Real stories from homeowners who got their answers fast.
-          </p>
+        <ScrollAnimate>
+          <div className="max-w-2xl mb-16">
+            <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c]">
+              Recent work
+            </p>
+            <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-50 font-display leading-[1.05]">
+              Real roofs.
+              <br />
+              Real {serviceArea.region}.
+            </h2>
+            <p className="mt-5 text-lg text-slate-400 leading-relaxed max-w-xl">
+              Drone documentation from jobs we&rsquo;ve finished this year.
+              You see what the crew saw.
+            </p>
+          </div>
         </ScrollAnimate>
 
-        <div
-          ref={scrollRef}
-          className="flex overflow-x-auto snap-x snap-mandatory gap-4 scrollbar-hide"
-          aria-roledescription="carousel"
-          aria-label="Customer testimonials"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onTouchStart={() => setIsPaused(true)}
-          onTouchEnd={() => setIsPaused(false)}
-        >
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={testimonial.id}
-              className="w-[85vw] sm:w-[340px] md:w-[380px] snap-center bg-[#1a1f2e] border border-slate-700/50 rounded-2xl p-6 card-inner-glow card-hover-premium flex-shrink-0"
-            >
-              <Quote className="h-8 w-8 text-[#c9a25c]/30 mb-4" />
-              <p className="text-slate-300 mb-4 leading-relaxed line-clamp-4">
-                &ldquo;{testimonial.text}&rdquo;
-              </p>
-              <div className="flex items-center gap-1 mb-3">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-[#c9a25c] text-[#c9a25c] star-glow" />
-                ))}
-              </div>
-              <div className="flex items-center gap-3">
-                <div className={`flex-shrink-0 w-10 h-10 rounded-full ${AVATAR_COLORS[index % AVATAR_COLORS.length]} flex items-center justify-center text-sm font-bold text-[#0c0f14]`}>
-                  {testimonial.name.split(' ').filter((_, i, arr) => i === 0 || i === arr.length - 1).map(n => n[0]).join('')}
-                </div>
-                <div>
-                  <p className="font-semibold text-slate-100">{testimonial.name}</p>
-                  <p className="text-sm text-slate-400">{testimonial.location} &bull; {testimonial.projectType}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Dot indicators */}
-        <div className="flex justify-center gap-1 mt-6">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => scrollToCard(i)}
-              className="p-2"
-              aria-label={`View testimonial ${i + 1}`}
-            >
-              <span className={`block h-2 rounded-full transition-all ${i === activeCard ? 'bg-[#c9a25c] w-6' : 'bg-slate-600 hover:bg-slate-500 w-2'}`} />
-            </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {PROJECTS.map((project, idx) => (
+            <ScrollAnimate key={project.src} delay={idx * 80}>
+              <figure className="group relative aspect-[4/3] rounded-2xl overflow-hidden border border-slate-900">
+                <Image
+                  src={project.src}
+                  alt={project.alt}
+                  fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-[1400ms] group-hover:scale-[1.03]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0f14] via-[#0c0f14]/30 to-transparent" />
+                <figcaption className="absolute bottom-0 left-0 right-0 p-6">
+                  <p className="text-xs font-medium uppercase tracking-widest text-[#e6c588]">
+                    {project.caption}
+                  </p>
+                  <p className="mt-1 text-base text-slate-100 font-medium">
+                    {project.detail}
+                  </p>
+                </figcaption>
+              </figure>
+            </ScrollAnimate>
           ))}
         </div>
       </div>

@@ -62,12 +62,17 @@ export async function POST(
     }
 
     // Security: Prevent estimate generation abuse
-    // Only allow estimate generation for leads in appropriate status
+    // Only allow estimate generation for leads still in the intake flow
     const leadStatus = (lead as { status?: string }).status
-    const allowedStatuses = ['new', 'in_progress', 'contacted', 'intake_complete']
+    const allowedStatuses = ['new', 'in_progress', 'contacted', 'intake_started', 'intake_complete']
+    const terminalStatuses = ['estimate_generated', 'estimate_sent', 'quote_created', 'quote_sent', 'won', 'lost', 'archived']
     if (leadStatus && !allowedStatuses.includes(leadStatus)) {
       return NextResponse.json(
-        { error: 'Estimate already generated for this lead' },
+        {
+          error: terminalStatuses.includes(leadStatus)
+            ? 'Estimate already generated for this lead'
+            : `Cannot generate estimate for lead in status "${leadStatus}"`,
+        },
         { status: 400 }
       )
     }
@@ -445,7 +450,7 @@ export async function GET(
       }
 
       // Check if user is admin or customer linked to this lead
-      const isAdmin = user.user_metadata?.role === 'admin'
+      const isAdmin = user.app_metadata?.role === 'admin'
       if (!isAdmin) {
         const { data: customerRow } = await supabase
           .from('customers')

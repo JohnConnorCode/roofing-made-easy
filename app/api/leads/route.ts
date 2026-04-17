@@ -69,8 +69,18 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (leadError || !lead) {
+      logger.error('Lead insert failed', {
+        error: leadError?.message || 'unknown',
+        code: leadError?.code,
+        details: leadError?.details,
+      })
       return NextResponse.json(
-        { error: 'Failed to create lead' },
+        {
+          error: 'Failed to create lead',
+          ...(process.env.NODE_ENV !== 'production' && leadError
+            ? { detail: leadError.message, code: leadError.code }
+            : {}),
+        },
         { status: 500 }
       )
     }
@@ -94,8 +104,14 @@ export async function POST(request: NextRequest) {
     // If ALL related record inserts failed, clean up the orphaned lead
     if (failures.length === relatedResults.length) {
       await supabase.from('leads').delete().eq('id', leadId)
+      const reasons = failures
+        .map(f => (f.status === 'rejected' ? String(f.reason) : null))
+        .filter(Boolean)
       return NextResponse.json(
-        { error: 'Failed to initialize lead' },
+        {
+          error: 'Failed to initialize lead',
+          ...(process.env.NODE_ENV !== 'production' ? { detail: reasons } : {}),
+        },
         { status: 500 }
       )
     }

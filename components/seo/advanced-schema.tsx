@@ -8,67 +8,68 @@ import {
   hasRealContactInfo,
   hasVerifiedReviews,
 } from '@/lib/config/business'
+import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 // Organization Schema - Use on homepage/layout
-export function OrganizationSchema() {
-  const socialLinks = getSocialLinks()
+export async function OrganizationSchema() {
+  const config = await getBusinessConfigFromDB()
+  const socialLinks = getSocialLinks(config)
 
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': `${BASE_URL}/#organization`,
-    name: BUSINESS_CONFIG.name,
+    name: config.name,
     url: BASE_URL,
     logo: {
       '@type': 'ImageObject',
       url: `${BASE_URL}/icon.svg`,
     },
-    description: `Professional roofing contractor serving ${BUSINESS_CONFIG.serviceArea.primaryCity} and ${BUSINESS_CONFIG.serviceArea.region} since ${BUSINESS_CONFIG.foundedYear}.`,
-    foundingDate: BUSINESS_CONFIG.foundedYear,
+    description: `Professional roofing contractor serving ${config.serviceArea.primaryCity} and ${config.serviceArea.region} since ${config.foundedYear}.`,
+    foundingDate: config.foundedYear,
     foundingLocation: {
       '@type': 'Place',
       address: {
         '@type': 'PostalAddress',
-        addressLocality: BUSINESS_CONFIG.address.city,
-        addressRegion: BUSINESS_CONFIG.address.stateCode,
-        addressCountry: BUSINESS_CONFIG.address.countryCode,
+        addressLocality: config.address.city,
+        addressRegion: config.address.stateCode,
+        addressCountry: config.address.countryCode,
       },
     },
     address: {
       '@type': 'PostalAddress',
-      streetAddress: BUSINESS_CONFIG.address.street,
-      addressLocality: BUSINESS_CONFIG.address.city,
-      addressRegion: BUSINESS_CONFIG.address.stateCode,
-      postalCode: BUSINESS_CONFIG.address.zip,
-      addressCountry: BUSINESS_CONFIG.address.countryCode,
+      streetAddress: config.address.street,
+      addressLocality: config.address.city,
+      addressRegion: config.address.stateCode,
+      postalCode: config.address.zip,
+      addressCountry: config.address.countryCode,
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: BUSINESS_CONFIG.coordinates.lat,
-      longitude: BUSINESS_CONFIG.coordinates.lng,
+      latitude: config.coordinates.lat,
+      longitude: config.coordinates.lng,
     },
-    telephone: BUSINESS_CONFIG.phone.raw,
-    email: BUSINESS_CONFIG.email.primary,
+    telephone: config.phone.raw,
+    email: config.email.primary,
     contactPoint: [
       {
         '@type': 'ContactPoint',
-        telephone: BUSINESS_CONFIG.phone.raw,
+        telephone: config.phone.raw,
         contactType: 'customer service',
         areaServed: 'US-MS',
         availableLanguage: ['English'],
         hoursAvailable: {
           '@type': 'OpeningHoursSpecification',
           dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-          opens: BUSINESS_CONFIG.hours.weekdays.open,
-          closes: BUSINESS_CONFIG.hours.weekdays.close,
+          opens: config.hours.weekdays.open,
+          closes: config.hours.weekdays.close,
         },
       },
     ],
-    // Only include sameAs if we have real social profiles
     ...(socialLinks.length > 0 && { sameAs: socialLinks }),
-    slogan: BUSINESS_CONFIG.tagline,
+    slogan: config.tagline,
     knowsAbout: [
       'Roof Replacement',
       'Roof Repair',
@@ -88,14 +89,15 @@ export function OrganizationSchema() {
 }
 
 // WebSite Schema - Use on homepage
-export function WebSiteSchema() {
+export async function WebSiteSchema() {
+  const config = await getBusinessConfigFromDB()
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': `${BASE_URL}/#website`,
     url: BASE_URL,
-    name: BUSINESS_CONFIG.name,
-    description: `Professional roofing services in ${BUSINESS_CONFIG.serviceArea.primaryCity} and ${BUSINESS_CONFIG.serviceArea.region}`,
+    name: config.name,
+    description: `Professional roofing services in ${config.serviceArea.primaryCity} and ${config.serviceArea.region}`,
     publisher: {
       '@id': `${BASE_URL}/#organization`,
     },

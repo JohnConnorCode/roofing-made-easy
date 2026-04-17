@@ -1,30 +1,23 @@
 'use client'
 
-import { ClipboardList, Zap, Compass } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
+import { ScrollAnimate } from '@/components/scroll-animate'
 
 const STEPS = [
   {
-    number: 1,
-    icon: ClipboardList,
-    title: 'Tell us about your roof',
-    time: '2 min',
-    description: 'Answer a few quick questions about your property, roof type, and timeline. Upload photos for extra accuracy.',
+    label: 'Tell us about the roof',
+    body: 'A few questions about size, age, material, and what\u2019s going on. No account needed.',
+    meta: '~2 minutes',
   },
   {
-    number: 2,
-    icon: Zap,
-    title: 'Get your instant estimate',
-    time: 'Instant',
-    description: 'Our AI analyzes your roof against 50,000+ local projects and gives you a detailed price range with full breakdown.',
+    label: 'Get a grounded price range',
+    body: 'We run your specifics through real material costs and regional labor rates, then show the low, likely, and high end.',
+    meta: 'Instant',
   },
   {
-    number: 3,
-    icon: Compass,
-    title: 'Explore your options',
-    time: 'Your pace',
-    description: 'See financing options, file an insurance claim, check assistance programs, or share your estimate — all from your dashboard.',
+    label: 'Take it from here, your way',
+    body: 'Share the PDF with family, hand it to an adjuster, or get in touch when you\u2019re ready. No calls from us until you ask.',
+    meta: 'On your terms',
   },
 ]
 
@@ -35,87 +28,60 @@ interface HowItWorksProps {
 
 export function HowItWorks({ onGetStarted, isCreating }: HowItWorksProps) {
   return (
-    <section aria-label="How it works" className="py-16 md:py-24 bg-glow-cool border-t border-slate-800">
+    <section
+      aria-label="How it works"
+      className="py-24 md:py-32 bg-[#0c0f14] border-t border-slate-900"
+    >
       <div className="mx-auto max-w-6xl px-4">
-        <ScrollAnimate className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
-            How It Works
-          </h2>
-          <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
-            From first click to full estimate in under 2 minutes.
-          </p>
+        <ScrollAnimate>
+          <div className="max-w-2xl mb-16">
+            <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c]">
+              How it works
+            </p>
+            <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-50 font-display leading-[1.05]">
+              Three steps.
+              <br />
+              No phone tag.
+            </h2>
+          </div>
         </ScrollAnimate>
 
-        {/* Desktop: horizontal timeline */}
-        <ScrollStagger simple className="hidden md:grid md:grid-cols-3 gap-0 relative mb-12">
-          {/* Connecting line */}
-          <div className="absolute top-[2.25rem] left-[16.67%] right-[16.67%] h-0.5 bg-gradient-to-r from-[#c9a25c]/50 via-[#c9a25c]/30 to-[#c9a25c]/50 z-0" />
-
-          {STEPS.map((step) => {
-            const Icon = step.icon
-            return (
-              <div key={step.number} className="relative text-center px-6">
-                <div className="relative z-10 flex flex-col items-center">
-                  <div className="w-[4.5rem] h-[4.5rem] rounded-full bg-ink border-2 border-[#c9a25c]/40 flex items-center justify-center mb-4 shadow-lg">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#c9a25c] to-[#9a7432] flex items-center justify-center">
-                      <Icon className="h-6 w-6 text-[#0c0f14]" />
-                    </div>
-                  </div>
-                  <div className="inline-flex items-center gap-2 mb-2">
-                    <span className="w-7 h-7 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center">
-                      {step.number}
-                    </span>
-                    <span className="text-xs text-slate-400 uppercase tracking-wider">{step.time}</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-100 mb-2">{step.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{step.description}</p>
+        <ol className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-12 mb-14">
+          {STEPS.map((step, idx) => (
+            <ScrollAnimate key={step.label} delay={idx * 80}>
+              <li className="relative">
+                <div className="flex items-baseline gap-4 mb-5">
+                  <span className="text-5xl md:text-6xl font-bold text-[#c9a25c]/80 font-display tabular-nums leading-none">
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <span className="text-xs font-medium uppercase tracking-widest text-slate-500">
+                    {step.meta}
+                  </span>
                 </div>
-              </div>
-            )
-          })}
-        </ScrollStagger>
+                <h3 className="text-xl md:text-2xl font-semibold text-slate-50 font-display leading-snug">
+                  {step.label}
+                </h3>
+                <p className="mt-3 text-base text-slate-400 leading-relaxed">
+                  {step.body}
+                </p>
+              </li>
+            </ScrollAnimate>
+          ))}
+        </ol>
 
-        {/* Mobile: vertical stack */}
-        <ScrollStagger simple className="md:hidden space-y-6 mb-12">
-          {STEPS.map((step, index) => {
-            const Icon = step.icon
-            return (
-              <div key={step.number} className="relative flex gap-4">
-                {/* Vertical line */}
-                {index < STEPS.length - 1 && (
-                  <div className="absolute left-[1.6rem] top-[4.5rem] bottom-0 w-0.5 bg-[#c9a25c]/20" />
-                )}
-                <div className="flex-shrink-0">
-                  <div className="w-[3.25rem] h-[3.25rem] rounded-full bg-gradient-to-br from-[#c9a25c] to-[#9a7432] flex items-center justify-center shadow-lg">
-                    <Icon className="h-5 w-5 text-[#0c0f14]" />
-                  </div>
-                </div>
-                <div className="pt-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="w-6 h-6 rounded-full bg-gold text-ink text-xs font-bold flex items-center justify-center">
-                      {step.number}
-                    </span>
-                    <span className="text-xs text-slate-400 uppercase tracking-wider">{step.time}</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-100 mb-1">{step.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{step.description}</p>
-                </div>
-              </div>
-            )
-          })}
-        </ScrollStagger>
-
-        <div className="text-center">
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={onGetStarted}
-            disabled={isCreating}
-            className="btn-press"
-          >
-            {isCreating ? 'Starting...' : 'Get My Free Estimate'}
-          </Button>
-        </div>
+        <ScrollAnimate delay={300}>
+          <div className="pt-4">
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={onGetStarted}
+              disabled={isCreating}
+              className="btn-press"
+            >
+              {isCreating ? 'Starting\u2026' : 'Start my estimate'}
+            </Button>
+          </div>
+        </ScrollAnimate>
       </div>
     </section>
   )

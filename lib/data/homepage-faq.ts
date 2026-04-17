@@ -11,35 +11,35 @@ export interface FAQItem {
 
 export const HOMEPAGE_FAQ_ITEMS: FAQItem[] = [
   {
-    question: 'How can an online estimate be accurate without seeing my roof?',
-    answer: "We combine satellite imagery of your property with data from 50,000+ roofing projects to calculate material costs, regional labor rates, and complexity factors. Our estimates typically land within 10-15% of final contractor quotes. For unusual or complex roofs, we recommend uploading photos for even greater accuracy.",
+    question: 'How can you give me an accurate estimate online?',
+    answer: "We calculate it the same way a local roofer would — using current material costs, regional labor rates, and the specifics of your roof (size, pitch, complexity, tear-off). For an average replacement, the range we give lands close to the final bid. For unusual roofs or big storm damage, we'll tell you directly that an in-person look is worth it.",
   },
   {
-    question: 'Do you sell my information to contractors?',
-    answer: "Absolutely not. Unlike lead-generation sites that sell your info to 5+ contractors (who then bombard you with calls), we keep your information private. You'll only hear from us if you explicitly request a consultation. No surprise calls, no pressure.",
+    question: 'Will my information get sold to other contractors?',
+    answer: "No. We don't sell leads, and we're not a directory. You'll get your estimate by email. If you want to talk, you email or call us. You won't get three other contractors blowing up your phone.",
   },
   {
-    question: 'What makes this different from getting quotes the traditional way?',
-    answer: "Traditional quoting means scheduling 3+ appointments, waiting days for callbacks, and getting wildly different numbers. One contractor quotes $12k, another says $24k—how do you know who's right? Our AI-powered system analyzes real market data so you know the fair price BEFORE talking to anyone.",
+    question: "What's different from getting quotes the usual way?",
+    answer: "You skip the part where three contractors come to your house and give you three wildly different numbers. You get a grounded range first, so when you do talk to someone, you already know roughly what's fair.",
   },
   {
-    question: 'Who built this and why should I trust it?',
-    answer: "We're Smart Roof Pricing, a local Mississippi roofing company with 20+ years of experience. We built this because we were tired of seeing homeowners get ripped off by storm chasers and high-pressure salespeople. We use the same pricing methodology we use for our own jobs—honest, data-driven, no games.",
+    question: 'Who built this?',
+    answer: "Farrell Roofing, a family roofing business in Northeast Mississippi. We built this tool because we got tired of watching homeowners get quoted all over the map, especially after storms. The pricing methodology here is the same one we use on our own jobs.",
   },
   {
-    question: 'What if I need more than just an estimate?',
-    answer: "Your estimate is just the beginning. From there, you can explore financing options (pre-qualify with no credit impact), get help navigating insurance claims, or discover assistance programs you may qualify for. Everything connects so you can go from estimate to new roof with confidence.",
+    question: 'What happens after I get the estimate?',
+    answer: "You get a PDF you can keep, share with family, or hand to your insurance adjuster. If you want us to come do the work, reach out. If you'd rather use the estimate to sanity-check another contractor, that's fine too. No pressure either way.",
   },
   {
     question: 'Is this really free?',
-    answer: "Yes, 100% free with no strings attached. No account required, no payment info needed. We believe homeowners deserve to know what their roof costs before making any decisions. The estimate tool will always be free.",
+    answer: "Yes. No account, no payment info, no trial. We'd rather give you the number up front than have you guess.",
   },
   {
-    question: 'What happens after I get my estimate?',
-    answer: "You get access to a personal dashboard where you can download your estimate as a PDF, share it with family or contractors, explore financing options with our payment calculator, check if your roof qualifies for insurance coverage, and browse 50+ assistance programs. Everything you need to go from estimate to new roof is in one place.",
+    question: 'What if my roof needs more than just shingles?',
+    answer: "The estimate covers the most common path — tear-off, underlayment, shingles or metal, and labor. If there's deck rot, chimney flashing issues, or structural problems, those come up once we see it in person. We'll tell you honestly what's standard and what's an add-on.",
   },
   {
-    question: 'How is this different from HomeAdvisor or Angi?',
-    answer: "Those sites are lead generators\u2014they collect your info and sell it to multiple contractors who then call you nonstop. We do the opposite. You get an instant price range powered by real data, keep your information private, and decide on your own terms whether to move forward. No middleman, no info selling, no pressure calls.",
+    question: "Do you help with insurance claims?",
+    answer: "Yes. After a hail or wind event, we document the damage, meet the adjuster on-site, and make sure the claim reflects what's actually on your roof. That's included — we don't charge for it.",
   },
 ]

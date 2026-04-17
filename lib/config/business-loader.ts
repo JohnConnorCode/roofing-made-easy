@@ -1,5 +1,6 @@
 import { cache } from 'react'
 import { unstable_cache } from 'next/cache'
+import { createClient } from '@supabase/supabase-js'
 import { BUSINESS_CONFIG, type BusinessConfig } from './business'
 
 type SettingsRow = Record<string, unknown>
@@ -120,15 +121,41 @@ function mergeWithDefaults(row: SettingsRow): BusinessConfig {
  * Cross-request cache with 5-min TTL and revalidateTag support.
  * When admin saves settings, revalidateTag('business-config') busts this cache.
  */
+/**
+ * Cookie-less Supabase client for reading the public `settings` row.
+ * Safe inside `unstable_cache` because it doesn't touch `cookies()`.
+ * The `settings_anon_select` RLS policy (migration 033) allows anon reads.
+ */
+function readOnlyClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!url || !key) return null
+  return createClient(url, key, { auth: { persistSession: false } })
+}
+
 const fetchConfigFromDB = unstable_cache(
   async (): Promise<BusinessConfig> => {
+    const supabase = readOnlyClient()
+    if (!supabase) return BUSINESS_CONFIG
+
     try {
-      const { createClient } = await import('@/lib/supabase/server')
-      const supabase = await createClient()
-      const { data } = await supabase.from('settings').select('*').eq('id', 1).single()
-      if (!data) return BUSINESS_CONFIG
+      const { data, error } = await supabase
+        .from('settings')
+        .select('*')
+        .eq('id', 1)
+        .single()
+
+      if (error || !data) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.error('[business-loader] settings read failed:', error?.message || 'no row')
+        }
+        return BUSINESS_CONFIG
+      }
       return mergeWithDefaults(data as SettingsRow)
-    } catch {
+    } catch (err) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('[business-loader] caught exception:', err)
+      }
       return BUSINESS_CONFIG
     }
   },

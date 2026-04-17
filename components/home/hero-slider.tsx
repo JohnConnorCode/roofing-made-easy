@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 const SLIDES = [
-  { src: '/images/services/roof-replacement.jpg', alt: 'Roofer working on residential roof replacement' },
-  { src: '/images/services/storm-damage-repair.jpg', alt: 'Workers repairing storm-damaged roof' },
-  { src: '/images/services/roof-inspection.jpg', alt: 'Roofer tearing off old shingles during roof inspection' },
-  { src: '/images/services/metal-roofing.jpg', alt: 'Roofers installing shingles on a steep residential roof' },
-  { src: '/images/services/roof-repair.jpg', alt: 'Two roofers performing repair work on a tile roof' },
+  { src: '/images/work/replacement-after.webp', alt: 'Aerial view of a completed residential shingle roof replacement' },
+  { src: '/images/work/estate-roof.webp', alt: 'Estate-sized home with architectural shingle roof' },
+  { src: '/images/work/metal-conversion.webp', alt: 'Residential metal roof installation, shingle to standing seam conversion' },
+  { src: '/images/work/large-residential.webp', alt: 'Large home with newly installed architectural shingle roof' },
+  { src: '/images/work/aerial-wide.webp', alt: 'Aerial drone photo of a completed roof in rural Mississippi' },
 ]
 
 const INTERVAL_MS = 7000

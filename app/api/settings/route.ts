@@ -46,6 +46,17 @@ const settingsSchema = z.object({
     name: z.string(),
     enabled: z.boolean(),
   })).optional(),
+  trust: z.object({
+    googleRating: z.number().min(0).max(5).nullable().optional(),
+    googleReviewCount: z.number().int().min(0).nullable().optional(),
+  }).optional(),
+  credentials: z.object({
+    stateLicensed: z.boolean().optional(),
+    stateContractorLicense: z.string().nullable().optional(),
+    gafCertified: z.boolean().optional(),
+    owensCorningPreferred: z.boolean().optional(),
+    bbbAccredited: z.boolean().optional(),
+  }).optional(),
 })
 
 // Database row type
@@ -75,6 +86,8 @@ interface SettingsRow {
   notifications_daily_digest: boolean | null
   notifications_email_recipients: string[] | null
   lead_sources: Array<{ id: string; name: string; enabled: boolean }> | null
+  reviews_config: Record<string, unknown> | null
+  credentials: Record<string, unknown> | null
 }
 
 // Transform database row to API response format
@@ -115,6 +128,17 @@ function transformRowToSettings(row: SettingsRow) {
       emailRecipients: row.notifications_email_recipients ?? undefined,
     },
     leadSources: row.lead_sources ?? [],
+    trust: {
+      googleRating: (row.reviews_config?.googleRating as number | null) ?? null,
+      googleReviewCount: (row.reviews_config?.googleReviewCount as number | null) ?? null,
+    },
+    credentials: {
+      stateLicensed: (row.credentials?.stateLicensed as boolean | undefined) ?? false,
+      stateContractorLicense: (row.credentials?.stateContractorLicense as string | null) ?? null,
+      gafCertified: (row.credentials?.gafCertified as boolean | undefined) ?? false,
+      owensCorningPreferred: (row.credentials?.owensCorningPreferred as boolean | undefined) ?? false,
+      bbbAccredited: (row.credentials?.bbbAccredited as boolean | undefined) ?? false,
+    },
   }
 }
 
@@ -181,7 +205,7 @@ export async function GET(request: NextRequest) {
     // Fetch settings from database (single row with id=1)
     const { data, error } = await supabase
       .from('settings')
-      .select('company_name, company_legal_name, company_tagline, company_phone, company_email, company_website, address_street, address_city, address_state, address_zip, hours_weekdays_open, hours_weekdays_close, hours_saturday_open, hours_saturday_close, hours_sunday_open, hours_sunday_close, hours_emergency_available, pricing_overhead_percent, pricing_profit_margin_percent, pricing_tax_rate, notifications_new_lead_email, notifications_estimate_email, notifications_daily_digest, notifications_email_recipients, lead_sources')
+      .select('company_name, company_legal_name, company_tagline, company_phone, company_email, company_website, address_street, address_city, address_state, address_zip, hours_weekdays_open, hours_weekdays_close, hours_saturday_open, hours_saturday_close, hours_sunday_open, hours_sunday_close, hours_emergency_available, pricing_overhead_percent, pricing_profit_margin_percent, pricing_tax_rate, notifications_new_lead_email, notifications_estimate_email, notifications_daily_digest, notifications_email_recipients, lead_sources, reviews_config, credentials')
       .eq('id', 1)
       .single()
 
@@ -277,6 +301,37 @@ export async function PUT(request: NextRequest) {
 
     if (data.leadSources !== undefined) {
       updateData.lead_sources = data.leadSources
+    }
+
+    if (data.trust) {
+      // Merge with existing reviews_config to preserve other fields (like `featured`)
+      const { data: existing } = await supabase
+        .from('settings')
+        .select('reviews_config')
+        .eq('id', 1)
+        .single()
+      const current = (existing as { reviews_config: Record<string, unknown> | null } | null)?.reviews_config ?? {}
+      updateData.reviews_config = {
+        ...current,
+        ...(data.trust.googleRating !== undefined ? { googleRating: data.trust.googleRating } : {}),
+        ...(data.trust.googleReviewCount !== undefined ? { googleReviewCount: data.trust.googleReviewCount } : {}),
+      }
+    }
+
+    if (data.credentials) {
+      // Merge with existing credentials to preserve unknown flags
+      const { data: existing } = await supabase
+        .from('settings')
+        .select('credentials')
+        .eq('id', 1)
+        .single()
+      const current = (existing as { credentials: Record<string, unknown> | null } | null)?.credentials ?? {}
+      updateData.credentials = {
+        ...current,
+        ...Object.fromEntries(
+          Object.entries(data.credentials).filter(([, v]) => v !== undefined)
+        ),
+      }
     }
 
     // Upsert the settings row (insert if not exists, update if exists)

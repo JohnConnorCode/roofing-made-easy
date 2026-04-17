@@ -16,7 +16,7 @@ const propertySchema = z.object({
   place_id: z.string().max(200).optional(),
   latitude: z.number().min(-90).max(90).optional(),
   longitude: z.number().min(-180).max(180).optional(),
-}).optional()
+}).strict().optional()
 
 const intakeSchema = z.object({
   job_type: z.enum(['full_replacement', 'repair', 'inspection', 'maintenance', 'gutter', 'commercial', 'solar_installation', 'other']).optional(),
@@ -36,7 +36,7 @@ const intakeSchema = z.object({
   insurance_company: z.string().max(200).optional().nullable(),
   claim_number: z.string().max(100).optional().nullable(),
   additional_notes: z.string().max(5000).optional().nullable(),
-}).optional()
+}).strict().optional()
 
 const contactSchema = z.object({
   first_name: z.string().min(1).max(100).optional(),
@@ -47,14 +47,14 @@ const contactSchema = z.object({
   consent_marketing: z.boolean().optional(),
   consent_sms: z.boolean().optional(),
   consent_terms: z.boolean().optional(),
-}).optional()
+}).strict().optional()
 
 const intakeRequestSchema = z.object({
   current_step: z.number().int().min(1).max(10).optional(),
   property: propertySchema,
   intake: intakeSchema,
   contact: contactSchema,
-})
+}).strict()
 
 export async function PATCH(
   request: NextRequest,

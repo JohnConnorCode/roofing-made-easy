@@ -166,6 +166,25 @@ body {
   animation: shimmer 3s ease-in-out infinite;
 }
 
+/* Hero CTA subtle pulse glow */
+@keyframes cta-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,162,92,0.3); }
+  50% { box-shadow: 0 0 20px 4px rgba(201,162,92,0.15); }
+}
+
+.hero-cta-pulse {
+  animation: cta-pulse 3s ease-in-out infinite, shimmer 3s ease-in-out infinite;
+}
+
+/* Card 3D tilt on hover */
+.card-tilt:hover {
+  transform: perspective(800px) rotateY(-2deg) rotateX(1deg) translateY(-4px);
+}
+
+.card-tilt {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* ===== NAV LINK UNDERLINE ===== */
 
 .nav-link {
@@ -741,6 +760,18 @@ body {
   animation: heroSliderZoom 7s ease-out forwards;
 }
 
+/* Subtle animated scroll cue on hero */
+@keyframes scrollCue {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(300%); opacity: 0; }
+}
+
+.animate-scroll-cue {
+  animation: scrollCue 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -760,11 +791,14 @@ body {
   .animate-rise-up,
   .animate-reveal-rotate,
   .animate-fade-up,
+  .animate-fade-in,
   .animate-hero-badge,
   .animate-hero-title,
   .animate-hero-subtitle,
   .animate-hero-cta,
   .stagger-children > *,
+  .stagger-children-simple > *,
+  .stagger-children-simple-hidden > *,
   .page-transition {
     opacity: 1 !important;
     transform: none !important;

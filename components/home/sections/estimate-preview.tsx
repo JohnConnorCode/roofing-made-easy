@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowRight, FileText, Share2, LayoutDashboard, Calculator } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ScrollAnimate } from '@/components/scroll-animate'
 import { CountUp } from '@/components/ui/count-up'
+import { useBusinessConfig } from '@/lib/config/business-provider'
 
 const MATERIALS = [
   { label: '3-Tab Shingles', key: '3tab', costPerSq: 320, laborPerSq: 200 },
@@ -32,13 +33,6 @@ function calcEstimate(materialIdx: number, sizeIdx: number) {
   return { low, likely, high, tearoff, material, labor }
 }
 
-const BADGES = [
-  { icon: FileText, label: 'PDF Download' },
-  { icon: Share2, label: 'Shareable Link' },
-  { icon: LayoutDashboard, label: 'Customer Portal' },
-  { icon: Calculator, label: 'Financing Tools' },
-]
-
 interface EstimatePreviewProps {
   onGetStarted: () => void
   isCreating: boolean
@@ -48,20 +42,29 @@ export function EstimatePreview({ onGetStarted, isCreating }: EstimatePreviewPro
   const [materialIdx, setMaterialIdx] = useState(1)
   const [sizeIdx, setSizeIdx] = useState(1)
   const est = calcEstimate(materialIdx, sizeIdx)
+  const { serviceArea } = useBusinessConfig()
 
   const range = est.high - est.low
   const likelyPos = ((est.likely - est.low) / range) * 100
 
   return (
-    <section id="estimate-preview" aria-label="Estimate preview" className="py-16 md:py-24 bg-mesh-dark">
+    <section id="estimate-preview" aria-label="Estimate preview" className="py-24 md:py-32 bg-gradient-to-b from-[#0c0f14] via-[#0e1218] to-[#0c0f14] border-t border-slate-900">
       <div className="mx-auto max-w-6xl px-4">
-        <ScrollAnimate className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-100 md:text-4xl font-display">
-            See Your Estimate in Action
-          </h2>
-          <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
-            Pick a material and roof size. Watch the numbers update instantly &mdash; just like the real thing.
-          </p>
+        <ScrollAnimate>
+          <div className="max-w-2xl mb-16">
+            <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c]">
+              Try it with a sample roof
+            </p>
+            <h2 className="mt-3 text-4xl md:text-5xl font-bold text-slate-50 font-display leading-[1.05]">
+              Pick a material.
+              <br />
+              Pick a size. See the range.
+            </h2>
+            <p className="mt-5 text-lg text-slate-400 leading-relaxed max-w-xl">
+              This is the same pricing model we run on your actual roof.
+              Numbers move in real time.
+            </p>
+          </div>
         </ScrollAnimate>
 
         <ScrollAnimate delay={100}>
@@ -116,7 +119,7 @@ export function EstimatePreview({ onGetStarted, isCreating }: EstimatePreviewPro
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-slate-400">NE Mississippi</div>
+                  <div className="text-sm text-slate-400">{serviceArea.region}</div>
                   <div className="text-sm text-slate-300">Local pricing</div>
                 </div>
               </div>
@@ -168,59 +171,26 @@ export function EstimatePreview({ onGetStarted, isCreating }: EstimatePreviewPro
               </div>
             </div>
 
-            {/* Estimate document mockup */}
-            <div className="mt-6 bg-[#1a1f2e] border border-slate-700/50 rounded-2xl p-5 md:p-6">
-              <div className="text-xs text-slate-400 uppercase tracking-wider mb-3">What you get</div>
-              <div className="flex gap-4 items-start">
-                {/* Mini document preview */}
-                <div className="hidden sm:block flex-shrink-0 w-28 bg-white rounded-lg p-2.5 shadow-md">
-                  <div className="h-2 w-16 bg-[#c9a25c] rounded mb-2" />
-                  <div className="h-1.5 w-full bg-slate-200 rounded mb-1" />
-                  <div className="h-1.5 w-20 bg-slate-200 rounded mb-2.5" />
-                  <div className="h-1 w-full bg-slate-100 rounded mb-0.5" />
-                  <div className="h-1 w-full bg-slate-100 rounded mb-0.5" />
-                  <div className="h-1 w-14 bg-slate-100 rounded mb-2" />
-                  <div className="flex gap-1 mb-2">
-                    <div className="h-3 flex-1 bg-emerald-100 rounded" />
-                    <div className="h-3 flex-1 bg-[#c9a25c]/20 rounded" />
-                    <div className="h-3 flex-1 bg-red-100 rounded" />
-                  </div>
-                  <div className="h-1 w-full bg-slate-100 rounded mb-0.5" />
-                  <div className="h-1 w-full bg-slate-100 rounded mb-0.5" />
-                  <div className="h-1 w-10 bg-slate-100 rounded" />
-                </div>
-                <div className="flex-1 space-y-2">
-                  <p className="text-sm text-slate-300">
-                    <span className="font-semibold text-slate-100">A professional PDF estimate</span> you can
-                    share with contractors, your insurance adjuster, or family. Includes material
-                    breakdown, labor costs, and a price range backed by local market data.
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {BADGES.map(({ icon: Icon, label }) => (
-                      <div key={label} className="flex items-center gap-2 bg-ink/50 rounded-lg px-3 py-2">
-                        <Icon className="h-4 w-4 text-[#c9a25c] flex-shrink-0" />
-                        <span className="text-xs text-slate-300">{label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <p className="mt-5 text-center text-xs text-slate-500">
+              Sample figures for illustration. Your real estimate uses your roof&rsquo;s specifics.
+            </p>
           </div>
         </ScrollAnimate>
 
-        <div className="mt-10 text-center">
+        <div className="mt-14 flex flex-col sm:flex-row sm:items-center gap-4 max-w-2xl mx-auto">
           <Button
             variant="primary"
             size="lg"
             onClick={onGetStarted}
             disabled={isCreating}
-            className="btn-press"
+            className="btn-press flex-shrink-0"
           >
-            {isCreating ? 'Starting...' : 'Get My Free Estimate'}
-            {!isCreating && <ArrowRight className="ml-2 h-5 w-5" />}
+            {isCreating ? 'Starting\u2026' : 'Run it on my roof'}
+            {!isCreating && <ArrowRight className="ml-2 h-4 w-4" />}
           </Button>
-          <p className="mt-3 text-sm text-slate-400">Tailored to your roof, your area, your materials</p>
+          <p className="text-sm text-slate-500">
+            You get a PDF you can keep, share, or hand to an adjuster.
+          </p>
         </div>
       </div>
     </section>

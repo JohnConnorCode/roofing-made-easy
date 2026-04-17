@@ -33,7 +33,7 @@ import {
   getIconClasses,
   getBadgeClasses,
 } from '@/lib/styles/integration-status'
-import { getSectionNavClasses, adminSpinner, adminResult } from '@/lib/styles/admin-theme'
+import { getSectionNavClasses, adminSpinner } from '@/lib/styles/admin-theme'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 import { SkeletonPageContent } from '@/components/ui/skeleton'
 
@@ -98,6 +98,17 @@ interface Settings {
     name: string
     enabled: boolean
   }>
+  trust?: {
+    googleRating?: number | null
+    googleReviewCount?: number | null
+  }
+  credentials?: {
+    stateLicensed?: boolean
+    stateContractorLicense?: string | null
+    gafCertified?: boolean
+    owensCorningPreferred?: boolean
+    bbbAccredited?: boolean
+  }
 }
 
 export default function SettingsPage() {
@@ -142,7 +153,7 @@ export default function SettingsPage() {
       if (!response.ok) throw new Error('Failed to fetch settings')
       const data = await response.json()
       setSettings(data.settings)
-    } catch (err) {
+    } catch {
       setError('Unable to load settings. Please try again.')
     } finally {
       setIsLoading(false)
@@ -344,7 +355,7 @@ export default function SettingsPage() {
 
       setTestEmailSuccess(true)
       setTimeout(() => setTestEmailSuccess(false), 5000)
-    } catch (err) {
+    } catch {
       setTestEmailError('An error occurred. Please try again.')
     } finally {
       setIsSendingTestEmail(false)
@@ -399,7 +410,7 @@ export default function SettingsPage() {
       setPasswordSuccess(true)
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
       setTimeout(() => setPasswordSuccess(false), 5000)
-    } catch (err) {
+    } catch {
       setPasswordError('An error occurred. Please try again.')
     } finally {
       setIsChangingPassword(false)
@@ -418,7 +429,7 @@ export default function SettingsPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
         <AlertTriangle className="h-12 w-12 text-gold" />
-        <p className="mt-4 text-slate-600">{error || 'Failed to load settings'}</p>
+        <p className="mt-4 text-slate-400">{error || 'Failed to load settings'}</p>
         <Button
           variant="outline"
           className="mt-4"
@@ -434,13 +445,30 @@ export default function SettingsPage() {
   const sections = [
     { id: 'company', label: 'Company Info', icon: Building2 },
     { id: 'address', label: 'Address', icon: MapPin },
+    { id: 'trust', label: 'Trust & Credentials', icon: Shield },
     { id: 'hours', label: 'Business Hours', icon: Clock },
     { id: 'pricing', label: 'Default Pricing', icon: DollarSign },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'integrations', label: 'Integrations', icon: Plug },
     { id: 'sources', label: 'Lead Sources', icon: Tags },
-    { id: 'security', label: 'Security', icon: Shield },
+    { id: 'security', label: 'Security', icon: Key },
   ]
+
+  const updateTrust = (field: string, value: number | null) => {
+    if (!settings) return
+    setSettings({
+      ...settings,
+      trust: { ...settings.trust, [field]: value },
+    })
+  }
+
+  const updateCredentials = (field: string, value: boolean | string | null) => {
+    if (!settings) return
+    setSettings({
+      ...settings,
+      credentials: { ...settings.credentials, [field]: value },
+    })
+  }
 
   return (
     <AdminPageTransition className="space-y-6">
@@ -449,7 +477,7 @@ export default function SettingsPage() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
-            <p className="text-slate-500">Configure your business settings</p>
+            <p className="text-slate-400">Configure your business settings</p>
           </div>
           <Button
             onClick={handleSave}
@@ -602,6 +630,136 @@ export default function SettingsPage() {
             </Card>
           )}
 
+          {/* Trust & Credentials */}
+          {activeSection === 'trust' && (
+            <Card className="bg-white border-slate-200">
+              <CardHeader>
+                <CardTitle className="text-slate-900">Trust & Credentials</CardTitle>
+                <CardDescription>
+                  These power the homepage trust signals. Leave blank until you have real numbers &mdash; we hide what we can&rsquo;t verify.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8">
+                {/* Google rating */}
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-900 mb-2">Google Reviews</h4>
+                  <p className="text-xs text-slate-500 mb-4">
+                    When both fields are filled, the review badge appears on the homepage. Leave empty to hide it.
+                  </p>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                        Average Rating (0&ndash;5)
+                      </label>
+                      <Input
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        max="5"
+                        placeholder="e.g. 4.9"
+                        value={settings.trust?.googleRating ?? ''}
+                        onChange={(e) => {
+                          const v = e.target.value
+                          updateTrust('googleRating', v === '' ? null : Number(v))
+                        }}
+                        className="bg-white border-slate-300 text-slate-900"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                        Review Count
+                      </label>
+                      <Input
+                        type="number"
+                        min="0"
+                        placeholder="e.g. 37"
+                        value={settings.trust?.googleReviewCount ?? ''}
+                        onChange={(e) => {
+                          const v = e.target.value
+                          updateTrust('googleReviewCount', v === '' ? null : Number(v))
+                        }}
+                        className="bg-white border-slate-300 text-slate-900"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Licensing */}
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-900 mb-2">Licensing</h4>
+                  <p className="text-xs text-slate-500 mb-4">
+                    When licensed is checked and a number is provided, the trust strip reads &ldquo;Licensed &amp; insured &mdash; MS #XXXX&rdquo;.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Checkbox
+                        checked={!!settings.credentials?.stateLicensed}
+                        onChange={(e) => updateCredentials('stateLicensed', e.target.checked)}
+                        id="stateLicensed"
+                      />
+                      <label htmlFor="stateLicensed" className="text-sm text-slate-700 cursor-pointer">
+                        State licensed contractor
+                      </label>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                        State Contractor License #
+                      </label>
+                      <Input
+                        placeholder="e.g. 12345"
+                        value={settings.credentials?.stateContractorLicense ?? ''}
+                        onChange={(e) =>
+                          updateCredentials('stateContractorLicense', e.target.value || null)
+                        }
+                        className="bg-white border-slate-300 text-slate-900"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Certifications */}
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-900 mb-2">Certifications</h4>
+                  <p className="text-xs text-slate-500 mb-4">
+                    Check only what you actually hold. These may appear in future trust UI.
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Checkbox
+                        checked={!!settings.credentials?.gafCertified}
+                        onChange={(e) => updateCredentials('gafCertified', e.target.checked)}
+                        id="gafCertified"
+                      />
+                      <label htmlFor="gafCertified" className="text-sm text-slate-700 cursor-pointer">
+                        GAF Certified Contractor
+                      </label>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Checkbox
+                        checked={!!settings.credentials?.owensCorningPreferred}
+                        onChange={(e) => updateCredentials('owensCorningPreferred', e.target.checked)}
+                        id="ocPreferred"
+                      />
+                      <label htmlFor="ocPreferred" className="text-sm text-slate-700 cursor-pointer">
+                        Owens Corning Preferred Contractor
+                      </label>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Checkbox
+                        checked={!!settings.credentials?.bbbAccredited}
+                        onChange={(e) => updateCredentials('bbbAccredited', e.target.checked)}
+                        id="bbb"
+                      />
+                      <label htmlFor="bbb" className="text-sm text-slate-700 cursor-pointer">
+                        BBB Accredited Business
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Business Hours */}
           {activeSection === 'hours' && (
             <Card className="bg-white border-slate-200">
@@ -614,7 +772,7 @@ export default function SettingsPage() {
                   <h4 className="text-sm font-medium text-slate-700 mb-3">Weekdays (Mon-Fri)</h4>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="block text-xs text-slate-500 mb-1">Open</label>
+                      <label className="block text-xs text-slate-400 mb-1">Open</label>
                       <Input
                         type="time"
                         value={settings.hours.weekdaysOpen || ''}
@@ -623,7 +781,7 @@ export default function SettingsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-slate-500 mb-1">Close</label>
+                      <label className="block text-xs text-slate-400 mb-1">Close</label>
                       <Input
                         type="time"
                         value={settings.hours.weekdaysClose || ''}
@@ -637,7 +795,7 @@ export default function SettingsPage() {
                   <h4 className="text-sm font-medium text-slate-700 mb-3">Saturday</h4>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="block text-xs text-slate-500 mb-1">Open</label>
+                      <label className="block text-xs text-slate-400 mb-1">Open</label>
                       <Input
                         type="time"
                         value={settings.hours.saturdayOpen || ''}
@@ -646,7 +804,7 @@ export default function SettingsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-slate-500 mb-1">Close</label>
+                      <label className="block text-xs text-slate-400 mb-1">Close</label>
                       <Input
                         type="time"
                         value={settings.hours.saturdayClose || ''}
@@ -660,7 +818,7 @@ export default function SettingsPage() {
                   <h4 className="text-sm font-medium text-slate-700 mb-3">Sunday</h4>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="block text-xs text-slate-500 mb-1">Open (leave blank if closed)</label>
+                      <label className="block text-xs text-slate-400 mb-1">Open (leave blank if closed)</label>
                       <Input
                         type="time"
                         value={settings.hours.sundayOpen || ''}
@@ -669,7 +827,7 @@ export default function SettingsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-slate-500 mb-1">Close</label>
+                      <label className="block text-xs text-slate-400 mb-1">Close</label>
                       <Input
                         type="time"
                         value={settings.hours.sundayClose || ''}
@@ -711,7 +869,7 @@ export default function SettingsPage() {
                       onChange={(e) => updatePricing('overheadPercent', parseFloat(e.target.value) || 0)}
                       className="bg-white border-slate-300 text-slate-900"
                     />
-                    <p className="text-xs text-slate-500 mt-1">Added to base material + labor cost</p>
+                    <p className="text-xs text-slate-400 mt-1">Added to base material + labor cost</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Profit Margin %</label>
@@ -723,7 +881,7 @@ export default function SettingsPage() {
                       onChange={(e) => updatePricing('profitMarginPercent', parseFloat(e.target.value) || 0)}
                       className="bg-white border-slate-300 text-slate-900"
                     />
-                    <p className="text-xs text-slate-500 mt-1">Applied after overhead</p>
+                    <p className="text-xs text-slate-400 mt-1">Applied after overhead</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1">Tax Rate %</label>
@@ -736,7 +894,7 @@ export default function SettingsPage() {
                       onChange={(e) => updatePricing('taxRate', parseFloat(e.target.value) || 0)}
                       className="bg-white border-slate-300 text-slate-900"
                     />
-                    <p className="text-xs text-slate-500 mt-1">Sales tax for materials</p>
+                    <p className="text-xs text-slate-400 mt-1">Sales tax for materials</p>
                   </div>
                 </div>
               </CardContent>
@@ -772,7 +930,7 @@ export default function SettingsPage() {
                       </div>
                     ))}
                     {(settings.notifications.emailRecipients || []).length === 0 && (
-                      <p className="text-sm text-slate-500 p-3 bg-gold-light/10 rounded-lg border border-gold-light/30">
+                      <p className="text-sm text-slate-400 p-3 bg-gold-light/10 rounded-lg border border-gold-light/30">
                         No email recipients configured. Add at least one to receive notifications.
                       </p>
                     )}
@@ -821,7 +979,7 @@ export default function SettingsPage() {
                     >
                       Send Test Email
                     </Button>
-                    <p className="text-xs text-slate-500 mt-2">
+                    <p className="text-xs text-slate-400 mt-2">
                       Sends a test email to the first recipient to verify your configuration
                     </p>
                   </div>
@@ -842,7 +1000,7 @@ export default function SettingsPage() {
                       />
                       <div>
                         <span className="text-sm font-medium text-slate-700">New Lead Notifications</span>
-                        <p className="text-xs text-slate-500">Receive email when a new lead submits contact info</p>
+                        <p className="text-xs text-slate-400">Receive email when a new lead submits contact info</p>
                       </div>
                     </label>
                     <label className="flex items-center gap-3">
@@ -852,7 +1010,7 @@ export default function SettingsPage() {
                       />
                       <div>
                         <span className="text-sm font-medium text-slate-700">Estimate Generated</span>
-                        <p className="text-xs text-slate-500">Receive email when an estimate is created</p>
+                        <p className="text-xs text-slate-400">Receive email when an estimate is created</p>
                       </div>
                     </label>
                     <label className="flex items-center gap-3">
@@ -862,7 +1020,7 @@ export default function SettingsPage() {
                       />
                       <div>
                         <span className="text-sm font-medium text-slate-700">Daily Digest</span>
-                        <p className="text-xs text-slate-500">Daily summary of leads and pipeline status</p>
+                        <p className="text-xs text-slate-400">Daily summary of leads and pipeline status</p>
                       </div>
                     </label>
                   </div>
@@ -947,8 +1105,8 @@ export default function SettingsPage() {
                                 )}
                                 <div>
                                   <h4 className="font-semibold text-slate-900">{integration.name}</h4>
-                                  <p className="text-sm text-slate-600 mt-1">{integration.description}</p>
-                                  <p className="text-xs text-slate-500 mt-2">
+                                  <p className="text-sm text-slate-400 mt-1">{integration.description}</p>
+                                  <p className="text-xs text-slate-400 mt-2">
                                     Configured via environment variables (required for the app to function)
                                   </p>
                                 </div>
@@ -971,18 +1129,18 @@ export default function SettingsPage() {
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="p-3 bg-white rounded-lg border border-slate-200">
                       <h5 className="font-medium text-slate-800 mb-1">Option 1: Configure Here</h5>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-sm text-slate-400">
                         Click on any integration above and enter your API keys. Keys are encrypted and stored securely in the database.
                       </p>
                     </div>
                     <div className="p-3 bg-white rounded-lg border border-slate-200">
                       <h5 className="font-medium text-slate-800 mb-1">Option 2: Environment Variables</h5>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-sm text-slate-400">
                         Set API keys in your hosting platform (Vercel). Environment variables take precedence over saved settings.
                       </p>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-500 mt-4">
+                  <p className="text-xs text-slate-400 mt-4">
                     Both options are secure. Use the UI for easier management, or environment variables for deployment automation.
                   </p>
                 </CardContent>
@@ -1055,7 +1213,7 @@ export default function SettingsPage() {
                     <button
                       type="button"
                       onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-400"
                     >
                       {showPasswords.current ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -1076,12 +1234,12 @@ export default function SettingsPage() {
                     <button
                       type="button"
                       onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-400"
                     >
                       {showPasswords.new ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-slate-400 mt-1">
                     Min 8 characters, with uppercase, lowercase, and number
                   </p>
                 </div>
@@ -1100,7 +1258,7 @@ export default function SettingsPage() {
                     <button
                       type="button"
                       onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-400"
                     >
                       {showPasswords.confirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
