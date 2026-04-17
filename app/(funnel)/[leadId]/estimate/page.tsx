@@ -66,8 +66,16 @@ export default function EstimatePage() {
     trackCTAClick('schedule_consultation')
     if (CALENDLY_URL) {
       window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
+      return
+    }
+    // Fallback when Calendly isn\u2019t configured — still give the user a
+    // working path instead of a silent no-op. Prefer tel: on mobile.
+    const phoneLink = getPhoneLink()
+    const isMobile = typeof navigator !== 'undefined' && /Mobi|Android|iPhone/i.test(navigator.userAgent)
+    if (isMobile && phoneLink) {
+      window.location.href = phoneLink
     } else {
-      showToast('Call us to schedule your free consultation', 'info')
+      showToast(`Call us at ${getPhoneDisplay()} to schedule your free consultation`, 'info')
     }
   }, [showToast, trackCTAClick])
 
@@ -118,14 +126,14 @@ export default function EstimatePage() {
     if (navigator.share && navigator.canShare?.(shareData)) {
       try {
         await navigator.share(shareData)
-      } catch (err) {
+      } catch {
         // User cancelled share or share failed - silent handling
       }
     } else {
       try {
         await navigator.clipboard.writeText(shareUrl)
         showToast('Link copied to clipboard', 'success')
-      } catch (err) {
+      } catch {
         showToast('Unable to copy link', 'error')
       }
     }
@@ -186,7 +194,7 @@ export default function EstimatePage() {
     }
 
     fetchEstimate()
-  }, [leadId, setEstimate, trackFunnelStep])
+  }, [leadId, shareToken, setEstimate, trackFunnelStep])
 
   if (isLoading) {
     return (

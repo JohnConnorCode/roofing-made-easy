@@ -12,10 +12,8 @@ import {
   AlertTriangle,
   RefreshCw,
   Inbox,
-  Loader2,
   BarChart3,
   TrendingUp,
-  TrendingDown,
   Target,
   ArrowUpRight,
   ArrowDownRight,
@@ -25,6 +23,7 @@ import { SkeletonDashboard } from '@/components/ui/skeleton'
 import { SimpleAnalytics } from '@/components/admin/simple-analytics'
 import { VelocityAnalytics } from '@/components/admin/VelocityAnalytics'
 import { AdminPageTransition, FadeInSection, StaggerContainer } from '@/components/admin/page-transition'
+import { DealFlowHealth } from '@/components/admin/deal-flow-health'
 import Link from 'next/link'
 
 interface DashboardStats {
@@ -88,7 +87,7 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null)
   const [errorStatus, setErrorStatus] = useState<number | null>(null)
   const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'velocity'>('overview')
-  const [allLeads, setAllLeads] = useState<any[]>([])
+  const [allLeads, setAllLeads] = useState<{ id: string; status: string; created_at: string; intakes?: Array<{ job_type?: string; timeline_urgency?: string }>; estimates?: Array<{ price_likely?: number; is_superseded?: boolean }> }[]>([])
   const [analyticsLeadsLoaded, setAnalyticsLeadsLoaded] = useState(false)
 
   const fetchDashboardData = useCallback(async () => {
@@ -175,6 +174,9 @@ export default function DashboardPage() {
   return (
     <AdminPageTransition className="space-y-8">
       <FadeInSection delay={0} animation="fade-in">
+        <DealFlowHealth />
+      </FadeInSection>
+      <FadeInSection delay={50} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
@@ -190,7 +192,7 @@ export default function DashboardPage() {
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'overview'
                   ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-slate-400 hover:text-slate-700'
               }`}
             >
               Overview
@@ -200,7 +202,7 @@ export default function DashboardPage() {
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
                 activeTab === 'analytics'
                   ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-slate-400 hover:text-slate-700'
               }`}
             >
               <BarChart3 className="h-4 w-4" />
@@ -211,7 +213,7 @@ export default function DashboardPage() {
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
                 activeTab === 'velocity'
                   ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-slate-400 hover:text-slate-700'
               }`}
             >
               <TrendingUp className="h-4 w-4" />
@@ -235,7 +237,7 @@ export default function DashboardPage() {
             <Card className="bg-white border-slate-200">
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <AlertTriangle className="h-12 w-12 text-gold" />
-                <p className="mt-4 text-slate-600">{error}</p>
+                <p className="mt-4 text-slate-400">{error}</p>
                 {errorStatus === 401 || errorStatus === 403 ? (
                   <Link href="/login">
                     <Button
@@ -267,7 +269,7 @@ export default function DashboardPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-500">New Leads (MTD)</p>
+                        <p className="text-sm text-slate-400">New Leads (MTD)</p>
                         <p className="text-3xl font-bold text-slate-900">{stats?.newLeadsThisMonth || 0}</p>
                       </div>
                       <div className="rounded-lg bg-gold-light/20 p-3">
@@ -292,7 +294,7 @@ export default function DashboardPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-500">Estimates Generated</p>
+                        <p className="text-sm text-slate-400">Estimates Generated</p>
                         <p className="text-3xl font-bold text-slate-900">{stats?.estimatesGenerated || 0}</p>
                       </div>
                       <div className="rounded-lg bg-green-100 p-3">
@@ -311,7 +313,7 @@ export default function DashboardPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-500">Win Rate</p>
+                        <p className="text-sm text-slate-400">Win Rate</p>
                         <p className="text-3xl font-bold text-slate-900">{stats?.winRate || 0}%</p>
                       </div>
                       <div className="rounded-lg bg-blue-100 p-3">
@@ -330,7 +332,7 @@ export default function DashboardPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-500">Pipeline Value</p>
+                        <p className="text-sm text-slate-400">Pipeline Value</p>
                         <p className="text-3xl font-bold text-green-600">
                           {formatCurrency(stats?.pipelineValue || 0)}
                         </p>
@@ -354,7 +356,7 @@ export default function DashboardPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-500">Avg Response Time</p>
+                        <p className="text-sm text-slate-400">Avg Response Time</p>
                         <p className={`text-3xl font-bold ${
                           stats?.avgResponseMinutes === null ? 'text-slate-400'
                             : (stats?.avgResponseMinutes ?? 0) <= 15 ? 'text-green-600'
@@ -388,7 +390,7 @@ export default function DashboardPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-500">Revenue MTD</p>
+                        <p className="text-sm text-slate-400">Revenue MTD</p>
                         <p className="text-3xl font-bold text-green-600">
                           {formatCurrency(stats?.revenueMTD || 0)}
                         </p>
@@ -407,7 +409,7 @@ export default function DashboardPage() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-500">Stale Leads</p>
+                        <p className="text-sm text-slate-400">Stale Leads</p>
                         <p className={`text-3xl font-bold ${
                           (stats?.staleLeadCount || 0) > 0 ? 'text-red-600' : 'text-green-600'
                         }`}>
@@ -475,7 +477,7 @@ export default function DashboardPage() {
                         return (
                           <div key={status}>
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-sm text-slate-600">
+                              <span className="text-sm text-slate-400">
                                 {STATUS_LABELS[status] || status}
                               </span>
                               <span className="text-sm font-medium text-slate-900">{count}</span>
@@ -512,7 +514,7 @@ export default function DashboardPage() {
                   </CardHeader>
                   <CardContent>
                     {sourcePercentages.length === 0 ? (
-                      <p className="text-slate-500 text-center py-4">No source data available</p>
+                      <p className="text-slate-400 text-center py-4">No source data available</p>
                     ) : (
                       <div className="space-y-4">
                         {sourcePercentages.map((source, idx) => {
@@ -525,7 +527,7 @@ export default function DashboardPage() {
                                   <span className="text-sm font-medium text-slate-700 capitalize">
                                     {source.source}
                                   </span>
-                                  <span className="text-sm text-slate-500">
+                                  <span className="text-sm text-slate-400">
                                     {source.percentage}%
                                   </span>
                                 </div>
@@ -562,14 +564,14 @@ export default function DashboardPage() {
                   {recentLeads.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-8">
                       <Inbox className="h-10 w-10 text-slate-300" />
-                      <p className="mt-3 text-slate-600">No leads yet</p>
+                      <p className="mt-3 text-slate-400">No leads yet</p>
                       <p className="text-sm text-slate-400">New submissions will appear here automatically.</p>
                     </div>
                   ) : (
                     <div className="overflow-x-auto">
                       <table className="w-full">
                         <thead>
-                          <tr className="border-b text-left text-sm text-slate-500">
+                          <tr className="border-b text-left text-sm text-slate-400">
                             <th className="pb-3 pr-4">Name</th>
                             <th className="pb-3 pr-4">Location</th>
                             <th className="pb-3 pr-4">Status</th>
@@ -594,7 +596,7 @@ export default function DashboardPage() {
                                       : contact?.email || 'Unknown'}
                                   </Link>
                                 </td>
-                                <td className="py-3 pr-4 text-slate-600">
+                                <td className="py-3 pr-4 text-slate-400">
                                   {property?.city && property?.state
                                     ? `${property.city}, ${property.state}`
                                     : 'N/A'}
@@ -602,12 +604,12 @@ export default function DashboardPage() {
                                 <td className="py-3 pr-4">
                                   <StatusBadge status={lead.status} />
                                 </td>
-                                <td className="py-3 pr-4 text-slate-600">
+                                <td className="py-3 pr-4 text-slate-400">
                                   {estimate?.price_likely
                                     ? formatCurrency(estimate.price_likely)
                                     : '-'}
                                 </td>
-                                <td className="py-3 text-slate-600">
+                                <td className="py-3 text-slate-400">
                                   {formatDate(lead.created_at)}
                                 </td>
                               </tr>
@@ -638,7 +640,7 @@ function StatusBadge({ status }: { status: string }) {
     quote_sent: 'bg-purple-100 text-purple-800',
     won: 'bg-emerald-100 text-emerald-800',
     lost: 'bg-red-100 text-red-800',
-    archived: 'bg-slate-100 text-slate-500',
+    archived: 'bg-slate-100 text-slate-400',
   }
 
   return (
