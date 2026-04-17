@@ -61,7 +61,7 @@ export function HowItWorks({ onGetStarted, isCreating }: HowItWorksProps) {
                 <h3 className="text-xl md:text-2xl font-semibold text-slate-50 font-display leading-snug">
                   {step.label}
                 </h3>
-                <p className="mt-3 text-base text-slate-400 leading-relaxed">
+                <p className="mt-3 text-base text-slate-300 leading-relaxed">
                   {step.body}
                 </p>
               </li>

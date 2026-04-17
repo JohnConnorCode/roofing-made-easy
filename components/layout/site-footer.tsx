@@ -4,7 +4,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Phone, Mail, MapPin, Facebook, Instagram, ChevronDown } from 'lucide-react'
-import { getCitiesByPriority, getAllCounties, getAllCities } from '@/lib/data/ms-locations'
+import { getCitiesByPriority } from '@/lib/data/ms-locations'
 import { useContact } from '@/lib/hooks/use-contact'
 import { useBusinessConfig } from '@/lib/config/business-provider'
 import { Logo } from '@/components/ui/logo'
@@ -77,18 +77,7 @@ function FooterAccordion({ title, children }: { title: string; children: React.R
 export function SiteFooter() {
   const { phoneDisplay, phoneLink } = useContact()
   const config = useBusinessConfig()
-  const topCities = getCitiesByPriority('high').slice(0, 8)
-  const counties = getAllCounties().slice(0, 5)
-  const allCities = getAllCities()
-  const [areasExpanded, setAreasExpanded] = useState(false)
-
-  // Group cities by county for the expanded locations section
-  const citiesByCounty = counties.slice(0, 4).map(county => ({
-    county,
-    cities: allCities.filter(c =>
-      c.county.toLowerCase() === county.name.replace(' County', '').toLowerCase()
-    ).slice(0, 4)
-  }))
+  const topCities = getCitiesByPriority('high').slice(0, 6)
 
   return (
     <footer className="bg-ink border-glow-top relative overflow-hidden">
@@ -174,23 +163,23 @@ export function SiteFooter() {
               </FooterAccordion>
             </div>
 
-            {/* Service Areas — wider column with 2-col city grid */}
+            {/* Service Areas — 6 clean city links */}
             <div className="lg:col-span-4">
               <FooterAccordion title="Service Areas">
                 <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-0 lg:gap-y-1">
-                  {topCities.slice(0, 8).map(city => (
+                  {topCities.map(city => (
                     <li key={city.slug}>
                       <Link
                         href={`/${city.slug}-roofing`}
-                        className="block text-sm text-slate-400 hover:text-slate-200 hover:translate-x-1 transition-all duration-200 py-2 lg:py-1.5"
+                        className="block text-sm text-slate-300 hover:text-slate-100 hover:translate-x-1 transition-all duration-200 py-2 lg:py-1.5"
                       >
-                        {city.name}{city.isHQ ? ' (HQ)' : ''}
+                        {city.name}{city.isHQ ? ' — HQ' : ''}
                       </Link>
                     </li>
                   ))}
                   <li className="lg:col-span-2">
-                    <Link href="/service-areas" className="block text-sm text-gold hover:text-gold-light transition-colors py-2">
-                      View All Areas →
+                    <Link href="/service-areas" className="block text-sm text-[#c9a25c] hover:text-[#e6c588] transition-colors py-2">
+                      View all areas →
                     </Link>
                   </li>
                 </ul>
@@ -198,82 +187,6 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Consolidated "All Service Areas" collapsible section */}
-          <div className="hidden md:block mt-8 pt-8 border-t border-slate-800">
-            <button
-              onClick={() => setAreasExpanded(!areasExpanded)}
-              className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider hover:text-slate-300 transition-colors"
-            >
-              <MapPin className="w-3.5 h-3.5" />
-              All Service Areas
-              <ChevronDown className={cn('h-3.5 w-3.5 transition-transform duration-200', areasExpanded && 'rotate-180')} />
-            </button>
-
-            <div className={cn(
-              'overflow-hidden transition-all duration-300',
-              areasExpanded ? 'max-h-[800px] opacity-100 mt-4' : 'max-h-0 opacity-0'
-            )}>
-              {/* Compare Roofers pills */}
-              <div className="flex flex-wrap gap-2 mb-6">
-                {topCities.slice(0, 6).map(city => (
-                  <Link
-                    key={`compare-${city.slug}`}
-                    href={`/best-roofers-in-${city.slug}-ms`}
-                    className="text-xs text-slate-400 hover:text-gold bg-slate-800/50 hover:bg-slate-800 rounded-full px-3 py-1.5 transition-colors"
-                  >
-                    Best Roofers in {city.name}
-                  </Link>
-                ))}
-              </div>
-
-              {/* Counties with city sub-lists */}
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                {citiesByCounty.map(({ county, cities }) => (
-                  <div key={county.slug}>
-                    <Link
-                      href={`/${county.slug}-roofing`}
-                      className="text-sm font-medium text-gold hover:text-gold-light transition-colors"
-                    >
-                      {county.name}
-                    </Link>
-                    <ul className="mt-2 space-y-1">
-                      {cities.map(city => (
-                        <li key={city.slug}>
-                          <Link
-                            href={`/${city.slug}-roofing`}
-                            className="text-sm text-slate-400 hover:text-slate-300 transition-colors"
-                          >
-                            {city.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-                {/* Counties list */}
-                <div>
-                  <span className="text-sm font-medium text-slate-400">More Counties</span>
-                  <ul className="mt-2 space-y-1">
-                    {counties.map(county => (
-                      <li key={county.slug}>
-                        <Link
-                          href={`/${county.slug}-roofing`}
-                          className="text-sm text-slate-400 hover:text-slate-300 transition-colors"
-                        >
-                          {county.name}
-                        </Link>
-                      </li>
-                    ))}
-                    <li>
-                      <Link href="/service-areas" className="text-sm text-gold hover:text-gold-light transition-colors">
-                        + {getAllCounties().length - counties.length} more
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Divider above bottom bar */}

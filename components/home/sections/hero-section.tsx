@@ -86,7 +86,7 @@ export function HeroSection({ onGetStarted, isCreating, error }: HeroSectionProp
             <button
               type="button"
               onClick={scrollToPreview}
-              className="inline-flex items-center justify-center gap-1.5 text-slate-300 hover:text-[#e6c588] transition-colors font-medium group"
+              className="inline-flex items-center justify-center gap-1.5 text-slate-300 hover:text-[#e6c588] transition-colors font-medium group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a25c] focus-visible:ring-offset-4 focus-visible:ring-offset-[#0c0f14] rounded-md px-2 py-1"
             >
               See a sample estimate
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -135,7 +135,7 @@ export function HeroSection({ onGetStarted, isCreating, error }: HeroSectionProp
       <button
         onClick={scrollToPreview}
         aria-label="Scroll to sample estimate"
-        className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-slate-400 hover:text-[#e6c588] transition-colors group"
+        className="hidden md:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-slate-400 hover:text-[#e6c588] transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a25c] focus-visible:ring-offset-4 focus-visible:ring-offset-[#0c0f14] rounded-md p-2"
       >
         <span className="text-[10px] uppercase tracking-[0.2em] font-medium">Scroll</span>
         <div className="relative h-9 w-[1px]">

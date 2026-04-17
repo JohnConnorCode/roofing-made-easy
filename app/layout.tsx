@@ -154,6 +154,15 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
+        {/* Preload hero LCP image */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/work/replacement-after.webp"
+          fetchPriority="high"
+          type="image/webp"
+        />
+
         {/* DNS Prefetch for external resources */}
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />

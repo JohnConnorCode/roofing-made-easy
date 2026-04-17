@@ -54,10 +54,12 @@ export function CoverSection({
             <p className="text-slate-400 text-sm">{COMPANY_INFO.tagline}</p>
           </div>
           <div className="text-right print:text-left">
-            <p className="text-[#c9a25c] text-sm font-medium uppercase tracking-wider mb-1">
+            <p className="text-[#c9a25c] text-xs font-medium uppercase tracking-widest mb-2">
               Preliminary Estimate
             </p>
-            <p className="text-2xl font-bold text-slate-100">Your Roofing Proposal</p>
+            <p className="text-2xl md:text-3xl font-bold text-slate-50 font-display leading-tight tracking-tight">
+              Your Roofing Proposal
+            </p>
           </div>
         </div>
 
@@ -65,13 +67,13 @@ export function CoverSection({
         <div className="grid md:grid-cols-2 gap-8 mb-10">
           {/* Prepared For */}
           <div className="space-y-3">
-            <h3 className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <h3 className="text-xs font-medium text-slate-400 uppercase tracking-widest">
               Prepared For
             </h3>
             {customerName ? (
-              <p className="text-2xl font-semibold text-slate-100">{customerName}</p>
+              <p className="text-2xl md:text-3xl font-semibold text-slate-50 font-display tracking-tight">{customerName}</p>
             ) : (
-              <p className="text-2xl font-semibold text-slate-400">Valued Customer</p>
+              <p className="text-2xl md:text-3xl font-semibold text-slate-400 font-display tracking-tight">Valued Customer</p>
             )}
             {fullAddress && (
               <div className="flex items-start gap-2 text-slate-300">
@@ -83,7 +85,7 @@ export function CoverSection({
 
           {/* Proposal Details */}
           <div className="space-y-3">
-            <h3 className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+            <h3 className="text-xs font-medium text-slate-400 uppercase tracking-widest">
               Proposal Details
             </h3>
             <div className="space-y-2">

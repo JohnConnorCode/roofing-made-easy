@@ -60,7 +60,7 @@ export function EstimatePreview({ onGetStarted, isCreating }: EstimatePreviewPro
               <br />
               Pick a size. See the range.
             </h2>
-            <p className="mt-5 text-lg text-slate-400 leading-relaxed max-w-xl">
+            <p className="mt-5 text-lg text-slate-300 leading-relaxed max-w-xl">
               This is the same pricing model we run on your actual roof.
               Numbers move in real time.
             </p>

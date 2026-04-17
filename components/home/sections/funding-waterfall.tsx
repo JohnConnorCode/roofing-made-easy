@@ -54,7 +54,7 @@ export function FundingWaterfall() {
               <br />
               don&rsquo;t pay sticker.
             </h2>
-            <p className="mt-5 text-lg text-slate-400 leading-relaxed max-w-xl">
+            <p className="mt-5 text-lg text-slate-300 leading-relaxed max-w-xl">
               Insurance, assistance programs, and financing usually stack in a specific order.
               Here&rsquo;s how we think about it.
             </p>
@@ -101,7 +101,7 @@ export function FundingWaterfall() {
                   <h3 className="text-lg font-semibold text-slate-50 font-display">
                     {step.label}
                   </h3>
-                  <p className="mt-2 text-sm text-slate-400 leading-relaxed">
+                  <p className="mt-2 text-sm text-slate-300 leading-relaxed">
                     {step.body}
                   </p>
                   <p className={`mt-4 inline-flex items-center gap-1 text-sm font-medium ${step.accent} group-hover:gap-2 transition-all`}>

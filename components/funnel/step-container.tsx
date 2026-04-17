@@ -34,10 +34,12 @@ export function StepContainer({
   return (
     <div className={cn('flex flex-col', className)}>
       {/* Header */}
-      <div className="mb-8 animate-slide-up">
-        <h2 className="text-2xl font-bold text-slate-100 md:text-3xl">{title}</h2>
+      <div className="mb-10 animate-slide-up">
+        <h2 className="text-3xl md:text-4xl font-bold text-slate-50 font-display leading-[1.05] tracking-tight">
+          {title}
+        </h2>
         {description && (
-          <p className="mt-2 text-slate-400">{description}</p>
+          <p className="mt-3 text-base md:text-lg text-slate-300 leading-relaxed max-w-xl">{description}</p>
         )}
       </div>
 

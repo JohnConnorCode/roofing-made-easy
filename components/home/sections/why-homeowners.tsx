@@ -86,7 +86,7 @@ export function WhyHomeowners() {
                 {priceLow}<span className="text-slate-500">–</span>{priceHigh}
               </p>
             </div>
-            <p className="relative mt-6 text-sm text-slate-400 leading-relaxed">
+            <p className="relative mt-6 text-sm text-slate-300 leading-relaxed">
               Real ranges for a typical home in {config.address.city}.
               No low-ball bait. No surprise upsell.
             </p>
