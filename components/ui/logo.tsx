@@ -46,10 +46,10 @@ export function Logo({
       </div>
       {showText && (
         <div>
-          <h1 className={`${textSizeMap[size]} font-bold text-slate-100 tracking-tight`}>
+          <span className={`block ${textSizeMap[size]} font-bold text-slate-100 tracking-tight`}>
             {config.name}
-          </h1>
-          <p className="text-xs text-slate-500">{config.address.city}, {config.address.stateCode}</p>
+          </span>
+          <span className="block text-xs text-slate-400">{config.address.city}, {config.address.stateCode}</span>
         </div>
       )}
     </div>

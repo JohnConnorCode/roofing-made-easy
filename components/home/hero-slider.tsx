@@ -39,7 +39,8 @@ export function HeroSlider() {
             fill
             className="object-cover"
             priority={i === 0}
-            loading={i === 0 ? undefined : 'eager'}
+            loading={i === 0 ? undefined : 'lazy'}
+            fetchPriority={i === 0 ? 'high' : 'auto'}
             sizes="100vw"
           />
         </div>
