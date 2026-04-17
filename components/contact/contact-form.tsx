@@ -80,9 +80,10 @@ export function ContactPageContent() {
     <div className="min-h-screen bg-gradient-dark">
       <SiteHeader />
 
+      <main id="main-content">
       {/* Hero */}
-      <section className="py-16 md:py-24 bg-[#161a23] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
+      <section className="py-24 md:py-32 bg-[#0c0f14] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-15">
           <Image
             src="/images/contact/office.jpg"
             alt=""
@@ -90,15 +91,19 @@ export function ContactPageContent() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#161a23] via-[#161a23]/90 to-[#161a23]/70" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0c0f14] via-[#0c0f14]/85 to-[#0c0f14]/40" />
         </div>
         <div className="mx-auto max-w-6xl px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              Get In Touch
+          <div className="max-w-3xl">
+            <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+              Contact
+            </p>
+            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
+              Reach out. We&rsquo;ll respond.
             </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              Have questions? Need a quote? We're here to help. Reach out and we'll respond within 24 hours.
+            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
+              Questions, a quote, or just want to talk through options &mdash;
+              either way, you&rsquo;ll hear back within 24 hours.
             </p>
           </div>
         </div>
@@ -123,7 +128,7 @@ export function ContactPageContent() {
                   <div>
                     <p className="font-semibold text-slate-100">Phone</p>
                     <p className="text-slate-400">{PHONE_NUMBER}</p>
-                    <p className="text-xs text-slate-500 mt-1">Mon-Fri 8am-6pm, Sat 9am-2pm</p>
+                    <p className="text-xs text-slate-400 mt-1">Mon-Fri 8am-6pm, Sat 9am-2pm</p>
                   </div>
                 </a>
 
@@ -137,7 +142,7 @@ export function ContactPageContent() {
                   <div>
                     <p className="font-semibold text-slate-100">Email</p>
                     <p className="text-slate-400">{EMAIL}</p>
-                    <p className="text-xs text-slate-500 mt-1">We respond within 24 hours</p>
+                    <p className="text-xs text-slate-400 mt-1">We respond within 24 hours</p>
                   </div>
                 </a>
 
@@ -148,7 +153,7 @@ export function ContactPageContent() {
                   <div>
                     <p className="font-semibold text-slate-100">Office</p>
                     <p className="text-slate-400">{ADDRESS}</p>
-                    <p className="text-xs text-slate-500 mt-1">By appointment only</p>
+                    <p className="text-xs text-slate-400 mt-1">By appointment only</p>
                   </div>
                 </div>
 
@@ -159,7 +164,7 @@ export function ContactPageContent() {
                   <div>
                     <p className="font-semibold text-slate-100">Emergency Service</p>
                     <p className="text-slate-400">24/7 for existing customers</p>
-                    <p className="text-xs text-slate-500 mt-1">Storm damage? Call anytime.</p>
+                    <p className="text-xs text-slate-400 mt-1">Storm damage? Call anytime.</p>
                   </div>
                 </div>
               </div>
@@ -174,7 +179,7 @@ export function ContactPageContent() {
                     variant="primary"
                     className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                   >
-                    Get Free Estimate
+                    Free Estimate
                   </Button>
                 </Link>
               </div>
@@ -193,7 +198,7 @@ export function ContactPageContent() {
                   </div>
                   <h3 className="text-xl font-semibold text-slate-100 mb-2">Message Sent!</h3>
                   <p className="text-slate-400 mb-6">
-                    Thank you for reaching out. We'll get back to you within 24 hours.
+                    Thank you for reaching out. We&apos;ll get back to you within 24 hours.
                   </p>
                   <Button
                     variant="outline"
@@ -271,6 +276,7 @@ export function ContactPageContent() {
           </div>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
     </div>

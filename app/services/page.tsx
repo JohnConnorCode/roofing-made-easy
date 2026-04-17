@@ -91,14 +91,20 @@ export default function ServicesPage() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-24 md:py-32 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              Our Roofing Services
+          <div className="max-w-3xl">
+            <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+              Services
+            </p>
+            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
+              From repair to replacement,
+              <br />
+              done right.
             </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              From minor repairs to complete replacements, we handle every aspect of residential roofing with expertise and care.
+            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
+              We handle every part of residential roofing &mdash; honest pricing,
+              clean site, and work we stand behind.
             </p>
           </div>
         </div>
@@ -107,6 +113,7 @@ export default function ServicesPage() {
       {/* Services Grid */}
       <section className="py-16 md:py-24 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
+          <h2 className="sr-only">Our Roofing Services</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
             {services.map((service) => (
               <div
@@ -123,13 +130,13 @@ export default function ServicesPage() {
                 <div className="space-y-2 mb-6">
                   {service.priceRange && (
                     <p className="text-sm">
-                      <span className="text-slate-500">Typical cost: </span>
+                      <span className="text-slate-400">Typical cost: </span>
                       <span className="text-[#c9a25c]">{service.priceRange}</span>
                     </p>
                   )}
                   {service.timeframe && (
                     <p className="text-sm">
-                      <span className="text-slate-500">Timeframe: </span>
+                      <span className="text-slate-400">Timeframe: </span>
                       <span className="text-slate-300">{service.timeframe}</span>
                     </p>
                   )}
@@ -196,7 +203,7 @@ export default function ServicesPage() {
                 className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                 rightIcon={<ArrowRight className="h-5 w-5" />}
               >
-                Get Free Estimate
+                Get My Free Estimate
               </Button>
             </Link>
           </div>

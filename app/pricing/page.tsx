@@ -156,35 +156,36 @@ export default function PricingPage() {
       {/* ================================================================= */}
       {/* Hero Section */}
       {/* ================================================================= */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-24 md:py-32 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-[#c9a25c]/10 border border-[#c9a25c]/30 rounded-full px-4 py-1.5 text-sm text-[#c9a25c] mb-6">
-              <DollarSign className="h-4 w-4" />
-              Updated for 2026
-            </div>
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl">
-              How Much Does a Roof Cost in Mississippi?
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c]">
+              <DollarSign className="h-3.5 w-3.5" />
+              Pricing &middot; Updated 2026
+            </p>
+            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display">
+              What does a roof
+              <br />
+              actually cost?
             </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed">
-              Your complete guide to roofing prices in {BUSINESS_CONFIG.serviceArea.region}.
-              Whether you need a full{' '}
+            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl">
+              A complete guide to roofing prices in {BUSINESS_CONFIG.serviceArea.region}.
+              Whether you&rsquo;re planning a full{' '}
               <Link href="/services/roof-replacement" className="text-[#c9a25c] hover:underline">
-                roof replacement
+                replacement
               </Link>
               , a quick{' '}
               <Link href="/services/roof-repair" className="text-[#c9a25c] hover:underline">
                 repair
               </Link>
-              , or just want to understand material costs, this pricing guide breaks down every
-              factor that determines what you will pay.
+              , or just want to know what fair pricing looks like &mdash; the numbers and factors are here.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/"
                 className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] font-semibold px-8 py-4 rounded-lg transition-all hover:shadow-lg hover:shadow-[#c9a25c]/20"
               >
-                Get Your Free Estimate
+                Get My Free Estimate
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
@@ -283,7 +284,7 @@ export default function PricingPage() {
             ))}
           </div>
 
-          <p className="mt-8 text-center text-sm text-slate-500">
+          <p className="mt-8 text-center text-sm text-slate-400">
             Prices reflect typical ranges for {BUSINESS_CONFIG.serviceArea.region} as of 2026.
             Your actual cost depends on roof size, materials, and site conditions.{' '}
             <Link href="/" className="text-[#c9a25c] hover:underline">
@@ -425,7 +426,7 @@ export default function PricingPage() {
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-sm text-slate-500 mb-4">
+            <p className="text-sm text-slate-400 mb-4">
               Not sure which material is right for your home? Read our in-depth comparison.
             </p>
             <Link
@@ -583,7 +584,7 @@ export default function PricingPage() {
             </table>
           </div>
 
-          <p className="mt-4 text-xs text-slate-500 text-center">
+          <p className="mt-4 text-xs text-slate-400 text-center">
             Estimates assume a standard gable roof with moderate pitch (4/12 to 6/12). Actual
             prices vary based on roof complexity, number of stories, and current material costs.
           </p>
@@ -711,7 +712,7 @@ export default function PricingPage() {
             ))}
           </div>
 
-          <div className="mt-8 text-center text-sm text-slate-500">
+          <div className="mt-8 text-center text-sm text-slate-400">
             <Link href="/financing" className="text-[#c9a25c] hover:underline">
               Explore financing options
             </Link>{' '}

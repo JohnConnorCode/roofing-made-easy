@@ -70,26 +70,30 @@ export default function AboutPage() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-24 md:py-32 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
             <div>
-              <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-                About {companyInfo.name}
+              <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+                About
+              </p>
+              <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
+                {companyInfo.name}, a family roofing business.
               </h1>
-              <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
+              <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-xl">
                 {companyInfo.description}
               </p>
             </div>
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden animate-slide-up delay-200">
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden animate-slide-up delay-200 border border-slate-900">
               <Image
                 src="/images/about/team-work.jpg"
-                alt="Smart Roof Pricing team at work"
+                alt={`${companyInfo.name} team at work`}
                 fill
                 className="object-cover"
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0c0f14]/30 via-transparent to-transparent" />
             </div>
           </div>
         </div>
@@ -102,7 +106,7 @@ export default function AboutPage() {
             {companyInfo.stats.map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl font-bold text-[#c9a25c]">{stat.value}</div>
-                <div className="text-sm text-slate-500 mt-1">{stat.label}</div>
+                <div className="text-sm text-slate-400 mt-1">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -197,7 +201,7 @@ export default function AboutPage() {
                   <p className="text-[#c9a25c] text-sm mb-3">{member.role}</p>
                   <p className="text-slate-400 text-sm">{member.bio}</p>
                   {member.years && (
-                    <p className="mt-3 text-xs text-slate-500">{member.years}+ years experience</p>
+                    <p className="mt-3 text-xs text-slate-400">{member.years}+ years experience</p>
                   )}
                 </div>
               ))}
@@ -223,7 +227,7 @@ export default function AboutPage() {
                 className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                 rightIcon={<ArrowRight className="h-5 w-5" />}
               >
-                Get Free Estimate
+                Get My Free Estimate
               </Button>
             </Link>
             <Link href="/contact">
