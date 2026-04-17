@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { getAllBlogPosts, getCategories } from '@/lib/data/blog'
+import { getAllBlogPosts } from '@/lib/data/blog'
 import {
   ArrowRight,
   Clock,
@@ -51,9 +51,11 @@ export const metadata: Metadata = {
   },
 }
 
-export default function BlogPage() {
-  const posts = getAllBlogPosts()
-  const categories = getCategories()
+export const revalidate = 3600
+
+export default async function BlogPage() {
+  const posts = await getAllBlogPosts()
+  const categories = [...new Set(posts.map(p => p.category))]
 
   const breadcrumbs = [
     { name: 'Home', url: BASE_URL },
@@ -82,17 +84,21 @@ export default function BlogPage() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-24 md:py-32 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#c9a25c]/20 mb-6">
-              <BookOpen className="h-8 w-8 text-[#c9a25c]" />
-            </div>
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              Roofing Resources
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+              <BookOpen className="h-3.5 w-3.5" />
+              Blog
+            </p>
+            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
+              Straight talk
+              <br />
+              about roofs.
             </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              Expert advice, guides, and tips to help you make informed decisions about your roof.
+            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
+              Guides, pricing context, and decisions homeowners actually face
+              &mdash; written by roofers, not marketers.
             </p>
           </div>
         </div>
@@ -102,7 +108,7 @@ export default function BlogPage() {
       <section className="py-6 bg-[#0c0f14] border-y border-slate-800">
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex flex-wrap gap-2 justify-center">
-            <span className="text-slate-500 text-sm mr-2">Categories:</span>
+            <span className="text-slate-400 text-sm mr-2">Categories:</span>
             {categories.map((category) => (
               <span
                 key={category}
@@ -118,6 +124,7 @@ export default function BlogPage() {
       {/* Blog Posts */}
       <section className="py-16 md:py-24 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
+          <h2 className="sr-only">Latest Articles</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
             {posts.map((post) => (
               <Link
@@ -137,7 +144,7 @@ export default function BlogPage() {
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <BookOpen className="h-8 w-8 text-slate-600" />
+                      <BookOpen className="h-8 w-8 text-slate-400" />
                     </div>
                   )}
                 </div>
@@ -147,7 +154,7 @@ export default function BlogPage() {
                     <span className="text-xs bg-[#c9a25c]/20 text-[#c9a25c] px-2 py-1 rounded">
                       {post.category}
                     </span>
-                    <span className="flex items-center gap-1 text-xs text-slate-500">
+                    <span className="flex items-center gap-1 text-xs text-slate-400">
                       <Clock className="h-3 w-3" />
                       {post.readTime} min read
                     </span>
@@ -159,7 +166,7 @@ export default function BlogPage() {
                   <p className="text-slate-400 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-slate-500">By {post.author}</span>
+                    <span className="text-xs text-slate-400">By {post.author}</span>
                     <span className="text-[#c9a25c] text-sm flex items-center gap-1">
                       Read more <ArrowRight className="h-3 w-3" />
                     </span>
@@ -188,7 +195,7 @@ export default function BlogPage() {
                 className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                 rightIcon={<ArrowRight className="h-5 w-5" />}
               >
-                Get Free Estimate
+                Get My Free Estimate
               </Button>
             </Link>
           </div>

@@ -61,21 +61,24 @@ export default function ServiceAreasPage() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-24 md:py-32 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#c9a25c]/20 mb-6">
-              <MapPin className="h-8 w-8 text-[#c9a25c]" />
-            </div>
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              Northeast Mississippi Service Areas
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+              <MapPin className="h-3.5 w-3.5" />
+              Service Areas
+            </p>
+            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
+              Northeast Mississippi,
+              <br />
+              roof by roof.
             </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              Proudly serving Tupelo and {allCities.length - 1}+ communities across Northeast Mississippi with quality roofing services.
+            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
+              Serving Tupelo and {allCities.length - 1}+ communities across Northeast Mississippi.
             </p>
 
             {/* Trust Badges */}
-            <div className="flex flex-wrap justify-center gap-6 mt-8">
+            <div className="flex flex-wrap gap-6 mt-10">
               {BUSINESS_CONFIG.reviews.googleRating && (
                 <div className="flex items-center gap-2 text-slate-300">
                   <Star className="w-5 h-5 text-[#c9a25c] fill-[#c9a25c]" />
@@ -179,7 +182,7 @@ export default function ServiceAreasPage() {
                     <CheckCircle className={`h-4 w-4 ${city.priority === 'high' ? 'text-[#c9a25c]' : 'text-[#3d7a5a]'}`} />
                     <span className="text-slate-200 group-hover:text-white">{city.name}</span>
                   </div>
-                  <span className="text-xs text-slate-500">{city.county}</span>
+                  <span className="text-xs text-slate-400">{city.county}</span>
                 </Link>
               ))}
           </div>
@@ -202,7 +205,7 @@ export default function ServiceAreasPage() {
                 className="group flex flex-col p-4 rounded-lg border bg-[#1a1f2e] border-slate-700 hover:border-[#c9a25c]/50 transition-all"
               >
                 <span className="text-slate-200 group-hover:text-white font-medium">{county.name}</span>
-                <span className="text-xs text-slate-500 mt-1">{county.cities.length} cities</span>
+                <span className="text-xs text-slate-400 mt-1">{county.cities.length} cities</span>
               </Link>
             ))}
           </div>
@@ -304,7 +307,7 @@ export default function ServiceAreasPage() {
                 className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                 rightIcon={<ArrowRight className="h-5 w-5" />}
               >
-                Get Free Estimate
+                Get My Free Estimate
               </Button>
             </Link>
           </div>

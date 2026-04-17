@@ -1,6 +1,6 @@
 // City Hero Section Component
 import { MSCity } from '@/lib/data/ms-locations'
-import { MapPin, Shield, Star, Phone } from 'lucide-react'
+import { MapPin, Shield, Star, Phone, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { getPhoneLink, BUSINESS_CONFIG } from '@/lib/config/business'
 
@@ -9,71 +9,73 @@ interface CityHeroProps {
 }
 
 export function CityHero({ city }: CityHeroProps) {
-  return (
-    <section className="relative bg-gradient-dark py-16 md:py-24">
-      <div className="absolute inset-0 bg-[url('/images/roof-pattern.svg')] opacity-5" />
+  const foundedYear = BUSINESS_CONFIG.foundedYear
+  const years = foundedYear ? new Date().getFullYear() - parseInt(foundedYear) : null
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Location Badge */}
-          <div className="inline-flex items-center gap-2 bg-slate-deep/50 border border-gold/20 rounded-full px-4 py-2 mb-6">
-            <MapPin className="w-4 h-4 text-gold" />
-            <span className="text-sm text-gray-300">
-              {city.name}, {city.county} County, {city.stateCode}
-            </span>
+  return (
+    <section className="relative bg-[#0c0f14] py-24 md:py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-[url('/images/roof-pattern.svg')] opacity-[0.04] pointer-events-none" />
+
+      <div className="mx-auto max-w-6xl px-4 relative z-10">
+        <div className="max-w-3xl">
+          {/* Eyebrow with location */}
+          <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+            <MapPin className="h-3.5 w-3.5" />
+            {city.name}, {city.county} County &middot; {city.stateCode}
             {city.isHQ && (
-              <span className="bg-gold/20 text-gold text-xs font-semibold px-2 py-0.5 rounded-full ml-2">
+              <span className="ml-1 rounded-full bg-[#c9a25c]/15 border border-[#c9a25c]/30 text-[#e6c588] px-2 py-0.5 text-[10px] font-semibold tracking-normal normal-case">
                 HQ
               </span>
             )}
-          </div>
+          </p>
 
-          {/* H1 Title */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          {/* H1 — uses city's generated h1 */}
+          <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
             {city.h1}
           </h1>
 
-          {/* Subtitle with Population */}
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Protecting {city.population.toLocaleString()}+ residents with quality roofing services.
+          {/* Subtitle */}
+          <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl animate-slide-up delay-150">
             {city.isHQ
-              ? ' Born and raised in Tupelo, serving our community since 2010.'
-              : ` Proudly serving ${city.name} from our Tupelo headquarters.`
-            }
+              ? `Born and raised in ${city.name}${years ? `, working roofs here for ${years}+ years` : ''}. Honest pricing, clean work, no pushy sales.`
+              : `Serving ${city.name}${years ? ` from our ${BUSINESS_CONFIG.address.city} shop for ${years}+ years` : ''}. Same crew, same standard.`}
           </p>
 
-          {/* Trust Indicators */}
-          <div className="flex flex-wrap justify-center gap-6 mb-10">
+          {/* Trust indicators — only real ones */}
+          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-4 animate-slide-up delay-200">
             {BUSINESS_CONFIG.reviews.googleRating && (
-              <div className="flex items-center gap-2 text-gray-300">
-                <Star className="w-5 h-5 text-gold fill-gold" />
-                <span>{BUSINESS_CONFIG.reviews.googleRating} Rating</span>
-              </div>
+              <li className="flex items-center gap-2 text-sm text-slate-300">
+                <Star className="h-4 w-4 text-[#c9a25c] fill-[#c9a25c]" />
+                <span>
+                  <span className="text-slate-50 font-semibold">{BUSINESS_CONFIG.reviews.googleRating}</span>/5 rating
+                </span>
+              </li>
             )}
-            <div className="flex items-center gap-2 text-gray-300">
-              <Shield className="w-5 h-5 text-gold" />
-              <span>Licensed & Insured</span>
-            </div>
-            <div className="flex items-center gap-2 text-gray-300">
-              <MapPin className="w-5 h-5 text-gold" />
-              <span>Local Team</span>
-            </div>
-          </div>
+            <li className="flex items-center gap-2 text-sm text-slate-300">
+              <Shield className="h-4 w-4 text-[#c9a25c]" />
+              <span>Licensed &amp; insured</span>
+            </li>
+            <li className="flex items-center gap-2 text-sm text-slate-300">
+              <MapPin className="h-4 w-4 text-[#c9a25c]" />
+              <span>Local crew</span>
+            </li>
+          </ul>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-slide-up delay-300">
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all btn-press"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] font-semibold px-7 py-3.5 rounded-lg shadow-lg shadow-[#b5893a]/20 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a25c] focus-visible:ring-offset-4 focus-visible:ring-offset-[#0c0f14]"
             >
-              Get Free Estimate
+              Get my free estimate
+              <ArrowRight className="h-4 w-4" />
             </Link>
             <a
               href={getPhoneLink()}
-              className="inline-flex items-center justify-center gap-2 bg-transparent border-2 border-gold/50 hover:border-gold text-white font-semibold px-8 py-4 rounded-lg transition-all"
+              className="inline-flex items-center justify-center gap-2 border border-slate-700 hover:border-slate-500 text-slate-200 font-medium px-7 py-3.5 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-4 focus-visible:ring-offset-[#0c0f14]"
             >
-              <Phone className="w-5 h-5" />
-              Call Now
+              <Phone className="h-4 w-4" />
+              Call now
             </a>
           </div>
         </div>

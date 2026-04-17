@@ -104,19 +104,24 @@ export default function AssistanceContent() {
       <SiteHeader />
 
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-24 md:py-32 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#c9a25c]/20 mb-6">
-              <HandHeart className="h-8 w-8 text-[#c9a25c]" />
-            </div>
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              Thousands in Grants and Programs — Matched to You in Seconds
-            </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              Answer 5 questions and our eligibility screener matches you with 60+ federal, state, and nonprofit programs. Then AI tells you exactly which to apply for first, how to stack them, and estimates your total benefit — all free.
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+              <HandHeart className="h-3.5 w-3.5" />
+              Assistance Programs
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center animate-slide-up delay-200">
+            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
+              Help you didn&rsquo;t know
+              <br />
+              you qualify for.
+            </h1>
+            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
+              Answer five questions and we match you to 60+ federal, state, and
+              nonprofit programs. Then we tell you which to apply for first and
+              how to stack them.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-slide-up delay-200">
               <Link href="/customer/register?source=assistance">
                 <Button
                   variant="primary"
@@ -137,8 +142,8 @@ export default function AssistanceContent() {
                 See How It Works
               </Button>
             </div>
-            <p className="mt-4 text-sm text-slate-500 animate-slide-up delay-200">
-              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a> — we&apos;re happy to help.
+            <p className="mt-4 text-sm text-slate-400 animate-slide-up delay-200">
+              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a>. We&apos;re happy to help.
             </p>
           </div>
         </div>
@@ -157,7 +162,7 @@ export default function AssistanceContent() {
                 Five Questions. Personalized Results.
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                Tell us your state, income range, age, and whether you&apos;re a homeowner, veteran, disabled, or in a disaster-declared area. The screener instantly filters 60+ programs down to the ones you actually qualify for — with eligibility confidence for each.
+                Tell us your state, income range, age, and whether you&apos;re a homeowner, veteran, disabled, or in a disaster-declared area. The screener instantly filters 60+ programs down to the ones you actually qualify for, with eligibility confidence for each.
               </p>
 
               <div className="space-y-3 mb-8">
@@ -191,31 +196,31 @@ export default function AssistanceContent() {
 
             <ScrollAnimate delay={100}>
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
-                <div className="text-sm text-slate-500 mb-4">Eligibility Screener</div>
+                <div className="text-sm text-slate-400 mb-4">Eligibility Screener</div>
                 <div className="space-y-3">
                   <div className="bg-[#0c0f14] rounded-lg p-3">
-                    <label className="block text-xs text-slate-500 mb-1.5">Household Income</label>
+                    <label className="block text-xs text-slate-400 mb-1.5">Household Income</label>
                     <div className="h-9 bg-[#161a23] rounded border border-slate-700 flex items-center px-3">
-                      <DollarSign className="h-3.5 w-3.5 text-slate-500 mr-2" />
-                      <span className="text-sm text-slate-300">$25,000 – $50,000</span>
+                      <DollarSign className="h-3.5 w-3.5 text-slate-400 mr-2" />
+                      <span className="text-sm text-slate-300">$25,000-$50,000</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-[#0c0f14] rounded-lg p-3">
-                      <label className="block text-xs text-slate-500 mb-1.5">State</label>
+                      <label className="block text-xs text-slate-400 mb-1.5">State</label>
                       <div className="h-9 bg-[#161a23] rounded border border-slate-700 flex items-center px-3">
                         <span className="text-sm text-slate-300">Mississippi</span>
                       </div>
                     </div>
                     <div className="bg-[#0c0f14] rounded-lg p-3">
-                      <label className="block text-xs text-slate-500 mb-1.5">Age</label>
+                      <label className="block text-xs text-slate-400 mb-1.5">Age</label>
                       <div className="h-9 bg-[#161a23] rounded border border-slate-700 flex items-center px-3">
                         <span className="text-sm text-slate-300">67</span>
                       </div>
                     </div>
                   </div>
                   <div className="bg-[#0c0f14] rounded-lg p-3">
-                    <label className="block text-xs text-slate-500 mb-2">Circumstances</label>
+                    <label className="block text-xs text-slate-400 mb-2">Circumstances</label>
                     <div className="flex flex-wrap gap-2">
                       <span className="px-2.5 py-1 bg-[#3d7a5a]/20 text-[#3d7a5a] rounded-full text-xs font-medium">Homeowner</span>
                       <span className="px-2.5 py-1 bg-blue-400/20 text-blue-400 rounded-full text-xs font-medium">Senior (62+)</span>
@@ -249,7 +254,7 @@ export default function AssistanceContent() {
                         </div>
                         <span className="text-[#c9a25c]">$8,000</span>
                       </div>
-                      <span className="text-slate-500 pl-5">+ 5 more programs</span>
+                      <span className="text-slate-400 pl-5">+ 5 more programs</span>
                     </div>
                   </div>
                 </div>
@@ -267,7 +272,7 @@ export default function AssistanceContent() {
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center gap-2 mb-4">
                   <Sparkles className="h-4 w-4 text-[#c9a25c]" />
-                  <span className="text-sm text-slate-500">AI Prioritized Action Plan</span>
+                  <span className="text-sm text-slate-400">AI Prioritized Action Plan</span>
                 </div>
                 <div className="space-y-3">
                   <div className="bg-[#0c0f14] rounded-lg p-4">
@@ -279,7 +284,7 @@ export default function AssistanceContent() {
                             <span className="text-slate-200 font-medium">FEMA Individual Assistance</span>
                             <span className="text-[#c9a25c] text-xs font-bold">Up to $42,500</span>
                           </div>
-                          <span className="text-xs text-slate-500">Highest benefit — your area has a disaster declaration. Apply within 60 days.</span>
+                          <span className="text-xs text-slate-400">Highest benefit. Your area has a disaster declaration. Apply within 60 days.</span>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
@@ -289,7 +294,7 @@ export default function AssistanceContent() {
                             <span className="text-slate-200 font-medium">USDA Section 504 Grant</span>
                             <span className="text-[#c9a25c] text-xs font-bold">Up to $10,000</span>
                           </div>
-                          <span className="text-xs text-slate-500">You&apos;re 62+ in a rural area with qualifying income. This is free money.</span>
+                          <span className="text-xs text-slate-400">You&apos;re 62+ in a rural area with qualifying income. This is free money.</span>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
@@ -299,7 +304,7 @@ export default function AssistanceContent() {
                             <span className="text-slate-200 font-medium">Weatherization Assistance</span>
                             <span className="text-[#c9a25c] text-xs font-bold">Up to $8,000</span>
                           </div>
-                          <span className="text-xs text-slate-500">Your income qualifies. Includes roof repairs and insulation — free.</span>
+                          <span className="text-xs text-slate-400">Your income qualifies. Includes roof repairs and insulation, free.</span>
                         </div>
                       </div>
                     </div>
@@ -310,7 +315,7 @@ export default function AssistanceContent() {
                   <div className="border-t border-slate-700 pt-3">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-slate-400">Estimated total benefit:</span>
-                      <span className="text-[#c9a25c] font-bold">$50,500 – $60,500</span>
+                      <span className="text-[#c9a25c] font-bold">$50,500-$60,500</span>
                     </div>
                   </div>
                 </div>
@@ -331,7 +336,7 @@ export default function AssistanceContent() {
               <div className="space-y-3 mb-8">
                 {[
                   'Ranks programs by benefit amount and approval likelihood',
-                  'Tells you to apply for grants before loans — in the right order',
+                  'Tells you to apply for grants before loans, in the right order',
                   'Explains how to stack programs without disqualifying yourself',
                   'Estimates your total benefit across all qualifying programs',
                   'Warns about deadlines (FEMA has a 60-day window)',
@@ -350,7 +355,7 @@ export default function AssistanceContent() {
                   rightIcon={<ArrowRight className="h-5 w-5" />}
                   onClick={() => trackCTAClick('assistance_cta_clicked')}
                 >
-                  Get Your Action Plan — Free
+                  Get Your Action Plan. Free
                 </Button>
               </Link>
             </ScrollAnimate>
@@ -371,7 +376,7 @@ export default function AssistanceContent() {
                 See How Programs Stack to Cover Your Roof
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                The benefit calculator takes your roof estimate, stacks every program you qualify for — grants first, then low-interest loans — and shows you exactly how much is covered and what&apos;s left. If there&apos;s a remaining gap, it links you directly to financing options.
+                The benefit calculator takes your roof estimate, stacks every program you qualify for (grants first, then low-interest loans) and shows you exactly how much is covered and what&apos;s left. If there&apos;s a remaining gap, it links you directly to financing options.
               </p>
               <div className="space-y-3">
                 {[
@@ -390,7 +395,7 @@ export default function AssistanceContent() {
 
             <ScrollAnimate delay={100}>
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
-                <div className="text-sm text-slate-500 mb-4">Benefit Stacking Preview</div>
+                <div className="text-sm text-slate-400 mb-4">Benefit Stacking Preview</div>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-slate-300">Your Roof Estimate</span>
@@ -434,7 +439,7 @@ export default function AssistanceContent() {
                       <span className="text-slate-100 font-bold">Remaining gap</span>
                       <div className="text-right">
                         <span className="text-[#c9a25c] font-bold text-lg">$1,500</span>
-                        <span className="block text-xs text-slate-500">~$29/mo to finance</span>
+                        <span className="block text-xs text-slate-400">~$29/mo to finance</span>
                       </div>
                     </div>
                   </div>
@@ -458,13 +463,13 @@ export default function AssistanceContent() {
                 An Advisor That Knows Your Full Funding Picture
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                Your AI advisor doesn&apos;t just know about assistance programs — it sees your insurance claim status, your roof estimate, your financing pre-qualification, and your eligible programs. Ask it anything and get advice that accounts for everything, not just one piece.
+                Your AI advisor doesn&apos;t just know about assistance programs. It sees your insurance claim status, your roof estimate, your financing pre-qualification, and your eligible programs. Ask it anything and get advice that accounts for everything, not just one piece.
               </p>
               <div className="space-y-3">
                 {[
                   'Knows your estimate, insurance claim, and financing status',
                   'Sees which programs you qualify for and how much you\'ve applied for',
-                  'Suggests whether to file insurance, apply for grants, or finance — and in what order',
+                  'Suggests whether to file insurance, apply for grants, or finance, and in what order',
                   'Explains program requirements in plain language',
                 ].map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
@@ -487,18 +492,18 @@ export default function AssistanceContent() {
                   </div>
                   <div className="bg-[#0c0f14] rounded-lg p-3 text-sm text-slate-400 mr-4 space-y-2">
                     <p>
-                      Great news — you qualify for several programs that could cover most or all of your $18,500 estimate. Here&apos;s what I&apos;d recommend:
+                      Great news: you qualify for several programs that could cover most or all of your $18,500 estimate. Here&apos;s what I&apos;d recommend:
                     </p>
                     <p>
-                      <span className="text-slate-300 font-medium">1. Start with FEMA.</span> Your area has an active disaster declaration, and as a homeowner you&apos;re eligible for up to $42,500 in grants. Apply within 60 days — this has a deadline.
+                      <span className="text-slate-300 font-medium">1. Start with FEMA.</span> Your area has an active disaster declaration, and as a homeowner you&apos;re eligible for up to $42,500 in grants. Apply within 60 days. This has a deadline.
                     </p>
                     <p>
-                      <span className="text-slate-300 font-medium">2. Apply for USDA Section 504.</span> At 67, you qualify for the grant portion — up to $10,000 with no repayment. This stacks with FEMA.
+                      <span className="text-slate-300 font-medium">2. Apply for USDA Section 504.</span> At 67, you qualify for the grant portion, up to $10,000 with no repayment. This stacks with FEMA.
                     </p>
                     <p>
                       <span className="text-slate-300 font-medium">3. Check veteran-specific programs.</span> Your state may have additional VA housing assistance. I&apos;d check that before looking at any loans.
                     </p>
-                    <p className="text-slate-500 text-xs">
+                    <p className="text-slate-400 text-xs">
                       Between FEMA, USDA, and veteran programs, you may not need financing at all. Want me to show your benefit breakdown?
                     </p>
                   </div>
@@ -519,7 +524,7 @@ export default function AssistanceContent() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollAnimate delay={100} className="order-2 md:order-1">
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
-                <div className="text-sm text-slate-500 mb-4">Your Applications</div>
+                <div className="text-sm text-slate-400 mb-4">Your Applications</div>
                 <div className="space-y-3">
                   {[
                     {
@@ -550,13 +555,13 @@ export default function AssistanceContent() {
                         <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${app.statusColor}`}>{app.status}</span>
                       </div>
                       {app.ref && (
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs text-slate-400">
                           Ref: {app.ref}
                           {app.date && <span className="ml-2">&bull; {app.date}</span>}
                         </div>
                       )}
                       {!app.ref && (
-                        <div className="text-xs text-slate-500">Ready to apply — documents listed in portal</div>
+                        <div className="text-xs text-slate-400">Ready to apply. Documents listed in portal</div>
                       )}
                     </div>
                   ))}
@@ -579,13 +584,13 @@ export default function AssistanceContent() {
                 Track Every Application in One Place
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                When you&apos;re applying for 3, 4, or 5 programs at once, it&apos;s easy to lose track. The portal tracks each application&apos;s status — from researching to eligible to applied to approved — with reference numbers, dates, and notes. You&apos;ll know exactly where everything stands.
+                When you&apos;re applying for 3, 4, or 5 programs at once, it&apos;s easy to lose track. The portal tracks each application&apos;s status, from researching to eligible to applied to approved, with reference numbers, dates, and notes. You&apos;ll know exactly where everything stands.
               </p>
               <div className="space-y-3 mb-8">
                 {[
                   '6 status stages: researching, eligible, applied, approved, not eligible, denied',
                   'Store application reference numbers and submission dates',
-                  'Add notes for each program — deadlines, follow-ups, required documents',
+                  'Add notes for each program: deadlines, follow-ups, required documents',
                   'See which applications are waiting and which are decided',
                 ].map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
@@ -656,12 +661,12 @@ export default function AssistanceContent() {
                       </span>
                     </div>
                     <p className="text-slate-400 text-sm mb-2">{program.description}</p>
-                    <p className="text-slate-500 text-xs">
+                    <p className="text-slate-400 text-xs">
                       <span className="text-slate-400">Eligibility:</span> {program.eligibility}
                     </p>
                   </div>
                   <div className="md:text-right">
-                    <div className="text-sm text-slate-500">Up to</div>
+                    <div className="text-sm text-slate-400">Up to</div>
                     <div className="text-2xl font-bold text-[#c9a25c]">{program.maxBenefit}</div>
                   </div>
                 </div>
@@ -670,7 +675,7 @@ export default function AssistanceContent() {
           </div>
 
           <div className="mt-8 text-center">
-            <p className="text-slate-500 text-sm mb-4">
+            <p className="text-slate-400 text-sm mb-4">
               These are 5 of the 60+ programs in our database. Create an account to see all programs filtered to your eligibility.
             </p>
             <Link href="/customer/register?source=assistance">
@@ -707,7 +712,7 @@ export default function AssistanceContent() {
               </div>
               <h3 className="font-bold text-slate-100 mb-2">Create Account</h3>
               <p className="text-sm text-slate-400">
-                Sign up free — takes 30 seconds. Unlocks the eligibility screener, AI guidance, and application tracking.
+                Sign up free. Takes 30 seconds. Unlocks the eligibility screener, AI guidance, and application tracking.
               </p>
             </div>
 
@@ -750,19 +755,19 @@ export default function AssistanceContent() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl font-bold text-[#c9a25c]">60+</div>
-              <div className="text-sm text-slate-500 mt-1">Programs in Database</div>
+              <div className="text-sm text-slate-400 mt-1">Programs in Database</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-[#c9a25c]">$50K+</div>
-              <div className="text-sm text-slate-500 mt-1">Available in Grants</div>
+              <div className="text-sm text-slate-400 mt-1">Available in Grants</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-[#c9a25c]">5</div>
-              <div className="text-sm text-slate-500 mt-1">Questions to Screen</div>
+              <div className="text-sm text-slate-400 mt-1">Questions to Screen</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-[#c9a25c]">Free</div>
-              <div className="text-sm text-slate-500 mt-1">Eligibility + AI Guidance</div>
+              <div className="text-sm text-slate-400 mt-1">Eligibility + AI Guidance</div>
             </div>
           </div>
         </div>
@@ -776,13 +781,13 @@ export default function AssistanceContent() {
               Assistance + Insurance + Financing = Your Roof, Funded
             </h2>
             <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
-              Your AI advisor sees all three. Insurance covers storm damage. Grants reduce what you owe. Financing handles the rest. The tools share data so you get one complete picture — not three separate guesses.
+              Your AI advisor sees all three. Insurance covers storm damage. Grants reduce what you owe. Financing handles the rest. The tools share data so you get one complete picture, not three separate guesses.
             </p>
           </ScrollAnimate>
 
           {/* Funding waterfall */}
           <div className="max-w-md mx-auto bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 mb-10">
-            <div className="text-sm text-slate-500 mb-4 text-center">How the Three Work Together</div>
+            <div className="text-sm text-slate-400 mb-4 text-center">How the Three Work Together</div>
             <div className="space-y-3">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-slate-300">Roof Estimate</span>
@@ -800,7 +805,7 @@ export default function AssistanceContent() {
                 <span className="text-slate-100 font-bold">Amount to finance</span>
                 <div className="text-right">
                   <span className="text-[#c9a25c] font-bold text-lg">$1,500</span>
-                  <span className="block text-xs text-slate-500">~$29/mo for 60 months</span>
+                  <span className="block text-xs text-slate-400">~$29/mo for 60 months</span>
                 </div>
               </div>
             </div>
@@ -829,7 +834,7 @@ export default function AssistanceContent() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-100 mb-2">Finance the Remainder</h3>
                 <p className="text-slate-400 text-sm mb-4">
-                  After insurance and grants, finance what&apos;s left. AI generates 3 payment plans and an affordability check — using your actual remaining balance.
+                  After insurance and grants, finance what&apos;s left. AI generates 3 payment plans and an affordability check, using your actual remaining balance.
                 </p>
                 <span className="text-[#c9a25c] text-sm font-medium inline-flex items-center gap-1">
                   View Financing <ArrowRight className="h-4 w-4" />
@@ -864,12 +869,12 @@ export default function AssistanceContent() {
                   onClick={() => trackCTAClick('assistance_cta_clicked')}
                 >
                   <UserPlus className="mr-2 h-5 w-5" />
-                  Check Your Eligibility — It&apos;s Free
+                  Check Your Eligibility. It&apos;s Free
                 </Button>
               </Link>
             </div>
-            <p className="mt-4 text-sm text-slate-500">
-              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a> — we&apos;re happy to help.
+            <p className="mt-4 text-sm text-slate-400">
+              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a>. We&apos;re happy to help.
             </p>
           </ScrollAnimate>
         </div>

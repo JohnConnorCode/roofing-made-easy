@@ -44,19 +44,24 @@ export default function InsuranceContent() {
       <SiteHeader />
 
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-24 md:py-32 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#c9a25c]/20 mb-6">
-              <FileText className="h-8 w-8 text-[#c9a25c]" />
-            </div>
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              Your Complete Insurance Claim Command Center
-            </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              Track your claim from filing to settlement. Generate professional letters with AI. Model your payout with RCV vs ACV scenarios. And get a personal advisor that knows your claim, your estimate, and your options — all free.
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+              <FileText className="h-3.5 w-3.5" />
+              Insurance
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center animate-slide-up delay-200">
+            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
+              Run the claim right.
+              <br />
+              Get what you&rsquo;re owed.
+            </h1>
+            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
+              Track your claim from filing to settlement, generate professional
+              letters, model RCV vs ACV scenarios, and get an advisor that
+              actually knows your claim &mdash; all free.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-slide-up delay-200">
               <Link href="/customer/register?source=insurance">
                 <Button
                   variant="primary"
@@ -77,8 +82,8 @@ export default function InsuranceContent() {
                 See How It Works
               </Button>
             </div>
-            <p className="mt-4 text-sm text-slate-500 animate-slide-up delay-200">
-              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a> — we&apos;re happy to help.
+            <p className="mt-4 text-sm text-slate-400 animate-slide-up delay-200">
+              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a>. We&apos;re happy to help.
             </p>
           </div>
         </div>
@@ -97,7 +102,7 @@ export default function InsuranceContent() {
                 Two Fields to Start. Full Visibility from Day One.
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                Enter your insurance company and what happened — that&apos;s all it takes to start tracking. As your claim progresses, add adjuster info, notes, and documents. Every status change is logged to a timeline you can reference later.
+                Enter your insurance company and what happened. That&apos;s all it takes to start tracking. As your claim progresses, add adjuster info, notes, and documents. Every status change is logged to a timeline you can reference later.
               </p>
 
               <div className="space-y-3 mb-8">
@@ -106,7 +111,7 @@ export default function InsuranceContent() {
                   'Store adjuster name, phone, and visit dates',
                   'Add notes after every call or inspection',
                   'Track approved amounts against your estimate',
-                  'See your funding gap — what insurance doesn\'t cover',
+                  'See your funding gap: what insurance doesn\'t cover',
                 ].map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-[#3d7a5a] flex-shrink-0 mt-0.5" />
@@ -132,13 +137,13 @@ export default function InsuranceContent() {
             <ScrollAnimate delay={100}>
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="text-sm text-slate-500">Your Claim Timeline</div>
+                  <div className="text-sm text-slate-400">Your Claim Timeline</div>
                   <div className="text-xs bg-orange-400/10 text-orange-400 px-2 py-1 rounded-full">Under Review</div>
                 </div>
                 <div className="space-y-0">
                   {[
                     { status: 'Claim Filed', detail: 'State Farm #CLM-2024-48291', date: 'Jan 15', color: 'bg-blue-400', done: true },
-                    { status: 'Adjuster Scheduled', detail: 'Mike Thompson — (662) 555-0142', date: 'Jan 18', color: 'bg-yellow-400', done: true },
+                    { status: 'Adjuster Scheduled', detail: 'Mike Thompson, (662) 555-0142', date: 'Jan 18', color: 'bg-yellow-400', done: true },
                     { status: 'Inspection Complete', detail: 'Note: Adjuster found hail damage on north slope', date: 'Jan 20', color: 'bg-purple-400', done: true },
                     { status: 'Under Review', detail: 'Waiting for decision', date: 'In Progress', color: 'bg-orange-400', done: false, current: true },
                     { status: 'Decision', detail: '', date: 'Pending', color: 'bg-slate-700', done: false },
@@ -151,13 +156,13 @@ export default function InsuranceContent() {
                       <div className={`relative z-10 w-3 h-3 rounded-full mt-1.5 flex-shrink-0 ${step.color} ${step.current ? 'ring-4 ring-orange-400/20' : ''}`} />
                       <div className="pb-4 flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <span className={step.done ? 'text-slate-100 font-medium text-sm' : step.current ? 'text-slate-200 font-medium text-sm' : 'text-slate-500 text-sm'}>
+                          <span className={step.done ? 'text-slate-100 font-medium text-sm' : step.current ? 'text-slate-200 font-medium text-sm' : 'text-slate-400 text-sm'}>
                             {step.status}
                           </span>
-                          <span className="text-xs text-slate-600">{step.date}</span>
+                          <span className="text-xs text-slate-400">{step.date}</span>
                         </div>
                         {step.detail && (
-                          <p className="text-xs text-slate-500 mt-0.5 truncate">{step.detail}</p>
+                          <p className="text-xs text-slate-400 mt-0.5 truncate">{step.detail}</p>
                         )}
                       </div>
                     </div>
@@ -176,7 +181,7 @@ export default function InsuranceContent() {
             <ScrollAnimate delay={100} className="order-2 md:order-1">
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="text-sm text-slate-500">Generated Appeal Letter</div>
+                  <div className="text-sm text-slate-400">Generated Appeal Letter</div>
                   <button className="text-xs text-[#c9a25c] flex items-center gap-1">
                     <Copy className="h-3 w-3" /> Copy
                   </button>
@@ -194,7 +199,7 @@ export default function InsuranceContent() {
                     <span className="text-[#c9a25c]"> $18,500</span>,
                     consistent with current material and labor costs in Lee County.
                   </p>
-                  <p className="text-slate-600">
+                  <p className="text-slate-400">
                     I request that you re-evaluate this claim based on the enclosed documentation...
                   </p>
                 </div>
@@ -215,7 +220,7 @@ export default function InsuranceContent() {
                 Claim Letters That Use Your Actual Data
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                Our AI writes professional claim letters pre-filled with your property address, damage details, estimate amount, claim number, and adjuster info. Generate initial claims, supplement requests, or appeal letters — then copy, edit, and send.
+                Our AI writes professional claim letters pre-filled with your property address, damage details, estimate amount, claim number, and adjuster info. Generate initial claims, supplement requests, or appeal letters, then copy, edit, and send.
               </p>
               <div className="space-y-3 mb-8">
                 {[
@@ -248,7 +253,7 @@ export default function InsuranceContent() {
                 An Advisor That Already Knows Your Situation
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                This isn&apos;t a generic chatbot. Your AI advisor sees your roof estimate, your claim status, your insurance company, your deductible, and your out-of-pocket gap. Ask it anything and get answers specific to your situation — not copy-pasted from a FAQ.
+                This isn&apos;t a generic chatbot. Your AI advisor sees your roof estimate, your claim status, your insurance company, your deductible, and your out-of-pocket gap. Ask it anything and get answers specific to your situation, not copy-pasted from a FAQ.
               </p>
               <div className="space-y-3">
                 {[
@@ -280,13 +285,13 @@ export default function InsuranceContent() {
                       Based on your hail damage claim with State Farm, here&apos;s what to have ready for the adjuster visit:
                     </p>
                     <p>
-                      <span className="text-slate-300 font-medium">1. Your documentation:</span> You&apos;ve uploaded 8 photos — make sure the close-ups of the north slope granule loss are accessible.
+                      <span className="text-slate-300 font-medium">1. Your documentation:</span> You&apos;ve uploaded 8 photos, so make sure the close-ups of the north slope granule loss are accessible.
                     </p>
                     <p>
                       <span className="text-slate-300 font-medium">2. Your estimate:</span> Your repair estimate is $18,500. Have a printed copy ready. The adjuster will compare against their own assessment.
                     </p>
                     <p>
-                      <span className="text-slate-300 font-medium">3. Don&apos;t agree on the spot.</span> If their number is lower, you can file a supplement request — I can generate that letter for you.
+                      <span className="text-slate-300 font-medium">3. Don&apos;t agree on the spot.</span> If their number is lower, you can file a supplement request. I can generate that letter for you.
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -306,7 +311,7 @@ export default function InsuranceContent() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollAnimate delay={100} className="order-2 md:order-1">
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
-                <div className="text-sm text-slate-500 mb-4">Coverage Gap Calculator</div>
+                <div className="text-sm text-slate-400 mb-4">Coverage Gap Calculator</div>
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-400">Roof Estimate</span>
@@ -337,7 +342,7 @@ export default function InsuranceContent() {
                       <span className="text-[#c9a25c] font-bold">$1,000</span>
                     </div>
                   </div>
-                  <div className="bg-[#0c0f14] rounded-lg p-3 text-xs text-slate-500 mt-2">
+                  <div className="bg-[#0c0f14] rounded-lg p-3 text-xs text-slate-400 mt-2">
                     With ACV and 15% depreciation, your payout drops to $14,725 and your gap increases to $3,775.
                     <span className="text-[#c9a25c]"> Try ACV mode to compare.</span>
                   </div>
@@ -354,13 +359,13 @@ export default function InsuranceContent() {
                 Know Your Out-of-Pocket Before You Commit
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                Your payout depends on your deductible, whether you have Replacement Cost Value (RCV) or Actual Cash Value (ACV) coverage, and depreciation. Our calculator lets you model all of it so you know exactly what to expect — and what you&apos;ll need to cover another way.
+                Your payout depends on your deductible, whether you have Replacement Cost Value (RCV) or Actual Cash Value (ACV) coverage, and depreciation. Our calculator lets you model all of it so you know exactly what to expect, and what you&apos;ll need to cover another way.
               </p>
               <div className="space-y-3">
                 {[
                   'Toggle between RCV and ACV to compare payouts',
                   'Adjust depreciation to see worst-case and best-case',
-                  'See your exact funding gap — what insurance won\'t cover',
+                  'See your exact funding gap: what insurance won\'t cover',
                   'Links directly to financing and assistance to close the gap',
                 ].map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
@@ -396,7 +401,7 @@ export default function InsuranceContent() {
                 Create Your Account
               </h3>
               <p className="text-slate-400">
-                Sign up free and enter your insurance company and cause of damage. That&apos;s enough to start tracking and unlock all AI tools.
+                Sign up free and enter your insurance company and cause of damage. That&apos;s enough to start tracking and access all AI tools.
               </p>
             </div>
 
@@ -541,7 +546,7 @@ export default function InsuranceContent() {
                     href={company.claimsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-slate-500 hover:text-slate-300 transition-colors"
+                    className="text-slate-400 hover:text-slate-300 transition-colors"
                     aria-label={`Visit ${company.name} claims website`}
                   >
                     <ExternalLink className="h-5 w-5" />
@@ -558,7 +563,7 @@ export default function InsuranceContent() {
         <div className="mx-auto max-w-6xl px-4">
           <ScrollAnimate className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
-              Insurance Doesn&apos;t Cover Everything — Here&apos;s What Does
+              Insurance Doesn&apos;t Cover Everything. Here&apos;s What Does
             </h2>
             <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
               Your AI advisor automatically calculates what insurance leaves uncovered and shows you how to close the gap with financing and assistance programs. All three tools share data so you get one complete funding picture.
@@ -567,7 +572,7 @@ export default function InsuranceContent() {
 
           {/* Funding waterfall */}
           <div className="max-w-md mx-auto bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 mb-10">
-            <div className="text-sm text-slate-500 mb-4 text-center">How It Comes Together</div>
+            <div className="text-sm text-slate-400 mb-4 text-center">How It Comes Together</div>
             <div className="space-y-3">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-slate-300">Your Roof Estimate</span>
@@ -585,7 +590,7 @@ export default function InsuranceContent() {
                 <span className="text-slate-100 font-bold">Amount to finance</span>
                 <div className="text-right">
                   <span className="text-[#c9a25c] font-bold text-lg">$2,000</span>
-                  <span className="block text-xs text-slate-500">~$39/mo for 60 months</span>
+                  <span className="block text-xs text-slate-400">~$39/mo for 60 months</span>
                 </div>
               </div>
             </div>
@@ -638,7 +643,7 @@ export default function InsuranceContent() {
               Stop Wondering Where Your Claim Stands
             </h2>
             <p className="mt-4 text-lg text-slate-400">
-              Create a free account, enter two fields, and unlock claim tracking, AI letters, payout modeling, and a personal advisor that knows your entire situation. Takes less than 2 minutes.
+              Create a free account, enter two fields, and get claim tracking, AI letters, payout modeling, and a personal advisor that knows your entire situation. Takes less than 2 minutes.
             </p>
             <div className="mt-8">
               <Link href="/customer/register?source=insurance">
@@ -649,12 +654,12 @@ export default function InsuranceContent() {
                   onClick={() => trackCTAClick('insurance_cta_clicked')}
                 >
                   <UserPlus className="mr-2 h-5 w-5" />
-                  Start Tracking Your Claim — It&apos;s Free
+                  Start Tracking Your Claim. It&apos;s Free
                 </Button>
               </Link>
             </div>
-            <p className="mt-4 text-sm text-slate-500">
-              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a> — we&apos;re happy to help.
+            <p className="mt-4 text-sm text-slate-400">
+              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a>. We&apos;re happy to help.
             </p>
           </ScrollAnimate>
         </div>

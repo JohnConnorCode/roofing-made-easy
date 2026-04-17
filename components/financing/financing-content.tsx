@@ -11,7 +11,6 @@ import {
   CheckCircle,
   UserPlus,
   CreditCard,
-  Clock,
   Shield,
   TrendingUp,
   Sparkles,
@@ -66,20 +65,25 @@ export default function FinancingContent() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
+      <section className="py-24 md:py-32 bg-[#0c0f14]">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#c9a25c]/20 mb-6">
-              <Calculator className="h-8 w-8 text-[#c9a25c]" />
-            </div>
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              Affordable Monthly Payments for Your New Roof
-            </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              Use the calculator below to estimate your monthly payment. Then create a free account to get 3 AI-generated payment plans tailored to your credit, budget, and insurance payout — with an affordability check before you apply.
+          <div className="max-w-3xl">
+            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+              <Calculator className="h-3.5 w-3.5" />
+              Financing
             </p>
-            <p className="mt-4 text-sm text-slate-500 animate-slide-up delay-200">
-              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a> — we&apos;re happy to help.
+            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
+              Turn a big number
+              <br />
+              into a monthly one.
+            </h1>
+            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
+              Estimate your monthly payment below. Create a free account and
+              we&rsquo;ll match you to lenders, run an affordability check, and
+              show three plans before you apply.
+            </p>
+            <p className="mt-4 text-sm text-slate-400 animate-slide-up delay-200">
+              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a>. We&rsquo;re happy to help.
             </p>
           </div>
         </div>
@@ -99,7 +103,7 @@ export default function FinancingContent() {
                     Project Cost
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500" />
+                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type="number"
                       placeholder="15000"
@@ -108,7 +112,7 @@ export default function FinancingContent() {
                       className="w-full h-12 pl-10 pr-4 rounded-lg border border-slate-600 bg-[#0c0f14] text-slate-100 placeholder:text-slate-500 focus:border-[#c9a25c] focus:outline-none focus:ring-2 focus:ring-[#c9a25c]/20"
                     />
                   </div>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-slate-400 mt-1">
                     Don&apos;t know yet? <Link href="/" className="text-[#c9a25c] hover:underline">Get a free estimate</Link>
                   </p>
                 </div>
@@ -136,7 +140,7 @@ export default function FinancingContent() {
                 <p className="text-5xl font-bold text-[#c9a25c]">
                   ${monthlyPayment.toFixed(2)}
                 </p>
-                <p className="text-slate-500 text-sm mt-2">per month for {months} months</p>
+                <p className="text-slate-400 text-sm mt-2">per month for {months} months</p>
               </div>
 
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 space-y-4">
@@ -163,10 +167,10 @@ export default function FinancingContent() {
                     rightIcon={<ArrowRight className="h-5 w-5" />}
                     onClick={() => trackCTAClick('financing_cta_clicked')}
                   >
-                    Get Personalized Plans — Free
+                    Get Personalized Plans. Free
                   </Button>
                 </Link>
-                <p className="text-xs text-slate-500 text-center mt-2">No credit pull. No obligation.</p>
+                <p className="text-xs text-slate-400 text-center mt-2">No credit pull. No obligation.</p>
               </div>
             </div>
           </div>
@@ -186,7 +190,7 @@ export default function FinancingContent() {
                 The Calculator Is Just the Start
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                Create a free account and the AI generates 3 custom payment plans based on your credit range, your roof estimate, and your insurance payout. If insurance covers $12K of an $18K roof, the AI builds scenarios for the $6K you actually need to finance — not the full amount.
+                Create a free account and the AI generates 3 custom payment plans based on your credit range, your roof estimate, and your insurance payout. If insurance covers $12K of an $18K roof, the AI builds scenarios for the $6K you actually need to finance, not the full amount.
               </p>
               <div className="space-y-3">
                 {[
@@ -207,7 +211,7 @@ export default function FinancingContent() {
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center gap-2 mb-4">
                   <Sparkles className="h-4 w-4 text-[#c9a25c]" />
-                  <span className="text-sm text-slate-500">Your AI Payment Scenarios</span>
+                  <span className="text-sm text-slate-400">Your AI Payment Scenarios</span>
                 </div>
                 <div className="space-y-3">
                   {[
@@ -222,16 +226,16 @@ export default function FinancingContent() {
                       </div>
                       <div className="flex items-baseline gap-1">
                         <span className="text-2xl font-bold text-[#c9a25c]">{scenario.monthly}</span>
-                        <span className="text-xs text-slate-500">/mo for {scenario.term}</span>
+                        <span className="text-xs text-slate-400">/mo for {scenario.term}</span>
                       </div>
-                      <div className="flex gap-4 mt-1 text-xs text-slate-500">
+                      <div className="flex gap-4 mt-1 text-xs text-slate-400">
                         <span>{scenario.rate} APR</span>
                         <span>{scenario.interest} total interest</span>
                       </div>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-slate-500 mt-3">
+                <p className="text-xs text-slate-400 mt-3">
                   Based on $6,000 after $12K insurance payout &bull; Good credit
                 </p>
               </div>
@@ -246,7 +250,7 @@ export default function FinancingContent() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollAnimate delay={100} className="order-2 md:order-1">
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
-                <div className="text-sm text-slate-500 mb-4">Affordability Check</div>
+                <div className="text-sm text-slate-400 mb-4">Affordability Check</div>
                 <div className="space-y-4">
                   {[
                     { term: '36 months', payment: '$187/mo', pct: '3.0%', level: 'Comfortable', color: 'bg-emerald-400', barWidth: 'w-[30%]', textColor: 'text-emerald-400' },
@@ -263,12 +267,12 @@ export default function FinancingContent() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className={`text-xs font-medium ${item.textColor}`}>{item.level}</span>
-                        <span className="text-xs text-slate-500">{item.pct} of monthly income</span>
+                        <span className="text-xs text-slate-400">{item.pct} of monthly income</span>
                       </div>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-slate-500 mt-3 text-center">Based on $75K annual income</p>
+                <p className="text-xs text-slate-400 mt-3 text-center">Based on $75K annual income</p>
               </div>
             </ScrollAnimate>
 
@@ -288,7 +292,7 @@ export default function FinancingContent() {
                   'Color-coded: comfortable, manageable, or stretch',
                   'Compares all loan terms side by side',
                   'Uses your actual estimate and credit range',
-                  'No credit pull — just enter your income bracket',
+                  'No credit pull. Just enter your income bracket',
                 ].map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-[#3d7a5a] flex-shrink-0 mt-0.5" />
@@ -314,7 +318,7 @@ export default function FinancingContent() {
                 Ask It Anything About Your Financing Options
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                Your AI advisor knows your roof estimate, your credit range, your income bracket, your insurance claim status, and your eligible assistance programs. Ask &ldquo;Should I do 60 or 120 months?&rdquo; and get an answer based on your actual numbers — not a generic rule of thumb.
+                Your AI advisor knows your roof estimate, your credit range, your income bracket, your insurance claim status, and your eligible assistance programs. Ask &ldquo;Should I do 60 or 120 months?&rdquo; and get an answer based on your actual numbers, not a generic rule of thumb.
               </p>
               <div className="space-y-3">
                 {[
@@ -346,7 +350,7 @@ export default function FinancingContent() {
                       With your good credit and the $6,000 you need to finance (after your $12K insurance payout), here&apos;s the tradeoff:
                     </p>
                     <p>
-                      <span className="text-slate-300 font-medium">60 months:</span> $119/mo, $1,140 in total interest. That&apos;s 1.9% of your monthly income — very comfortable.
+                      <span className="text-slate-300 font-medium">60 months:</span> $119/mo, $1,140 in total interest. That&apos;s 1.9% of your monthly income, very comfortable.
                     </p>
                     <p>
                       <span className="text-slate-300 font-medium">120 months:</span> $76/mo saves $43/month but costs $1,980 more in interest over the life of the loan.
@@ -368,7 +372,7 @@ export default function FinancingContent() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollAnimate delay={100} className="order-2 md:order-1">
               <div className="bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 shadow-xl">
-                <div className="text-sm text-slate-500 mb-4">Application Status</div>
+                <div className="text-sm text-slate-400 mb-4">Application Status</div>
                 <div className="space-y-0">
                   {[
                     { label: 'Submitted', detail: 'Feb 3', done: true, color: 'bg-blue-400' },
@@ -384,8 +388,8 @@ export default function FinancingContent() {
                       <div className={`relative z-10 w-3 h-3 rounded-full mt-1.5 flex-shrink-0 ${step.color} ${step.current ? 'ring-4 ring-[#c9a25c]/20' : ''}`} />
                       <div className="pb-4 flex-1">
                         <div className="flex items-center justify-between">
-                          <span className={step.done ? 'text-slate-100 font-medium text-sm' : 'text-slate-500 text-sm'}>{step.label}</span>
-                          <span className="text-xs text-slate-600">{step.detail}</span>
+                          <span className={step.done ? 'text-slate-100 font-medium text-sm' : 'text-slate-400 text-sm'}>{step.label}</span>
+                          <span className="text-xs text-slate-400">{step.detail}</span>
                         </div>
                       </div>
                     </div>
@@ -413,11 +417,11 @@ export default function FinancingContent() {
                 Pre-Qualify in 60 Seconds. Track Every Step.
               </h2>
               <p className="text-lg text-slate-400 mb-6">
-                Fill out a short form — just your amount, credit range, and optionally income and employment. No hard credit pull. Then track your application from submission through pre-qualification to approval, all in one dashboard.
+                Fill out a short form: just your amount, credit range, and optionally income and employment. No hard credit pull. Then track your application from submission through pre-qualification to approval, all in one dashboard.
               </p>
               <div className="space-y-3 mb-8">
                 {[
-                  'Soft credit check only — no impact on your score',
+                  'Soft credit check only, no impact on your score',
                   'See pre-approved amount and rate when qualified',
                   'Track status updates in real time',
                   'Upload documents for faster processing',
@@ -437,7 +441,7 @@ export default function FinancingContent() {
                   onClick={() => trackCTAClick('financing_cta_clicked')}
                 >
                   <UserPlus className="mr-2 h-5 w-5" />
-                  Get Pre-Qualified — Free
+                  Get Pre-Qualified. Free
                 </Button>
               </Link>
             </ScrollAnimate>
@@ -453,13 +457,13 @@ export default function FinancingContent() {
               Finance Less by Using Insurance and Grants First
             </h2>
             <p className="mt-4 text-lg text-slate-400 max-w-2xl mx-auto">
-              Your AI advisor sees the full picture. If you have an insurance claim or qualify for grants, the financing tools automatically adjust — you only finance what&apos;s left.
+              Your AI advisor sees the full picture. If you have an insurance claim or qualify for grants, the financing tools automatically adjust. You only finance what&apos;s left.
             </p>
           </ScrollAnimate>
 
           {/* Visual Breakdown */}
           <div className="max-w-md mx-auto bg-[#1a1f2e] border border-slate-700 rounded-2xl p-6 mb-10">
-            <div className="text-sm text-slate-500 mb-4 text-center">Example: How the Three Work Together</div>
+            <div className="text-sm text-slate-400 mb-4 text-center">Example: How the Three Work Together</div>
             <div className="space-y-3">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-slate-300">Roof Estimate</span>
@@ -477,7 +481,7 @@ export default function FinancingContent() {
                 <span className="text-slate-100 font-bold">You finance</span>
                 <div className="text-right">
                   <span className="text-[#c9a25c] font-bold text-lg">$4,000</span>
-                  <span className="block text-xs text-slate-500">~$89/mo for 60 months</span>
+                  <span className="block text-xs text-slate-400">~$89/mo for 60 months</span>
                 </div>
               </div>
             </div>
@@ -506,7 +510,7 @@ export default function FinancingContent() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-100 mb-2">Qualify for Grants?</h3>
                 <p className="text-slate-400 text-sm mb-4">
-                  Answer 5 questions, get matched with 60+ programs. Grants reduce your principal — money you don&apos;t borrow, don&apos;t pay interest on.
+                  Answer 5 questions, get matched with 60+ programs. Grants reduce your principal, money you don&apos;t borrow, don&apos;t pay interest on.
                 </p>
                 <span className="text-[#c9a25c] text-sm font-medium inline-flex items-center gap-1">
                   Find Programs <ArrowRight className="h-4 w-4" />
@@ -589,8 +593,8 @@ export default function FinancingContent() {
                 </Button>
               </Link>
             </div>
-            <p className="mt-4 text-sm text-slate-500">
-              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a> — we&apos;re happy to help.
+            <p className="mt-4 text-sm text-slate-400">
+              Or call <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">{phoneDisplay}</a>. We&apos;re happy to help.
             </p>
           </ScrollAnimate>
         </div>
@@ -599,7 +603,7 @@ export default function FinancingContent() {
       {/* Disclaimer */}
       <section className="py-8 bg-[#0c0f14] border-t border-slate-800">
         <div className="mx-auto max-w-4xl px-4">
-          <p className="text-xs text-slate-500 text-center">
+          <p className="text-xs text-slate-400 text-center">
             * This calculator provides estimates only. Actual rates and terms depend on credit approval and lender requirements.
             Always compare offers from multiple lenders before making a decision.
           </p>

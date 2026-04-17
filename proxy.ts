@@ -33,7 +33,11 @@ function isAdminRoute(pathname: string): boolean {
          pathname.startsWith('/features') ||
          pathname.startsWith('/communications') ||
          pathname.startsWith('/invoices') ||
-         pathname.startsWith('/messages')
+         pathname.startsWith('/messages') ||
+         pathname.startsWith('/reports') ||
+         pathname.startsWith('/jobs') ||
+         pathname.startsWith('/calendar') ||
+         pathname.startsWith('/referral')
 }
 
 // Check if path is a customer portal route
@@ -158,10 +162,9 @@ export async function proxy(request: NextRequest) {
     }
 
     // Verify user is an admin (not just authenticated)
+    // Only check app_metadata (server-side controlled) — user_metadata is client-modifiable
     const isAdmin =
-      user.user_metadata?.role === 'admin' ||
       user.app_metadata?.role === 'admin' ||
-      user.user_metadata?.is_admin === true ||
       user.app_metadata?.is_admin === true
 
     if (!isAdmin) {
@@ -222,6 +225,10 @@ export const config = {
     '/communications/:path*',
     '/invoices/:path*',
     '/messages/:path*',
+    '/reports/:path*',
+    '/jobs/:path*',
+    '/calendar/:path*',
+    '/referral/:path*',
     '/login',
     // Customer portal routes
     '/portal/:path*',
