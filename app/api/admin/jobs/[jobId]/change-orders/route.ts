@@ -7,14 +7,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
+import { enforceMutationRateLimit } from '@/lib/api/auth'
+import { ActivityLogger } from '@/lib/team/activity-logger'
 import { notifyAdmins } from '@/lib/notifications'
+import { moneyAllowNegativeSchema } from '@/lib/validation/schemas'
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
 const createChangeOrderSchema = z.object({
   description: z.string().min(1).max(2000),
   reason: z.string().max(2000).optional(),
-  cost_delta: z.number(),
+  cost_delta: moneyAllowNegativeSchema,
 })
 
 export async function GET(
@@ -72,6 +75,9 @@ export async function POST(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
+    const rateLimitError = await enforceMutationRateLimit(user.id, request)
+    if (rateLimitError) return rateLimitError
+
     const { jobId } = await params
     const body = await request.json()
     const parsed = createChangeOrderSchema.safeParse(body)
@@ -114,6 +120,11 @@ export async function POST(
     if (insertError) {
       logger.error('Error creating change order', { error: String(insertError) })
       return NextResponse.json({ error: 'Failed to create change order' }, { status: 500 })
+    }
+
+    const co = changeOrder as { id: string } | null
+    if (co?.id) {
+      ActivityLogger.changeOrderCreated(user, co.id, jobId, parsed.data.cost_delta)
     }
 
     // Fetch job number for notification

@@ -23,6 +23,8 @@ export type ActivityCategory =
   | 'job'
   | 'calendar'
   | 'notification'
+  | 'invoice'
+  | 'payment'
 
 // Permission structure
 export interface Permissions {

@@ -5,17 +5,19 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { requireAdmin } from '@/lib/api/auth'
+import { requireAdminMutation } from '@/lib/api/auth'
+import { ActivityLogger } from '@/lib/team/activity-logger'
 import { notifyAdmins } from '@/lib/notifications'
 import { sendPaymentReceivedEmail } from '@/lib/email/notifications'
 import { sendPaymentReceivedSms } from '@/lib/sms/twilio'
 import { triggerWorkflows } from '@/lib/communication/workflow-engine'
 import { logCommunication } from '@/lib/communication/log-direct-send'
+import { moneySchema } from '@/lib/validation/schemas'
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
 const recordPaymentSchema = z.object({
-  amount: z.number().positive(),
+  amount: moneySchema.refine((n) => n > 0, { message: 'Amount must be greater than 0' }),
   payment_method: z.enum(['check', 'cash', 'bank_transfer']),
   reference_number: z.string().max(100).optional(),
   notes: z.string().max(2000).optional(),
@@ -26,7 +28,7 @@ export async function POST(
   { params }: { params: Promise<{ invoiceId: string }> }
 ) {
   try {
-    const { user, error: authError } = await requireAdmin()
+    const { user, error: authError } = await requireAdminMutation(request)
     if (authError) return authError
 
     const { invoiceId } = await params
@@ -88,6 +90,11 @@ export async function POST(
     if (insertError) {
       logger.error('Error recording payment', { error: String(insertError) })
       return NextResponse.json({ error: 'Failed to record payment' }, { status: 500 })
+    }
+
+    const paymentRow = payment as { id: string } | null
+    if (paymentRow?.id && user) {
+      ActivityLogger.paymentRecorded(user, paymentRow.id, invoiceId, parsed.data.amount, parsed.data.payment_method)
     }
 
     // Fetch invoice details for notifications

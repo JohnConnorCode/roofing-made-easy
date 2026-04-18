@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { requireAdmin } from '@/lib/api/auth'
+import { requireAdmin, requireAdminMutation } from '@/lib/api/auth'
+import { ActivityLogger } from '@/lib/team/activity-logger'
+import { percentSchema, taxRateSchema } from '@/lib/validation/schemas'
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
@@ -9,15 +11,15 @@ const updateInvoiceSchema = z.object({
   status: z.enum(['draft', 'sent', 'viewed', 'paid', 'partially_paid', 'overdue', 'cancelled', 'refunded']).optional(),
   paymentType: z.enum(['deposit', 'progress', 'final', 'adjustment']).optional(),
   dueDate: z.string().nullable().optional(),
-  taxRate: z.number().min(0).max(1).optional(),
-  discountPercent: z.number().min(0).max(100).optional(),
-  notes: z.string().nullable().optional(),
-  internalNotes: z.string().nullable().optional(),
-  terms: z.string().nullable().optional(),
-  billToName: z.string().nullable().optional(),
-  billToEmail: z.string().email().nullable().optional(),
-  billToPhone: z.string().nullable().optional(),
-  billToAddress: z.string().nullable().optional(),
+  taxRate: taxRateSchema.optional(),
+  discountPercent: percentSchema.optional(),
+  notes: z.string().max(5000).nullable().optional(),
+  internalNotes: z.string().max(5000).nullable().optional(),
+  terms: z.string().max(5000).nullable().optional(),
+  billToName: z.string().max(200).nullable().optional(),
+  billToEmail: z.string().email().max(200).nullable().optional(),
+  billToPhone: z.string().max(50).nullable().optional(),
+  billToAddress: z.string().max(500).nullable().optional(),
 })
 
 interface RouteParams {
@@ -71,8 +73,9 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 // PATCH - Update an invoice
 export async function PATCH(request: NextRequest, { params }: RouteParams) {
   try {
-    const { error: authError } = await requireAdmin()
+    const { user, error: authError } = await requireAdminMutation(request)
     if (authError) return authError
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { invoiceId } = await params
     const body = await request.json()
@@ -90,7 +93,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     // Check invoice exists and get current status
     const { data: existingInvoice, error: fetchError } = await supabase
       .from('invoices')
-      .select('id, status')
+      .select('id, status, invoice_number, total')
       .eq('id', invoiceId)
       .single()
 
@@ -142,6 +145,14 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       )
     }
 
+    const existing = existingInvoice as { invoice_number: string; status: string; total: number }
+    const newStatus = (parsed.data.status ?? existing.status) as string
+    if (newStatus === 'cancelled' && existing.status !== 'cancelled') {
+      ActivityLogger.invoiceVoided(user, invoiceId, existing.invoice_number, existing.total)
+    } else {
+      ActivityLogger.invoiceUpdated(user, invoiceId, existing.invoice_number, { status: existing.status }, parsed.data)
+    }
+
     return NextResponse.json({ invoice })
   } catch (error) {
     logger.error('Invoice update error', { error: String(error) })
@@ -155,8 +166,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 // DELETE - Delete an invoice (only drafts can be deleted)
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
-    const { error: authError } = await requireAdmin()
+    const { user, error: authError } = await requireAdminMutation(request)
     if (authError) return authError
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { invoiceId } = await params
     const supabase = await createClient()
@@ -164,7 +176,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     // Check invoice exists and is a draft
     const { data: invoice, error: fetchError } = await supabase
       .from('invoices')
-      .select('id, status')
+      .select('id, status, invoice_number, total')
       .eq('id', invoiceId)
       .single()
 
@@ -175,7 +187,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const invoiceData = invoice as { status: string }
+    const invoiceData = invoice as { status: string; invoice_number: string; total: number }
     if (invoiceData.status !== 'draft') {
       return NextResponse.json(
         { error: 'Only draft invoices can be deleted' },
@@ -195,6 +207,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
         { status: 500 }
       )
     }
+
+    ActivityLogger.invoiceDeleted(user, invoiceId, invoiceData.invoice_number, invoiceData.total)
 
     return NextResponse.json({ success: true })
   } catch (error) {

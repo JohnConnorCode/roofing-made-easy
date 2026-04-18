@@ -46,30 +46,69 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: event.error }, { status: 400 })
     }
 
-    // Handle the event
     const supabase = await createClient()
 
-    switch (event.type) {
-      case 'payment_intent.succeeded': {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent
-        await handlePaymentSuccess(supabase, paymentIntent)
-        break
+    // Idempotency: if we already processed this event.id successfully, skip.
+    // (Stripe retries every failed delivery; the inner handlers also guard
+    // against double-apply, but this short-circuits the duplicate work.)
+    const { data: existingEvent } = await supabase
+      .from('stripe_webhook_events')
+      .select('event_id, result')
+      .eq('event_id', event.id)
+      .maybeSingle()
+
+    if (existingEvent && (existingEvent as { result: string }).result === 'success') {
+      logger.info('[Stripe Webhook] Duplicate event — already processed', {
+        eventId: event.id,
+        eventType: event.type,
+      })
+      return NextResponse.json({ received: true, duplicate: true })
+    }
+
+    try {
+      switch (event.type) {
+        case 'payment_intent.succeeded': {
+          const paymentIntent = event.data.object as Stripe.PaymentIntent
+          await handlePaymentSuccess(supabase, paymentIntent)
+          break
+        }
+
+        case 'payment_intent.payment_failed': {
+          const paymentIntent = event.data.object as Stripe.PaymentIntent
+          await handlePaymentFailure(supabase, paymentIntent)
+          break
+        }
+
+        case 'charge.refunded': {
+          const charge = event.data.object as Stripe.Charge
+          await handleRefund(supabase, charge)
+          break
+        }
+
+        default:
+          // Unhandled event type - no action needed
       }
 
-      case 'payment_intent.payment_failed': {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent
-        await handlePaymentFailure(supabase, paymentIntent)
-        break
-      }
-
-      case 'charge.refunded': {
-        const charge = event.data.object as Stripe.Charge
-        await handleRefund(supabase, charge)
-        break
-      }
-
-      default:
-        // Unhandled event type - no action needed
+      // Record success. upsert on conflict so a race between two workers
+      // both finishing the same event doesn't throw.
+      await supabase
+        .from('stripe_webhook_events')
+        .upsert({
+          event_id: event.id,
+          event_type: event.type,
+          result: 'success',
+        } as never, { onConflict: 'event_id' })
+    } catch (handlerError) {
+      // Record the error so it's visible in the admin. Stripe will retry.
+      await supabase
+        .from('stripe_webhook_events')
+        .upsert({
+          event_id: event.id,
+          event_type: event.type,
+          result: 'error',
+          error_message: handlerError instanceof Error ? handlerError.message : 'Unknown error',
+        } as never, { onConflict: 'event_id' })
+      throw handlerError
     }
 
     return NextResponse.json({ received: true })
@@ -275,8 +314,23 @@ async function handleRefund(
 
   if (!payment) return
 
-  // Create refund record
+  // Idempotency: skip if we've already created a refund row for this charge.
+  // Multiple refund events can land on the same charge (partial refunds) so
+  // we also key on the refunded amount.
   const refundAmount = charge.amount_refunded / 100
+  const { data: existingRefund } = await supabase
+    .from('payments')
+    .select('id')
+    .eq('stripe_charge_id', charge.id)
+    .eq('type', 'refund')
+    .eq('amount', -refundAmount)
+    .maybeSingle()
+
+  if (existingRefund) {
+    return
+  }
+
+  // Create refund record
   await supabase.from('payments').insert({
     lead_id: (payment as { lead_id: string }).lead_id,
     estimate_id: (payment as { estimate_id: string | null }).estimate_id,

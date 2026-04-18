@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { requireAdmin, parsePagination } from '@/lib/api/auth'
+import { requireAdmin, requireAdminMutation, parsePagination } from '@/lib/api/auth'
+import { ActivityLogger } from '@/lib/team/activity-logger'
+import { moneySchema, quantitySchema, percentSchema, taxRateSchema, computeLineItemTotal } from '@/lib/validation/schemas'
 import { z } from 'zod'
 import { checkRateLimit, getClientIP, rateLimitResponse, createRateLimitHeaders } from '@/lib/rate-limit'
 import { notifyAdmins } from '@/lib/notifications'
@@ -14,16 +16,16 @@ const createInvoiceSchema = z.object({
   jobId: z.string().uuid().optional(),
   paymentType: z.enum(['deposit', 'progress', 'final', 'adjustment']).default('deposit'),
   dueDate: z.string().optional(),
-  taxRate: z.number().min(0).max(1).default(0),
-  discountPercent: z.number().min(0).max(100).default(0),
-  notes: z.string().optional(),
-  terms: z.string().optional(),
+  taxRate: taxRateSchema.default(0),
+  discountPercent: percentSchema.default(0),
+  notes: z.string().max(5000).optional(),
+  terms: z.string().max(5000).optional(),
   lineItems: z.array(z.object({
-    description: z.string().min(1),
-    quantity: z.number().positive().default(1),
-    unitPrice: z.number().min(0),
+    description: z.string().min(1).max(500),
+    quantity: quantitySchema.default(1),
+    unitPrice: moneySchema,
     isTaxable: z.boolean().default(true),
-  })).min(1),
+  })).min(1).max(200),
 })
 
 // GET - List invoices (admin only)
@@ -102,14 +104,7 @@ export async function GET(request: NextRequest) {
 // POST - Create a new invoice (admin only)
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting
-    const clientIP = getClientIP(request)
-    const rateLimitResult = checkRateLimit(clientIP, 'api')
-    if (!rateLimitResult.success) {
-      return rateLimitResponse(rateLimitResult)
-    }
-
-    const { user, error: authError } = await requireAdmin()
+    const { user, error: authError } = await requireAdminMutation(request)
     if (authError) return authError
 
     const body = await request.json()
@@ -145,24 +140,28 @@ export async function POST(request: NextRequest) {
     const contact = (lead as { contacts: Array<{ first_name?: string; last_name?: string; email?: string; phone?: string }> }).contacts?.[0]
     const property = (lead as { properties: Array<{ street_address?: string; city?: string; state?: string; zip_code?: string }> }).properties?.[0]
 
-    // Calculate line item totals
+    // Server-side line item totals — never trust a client-sent `total`.
+    // All sums round to cents so downstream triggers and displays agree.
+    const round = (n: number) => Math.round(n * 100) / 100
+
     const lineItems = parsed.data.lineItems.map((item, index) => ({
       description: item.description,
       quantity: item.quantity,
       unit_price: item.unitPrice,
-      total: item.quantity * item.unitPrice,
+      total: computeLineItemTotal(item.quantity, item.unitPrice),
       is_taxable: item.isTaxable,
       sort_order: index,
     }))
 
-    const subtotal = lineItems.reduce((sum, item) => sum + item.total, 0)
-    const taxableAmount = lineItems
-      .filter(item => item.is_taxable)
-      .reduce((sum, item) => sum + item.total, 0)
+    const subtotal = round(lineItems.reduce((sum, item) => sum + item.total, 0))
+    const taxableAmount = round(
+      lineItems.filter(item => item.is_taxable).reduce((sum, item) => sum + item.total, 0)
+    )
 
-    const discountAmount = subtotal * (parsed.data.discountPercent / 100)
-    const taxAmount = (taxableAmount - (taxableAmount * parsed.data.discountPercent / 100)) * parsed.data.taxRate
-    const total = subtotal - discountAmount + taxAmount
+    const discountAmount = round(subtotal * (parsed.data.discountPercent / 100))
+    const taxableAfterDiscount = round(taxableAmount - (taxableAmount * parsed.data.discountPercent / 100))
+    const taxAmount = round(taxableAfterDiscount * parsed.data.taxRate)
+    const total = round(subtotal - discountAmount + taxAmount)
 
     // Create the invoice (invoice_number auto-generated via trigger)
     const { data: invoice, error: invoiceError } = await supabase
@@ -243,9 +242,13 @@ export async function POST(request: NextRequest) {
       '/invoices'
     ).catch(err => logger.error('Failed to notify admins of invoice creation', { error: String(err) }))
 
+    if (user) {
+      ActivityLogger.invoiceCreated(user, invoiceId, inv?.invoice_number || 'Draft', total, parsed.data.leadId)
+    }
+
     return NextResponse.json(
       { invoice: completeInvoice },
-      { status: 201, headers: createRateLimitHeaders(rateLimitResult) }
+      { status: 201 }
     )
   } catch (error) {
     logger.error('Invoice creation error', { error: String(error) })

@@ -7,7 +7,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
+import { enforceMutationRateLimit } from '@/lib/api/auth'
+import { ActivityLogger } from '@/lib/team/activity-logger'
 import { notifyAdmins } from '@/lib/notifications'
+import { moneyAllowNegativeSchema } from '@/lib/validation/schemas'
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
@@ -18,7 +21,7 @@ const statusUpdateSchema = z.object({
 const editSchema = z.object({
   description: z.string().min(1).max(2000).optional(),
   reason: z.string().max(2000).optional(),
-  cost_delta: z.number().optional(),
+  cost_delta: moneyAllowNegativeSchema.optional(),
 })
 
 const updateSchema = z.union([statusUpdateSchema, editSchema])
@@ -32,6 +35,9 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     if (!user || !hasPermission(profile, 'jobs', 'edit', user)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
+
+    const rateLimitError = await enforceMutationRateLimit(user.id, request)
+    if (rateLimitError) return rateLimitError
 
     const { jobId, changeOrderId } = await params
     const body = await request.json()
@@ -75,6 +81,13 @@ export async function PATCH(request: NextRequest, { params }: Params) {
           { error: 'Change order not found or already processed' },
           { status: 409 }
         )
+      }
+
+      const updatedCo = updated as { cost_delta: number }
+      if (newStatus === 'approved') {
+        ActivityLogger.changeOrderApproved(user, changeOrderId, jobId, updatedCo.cost_delta)
+      } else {
+        ActivityLogger.changeOrderRejected(user, changeOrderId, jobId, updatedCo.cost_delta)
       }
 
       // Fetch job number for notification
@@ -170,13 +183,16 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   }
 }
 
-export async function DELETE(_request: NextRequest, { params }: Params) {
+export async function DELETE(request: NextRequest, { params }: Params) {
   try {
     const { user, profile, error: authError } = await getUserWithProfile()
     if (authError) return authError
     if (!user || !hasPermission(profile, 'jobs', 'edit', user)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
+
+    const rateLimitError = await enforceMutationRateLimit(user.id, request)
+    if (rateLimitError) return rateLimitError
 
     const { jobId, changeOrderId } = await params
     const supabase = await createClient()

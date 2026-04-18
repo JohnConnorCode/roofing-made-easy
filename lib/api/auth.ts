@@ -6,6 +6,12 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import type { User } from '@supabase/supabase-js'
+import {
+  checkRateLimitAsync,
+  getClientIP,
+  rateLimitResponse,
+  type RateLimitType,
+} from '@/lib/rate-limit'
 
 export interface AuthResult {
   user: User | null
@@ -67,6 +73,54 @@ export async function requireAdmin(): Promise<AuthResult> {
   }
 
   return { user, error: null }
+}
+
+/**
+ * Require admin role AND enforce a per-user rate limit on the current request.
+ * Use in POST/PATCH/PUT/DELETE admin routes to throttle mutations. Keyed on
+ * user ID so one admin hammering an endpoint doesn't starve others.
+ *
+ * Returns 401 (unauth), 403 (not admin), or 429 (rate limited) inside
+ * `error` — same shape as `requireAdmin`.
+ */
+export async function requireAdminMutation(
+  request: Request,
+  limitType: RateLimitType = 'adminMutation'
+): Promise<AuthResult> {
+  const auth = await requireAdmin()
+  if (auth.error || !auth.user) return auth
+
+  // Key by user ID first (so it travels across IPs), fall back to IP.
+  const key = `admin:${auth.user.id}:${getClientIP(request)}`
+  const result = await checkRateLimitAsync(key, limitType)
+
+  if (!result.success) {
+    return {
+      user: null,
+      error: rateLimitResponse(result) as unknown as NextResponse,
+    }
+  }
+
+  return auth
+}
+
+/**
+ * Enforce a per-user mutation rate limit on a request after auth has already
+ * run. Returns a 429 NextResponse if exceeded, or null to continue. Pair with
+ * `getUserWithProfile` / custom auth flows where `requireAdminMutation` isn't
+ * a drop-in.
+ */
+export async function enforceMutationRateLimit(
+  userId: string,
+  request: Request,
+  limitType: RateLimitType = 'adminMutation'
+): Promise<NextResponse | null> {
+  const key = `admin:${userId}:${getClientIP(request)}`
+  const result = await checkRateLimitAsync(key, limitType)
+  if (!result.success) {
+    return rateLimitResponse(result) as unknown as NextResponse
+  }
+  return null
 }
 
 export interface CustomerAuthResult {

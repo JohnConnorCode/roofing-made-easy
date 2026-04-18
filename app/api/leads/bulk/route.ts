@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { requireAdmin } from '@/lib/api/auth'
+import { requireAdmin, requireAdminMutation } from '@/lib/api/auth'
 import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 import { z } from 'zod'
 
@@ -21,16 +21,9 @@ const bulkUpdateSchema = z.object({
 
 export async function PUT(request: NextRequest) {
   try {
-    // Require admin authentication
-    const { error: authError } = await requireAdmin()
+    // Bulk op — stricter rate limit (5/min per admin)
+    const { error: authError } = await requireAdminMutation(request, 'adminBulk')
     if (authError) return authError
-
-    // Rate limiting
-    const clientIP = getClientIP(request)
-    const rateLimitResult = checkRateLimit(clientIP, 'general')
-    if (!rateLimitResult.success) {
-      return rateLimitResponse(rateLimitResult)
-    }
 
     const body = await request.json()
     const parsed = bulkUpdateSchema.safeParse(body)

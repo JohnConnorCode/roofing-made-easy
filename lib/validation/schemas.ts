@@ -215,3 +215,70 @@ export type CreateLeadInput = z.infer<typeof createLeadSchema>
 export type UpdateLeadInput = z.infer<typeof updateLeadSchema>
 export type UploadInput = z.infer<typeof uploadSchema>
 export type AiPhotoAnalysisResult = z.infer<typeof aiPhotoAnalysisSchema>
+
+// ============================================================================
+// Financial schemas — bounded money + quantity, 2-decimal precision
+// ============================================================================
+
+// Max single-line or total amount: $10M. Larger amounts are almost certainly
+// a typo or malicious input — real roofing jobs top out well below this.
+const MAX_MONEY = 10_000_000
+const MAX_QUANTITY = 100_000
+const MAX_PERCENT = 100
+
+/**
+ * A monetary amount in dollars. Positive or zero, max 2 decimal places,
+ * bounded to catch typos and abuse. Use `moneyAllowNegative` for refunds or
+ * adjustments.
+ */
+export const moneySchema = z.number()
+  .min(0, 'Amount cannot be negative')
+  .max(MAX_MONEY, `Amount exceeds ${MAX_MONEY.toLocaleString()} limit`)
+  .refine(
+    (n) => Number.isFinite(n) && Math.round(n * 100) / 100 === n,
+    { message: 'Amount must have at most 2 decimal places' }
+  )
+
+/** Monetary amount that can be negative (refunds, credits, adjustments). */
+export const moneyAllowNegativeSchema = z.number()
+  .min(-MAX_MONEY, `Amount below -${MAX_MONEY.toLocaleString()} limit`)
+  .max(MAX_MONEY, `Amount exceeds ${MAX_MONEY.toLocaleString()} limit`)
+  .refine(
+    (n) => Number.isFinite(n) && Math.round(n * 100) / 100 === n,
+    { message: 'Amount must have at most 2 decimal places' }
+  )
+
+/** Quantity for a line item. Positive, reasonable upper bound. */
+export const quantitySchema = z.number()
+  .positive('Quantity must be positive')
+  .max(MAX_QUANTITY, `Quantity exceeds ${MAX_QUANTITY.toLocaleString()} limit`)
+  .refine(
+    (n) => Number.isFinite(n) && Math.round(n * 1000) / 1000 === n,
+    { message: 'Quantity must have at most 3 decimal places' }
+  )
+
+/** Percent 0–100 with up to 4 decimal places (tax rates sometimes need that). */
+export const percentSchema = z.number()
+  .min(0)
+  .max(MAX_PERCENT)
+  .refine(
+    (n) => Number.isFinite(n) && Math.round(n * 10000) / 10000 === n,
+    { message: 'Percent must have at most 4 decimal places' }
+  )
+
+/** Tax rate as a 0..1 fraction. */
+export const taxRateSchema = z.number()
+  .min(0)
+  .max(1)
+  .refine(
+    (n) => Number.isFinite(n) && Math.round(n * 10000) / 10000 === n,
+    { message: 'Tax rate must have at most 4 decimal places' }
+  )
+
+/**
+ * Compute a line item total server-side, rounded to cents. Use this instead
+ * of trusting a `total` field sent by the client.
+ */
+export function computeLineItemTotal(quantity: number, unitPrice: number): number {
+  return Math.round(quantity * unitPrice * 100) / 100
+}

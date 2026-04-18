@@ -331,6 +331,155 @@ export const ActivityLogger = {
       newValues: { value: newValue },
     }),
 
+  // Financial events — audit trail for money-touching mutations.
+  // Every one of these includes the delta (amount, old_value, new_value) so
+  // disputes 6 months later can be resolved without guessing.
+  invoiceCreated: (user: User, invoiceId: string, invoiceNumber: string, total: number, leadId?: string) =>
+    logActivity({
+      user,
+      action: 'invoice_created',
+      category: 'invoice',
+      entityType: 'invoice',
+      entityId: invoiceId,
+      entityName: invoiceNumber,
+      metadata: { total, lead_id: leadId },
+    }),
+
+  invoiceUpdated: (
+    user: User,
+    invoiceId: string,
+    invoiceNumber: string,
+    oldValues: Record<string, unknown>,
+    newValues: Record<string, unknown>
+  ) =>
+    logActivity({
+      user,
+      action: 'invoice_updated',
+      category: 'invoice',
+      entityType: 'invoice',
+      entityId: invoiceId,
+      entityName: invoiceNumber,
+      oldValues,
+      newValues,
+    }),
+
+  invoiceVoided: (user: User, invoiceId: string, invoiceNumber: string, amount: number, reason?: string) =>
+    logActivity({
+      user,
+      action: 'invoice_voided',
+      category: 'invoice',
+      entityType: 'invoice',
+      entityId: invoiceId,
+      entityName: invoiceNumber,
+      metadata: { amount, reason },
+    }),
+
+  invoiceDeleted: (user: User, invoiceId: string, invoiceNumber: string, amount: number) =>
+    logActivity({
+      user,
+      action: 'invoice_deleted',
+      category: 'invoice',
+      entityType: 'invoice',
+      entityId: invoiceId,
+      entityName: invoiceNumber,
+      metadata: { amount },
+    }),
+
+  invoiceSent: (user: User, invoiceId: string, invoiceNumber: string, recipientEmail: string) =>
+    logActivity({
+      user,
+      action: 'invoice_sent',
+      category: 'invoice',
+      entityType: 'invoice',
+      entityId: invoiceId,
+      entityName: invoiceNumber,
+      metadata: { recipient_email: recipientEmail },
+    }),
+
+  paymentRecorded: (
+    user: User,
+    paymentId: string,
+    invoiceId: string,
+    amount: number,
+    method: string
+  ) =>
+    logActivity({
+      user,
+      action: 'payment_recorded',
+      category: 'payment',
+      entityType: 'payment',
+      entityId: paymentId,
+      metadata: { invoice_id: invoiceId, amount, method },
+    }),
+
+  paymentDeleted: (user: User, paymentId: string, invoiceId: string, amount: number) =>
+    logActivity({
+      user,
+      action: 'payment_deleted',
+      category: 'payment',
+      entityType: 'payment',
+      entityId: paymentId,
+      metadata: { invoice_id: invoiceId, amount },
+    }),
+
+  paymentRefunded: (user: User, paymentId: string, amount: number, reason?: string) =>
+    logActivity({
+      user,
+      action: 'payment_refunded',
+      category: 'payment',
+      entityType: 'payment',
+      entityId: paymentId,
+      metadata: { amount, reason },
+    }),
+
+  changeOrderCreated: (user: User, changeOrderId: string, jobId: string, costDelta: number) =>
+    logActivity({
+      user,
+      action: 'change_order_created',
+      category: 'job',
+      entityType: 'change_order',
+      entityId: changeOrderId,
+      metadata: { job_id: jobId, cost_delta: costDelta },
+    }),
+
+  changeOrderApproved: (user: User, changeOrderId: string, jobId: string, costDelta: number) =>
+    logActivity({
+      user,
+      action: 'change_order_approved',
+      category: 'job',
+      entityType: 'change_order',
+      entityId: changeOrderId,
+      metadata: { job_id: jobId, cost_delta: costDelta },
+    }),
+
+  changeOrderRejected: (user: User, changeOrderId: string, jobId: string, costDelta: number, reason?: string) =>
+    logActivity({
+      user,
+      action: 'change_order_rejected',
+      category: 'job',
+      entityType: 'change_order',
+      entityId: changeOrderId,
+      metadata: { job_id: jobId, cost_delta: costDelta, reason },
+    }),
+
+  estimatePriceOverride: (
+    user: User,
+    estimateId: string,
+    oldTotal: number,
+    newTotal: number,
+    reason?: string
+  ) =>
+    logActivity({
+      user,
+      action: 'estimate_price_override',
+      category: 'estimate',
+      entityType: 'estimate',
+      entityId: estimateId,
+      oldValues: { total: oldTotal },
+      newValues: { total: newTotal },
+      metadata: { reason },
+    }),
+
   // Communication events
   emailSent: (user: User, recipientEmail: string, subject: string, leadId?: string) =>
     logActivity({

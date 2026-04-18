@@ -48,6 +48,9 @@ export const RATE_LIMITS = {
   ai: { windowMs: 60 * 1000, maxRequests: 10 }, // 10 AI requests per minute (cost protection)
   aiVision: { windowMs: 60 * 1000, maxRequests: 5 }, // 5 vision requests per minute (higher cost)
   analytics: { windowMs: 60 * 1000, maxRequests: 30 }, // 30 analytics batches per minute
+  adminMutation: { windowMs: 60 * 1000, maxRequests: 60 }, // 60 writes/min per admin — catches runaway scripts and accidental loops without throttling normal work
+  adminBulk: { windowMs: 60 * 1000, maxRequests: 5 }, // 5 bulk ops/min per admin — bulk ops touch 50-100 records each
+  webhook: { windowMs: 60 * 1000, maxRequests: 300 }, // 300/min global — Stripe/Twilio retries can burst
 } as const
 
 export type RateLimitType = keyof typeof RATE_LIMITS
