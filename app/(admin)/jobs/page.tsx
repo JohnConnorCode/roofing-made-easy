@@ -37,6 +37,7 @@ const STATUS_OPTIONS = [
 ]
 
 const KANBAN_STATUSES: JobStatus[] = [
+  'pending_deposit',
   'pending_start',
   'materials_ordered',
   'scheduled',
@@ -128,11 +129,11 @@ export default function JobsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400">Active Jobs</p>
-                <p className="text-2xl font-bold text-slate-50">{activeJobCount}</p>
+                <p className="text-sm text-slate-400">Waiting for Deposit</p>
+                <p className="text-2xl font-bold text-slate-50">{summary.pending_deposit || 0}</p>
               </div>
-              <div className="rounded-lg bg-indigo-100 p-2">
-                <Hammer className="h-5 w-5 text-indigo-600" />
+              <div className="rounded-lg bg-amber-500/20 p-2">
+                <DollarSign className="h-5 w-5 text-amber-300" />
               </div>
             </div>
           </CardContent>
@@ -141,7 +142,7 @@ export default function JobsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400">Pending Start</p>
+                <p className="text-sm text-slate-400">Ready to Schedule</p>
                 <p className="text-2xl font-bold text-slate-50">{summary.pending_start || 0}</p>
               </div>
               <div className="rounded-lg bg-amber-100 p-2">
@@ -154,11 +155,11 @@ export default function JobsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-400">Completed</p>
-                <p className="text-2xl font-bold text-slate-50">{summary.completed || 0}</p>
+                <p className="text-sm text-slate-400">Active Jobs</p>
+                <p className="text-2xl font-bold text-slate-50">{activeJobCount}</p>
               </div>
-              <div className="rounded-lg bg-green-100 p-2">
-                <Hammer className="h-5 w-5 text-green-600" />
+              <div className="rounded-lg bg-indigo-100 p-2">
+                <Hammer className="h-5 w-5 text-indigo-600" />
               </div>
             </div>
           </CardContent>

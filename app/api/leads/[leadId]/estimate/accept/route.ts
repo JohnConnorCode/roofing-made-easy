@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { requireLeadOwnership } from '@/lib/api/auth'
+import { autoCreateJobFromAcceptance } from '@/lib/jobs/auto-create'
 import { z } from 'zod'
 import { sendEmail } from '@/lib/email'
 import { escapeHtml } from '@/lib/communication/template-renderer'
@@ -132,6 +133,14 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
         .update({ status: 'won' } as never)
         .eq('id', leadId)
 
+      // Auto-create the downstream job in pending_deposit status. Deliberately
+      // awaited — if it fails, the admin notification explains why.
+      await autoCreateJobFromAcceptance(supabase, {
+        leadId,
+        estimateId: estimate.id,
+        contractAmount: estimate.price_likely,
+      })
+
       // Send notification to admin
       await sendAdminNotification(supabase, leadId, parsed.data.acceptedByName, estimate.price_likely)
 
@@ -200,8 +209,15 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       .update({ status: 'won' } as never)
       .eq('id', leadId)
 
-    // Send notification to admin
+    // Auto-create pending_deposit job from the detailed estimate.
     const quotePrice = estimate.adjusted_price_likely || estimate.price_likely
+    await autoCreateJobFromAcceptance(supabase, {
+      leadId,
+      estimateId: estimate.id,
+      contractAmount: quotePrice,
+    })
+
+    // Send notification to admin
     await sendAdminNotification(supabase, leadId, parsed.data.acceptedByName, quotePrice)
 
     return NextResponse.json({

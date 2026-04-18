@@ -48,8 +48,9 @@ export interface CustomerState {
   jobs: CustomerJob[]
 }
 
-// Matches job_status enum from migration 034
+// Matches job_status enum from migration 034 (extended in 056 with pending_deposit)
 export type JobStatus =
+  | 'pending_deposit'
   | 'pending_start'
   | 'materials_ordered'
   | 'scheduled'
@@ -72,6 +73,9 @@ export interface CustomerJob {
   actual_start: string | null
   actual_end: string | null
   contract_amount: number
+  deposit_required: boolean
+  deposit_amount: number | null
+  deposit_received_at: string | null
   property_address: string | null
   property_city: string | null
   property_state: string | null

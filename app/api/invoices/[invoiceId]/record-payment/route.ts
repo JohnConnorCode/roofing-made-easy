@@ -113,6 +113,21 @@ export async function POST(
     const amount = parsed.data.amount
     const formattedAmount = `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
 
+    // Deposit gate: manual payment on a deposit invoice also flips any
+    // pending_deposit job for this lead. Mirrors the Stripe webhook logic
+    // (payment-method-agnostic — check, cash, ACH all qualify).
+    if (details?.lead_id && details.payment_type === 'deposit') {
+      await supabase
+        .from('jobs')
+        .update({
+          status: 'pending_start',
+          deposit_received_at: new Date().toISOString(),
+        } as never)
+        .eq('lead_id', details.lead_id)
+        .eq('status', 'pending_deposit')
+        .eq('deposit_required', true)
+    }
+
     // Fire-and-forget notifications
     notifyAdmins(
       'invoice_paid',

@@ -11,6 +11,7 @@ import {
 } from '@/lib/jobs/types'
 
 const ALL_STATUSES: JobStatus[] = [
+  'pending_deposit',
   'pending_start',
   'materials_ordered',
   'scheduled',
@@ -69,6 +70,14 @@ describe('Job Status Transitions', () => {
     expect(JOB_STATUS_TRANSITIONS['materials_ordered']).toContain('scheduled')
     expect(JOB_STATUS_TRANSITIONS['scheduled']).toContain('in_progress')
     expect(JOB_STATUS_TRANSITIONS['in_progress']).toContain('completed')
+  })
+
+  it('should gate pending_deposit — only pending_start and closed allowed', () => {
+    expect(JOB_STATUS_TRANSITIONS['pending_deposit']).toContain('pending_start')
+    expect(JOB_STATUS_TRANSITIONS['pending_deposit']).toContain('closed')
+    expect(JOB_STATUS_TRANSITIONS['pending_deposit']).not.toContain('in_progress')
+    expect(JOB_STATUS_TRANSITIONS['pending_deposit']).not.toContain('scheduled')
+    expect(JOB_STATUS_TRANSITIONS['pending_deposit']).not.toContain('materials_ordered')
   })
 
   it('should allow inspection flow: in_progress -> inspection_pending -> completed', () => {

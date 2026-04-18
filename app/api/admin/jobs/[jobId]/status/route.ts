@@ -15,6 +15,7 @@ import { logger } from '@/lib/logger'
 
 const statusUpdateSchema = z.object({
   status: z.enum([
+    'pending_deposit',
     'pending_start', 'materials_ordered', 'scheduled', 'in_progress',
     'inspection_pending', 'punch_list', 'completed', 'warranty_active', 'closed',
   ]),
@@ -77,6 +78,13 @@ export async function PATCH(
 
     // Build update data with auto-populated dates
     const updateData: Record<string, unknown> = { status: newStatus }
+
+    // Manual lift of the deposit gate — used when the deposit came in outside
+    // the system (wire transfer, ACH, bank deposit). Still stamps
+    // deposit_received_at so the audit trail matches the webhook-driven case.
+    if (currentStatus === 'pending_deposit' && newStatus === 'pending_start') {
+      updateData.deposit_received_at = new Date().toISOString()
+    }
 
     if (newStatus === 'in_progress' && !(currentJob as { actual_start: string | null }).actual_start) {
       updateData.actual_start = new Date().toISOString().split('T')[0]

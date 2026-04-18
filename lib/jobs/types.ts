@@ -3,6 +3,7 @@
  */
 
 export type JobStatus =
+  | 'pending_deposit'
   | 'pending_start'
   | 'materials_ordered'
   | 'scheduled'
@@ -32,7 +33,8 @@ export type JobExpenseCategory =
   | 'other'
 
 export const JOB_STATUS_LABELS: Record<JobStatus, string> = {
-  pending_start: 'Pending Start',
+  pending_deposit: 'Waiting for Deposit',
+  pending_start: 'Ready to Schedule',
   materials_ordered: 'Materials Ordered',
   scheduled: 'Scheduled',
   in_progress: 'In Progress',
@@ -44,6 +46,7 @@ export const JOB_STATUS_LABELS: Record<JobStatus, string> = {
 }
 
 export const JOB_STATUS_COLORS: Record<JobStatus, string> = {
+  pending_deposit: 'bg-amber-100 text-amber-800',
   pending_start: 'bg-slate-100 text-slate-700',
   materials_ordered: 'bg-amber-100 text-amber-700',
   scheduled: 'bg-blue-100 text-blue-700',
@@ -57,6 +60,10 @@ export const JOB_STATUS_COLORS: Record<JobStatus, string> = {
 
 // Valid status transitions
 export const JOB_STATUS_TRANSITIONS: Record<JobStatus, JobStatus[]> = {
+  // Only the payments webhook auto-transitions pending_deposit → pending_start
+  // on deposit_received. Admins can manually override to pending_start if
+  // deposit is received outside the system (check/cash recorded via invoices).
+  pending_deposit: ['pending_start', 'closed'],
   pending_start: ['materials_ordered', 'scheduled', 'closed'],
   materials_ordered: ['scheduled', 'pending_start', 'closed'],
   scheduled: ['in_progress', 'pending_start', 'closed'],
@@ -86,6 +93,9 @@ export interface Job {
   total_paid: number
   material_cost: number
   labor_cost: number
+  deposit_required: boolean
+  deposit_amount: number | null
+  deposit_received_at: string | null
   property_address: string | null
   property_city: string | null
   property_state: string | null

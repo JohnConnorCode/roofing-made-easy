@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
 
-// Only expose customer-safe columns — never notes, internal_notes, costs, or team IDs
+// Only expose customer-safe columns — never notes, internal_notes, costs, or team IDs.
+// Deposit fields are customer-safe: they know the amount (it's on their invoice)
+// and seeing "waiting for deposit" is the whole point of the status.
 const JOB_SELECT = `
   id, job_number, lead_id, customer_id, status,
   scheduled_start, scheduled_end, actual_start, actual_end,
-  contract_amount, property_address, property_city, property_state, property_zip,
+  contract_amount, deposit_required, deposit_amount, deposit_received_at,
+  property_address, property_city, property_state, property_zip,
   warranty_start_date, warranty_end_date, warranty_type,
   created_at, updated_at
 `

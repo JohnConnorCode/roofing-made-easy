@@ -211,6 +211,40 @@ async function handlePaymentSuccess(
       .from('leads')
       .update({ status: 'won' } as never)
       .eq('id', lead_id)
+
+    // Deposit gate: if a job is waiting on the deposit for this lead, flip
+    // it to pending_start so admins can schedule. The query is scoped to
+    // pending_deposit + deposit_required = true (indexed, see migration 056)
+    // so it's cheap even on every payment success.
+    if (payment_type === 'deposit' || !payment_type) {
+      const { data: pendingJob } = await supabase
+        .from('jobs')
+        .select('id, deposit_amount')
+        .eq('lead_id', lead_id)
+        .eq('status', 'pending_deposit')
+        .eq('deposit_required', true)
+        .maybeSingle()
+
+      if (pendingJob) {
+        const jobRow = pendingJob as { id: string; deposit_amount: number | null }
+        await supabase
+          .from('jobs')
+          .update({
+            status: 'pending_start',
+            deposit_received_at: new Date().toISOString(),
+          } as never)
+          .eq('id', jobRow.id)
+          // Atomic guard: don't re-transition if another worker already did.
+          .eq('status', 'pending_deposit')
+
+        logger.info('[Payment Webhook] Deposit received — job moved to pending_start', {
+          leadId: lead_id,
+          jobId: jobRow.id,
+          amount: paymentIntent.amount / 100,
+          expectedDeposit: jobRow.deposit_amount,
+        })
+      }
+    }
   }
 
   // Fetch lead data for better email/SMS notifications

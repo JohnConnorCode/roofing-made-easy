@@ -2,12 +2,16 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ProgressTimeline, type TimelineStep } from './ProgressTimeline'
-import { Hammer, Calendar } from 'lucide-react'
+import { Hammer, Calendar, DollarSign } from 'lucide-react'
 import type { CustomerJob } from '@/stores/customerStore'
 
-// All customer-visible timeline steps (matches job_status enum minus 'closed')
+// All customer-visible timeline steps (matches job_status enum minus 'closed').
+// 'pending_deposit' is the first step for jobs that require a deposit — the
+// customer sees "Deposit" with an amount, and the gate lifts automatically
+// once the payment webhook records it.
 const JOB_TIMELINE_STEPS = [
-  { status: 'pending_start', label: 'Contract Signed' },
+  { status: 'pending_deposit', label: 'Deposit' },
+  { status: 'pending_start', label: 'Scheduling' },
   { status: 'materials_ordered', label: 'Materials Ordered' },
   { status: 'scheduled', label: 'Scheduled' },
   { status: 'in_progress', label: 'In Progress' },
@@ -74,11 +78,22 @@ interface JobProgressProps {
   compact?: boolean
 }
 
+function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount)
+}
+
 export function JobProgress({ job, compact = false }: JobProgressProps) {
   const steps = buildTimelineSteps(job)
 
   // Recent status updates (last 3)
   const recentUpdates = job.status_history.slice(0, 3)
+
+  const awaitingDeposit = job.status === 'pending_deposit' && job.deposit_required
 
   if (compact) {
     return (
@@ -92,7 +107,17 @@ export function JobProgress({ job, compact = false }: JobProgressProps) {
             <span className="text-xs text-slate-400">{job.job_number}</span>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-3">
+          {awaitingDeposit && (
+            <div className="flex items-center gap-2 rounded border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-100">
+              <DollarSign className="h-3.5 w-3.5 text-amber-300" />
+              <span>
+                {job.deposit_amount
+                  ? `Waiting for ${formatCurrency(job.deposit_amount)} deposit`
+                  : 'Waiting for deposit'}
+              </span>
+            </div>
+          )}
           <ProgressTimeline steps={steps} orientation="horizontal" />
         </CardContent>
       </Card>
@@ -114,6 +139,27 @@ export function JobProgress({ job, compact = false }: JobProgressProps) {
         )}
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Deposit gate — shown first when job is waiting on payment so the
+            customer knows exactly what's blocking the schedule. */}
+        {awaitingDeposit && (
+          <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 rounded-full bg-amber-500/20 p-2">
+                <DollarSign className="h-4 w-4 text-amber-300" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium text-amber-100">Waiting for deposit</p>
+                <p className="mt-1 text-sm text-amber-100/80">
+                  {job.deposit_amount
+                    ? `Pay your ${formatCurrency(job.deposit_amount)} deposit to start scheduling.`
+                    : 'Pay your deposit to start scheduling.'}{' '}
+                  We&apos;ll reach out as soon as it&apos;s received.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         <ProgressTimeline steps={steps} orientation="horizontal" />
 
         {/* Scheduled dates */}
