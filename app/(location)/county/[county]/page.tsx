@@ -157,7 +157,7 @@ export default async function CountyPage({ params }: CountyPageProps) {
                 href="/"
                 className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all btn-press"
               >
-                Get My Free Estimate
+                Get my free estimate
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
@@ -250,7 +250,7 @@ export default async function CountyPage({ params }: CountyPageProps) {
               href="/"
               className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all btn-press"
             >
-              Get My Free Estimate
+              Get my free estimate
               <ArrowRight className="w-5 h-5" />
             </Link>
             <a

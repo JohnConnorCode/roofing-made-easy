@@ -83,7 +83,7 @@ function EstimateCard({
             >
               {formatCurrency(estimate.totals.priceLikely)}
             </span>
-            <span className="text-sm text-slate-500 ml-2">estimated</span>
+            <span className="text-sm text-slate-400 ml-2">estimated</span>
           </div>
         </div>
       </div>
@@ -147,7 +147,7 @@ function LineItemBreakdown({ estimate }: { estimate: DemoEstimate }) {
                     >
                       <div>
                         <span className="text-slate-200">{item.name}</span>
-                        <span className="text-xs text-slate-500 ml-2">
+                        <span className="text-xs text-slate-400 ml-2">
                           {item.quantity_with_waste.toFixed(1)} {item.unit_type}
                         </span>
                       </div>
@@ -181,6 +181,9 @@ export default function DemoPage() {
 
   return (
     <div className="min-h-screen bg-gradient-dark">
+      <head>
+        <meta name="robots" content="noindex" />
+      </head>
       <SiteHeader />
 
       {/* Hero */}
@@ -334,7 +337,7 @@ export default function DemoPage() {
       <section className="py-16 bg-gradient-to-br from-[#c9a25c]/10 to-[#0c0f14] border-t border-slate-800">
         <div className="mx-auto max-w-4xl px-4 text-center">
           <h2 className="text-3xl font-bold text-slate-100 mb-4">
-            Ready to Get Your Free Estimate?
+            Ready for Your Free Estimate?
           </h2>
           <p className="text-lg text-slate-400 mb-8">
             Answer a few questions about your roof and get an instant estimate in minutes.
@@ -347,7 +350,7 @@ export default function DemoPage() {
                 className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                 rightIcon={<ArrowRight className="h-5 w-5" />}
               >
-                Get Your Free Estimate
+                Get my free estimate
               </Button>
             </Link>
             <Link href="/contact">
@@ -371,7 +374,7 @@ export default function DemoPage() {
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="text-3xl font-bold text-[#c9a25c]">{stat.value}</p>
-                <p className="text-sm text-slate-500">{stat.label}</p>
+                <p className="text-sm text-slate-400">{stat.label}</p>
               </div>
             ))}
           </div>

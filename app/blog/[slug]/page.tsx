@@ -21,9 +21,12 @@ interface BlogPostPageProps {
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
+export const revalidate = 3600
+export const dynamicParams = true
+
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = getBlogPostBySlug(slug)
+  const post = await getBlogPostBySlug(slug)
 
   if (!post) {
     return { title: 'Article Not Found' }
@@ -44,7 +47,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title: post.title,
       description: post.excerpt,
       url: canonicalUrl,
-      siteName: 'Smart Roof Pricing',
+      siteName: 'Farrell Roofing',
       type: 'article',
       publishedTime: post.publishedAt,
       authors: [post.author],
@@ -67,15 +70,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   }
 }
 
-export async function generateStaticParams() {
-  const posts = getAllBlogPosts()
-  return posts.map((post) => ({ slug: post.slug }))
-}
-
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
-  const post = getBlogPostBySlug(slug)
-  const allPosts = getAllBlogPosts()
+  const post = await getBlogPostBySlug(slug)
+  const allPosts = await getAllBlogPosts()
   const relatedPosts = allPosts.filter((p) => p.slug !== slug).slice(0, 3)
 
   if (!post) {
@@ -161,18 +159,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               style={{ whiteSpace: 'pre-wrap' }}
             >
               {post.content.split('\n').map((paragraph, index) => {
-                if (paragraph.startsWith('# ')) {
-                  return (
-                    <h2 key={index} className="text-3xl font-bold text-slate-100 mt-8 mb-4">
-                      {paragraph.replace('# ', '')}
-                    </h2>
-                  )
-                }
                 if (paragraph.startsWith('## ')) {
                   return (
                     <h3 key={index} className="text-2xl font-bold text-slate-100 mt-8 mb-4">
                       {paragraph.replace('## ', '')}
                     </h3>
+                  )
+                }
+                if (paragraph.startsWith('# ')) {
+                  return (
+                    <h2 key={index} className="text-3xl font-bold text-slate-100 mt-8 mb-4">
+                      {paragraph.replace('# ', '')}
+                    </h2>
                   )
                 }
                 if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
@@ -182,18 +180,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     </p>
                   )
                 }
-                if (paragraph.startsWith('- ')) {
-                  return (
-                    <li key={index} className="text-slate-300 ml-4">
-                      {paragraph.replace('- ', '')}
-                    </li>
-                  )
-                }
                 if (paragraph.startsWith('- [ ]')) {
                   return (
                     <li key={index} className="text-slate-300 ml-4 list-none flex items-center gap-2">
                       <span className="w-4 h-4 border border-slate-500 rounded" />
                       {paragraph.replace('- [ ] ', '')}
+                    </li>
+                  )
+                }
+                if (paragraph.startsWith('- ')) {
+                  return (
+                    <li key={index} className="text-slate-300 ml-4">
+                      {paragraph.replace('- ', '')}
                     </li>
                   )
                 }
@@ -210,7 +208,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           {/* Tags */}
           <div className="mt-12 pt-8 border-t border-slate-700">
             <div className="flex items-center gap-2 flex-wrap">
-              <Tag className="h-4 w-4 text-slate-500" />
+              <Tag className="h-4 w-4 text-slate-400" />
               {post.tags.map((tag) => (
                 <span
                   key={tag}
@@ -235,7 +233,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                 rightIcon={<ArrowRight className="h-4 w-4" />}
               >
-                Get Free Estimate
+                Get my free estimate
               </Button>
             </Link>
           </div>

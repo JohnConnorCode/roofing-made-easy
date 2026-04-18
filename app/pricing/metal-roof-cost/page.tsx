@@ -87,7 +87,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url,
-      siteName: 'Smart Roof Pricing',
+      siteName: 'Farrell Roofing',
       locale: 'en_US',
       type: 'article',
       images: [
@@ -160,7 +160,7 @@ export default function MetalRoofCostPage() {
                 href="/"
                 className="inline-flex items-center gap-2 bg-[#c9a25c] hover:bg-[#b5893a] text-[#0c0f14] font-semibold px-8 py-4 rounded-lg transition-all"
               >
-                Get Your Free Estimate
+                Get my free estimate
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>

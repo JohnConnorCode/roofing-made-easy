@@ -54,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url,
-      siteName: 'Smart Roof Pricing',
+      siteName: 'Farrell Roofing',
       locale: 'en_US',
       type: 'article',
       images: [
@@ -418,19 +418,19 @@ export default function RoofReplacementCostPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <span className="text-slate-500">Cost/Sq Ft</span>
+                    <span className="text-slate-400">Cost/Sq Ft</span>
                     <p className="text-slate-300 font-medium">{row.costPerSqFt}</p>
                   </div>
                   <div>
-                    <span className="text-slate-500">2,000 Sq Ft</span>
+                    <span className="text-slate-400">2,000 Sq Ft</span>
                     <p className="text-slate-100 font-semibold">{row.totalCost}</p>
                   </div>
                   <div>
-                    <span className="text-slate-500">Lifespan</span>
+                    <span className="text-slate-400">Lifespan</span>
                     <p className="text-slate-300">{row.lifespan}</p>
                   </div>
                   <div>
-                    <span className="text-slate-500">Value</span>
+                    <span className="text-slate-400">Value</span>
                     <p className="text-slate-400">{row.value}</p>
                   </div>
                 </div>
@@ -438,7 +438,7 @@ export default function RoofReplacementCostPage() {
             ))}
           </div>
 
-          <p className="mt-6 text-sm text-slate-500 text-center">
+          <p className="mt-6 text-sm text-slate-400 text-center">
             * Prices include materials, labor, tear-off, and disposal. Based on 2026 Mississippi averages.
             Actual costs vary by location, contractor, and project specifics.
           </p>
@@ -481,7 +481,7 @@ export default function RoofReplacementCostPage() {
             ))}
           </div>
 
-          <p className="mt-6 text-sm text-slate-500 text-center">
+          <p className="mt-6 text-sm text-slate-400 text-center">
             Ranges include all material types from basic 3-tab asphalt to standing seam metal.
             Most Mississippi homeowners with architectural shingles fall in the lower-middle portion of each range.
           </p>
@@ -689,7 +689,7 @@ export default function RoofReplacementCostPage() {
       <CTASection
         title="Get Your Exact Replacement Cost in 60 Seconds"
         description="Answer a few quick questions about your roof and get a personalized cost estimate instantly. No phone calls, no pressure, no obligation."
-        primaryLabel="Get Free Estimate"
+        primaryLabel="Get my free estimate"
         primaryHref="/"
         showPhone={true}
       />

@@ -192,7 +192,7 @@ export default function PortfolioPage() {
                 className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                 rightIcon={<ArrowRight className="h-5 w-5" />}
               >
-                Get My Free Estimate
+                Get my free estimate
               </Button>
             </Link>
           </div>

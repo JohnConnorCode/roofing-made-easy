@@ -185,7 +185,7 @@ export default function PricingPage() {
                 href="/"
                 className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] font-semibold px-8 py-4 rounded-lg transition-all hover:shadow-lg hover:shadow-[#c9a25c]/20"
               >
-                Get My Free Estimate
+                Get my free estimate
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </div>

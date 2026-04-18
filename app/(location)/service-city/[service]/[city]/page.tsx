@@ -187,7 +187,7 @@ export default async function ServiceCityPage({ params }: ServiceCityPageProps) 
                 href="/"
                 className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all"
               >
-                Get My Free Estimate
+                Get my free estimate
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
@@ -334,7 +334,7 @@ export default async function ServiceCityPage({ params }: ServiceCityPageProps) 
               href="/"
               className="inline-flex items-center justify-center bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all"
             >
-              Get My Free Estimate
+              Get my free estimate
             </Link>
             <Link
               href={`/${city.slug}-roofing`}

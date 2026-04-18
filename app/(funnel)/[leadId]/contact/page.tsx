@@ -221,7 +221,7 @@ export default function ContactPage() {
             ? 'Saving info...'
             : loadingPhase === 'generating'
               ? 'Generating estimate...'
-              : 'Get My Estimate'
+              : 'Get my estimate'
       }
     >
       <div className="space-y-6" ref={formRef}>
@@ -232,67 +232,76 @@ export default function ContactPage() {
             </p>
           </div>
         )}
-        {/* Name fields - side by side */}
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div data-error={!!errors.firstName}>
-            <Input
-              label="First Name"
-              placeholder="John"
-              value={firstName}
-              onChange={(e) => {
-                setContact({ firstName: e.target.value })
-                clearError('firstName')
-              }}
-              error={errors.firstName}
-              autoComplete="given-name"
-            />
-          </div>
-          <div data-error={!!errors.lastName}>
-            <Input
-              label="Last Name"
-              placeholder="Smith"
-              value={lastName}
-              onChange={(e) => {
-                setContact({ lastName: e.target.value })
-                clearError('lastName')
-              }}
-              error={errors.lastName}
-              autoComplete="family-name"
-            />
-          </div>
-        </div>
+        {/* Contact Information */}
+        <fieldset className="space-y-6">
+          <legend className="sr-only">Contact information</legend>
 
-        {/* Email and Phone - side by side on larger screens */}
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div data-error={!!errors.email}>
-            <Input
-              label="Email"
-              type="email"
-              placeholder="john@example.com"
-              value={email}
-              onChange={(e) => {
-                setContact({ email: e.target.value })
-                clearError('email')
-              }}
-              error={errors.email}
-              autoComplete="email"
-            />
+          {/* Name fields - side by side */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div data-error={!!errors.firstName}>
+              <Input
+                label="First Name"
+                showRequired
+                placeholder="John"
+                value={firstName}
+                onChange={(e) => {
+                  setContact({ firstName: e.target.value })
+                  clearError('firstName')
+                }}
+                error={errors.firstName}
+                autoComplete="given-name"
+              />
+            </div>
+            <div data-error={!!errors.lastName}>
+              <Input
+                label="Last Name"
+                showRequired
+                placeholder="Smith"
+                value={lastName}
+                onChange={(e) => {
+                  setContact({ lastName: e.target.value })
+                  clearError('lastName')
+                }}
+                error={errors.lastName}
+                autoComplete="family-name"
+              />
+            </div>
           </div>
-          <div data-error={!!errors.phone}>
-            <Input
-              label="Phone"
-              type="tel"
-              placeholder="(555) 000-0000"
-              value={phone}
-              onChange={(e) => {
-                setContact({ phone: formatPhoneNumber(e.target.value) })
-                clearError('phone')
-              }}
-              error={errors.phone}
-              autoComplete="tel"
-            />
+
+          {/* Email and Phone - side by side on larger screens */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div data-error={!!errors.email}>
+              <Input
+                label="Email"
+                showRequired
+                type="email"
+                placeholder="john@example.com"
+                value={email}
+                onChange={(e) => {
+                  setContact({ email: e.target.value })
+                  clearError('email')
+                }}
+                error={errors.email}
+                autoComplete="email"
+              />
+            </div>
+            <div data-error={!!errors.phone}>
+              <Input
+                label="Phone"
+                showRequired
+                type="tel"
+                placeholder="(555) 000-0000"
+                value={phone}
+                onChange={(e) => {
+                  setContact({ phone: formatPhoneNumber(e.target.value) })
+                  clearError('phone')
+                }}
+                error={errors.phone}
+                autoComplete="tel"
+              />
+            </div>
           </div>
-        </div>
+        </fieldset>
 
         {/* Terms consent - required, prominent */}
         <div
@@ -303,11 +312,11 @@ export default function ContactPage() {
             label={
               <span className="text-slate-300">
                 I agree to the{' '}
-                <a href="/terms" target="_blank" className="text-[#c9a25c] hover:underline">
+                <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-[#c9a25c] hover:underline">
                   Terms
                 </a>{' '}
                 and{' '}
-                <a href="/privacy" target="_blank" className="text-[#c9a25c] hover:underline">
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-[#c9a25c] hover:underline">
                   Privacy Policy
                 </a>
               </span>
@@ -319,7 +328,7 @@ export default function ContactPage() {
             }}
           />
           {errors.consentTerms && (
-            <p className="mt-2 text-sm text-red-400">{errors.consentTerms}</p>
+            <p className="mt-2 text-sm text-red-400" role="alert">{errors.consentTerms}</p>
           )}
         </div>
 
@@ -339,7 +348,8 @@ export default function ContactPage() {
               }
             />
 
-            <div className="space-y-3">
+            <fieldset className="space-y-3">
+              <legend className="sr-only">Communication consent</legend>
               <Checkbox
                 label="I agree to receive text messages (SMS)"
                 description="Message and data rates may apply. Reply STOP to opt out."
@@ -353,12 +363,12 @@ export default function ContactPage() {
                 checked={consentMarketing}
                 onChange={(e) => setContact({ consentMarketing: e.target.checked })}
               />
-            </div>
+            </fieldset>
           </div>
         </CollapsibleSection>
 
         {/* Trust indicators */}
-        <div className="flex flex-wrap items-center justify-center gap-4 pt-2 text-xs text-slate-500">
+        <div className="flex flex-wrap items-center justify-center gap-4 pt-2 text-xs text-slate-400">
           <span className="flex items-center gap-1">
             <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

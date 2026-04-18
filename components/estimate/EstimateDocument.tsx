@@ -495,22 +495,26 @@ export function EstimateDocument({
           SECTION 6: WHAT HAPPENS NEXT - Reduce anxiety, show the path
           ================================================================ */}
       <Card className="border-[#c9a25c]/20 bg-[#161a23]">
-        <CardContent className="p-6">
-          <h3 className="font-semibold text-slate-100 text-center mb-6">What Happens Next</h3>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <CardContent className="p-6 md:p-8">
+          <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c] text-center mb-3">
+            What happens next
+          </p>
+          <h3 className="text-xl md:text-2xl font-bold text-slate-50 font-display tracking-tight text-center mb-8">
+            No pressure, no mystery.
+          </h3>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { step: 1, icon: Search, title: 'Review Estimate', desc: 'Take your time reviewing the details above' },
-              { step: 2, icon: Calendar, title: 'Free Consultation', desc: 'We visit your property at no cost' },
-              { step: 3, icon: MessageSquare, title: 'Finalize Details', desc: 'Confirm scope, materials & exact price' },
-              { step: 4, icon: Handshake, title: 'Project Begins', desc: 'We handle everything from start to finish' },
-            ].map(({ step, icon: Icon, title, desc }) => (
-              <div key={step} className="text-center">
-                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#c9a25c]/10 border border-[#c9a25c]/30">
-                  <Icon className="h-5 w-5 text-[#c9a25c]" />
-                </div>
-                <p className="text-xs font-bold text-[#c9a25c] uppercase tracking-wider mb-1">Step {step}</p>
-                <p className="text-sm font-semibold text-slate-200">{title}</p>
-                <p className="text-xs text-slate-400 mt-1">{desc}</p>
+              { step: 1, title: 'Sit with the number', desc: 'Take your time. Share with family. No one calls you.' },
+              { step: 2, title: 'If you want a look', desc: 'We schedule a free on-site check so numbers match reality.' },
+              { step: 3, title: 'Finalize the scope', desc: 'Materials, timeline, exact price \u2014 locked in writing.' },
+              { step: 4, title: 'Crew shows up', desc: 'We handle tear-off, install, cleanup, and warranty paperwork.' },
+            ].map(({ step, title, desc }) => (
+              <div key={step}>
+                <p className="text-5xl font-bold text-[#c9a25c]/80 font-display tabular-nums leading-none mb-3">
+                  {String(step).padStart(2, '0')}
+                </p>
+                <p className="text-base font-semibold text-slate-100 leading-snug">{title}</p>
+                <p className="text-sm text-slate-300 mt-1.5 leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
@@ -685,12 +689,12 @@ export function EstimateDocument({
           SECTION 10: SECOND CTA - For people who scrolled through everything
           ================================================================ */}
       <Card className="border-[#c9a25c]/20 bg-gradient-to-b from-[#161a23] to-[#1a1f2e]">
-        <CardContent className="p-6 text-center">
-          <h3 className="text-lg font-semibold text-slate-100 mb-2">
-            Ready to Get Started?
+        <CardContent className="p-6 md:p-8 text-center">
+          <h3 className="text-xl md:text-2xl font-bold text-slate-50 font-display tracking-tight mb-3">
+            When you&rsquo;re ready, we&rsquo;re ready.
           </h3>
-          <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto">
-            Your free on-site consultation confirms exact pricing with no obligation. We handle everything from permits to cleanup.
+          <p className="text-sm md:text-base text-slate-300 mb-6 max-w-md mx-auto leading-relaxed">
+            A free on-site check confirms the exact price. No obligation, no pressure, no surprise calls in between.
           </p>
           <CTABlock
             onScheduleConsultation={onScheduleConsultation}

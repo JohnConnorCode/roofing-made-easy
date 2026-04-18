@@ -56,7 +56,6 @@ export default function CustomerPortalPage() {
     setProgramApplications,
     setJobs,
     setLoading,
-    isLoading,
   } = useCustomerStore()
 
   const { trackEngagement } = useAnalytics()
@@ -338,13 +337,13 @@ export default function CustomerPortalPage() {
         <div className="space-y-4">
           <EmptyState
             icon={AlertTriangle}
-            title="Get Your Free Estimate"
+            title="Get my free estimate"
             description="Start your roofing journey with a quick assessment. In just a few minutes, you'll receive a personalized estimate for your project."
             actionLabel="Get Your Estimate"
             actionHref="/"
             variant="encouraging"
           />
-          <p className="text-center text-sm text-slate-500">
+          <p className="text-center text-sm text-slate-400">
             Already have an estimate?{' '}
             <a href="/customer/login" className="text-[#c9a25c] hover:underline">
               Check your email
