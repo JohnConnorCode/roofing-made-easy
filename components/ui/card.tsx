@@ -10,12 +10,12 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', ...props }, ref) => {
     const variants = {
-      // Light theme (default for admin)
-      default: 'bg-white border border-slate-200 shadow-sm',
+      // Default: glass card (dark translucent surface, matches admin + customer portal)
+      default: 'border border-white/5 bg-slate-950/40 backdrop-blur-xl shadow-[0_0_0_1px_rgba(255,255,255,0.02)]',
       selectable:
-        'bg-white border-2 border-slate-200 cursor-pointer hover:border-amber-400 hover:shadow-md transition-all',
-      selected: 'bg-white border-2 border-amber-500 shadow-md ring-2 ring-amber-500/20',
-      // Dark theme (for customer portal / funnel)
+        'border border-white/5 bg-slate-950/40 backdrop-blur-xl cursor-pointer hover:border-white/10 hover:bg-slate-950/60 transition-colors',
+      selected: 'border-2 border-[#c9a25c] bg-slate-950/60 backdrop-blur-xl shadow-lg ring-2 ring-[#c9a25c]/20',
+      // Explicit dark variants (funnel and customer portal use these)
       dark: 'bg-slate-deep border border-slate-700',
       'dark-selectable':
         'bg-slate-deep border-2 border-slate-700 cursor-pointer hover:border-gold-muted hover:shadow-lg transition-all',
@@ -34,7 +34,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
 Card.displayName = 'Card'
 
-interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>
 
 const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, ...props }, ref) => (
@@ -48,13 +48,13 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
 
 CardHeader.displayName = 'CardHeader'
 
-interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+type CardTitleProps = React.HTMLAttributes<HTMLHeadingElement>
 
 const CardTitle = React.forwardRef<HTMLParagraphElement, CardTitleProps>(
   ({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn('text-xl font-semibold leading-none tracking-tight text-slate-900', className)}
+      className={cn('text-xl font-semibold leading-none tracking-tight text-slate-50', className)}
       {...props}
     />
   )
@@ -62,13 +62,13 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, CardTitleProps>(
 
 CardTitle.displayName = 'CardTitle'
 
-interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+type CardDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>
 
 const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn('text-sm text-slate-600', className)}
+      className={cn('text-sm text-slate-400', className)}
       {...props}
     />
   )
@@ -76,7 +76,7 @@ const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionPr
 
 CardDescription.displayName = 'CardDescription'
 
-interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+type CardContentProps = React.HTMLAttributes<HTMLDivElement>
 
 const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
   ({ className, ...props }, ref) => (
@@ -86,7 +86,7 @@ const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
 
 CardContent.displayName = 'CardContent'
 
-interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+type CardFooterProps = React.HTMLAttributes<HTMLDivElement>
 
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, ...props }, ref) => (

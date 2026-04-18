@@ -179,20 +179,20 @@ export default function DashboardPage() {
       <FadeInSection delay={50} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+            <h1 className="text-2xl font-bold text-slate-50">Dashboard</h1>
             <p className="text-slate-500">
               {activeTab === 'overview' && "Today's pipeline at a glance"}
               {activeTab === 'analytics' && 'Performance analytics'}
               {activeTab === 'velocity' && 'Pipeline velocity & conversions'}
             </p>
           </div>
-          <div className="flex gap-1 bg-slate-100 p-1 rounded-lg">
+          <div className="flex gap-1 bg-slate-900/60 border border-white/5 p-1 rounded-lg">
             <button
               onClick={() => setActiveTab('overview')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'overview'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-700'
+                  ? 'bg-white/10 text-slate-50 backdrop-blur-md'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               Overview
@@ -201,8 +201,8 @@ export default function DashboardPage() {
               onClick={() => setActiveTab('analytics')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
                 activeTab === 'analytics'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-700'
+                  ? 'bg-white/10 text-slate-50 backdrop-blur-md'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               <BarChart3 className="h-4 w-4" />
@@ -212,8 +212,8 @@ export default function DashboardPage() {
               onClick={() => setActiveTab('velocity')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
                 activeTab === 'velocity'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-700'
+                  ? 'bg-white/10 text-slate-50 backdrop-blur-md'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               <TrendingUp className="h-4 w-4" />
@@ -234,7 +234,7 @@ export default function DashboardPage() {
       ) : (
         <>
           {error ? (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="flex flex-col items-center justify-center py-12">
                 <AlertTriangle className="h-12 w-12 text-gold" />
                 <p className="mt-4 text-slate-400">{error}</p>
@@ -265,12 +265,12 @@ export default function DashboardPage() {
             <>
               {/* Primary Stats */}
               <StaggerContainer className="grid gap-4 md:grid-cols-2 lg:grid-cols-4" staggerDelay={75}>
-                <Card className="bg-white border-slate-200">
+                <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-slate-400">New Leads (MTD)</p>
-                        <p className="text-3xl font-bold text-slate-900">{stats?.newLeadsThisMonth || 0}</p>
+                        <p className="text-3xl font-bold text-slate-50">{stats?.newLeadsThisMonth || 0}</p>
                       </div>
                       <div className="rounded-lg bg-gold-light/20 p-3">
                         <Users className="h-6 w-6 text-gold" />
@@ -290,12 +290,12 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border-slate-200">
+                <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-slate-400">Estimates Generated</p>
-                        <p className="text-3xl font-bold text-slate-900">{stats?.estimatesGenerated || 0}</p>
+                        <p className="text-3xl font-bold text-slate-50">{stats?.estimatesGenerated || 0}</p>
                       </div>
                       <div className="rounded-lg bg-green-100 p-3">
                         <CheckCircle className="h-6 w-6 text-green-600" />
@@ -309,12 +309,12 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border-slate-200">
+                <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-slate-400">Win Rate</p>
-                        <p className="text-3xl font-bold text-slate-900">{stats?.winRate || 0}%</p>
+                        <p className="text-3xl font-bold text-slate-50">{stats?.winRate || 0}%</p>
                       </div>
                       <div className="rounded-lg bg-blue-100 p-3">
                         <Target className="h-6 w-6 text-blue-600" />
@@ -328,7 +328,7 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border-slate-200">
+                <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
@@ -352,7 +352,7 @@ export default function DashboardPage() {
 
               {/* Speed-to-Lead & Revenue MTD */}
               <StaggerContainer className="grid gap-4 md:grid-cols-3" staggerDelay={75}>
-                <Card className="bg-white border-slate-200">
+                <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
@@ -367,7 +367,7 @@ export default function DashboardPage() {
                         </p>
                       </div>
                       <div className={`rounded-lg p-3 ${
-                        stats?.avgResponseMinutes === null ? 'bg-slate-100'
+                        stats?.avgResponseMinutes === null ? 'bg-slate-800/60'
                           : (stats?.avgResponseMinutes ?? 0) <= 15 ? 'bg-green-100'
                           : (stats?.avgResponseMinutes ?? 0) <= 60 ? 'bg-amber-100'
                           : 'bg-red-100'
@@ -386,7 +386,7 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border-slate-200">
+                <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
@@ -405,7 +405,7 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white border-slate-200">
+                <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
@@ -461,9 +461,9 @@ export default function DashboardPage() {
               <FadeInSection delay={400} animation="slide-up">
               <div className="grid gap-6 lg:grid-cols-2">
                 {/* Pipeline by Status */}
-                <Card className="bg-white border-slate-200">
+                <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                   <CardHeader>
-                    <CardTitle className="text-slate-900 flex items-center gap-2">
+                    <CardTitle className="text-slate-50 flex items-center gap-2">
                       <BarChart3 className="h-5 w-5" />
                       Pipeline by Status
                     </CardTitle>
@@ -480,9 +480,9 @@ export default function DashboardPage() {
                               <span className="text-sm text-slate-400">
                                 {STATUS_LABELS[status] || status}
                               </span>
-                              <span className="text-sm font-medium text-slate-900">{count}</span>
+                              <span className="text-sm font-medium text-slate-50">{count}</span>
                             </div>
-                            <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                            <div className="h-3 bg-slate-800/60 rounded-full overflow-hidden">
                               <div
                                 className={`h-full ${STATUS_COLORS[status]} rounded-full transition-all`}
                                 style={{ width: `${width}%` }}
@@ -505,9 +505,9 @@ export default function DashboardPage() {
                 </Card>
 
                 {/* Lead Sources */}
-                <Card className="bg-white border-slate-200">
+                <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                   <CardHeader>
-                    <CardTitle className="text-slate-900 flex items-center gap-2">
+                    <CardTitle className="text-slate-50 flex items-center gap-2">
                       <PieChart className="h-5 w-5" />
                       Lead Sources
                     </CardTitle>
@@ -524,14 +524,14 @@ export default function DashboardPage() {
                               <div className={`w-3 h-3 rounded-full ${colors[idx % colors.length]}`} />
                               <div className="flex-1">
                                 <div className="flex items-center justify-between">
-                                  <span className="text-sm font-medium text-slate-700 capitalize">
+                                  <span className="text-sm font-medium text-slate-300 capitalize">
                                     {source.source}
                                   </span>
                                   <span className="text-sm text-slate-400">
                                     {source.percentage}%
                                   </span>
                                 </div>
-                                <div className="h-2 bg-slate-100 rounded-full mt-1 overflow-hidden">
+                                <div className="h-2 bg-slate-800/60 rounded-full mt-1 overflow-hidden">
                                   <div
                                     className={`h-full ${colors[idx % colors.length]} rounded-full`}
                                     style={{ width: `${source.percentage}%` }}
@@ -550,9 +550,9 @@ export default function DashboardPage() {
 
               {/* Recent leads */}
               <FadeInSection delay={550} animation="slide-up">
-              <Card className="bg-white border-slate-200">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                 <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-slate-900">Recent Leads</CardTitle>
+                  <CardTitle className="text-slate-50">Recent Leads</CardTitle>
                   <Link
                     href="/leads"
                     className="text-sm text-gold hover:underline"
@@ -585,7 +585,7 @@ export default function DashboardPage() {
                             const property = lead.properties?.[0]
                             const estimate = lead.estimates?.[0]
                             return (
-                              <tr key={lead.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
+                              <tr key={lead.id} className="border-b last:border-0 hover:bg-white/5 transition-colors">
                                 <td className="py-3 pr-4">
                                   <Link
                                     href={`/leads/${lead.id}`}
@@ -633,19 +633,19 @@ export default function DashboardPage() {
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
     new: 'bg-gold-light/20 text-gold-muted',
-    intake_started: 'bg-slate-100 text-slate-800',
-    intake_complete: 'bg-slate-200 text-slate-800',
+    intake_started: 'bg-slate-800/60 text-slate-200',
+    intake_complete: 'bg-slate-700/60 text-slate-200',
     estimate_generated: 'bg-green-100 text-green-800',
     consultation_scheduled: 'bg-blue-100 text-blue-800',
     quote_sent: 'bg-purple-100 text-purple-800',
     won: 'bg-emerald-100 text-emerald-800',
     lost: 'bg-red-100 text-red-800',
-    archived: 'bg-slate-100 text-slate-400',
+    archived: 'bg-slate-800/60 text-slate-400',
   }
 
   return (
     <span
-      className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${styles[status] || 'bg-slate-100'}`}
+      className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${styles[status] || 'bg-slate-800/60'}`}
     >
       {status.replace(/_/g, ' ')}
     </span>

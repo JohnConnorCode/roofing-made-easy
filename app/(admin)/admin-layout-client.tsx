@@ -32,7 +32,6 @@ import {
   Globe,
   Hammer,
   CalendarDays,
-  Bell,
   BarChart3,
   PieChart,
   Target,
@@ -271,32 +270,40 @@ export default function AdminLayoutClient({
   }
 
   return (
-    <div className="min-h-screen bg-stone-50">
-      {/* Mobile header */}
-      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b bg-slate-800 px-4 md:hidden">
+    <div className="min-h-screen bg-[#0a0d14] text-slate-100 relative">
+      {/* Ambient gold glow — sets the mood without adding noise */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-[#c9a25c]/[0.05] blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-[#3d7a5a]/[0.04] blur-3xl" />
+      </div>
+
+      {/* Mobile header — glass bar */}
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-white/5 bg-[#0a0d14]/80 backdrop-blur-xl px-4 md:hidden">
         <AdminLogo size="sm" />
         <div className="flex items-center gap-2">
           <GlobalSearch />
           <NotificationBell />
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-white"
+            className="p-2 text-slate-200 hover:text-[#e6c588] transition-colors"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </header>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — glass sheet */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 top-16 z-40 bg-white md:hidden overflow-y-auto">
+        <div className="fixed inset-0 top-16 z-40 bg-[#0a0d14]/95 backdrop-blur-xl md:hidden overflow-y-auto">
           <nav className="flex flex-col p-4">
             <ul className="space-y-1">
               {NAV_ITEMS.map((item) => renderNavItem(item, true))}
             </ul>
             <button
               onClick={handleLogout}
-              className="mt-4 flex items-center gap-3 rounded-lg px-4 py-3 text-lg text-red-600 hover:bg-red-50"
+              className="mt-6 flex items-center gap-3 rounded-lg px-4 py-3 text-lg text-red-300 hover:bg-red-500/10 transition-colors"
             >
               <LogOut className="h-5 w-5" />
               Logout
@@ -305,11 +312,11 @@ export default function AdminLayoutClient({
         </div>
       )}
 
-      <div className="flex">
-        {/* Desktop sidebar */}
-        <aside className="hidden w-64 shrink-0 border-r bg-slate-800 md:block">
-          <div className="sticky top-0 flex h-screen flex-col">
-            <div className="flex h-16 items-center justify-between border-b border-slate-700 px-4">
+      <div className="relative flex">
+        {/* Desktop sidebar — glass column */}
+        <aside className="hidden w-64 shrink-0 md:block">
+          <div className="sticky top-0 flex h-screen flex-col border-r border-white/5 bg-[#0a0d14]/60 backdrop-blur-xl">
+            <div className="flex h-16 items-center justify-between border-b border-white/5 px-4">
               <AdminLogo size="sm" />
               <div className="flex items-center gap-1">
                 <GlobalSearch />
@@ -317,16 +324,16 @@ export default function AdminLayoutClient({
               </div>
             </div>
 
-            <nav className="flex-1 overflow-y-auto p-4">
-              <ul className="space-y-1">
+            <nav className="flex-1 overflow-y-auto px-3 py-4">
+              <ul className="space-y-0.5">
                 {NAV_ITEMS.map((item) => renderNavItem(item))}
               </ul>
             </nav>
 
-            <div className="border-t border-slate-700 p-4">
+            <div className="border-t border-white/5 p-4">
               <Button
                 variant="ghost"
-                className="w-full justify-start text-slate-300 hover:bg-slate-700 hover:text-white"
+                className="w-full justify-start text-slate-400 hover:bg-white/5 hover:text-slate-100 border-0"
                 onClick={handleLogout}
                 leftIcon={<LogOut className="h-5 w-5" />}
               >
@@ -337,7 +344,7 @@ export default function AdminLayoutClient({
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 p-4 md:p-8">{children}</main>
+        <main className="relative flex-1 p-4 md:p-8">{children}</main>
       </div>
     </div>
   )

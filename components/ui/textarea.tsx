@@ -11,7 +11,8 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, hint, id, ...props }, ref) => {
-    const textareaId = id || React.useId()
+    const generatedId = React.useId()
+    const textareaId = id || generatedId
 
     return (
       <div className="w-full">
@@ -26,10 +27,10 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           id={textareaId}
           className={cn(
-            'flex min-h-[120px] w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base text-slate-900',
-            'placeholder:text-slate-400',
+            'flex min-h-[120px] w-full rounded-lg border border-white/10 bg-slate-900/60 backdrop-blur-sm px-4 py-3 text-base text-slate-50',
+            'placeholder:text-slate-500',
             'focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20',
-            'disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500',
+            'disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400',
             error && 'border-red-500 focus:border-red-500 focus:ring-red-500/20',
             className
           )}
@@ -39,12 +40,12 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
         {error && (
-          <p id={`${textareaId}-error`} className="mt-1.5 text-sm text-red-600">
+          <p id={`${textareaId}-error`} className="mt-1.5 text-sm text-red-600" role="alert">
             {error}
           </p>
         )}
         {hint && !error && (
-          <p id={`${textareaId}-hint`} className="mt-1.5 text-sm text-slate-500">
+          <p id={`${textareaId}-hint`} className="mt-1.5 text-sm text-slate-400">
             {hint}
           </p>
         )}

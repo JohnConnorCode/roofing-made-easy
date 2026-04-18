@@ -476,7 +476,7 @@ export default function SettingsPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
+            <h1 className="text-2xl font-bold text-slate-50">Settings</h1>
             <p className="text-slate-400">Configure your business settings</p>
           </div>
           <Button
@@ -494,7 +494,7 @@ export default function SettingsPage() {
       <div className="grid gap-6 lg:grid-cols-4">
         {/* Sidebar navigation */}
         <div className="lg:col-span-1">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-2">
               <nav className="space-y-1">
                 {sections.map((section) => (
@@ -519,65 +519,65 @@ export default function SettingsPage() {
         <div className="lg:col-span-3 space-y-6">
           {/* Company Info */}
           {activeSection === 'company' && (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
-                <CardTitle className="text-slate-900">Company Information</CardTitle>
+                <CardTitle className="text-slate-50">Company Information</CardTitle>
                 <CardDescription>Basic information about your business</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Company Name</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Company Name</label>
                     <Input
                       value={settings.company.name}
                       onChange={(e) => updateCompany('name', e.target.value)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Legal Name</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Legal Name</label>
                     <Input
                       value={settings.company.legalName || ''}
                       onChange={(e) => updateCompany('legalName', e.target.value)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Tagline</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Tagline</label>
                   <Input
                     value={settings.company.tagline || ''}
                     onChange={(e) => updateCompany('tagline', e.target.value)}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-white/10 text-slate-50"
                   />
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Phone</label>
                     <Input
                       value={settings.company.phone || ''}
                       onChange={(e) => updateCompany('phone', e.target.value)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Email</label>
                     <Input
                       type="email"
                       value={settings.company.email || ''}
                       onChange={(e) => updateCompany('email', e.target.value)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Website</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Website</label>
                   <Input
                     type="url"
                     placeholder="https://www.example.com"
                     value={settings.company.website || ''}
                     onChange={(e) => updateCompany('website', e.target.value)}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-white/10 text-slate-50"
                   />
                 </div>
               </CardContent>
@@ -586,43 +586,43 @@ export default function SettingsPage() {
 
           {/* Address */}
           {activeSection === 'address' && (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
-                <CardTitle className="text-slate-900">Business Address</CardTitle>
+                <CardTitle className="text-slate-50">Business Address</CardTitle>
                 <CardDescription>Physical location of your business</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Street Address</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Street Address</label>
                   <Input
                     value={settings.address.street || ''}
                     onChange={(e) => updateAddress('street', e.target.value)}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-white/10 text-slate-50"
                   />
                 </div>
                 <div className="grid gap-4 md:grid-cols-3">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">City</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">City</label>
                     <Input
                       value={settings.address.city || ''}
                       onChange={(e) => updateAddress('city', e.target.value)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">State</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">State</label>
                     <Input
                       value={settings.address.state || ''}
                       onChange={(e) => updateAddress('state', e.target.value)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">ZIP Code</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">ZIP Code</label>
                     <Input
                       value={settings.address.zip || ''}
                       onChange={(e) => updateAddress('zip', e.target.value)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                   </div>
                 </div>
@@ -632,9 +632,9 @@ export default function SettingsPage() {
 
           {/* Trust & Credentials */}
           {activeSection === 'trust' && (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
-                <CardTitle className="text-slate-900">Trust & Credentials</CardTitle>
+                <CardTitle className="text-slate-50">Trust & Credentials</CardTitle>
                 <CardDescription>
                   These power the homepage trust signals. Leave blank until you have real numbers &mdash; we hide what we can&rsquo;t verify.
                 </CardDescription>
@@ -642,13 +642,13 @@ export default function SettingsPage() {
               <CardContent className="space-y-8">
                 {/* Google rating */}
                 <div>
-                  <h4 className="text-sm font-semibold text-slate-900 mb-2">Google Reviews</h4>
+                  <h4 className="text-sm font-semibold text-slate-50 mb-2">Google Reviews</h4>
                   <p className="text-xs text-slate-500 mb-4">
                     When both fields are filled, the review badge appears on the homepage. Leave empty to hide it.
                   </p>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-slate-300 mb-1">
                         Average Rating (0&ndash;5)
                       </label>
                       <Input
@@ -662,11 +662,11 @@ export default function SettingsPage() {
                           const v = e.target.value
                           updateTrust('googleRating', v === '' ? null : Number(v))
                         }}
-                        className="bg-white border-slate-300 text-slate-900"
+                        className="bg-white border-white/10 text-slate-50"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-slate-300 mb-1">
                         Review Count
                       </label>
                       <Input
@@ -678,7 +678,7 @@ export default function SettingsPage() {
                           const v = e.target.value
                           updateTrust('googleReviewCount', v === '' ? null : Number(v))
                         }}
-                        className="bg-white border-slate-300 text-slate-900"
+                        className="bg-white border-white/10 text-slate-50"
                       />
                     </div>
                   </div>
@@ -686,7 +686,7 @@ export default function SettingsPage() {
 
                 {/* Licensing */}
                 <div>
-                  <h4 className="text-sm font-semibold text-slate-900 mb-2">Licensing</h4>
+                  <h4 className="text-sm font-semibold text-slate-50 mb-2">Licensing</h4>
                   <p className="text-xs text-slate-500 mb-4">
                     When licensed is checked and a number is provided, the trust strip reads &ldquo;Licensed &amp; insured &mdash; MS #XXXX&rdquo;.
                   </p>
@@ -697,12 +697,12 @@ export default function SettingsPage() {
                         onChange={(e) => updateCredentials('stateLicensed', e.target.checked)}
                         id="stateLicensed"
                       />
-                      <label htmlFor="stateLicensed" className="text-sm text-slate-700 cursor-pointer">
+                      <label htmlFor="stateLicensed" className="text-sm text-slate-300 cursor-pointer">
                         State licensed contractor
                       </label>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-slate-300 mb-1">
                         State Contractor License #
                       </label>
                       <Input
@@ -711,7 +711,7 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           updateCredentials('stateContractorLicense', e.target.value || null)
                         }
-                        className="bg-white border-slate-300 text-slate-900"
+                        className="bg-white border-white/10 text-slate-50"
                       />
                     </div>
                   </div>
@@ -719,7 +719,7 @@ export default function SettingsPage() {
 
                 {/* Certifications */}
                 <div>
-                  <h4 className="text-sm font-semibold text-slate-900 mb-2">Certifications</h4>
+                  <h4 className="text-sm font-semibold text-slate-50 mb-2">Certifications</h4>
                   <p className="text-xs text-slate-500 mb-4">
                     Check only what you actually hold. These may appear in future trust UI.
                   </p>
@@ -730,7 +730,7 @@ export default function SettingsPage() {
                         onChange={(e) => updateCredentials('gafCertified', e.target.checked)}
                         id="gafCertified"
                       />
-                      <label htmlFor="gafCertified" className="text-sm text-slate-700 cursor-pointer">
+                      <label htmlFor="gafCertified" className="text-sm text-slate-300 cursor-pointer">
                         GAF Certified Contractor
                       </label>
                     </div>
@@ -740,7 +740,7 @@ export default function SettingsPage() {
                         onChange={(e) => updateCredentials('owensCorningPreferred', e.target.checked)}
                         id="ocPreferred"
                       />
-                      <label htmlFor="ocPreferred" className="text-sm text-slate-700 cursor-pointer">
+                      <label htmlFor="ocPreferred" className="text-sm text-slate-300 cursor-pointer">
                         Owens Corning Preferred Contractor
                       </label>
                     </div>
@@ -750,7 +750,7 @@ export default function SettingsPage() {
                         onChange={(e) => updateCredentials('bbbAccredited', e.target.checked)}
                         id="bbb"
                       />
-                      <label htmlFor="bbb" className="text-sm text-slate-700 cursor-pointer">
+                      <label htmlFor="bbb" className="text-sm text-slate-300 cursor-pointer">
                         BBB Accredited Business
                       </label>
                     </div>
@@ -762,14 +762,14 @@ export default function SettingsPage() {
 
           {/* Business Hours */}
           {activeSection === 'hours' && (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
-                <CardTitle className="text-slate-900">Business Hours</CardTitle>
+                <CardTitle className="text-slate-50">Business Hours</CardTitle>
                 <CardDescription>When your business is open</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <h4 className="text-sm font-medium text-slate-700 mb-3">Weekdays (Mon-Fri)</h4>
+                  <h4 className="text-sm font-medium text-slate-300 mb-3">Weekdays (Mon-Fri)</h4>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <label className="block text-xs text-slate-400 mb-1">Open</label>
@@ -777,7 +777,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.weekdaysOpen || ''}
                         onChange={(e) => updateHours('weekdaysOpen', e.target.value)}
-                        className="bg-white border-slate-300 text-slate-900"
+                        className="bg-white border-white/10 text-slate-50"
                       />
                     </div>
                     <div>
@@ -786,13 +786,13 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.weekdaysClose || ''}
                         onChange={(e) => updateHours('weekdaysClose', e.target.value)}
-                        className="bg-white border-slate-300 text-slate-900"
+                        className="bg-white border-white/10 text-slate-50"
                       />
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-slate-700 mb-3">Saturday</h4>
+                  <h4 className="text-sm font-medium text-slate-300 mb-3">Saturday</h4>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <label className="block text-xs text-slate-400 mb-1">Open</label>
@@ -800,7 +800,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.saturdayOpen || ''}
                         onChange={(e) => updateHours('saturdayOpen', e.target.value)}
-                        className="bg-white border-slate-300 text-slate-900"
+                        className="bg-white border-white/10 text-slate-50"
                       />
                     </div>
                     <div>
@@ -809,13 +809,13 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.saturdayClose || ''}
                         onChange={(e) => updateHours('saturdayClose', e.target.value)}
-                        className="bg-white border-slate-300 text-slate-900"
+                        className="bg-white border-white/10 text-slate-50"
                       />
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-slate-700 mb-3">Sunday</h4>
+                  <h4 className="text-sm font-medium text-slate-300 mb-3">Sunday</h4>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <label className="block text-xs text-slate-400 mb-1">Open (leave blank if closed)</label>
@@ -823,7 +823,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.sundayOpen || ''}
                         onChange={(e) => updateHours('sundayOpen', e.target.value)}
-                        className="bg-white border-slate-300 text-slate-900"
+                        className="bg-white border-white/10 text-slate-50"
                       />
                     </div>
                     <div>
@@ -832,7 +832,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.sundayClose || ''}
                         onChange={(e) => updateHours('sundayClose', e.target.value)}
-                        className="bg-white border-slate-300 text-slate-900"
+                        className="bg-white border-white/10 text-slate-50"
                       />
                     </div>
                   </div>
@@ -843,7 +843,7 @@ export default function SettingsPage() {
                       checked={settings.hours.emergencyAvailable || false}
                       onChange={(e) => updateHours('emergencyAvailable', e.target.checked)}
                     />
-                    <span className="text-sm text-slate-700">24/7 Emergency Service Available</span>
+                    <span className="text-sm text-slate-300">24/7 Emergency Service Available</span>
                   </label>
                 </div>
               </CardContent>
@@ -852,39 +852,39 @@ export default function SettingsPage() {
 
           {/* Default Pricing */}
           {activeSection === 'pricing' && (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
-                <CardTitle className="text-slate-900">Default Pricing Settings</CardTitle>
+                <CardTitle className="text-slate-50">Default Pricing Settings</CardTitle>
                 <CardDescription>Default markup and tax rates for estimates</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-3">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Overhead %</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Overhead %</label>
                     <Input
                       type="number"
                       min="0"
                       max="100"
                       value={settings.pricing.overheadPercent || 0}
                       onChange={(e) => updatePricing('overheadPercent', parseFloat(e.target.value) || 0)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                     <p className="text-xs text-slate-400 mt-1">Added to base material + labor cost</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Profit Margin %</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Profit Margin %</label>
                     <Input
                       type="number"
                       min="0"
                       max="100"
                       value={settings.pricing.profitMarginPercent || 0}
                       onChange={(e) => updatePricing('profitMarginPercent', parseFloat(e.target.value) || 0)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                     <p className="text-xs text-slate-400 mt-1">Applied after overhead</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Tax Rate %</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Tax Rate %</label>
                     <Input
                       type="number"
                       min="0"
@@ -892,7 +892,7 @@ export default function SettingsPage() {
                       step="0.1"
                       value={settings.pricing.taxRate || 0}
                       onChange={(e) => updatePricing('taxRate', parseFloat(e.target.value) || 0)}
-                      className="bg-white border-slate-300 text-slate-900"
+                      className="bg-white border-white/10 text-slate-50"
                     />
                     <p className="text-xs text-slate-400 mt-1">Sales tax for materials</p>
                   </div>
@@ -904,9 +904,9 @@ export default function SettingsPage() {
           {/* Notifications */}
           {activeSection === 'notifications' && (
             <>
-              <Card className="bg-white border-slate-200">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                 <CardHeader>
-                  <CardTitle className="text-slate-900">Email Recipients</CardTitle>
+                  <CardTitle className="text-slate-50">Email Recipients</CardTitle>
                   <CardDescription>Who should receive notification emails</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -915,15 +915,15 @@ export default function SettingsPage() {
                     {(settings.notifications.emailRecipients || []).map((email) => (
                       <div
                         key={email}
-                        className="flex items-center justify-between p-3 rounded-lg border border-slate-200 bg-slate-50"
+                        className="flex items-center justify-between p-3 rounded-lg border border-white/5 bg-slate-900/40"
                       >
                         <div className="flex items-center gap-2">
                           <Mail className="h-4 w-4 text-slate-400" />
-                          <span className="text-sm text-slate-700">{email}</span>
+                          <span className="text-sm text-slate-300">{email}</span>
                         </div>
                         <button
                           onClick={() => removeEmailRecipient(email)}
-                          className="p-1 rounded hover:bg-slate-200 text-slate-400 hover:text-red-500 transition-colors"
+                          className="p-1 rounded hover:bg-slate-700/60 text-slate-400 hover:text-red-500 transition-colors"
                         >
                           <X className="h-4 w-4" />
                         </button>
@@ -957,7 +957,7 @@ export default function SettingsPage() {
                   </div>
 
                   {/* Test email */}
-                  <div className="pt-4 border-t border-slate-200">
+                  <div className="pt-4 border-t border-white/5">
                     {testEmailSuccess && (
                       <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 mb-3">
                         <CheckCircle className="h-4 w-4" />
@@ -986,9 +986,9 @@ export default function SettingsPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white border-slate-200">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                 <CardHeader>
-                  <CardTitle className="text-slate-900">Notification Types</CardTitle>
+                  <CardTitle className="text-slate-50">Notification Types</CardTitle>
                   <CardDescription>Configure when you receive email alerts</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -999,7 +999,7 @@ export default function SettingsPage() {
                         onChange={(e) => updateNotifications('newLeadEmail', e.target.checked)}
                       />
                       <div>
-                        <span className="text-sm font-medium text-slate-700">New Lead Notifications</span>
+                        <span className="text-sm font-medium text-slate-300">New Lead Notifications</span>
                         <p className="text-xs text-slate-400">Receive email when a new lead submits contact info</p>
                       </div>
                     </label>
@@ -1009,7 +1009,7 @@ export default function SettingsPage() {
                         onChange={(e) => updateNotifications('estimateEmail', e.target.checked)}
                       />
                       <div>
-                        <span className="text-sm font-medium text-slate-700">Estimate Generated</span>
+                        <span className="text-sm font-medium text-slate-300">Estimate Generated</span>
                         <p className="text-xs text-slate-400">Receive email when an estimate is created</p>
                       </div>
                     </label>
@@ -1019,7 +1019,7 @@ export default function SettingsPage() {
                         onChange={(e) => updateNotifications('dailyDigest', e.target.checked)}
                       />
                       <div>
-                        <span className="text-sm font-medium text-slate-700">Daily Digest</span>
+                        <span className="text-sm font-medium text-slate-300">Daily Digest</span>
                         <p className="text-xs text-slate-400">Daily summary of leads and pipeline status</p>
                       </div>
                     </label>
@@ -1032,9 +1032,9 @@ export default function SettingsPage() {
           {/* Integrations */}
           {activeSection === 'integrations' && (
             <div className="space-y-6">
-              <Card className="bg-white border-slate-200">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                 <CardHeader>
-                  <CardTitle className="text-slate-900 flex items-center gap-2">
+                  <CardTitle className="text-slate-50 flex items-center gap-2">
                     <Key className="h-5 w-5" />
                     API Integrations
                   </CardTitle>
@@ -1104,7 +1104,7 @@ export default function SettingsPage() {
                                   <AlertTriangle className={`h-5 w-5 mt-0.5 ${getIconClasses(false)}`} />
                                 )}
                                 <div>
-                                  <h4 className="font-semibold text-slate-900">{integration.name}</h4>
+                                  <h4 className="font-semibold text-slate-50">{integration.name}</h4>
                                   <p className="text-sm text-slate-400 mt-1">{integration.description}</p>
                                   <p className="text-xs text-slate-400 mt-2">
                                     Configured via environment variables (required for the app to function)
@@ -1123,18 +1123,18 @@ export default function SettingsPage() {
               </Card>
 
               {/* Help section */}
-              <Card className="bg-slate-50 border-slate-200">
+              <Card className="bg-slate-900/40 border-white/5">
                 <CardContent className="pt-6">
-                  <h4 className="font-medium text-slate-900 mb-3">How Integration Configuration Works</h4>
+                  <h4 className="font-medium text-slate-50 mb-3">How Integration Configuration Works</h4>
                   <div className="grid gap-4 md:grid-cols-2">
-                    <div className="p-3 bg-white rounded-lg border border-slate-200">
-                      <h5 className="font-medium text-slate-800 mb-1">Option 1: Configure Here</h5>
+                    <div className="p-3 bg-white rounded-lg border border-white/5">
+                      <h5 className="font-medium text-slate-200 mb-1">Option 1: Configure Here</h5>
                       <p className="text-sm text-slate-400">
                         Click on any integration above and enter your API keys. Keys are encrypted and stored securely in the database.
                       </p>
                     </div>
-                    <div className="p-3 bg-white rounded-lg border border-slate-200">
-                      <h5 className="font-medium text-slate-800 mb-1">Option 2: Environment Variables</h5>
+                    <div className="p-3 bg-white rounded-lg border border-white/5">
+                      <h5 className="font-medium text-slate-200 mb-1">Option 2: Environment Variables</h5>
                       <p className="text-sm text-slate-400">
                         Set API keys in your hosting platform (Vercel). Environment variables take precedence over saved settings.
                       </p>
@@ -1150,9 +1150,9 @@ export default function SettingsPage() {
 
           {/* Lead Sources */}
           {activeSection === 'sources' && (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
-                <CardTitle className="text-slate-900">Lead Sources</CardTitle>
+                <CardTitle className="text-slate-50">Lead Sources</CardTitle>
                 <CardDescription>Configure which lead sources are tracked</CardDescription>
               </CardHeader>
               <CardContent>
@@ -1160,14 +1160,14 @@ export default function SettingsPage() {
                   {settings.leadSources.map((source) => (
                     <label
                       key={source.id}
-                      className="flex items-center justify-between p-3 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"
+                      className="flex items-center justify-between p-3 rounded-lg border border-white/5 hover:bg-white/5 cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
                         <Checkbox
                           checked={source.enabled}
                           onChange={() => toggleLeadSource(source.id)}
                         />
-                        <span className="text-sm font-medium text-slate-700">{source.name}</span>
+                        <span className="text-sm font-medium text-slate-300">{source.name}</span>
                       </div>
                       <span className="text-xs text-slate-400">{source.id}</span>
                     </label>
@@ -1179,9 +1179,9 @@ export default function SettingsPage() {
 
           {/* Security */}
           {activeSection === 'security' && (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
-                <CardTitle className="text-slate-900">Change Password</CardTitle>
+                <CardTitle className="text-slate-50">Change Password</CardTitle>
                 <CardDescription>Update your admin account password</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -1200,7 +1200,7 @@ export default function SettingsPage() {
                 )}
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                  <label className="block text-sm font-semibold text-slate-300 mb-1.5">
                     Current Password
                   </label>
                   <div className="relative">
@@ -1221,7 +1221,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                  <label className="block text-sm font-semibold text-slate-300 mb-1.5">
                     New Password
                   </label>
                   <div className="relative">
@@ -1245,7 +1245,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+                  <label className="block text-sm font-semibold text-slate-300 mb-1.5">
                     Confirm New Password
                   </label>
                   <div className="relative">

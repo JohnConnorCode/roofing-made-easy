@@ -1,182 +1,132 @@
 /**
- * Centralized admin theme - DRY style definitions
+ * Admin theme tokens — dark + glass treatment to match the public site.
  *
- * Uses CSS custom properties defined in globals.css:
- * --color-gold: #b5893a (primary brand)
- * --color-gold-muted: #9a7432 (darker)
- * --color-gold-light: #c9a25c (lighter)
- * --color-ink: #0c0f14 (dark bg)
- *
- * These generate Tailwind classes: text-gold, bg-gold-light, etc.
+ * Base palette:
+ *   bg base:      #0a0d14 (ink, slightly darker than public #0c0f14 for contrast)
+ *   surface:      glass card with backdrop-blur + low-opacity dark bg
+ *   accent gold:  #c9a25c (matches homepage)
+ *   text:         slate-50 / slate-300 / slate-500
  */
 
 /**
  * Admin navigation styles
  */
 export const adminNav = {
-  // Desktop sidebar - active state
-  active: 'bg-gold text-white',
-  // Desktop sidebar - inactive state
-  inactive: 'text-slate-300 hover:bg-slate-700 hover:text-white',
-  // Desktop sidebar - parent with active child
-  parentActive: 'bg-slate-700 text-white',
-  // Desktop sidebar - child items
-  childActive: 'bg-gold text-white',
-  childInactive: 'text-slate-400 hover:bg-slate-700 hover:text-white',
-  // Mobile nav
-  mobileActive: 'bg-gold/10 text-gold',
-  mobileInactive: 'text-slate-600 hover:bg-slate-50',
-  // Settings section tabs
-  sectionActive: 'bg-gold/10 text-gold',
-  sectionInactive: 'text-slate-600 hover:bg-slate-50',
+  active: 'bg-[#c9a25c] text-[#0c0f14] font-semibold shadow-sm',
+  inactive: 'text-slate-300 hover:bg-white/5 hover:text-slate-50',
+  parentActive: 'bg-white/5 text-slate-50',
+  childActive: 'bg-[#c9a25c]/15 text-[#e6c588] border-l-2 border-[#c9a25c] pl-[14px]',
+  childInactive: 'text-slate-400 hover:bg-white/5 hover:text-slate-200',
+  mobileActive: 'bg-[#c9a25c]/10 text-[#e6c588]',
+  mobileInactive: 'text-slate-400 hover:bg-white/5',
+  sectionActive: 'bg-[#c9a25c]/10 text-[#e6c588] border-l-2 border-[#c9a25c]',
+  sectionInactive: 'text-slate-400 hover:bg-white/5 hover:text-slate-200 border-l-2 border-transparent',
 } as const
 
 /**
  * Badge/tag styles
  */
 export const adminBadge = {
-  // Connected/success state
-  success: 'bg-gold-light/20 text-gold-muted',
-  // Neutral/default state
-  neutral: 'bg-slate-100 text-slate-600',
-  // Warning state
-  warning: 'bg-amber-100 text-amber-700',
-  // Error state
-  error: 'bg-red-100 text-red-700',
-  // Info state
-  info: 'bg-blue-100 text-blue-700',
+  success: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/25',
+  neutral: 'bg-slate-800/60 text-slate-400 border border-slate-700/60',
+  warning: 'bg-amber-500/15 text-amber-300 border border-amber-500/25',
+  error: 'bg-red-500/15 text-red-300 border border-red-500/25',
+  info: 'bg-blue-500/15 text-blue-300 border border-blue-500/25',
 } as const
 
 /**
  * Icon colors
  */
 export const adminIcon = {
-  primary: 'text-gold',
-  muted: 'text-gold-muted',
-  light: 'text-gold-light',
-  inactive: 'text-slate-400',
-  warning: 'text-amber-500',
-  error: 'text-red-500',
-  success: 'text-emerald-500',
+  primary: 'text-[#c9a25c]',
+  muted: 'text-[#b5893a]',
+  light: 'text-[#e6c588]',
+  inactive: 'text-slate-500',
+  warning: 'text-amber-400',
+  error: 'text-red-400',
+  success: 'text-emerald-400',
 } as const
 
 /**
- * Card/container styles
+ * Glass card surface — backdrop-blur + translucent dark bg + subtle border.
  */
 export const adminCard = {
-  // Configured/active state
-  configured: 'border-slate-200 bg-slate-50 hover:border-slate-300',
-  // Not configured state
-  notConfigured: 'border-gold-light/30 bg-gold-light/5 hover:border-gold-light/50',
-  // Hover effect
-  hover: 'hover:border-gold-light hover:shadow-md',
+  base: 'rounded-2xl border border-white/5 bg-slate-950/40 backdrop-blur-xl shadow-[0_0_0_1px_rgba(255,255,255,0.02)]',
+  hover: 'hover:border-white/10 hover:bg-slate-950/60 transition-colors',
+  configured: 'border-white/5 bg-slate-950/40',
+  notConfigured: 'border-[#c9a25c]/25 bg-[#c9a25c]/[0.04]',
 } as const
 
 /**
  * Result/alert box styles
  */
 export const adminResult = {
-  success: 'bg-gold-light/10 border border-gold-light/30 text-gold-muted',
-  error: 'bg-red-50 border border-red-200 text-red-700',
-  warning: 'bg-amber-50 border border-amber-200 text-amber-700',
-  info: 'bg-blue-50 border border-blue-200 text-blue-700',
+  success: 'bg-emerald-500/10 border border-emerald-500/25 text-emerald-200',
+  error: 'bg-red-500/10 border border-red-500/25 text-red-200',
+  warning: 'bg-amber-500/10 border border-amber-500/25 text-amber-200',
+  info: 'bg-blue-500/10 border border-blue-500/25 text-blue-200',
 } as const
 
 /**
  * Stat card icon backgrounds
  */
 export const adminStatIcon = {
-  gold: 'bg-gold-light/20',
-  green: 'bg-green-100',
-  emerald: 'bg-emerald-100',
-  blue: 'bg-blue-100',
-  slate: 'bg-slate-100',
+  gold: 'bg-[#c9a25c]/15 text-[#e6c588]',
+  green: 'bg-emerald-500/15 text-emerald-400',
+  emerald: 'bg-emerald-500/15 text-emerald-400',
+  blue: 'bg-blue-500/15 text-blue-400',
+  slate: 'bg-slate-800/60 text-slate-300',
 } as const
 
-/**
- * Loading spinner
- */
-export const adminSpinner = 'text-gold'
-
-/**
- * Link styles
- */
-export const adminLink = 'text-gold hover:underline'
-
-/**
- * Selected row background
- */
-export const adminSelectedRow = 'bg-gold-light/10'
-
-/**
- * Drop target styles (drag & drop)
- */
-export const adminDropTarget = 'bg-gold-light/10 ring-2 ring-gold-light'
+export const adminSpinner = 'text-[#c9a25c]'
+export const adminLink = 'text-[#c9a25c] hover:text-[#e6c588] underline-offset-4 hover:underline'
+export const adminSelectedRow = 'bg-[#c9a25c]/10'
+export const adminDropTarget = 'bg-[#c9a25c]/10 ring-2 ring-[#c9a25c]/60'
 
 // =============================================================================
-// Helper functions for dynamic class generation
+// Helper functions
 // =============================================================================
 
-/**
- * Get navigation link classes based on active state
- */
 export function getNavClasses(isActive: boolean, isMobile = false): string {
-  if (isMobile) {
-    return isActive ? adminNav.mobileActive : adminNav.mobileInactive
-  }
+  if (isMobile) return isActive ? adminNav.mobileActive : adminNav.mobileInactive
   return isActive ? adminNav.active : adminNav.inactive
 }
 
-/**
- * Get child navigation link classes
- */
 export function getChildNavClasses(isActive: boolean, isMobile = false): string {
-  if (isMobile) {
-    return isActive ? adminNav.mobileActive : adminNav.mobileInactive
-  }
+  if (isMobile) return isActive ? adminNav.mobileActive : adminNav.mobileInactive
   return isActive ? adminNav.childActive : adminNav.childInactive
 }
 
-/**
- * Get parent nav classes (expandable sections)
- */
 export function getParentNavClasses(hasActiveChild: boolean, isMobile = false): string {
-  if (isMobile) {
-    return hasActiveChild ? adminNav.mobileActive : adminNav.mobileInactive
-  }
+  if (isMobile) return hasActiveChild ? adminNav.mobileActive : adminNav.mobileInactive
   return hasActiveChild ? adminNav.parentActive : adminNav.inactive
 }
 
-/**
- * Get section nav classes (settings page tabs)
- */
 export function getSectionNavClasses(isActive: boolean): string {
   return isActive ? adminNav.sectionActive : adminNav.sectionInactive
 }
 
-/**
- * Get badge classes based on status type
- */
 export function getBadgeClasses(
   status: 'success' | 'neutral' | 'warning' | 'error' | 'info' = 'neutral'
 ): string {
-  const base = 'text-xs font-medium px-2 py-1 rounded-full'
+  const base = 'text-xs font-medium px-2.5 py-1 rounded-full'
   return `${base} ${adminBadge[status]}`
 }
 
-/**
- * Get result/alert box classes
- */
 export function getResultClasses(success: boolean): string {
   const base = 'flex items-center gap-2 p-3 rounded-lg'
   return `${base} ${success ? adminResult.success : adminResult.error}`
 }
 
-/**
- * Get icon classes based on status
- */
 export function getIconClasses(
   status: 'primary' | 'muted' | 'light' | 'inactive' | 'warning' | 'error' | 'success'
 ): string {
   return adminIcon[status]
 }
+
+/**
+ * Consistent admin page container class — use this as the wrapper around
+ * page content so every admin route sits on the same glass surface.
+ */
+export const adminPageContainer =
+  'rounded-2xl border border-white/5 bg-slate-950/40 backdrop-blur-xl p-6 md:p-8'

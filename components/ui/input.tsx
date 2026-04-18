@@ -7,11 +7,13 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   label?: string
   error?: string
   hint?: string
+  showRequired?: boolean
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, label, error, hint, id, ...props }, ref) => {
-    const inputId = id || React.useId()
+  ({ className, type, label, error, hint, showRequired, id, ...props }, ref) => {
+    const generatedId = React.useId()
+    const inputId = id || generatedId
 
     return (
       <div className="w-full">
@@ -21,6 +23,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className="mb-1.5 block text-sm font-semibold text-slate-700 dark:text-slate-300"
           >
             {label}
+            {showRequired && (
+              <>
+                <span className="text-[#c9a25c] ml-0.5" aria-hidden="true">*</span>
+                <span className="sr-only"> (required)</span>
+              </>
+            )}
           </label>
         )}
         <input
@@ -28,12 +36,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           className={cn(
             // Base styles with min-height for touch targets
-            'flex h-12 min-h-[48px] w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-base text-slate-900',
-            'placeholder:text-slate-400',
+            'flex h-12 min-h-[48px] w-full rounded-lg border border-white/10 bg-slate-900/60 backdrop-blur-sm px-4 py-2 text-base text-slate-50',
+            'placeholder:text-slate-500',
             // Focus states
             'focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20',
             // Disabled states
-            'disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500',
+            'disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400',
             // Dark theme support
             'dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500',
             'dark:focus:border-amber-500 dark:disabled:bg-slate-900 dark:disabled:text-slate-400',
@@ -52,7 +60,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </p>
         )}
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
+          <p id={`${inputId}-hint`} className="mt-1.5 text-sm text-slate-400 dark:text-slate-400">
             {hint}
           </p>
         )}
