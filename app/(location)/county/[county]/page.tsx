@@ -237,25 +237,28 @@ export default async function CountyPage({ params }: CountyPageProps) {
       </section>
 
       {/* Final CTA */}
-      <section className="py-16 bg-gradient-dark">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready for Your Free Estimate?
-          </h2>
-          <p className="text-gray-300 mb-8 max-w-xl mx-auto">
-            Contact Farrell Roofing today for professional roofing services anywhere in {county.name}.
+      <section className="py-24 md:py-32 bg-[#0c0f14] border-t border-slate-900">
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c]">
+            {county.name}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <h2 className="mt-3 text-3xl md:text-5xl font-bold text-slate-50 font-display leading-[1.05] tracking-tight">
+            Your roof, priced honestly.
+          </h2>
+          <p className="mt-5 text-base md:text-lg text-slate-300 leading-relaxed max-w-xl mx-auto">
+            Two minutes for a real number. No calls unless you ask.
+          </p>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all btn-press"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-[#0c0f14] font-semibold px-7 py-3.5 rounded-lg shadow-lg shadow-[#b5893a]/20 transition-all"
             >
               Get my free estimate
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-4 h-4" />
             </Link>
             <a
               href={getPhoneLink()}
-              className="inline-flex items-center justify-center bg-transparent border-2 border-gold/50 hover:border-gold text-white font-semibold px-8 py-4 rounded-lg transition-all"
+              className="inline-flex items-center justify-center gap-2 border border-slate-700 hover:border-slate-500 text-slate-200 font-medium px-7 py-3.5 rounded-lg transition-colors"
             >
               Call {getPhoneDisplay()}
             </a>

@@ -130,45 +130,46 @@ export default async function BlogPage() {
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="bg-[#1a1f2e] border border-slate-700 rounded-2xl overflow-hidden hover:border-[#c9a25c]/50 transition-colors group"
+                className="group flex flex-col rounded-2xl overflow-hidden border border-slate-900 bg-slate-950/40 hover:border-slate-700 transition-colors"
               >
-                {/* Blog post image */}
-                <div className="aspect-video relative bg-gradient-to-br from-slate-700 to-slate-800">
+                {/* Post image */}
+                <div className="aspect-[5/3] relative bg-slate-900 overflow-hidden">
                   {post.image ? (
                     <Image
                       src={post.image}
                       alt={post.title}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-[1200ms] group-hover:scale-[1.02]"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <BookOpen className="h-8 w-8 text-slate-400" />
+                      <BookOpen className="h-8 w-8 text-slate-600" />
                     </div>
                   )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0c0f14]/40 via-transparent to-transparent" />
                 </div>
 
-                <div className="p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-xs bg-[#c9a25c]/20 text-[#c9a25c] px-2 py-1 rounded">
-                      {post.category}
-                    </span>
-                    <span className="flex items-center gap-1 text-xs text-slate-400">
-                      <Clock className="h-3 w-3" />
+                <div className="flex-1 flex flex-col p-6">
+                  <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c] mb-3">
+                    {post.category}
+                    <span className="mx-2 text-slate-700">·</span>
+                    <span className="text-slate-500 normal-case tracking-normal font-normal">
                       {post.readTime} min read
                     </span>
-                  </div>
+                  </p>
 
-                  <h3 className="text-lg font-bold text-slate-100 mb-2 group-hover:text-[#c9a25c] transition-colors">
+                  <h3 className="text-xl font-bold text-slate-50 font-display leading-tight tracking-tight group-hover:text-[#e6c588] transition-colors">
                     {post.title}
                   </h3>
-                  <p className="text-slate-400 text-sm mb-4 line-clamp-2">{post.excerpt}</p>
+                  <p className="mt-3 text-sm text-slate-300 leading-relaxed line-clamp-3">
+                    {post.excerpt}
+                  </p>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-slate-400">By {post.author}</span>
-                    <span className="text-[#c9a25c] text-sm flex items-center gap-1">
-                      Read more <ArrowRight className="h-3 w-3" />
+                  <div className="mt-auto pt-5 flex items-center justify-between">
+                    <span className="text-xs text-slate-500">{post.author}</span>
+                    <span className="text-sm text-[#c9a25c] flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Read <ArrowRight className="h-3.5 w-3.5" />
                     </span>
                   </div>
                 </div>
@@ -179,10 +180,13 @@ export default async function BlogPage() {
       </section>
 
       {/* Newsletter / CTA */}
-      <section className="py-16 md:py-24 bg-[#161a23] border-t border-slate-800">
-        <div className="mx-auto max-w-4xl px-4 text-center">
-          <h2 className="text-3xl font-bold text-slate-100 md:text-4xl">
-            Need Help With Your Roof?
+      <section className="py-24 md:py-32 bg-[#0c0f14] border-t border-slate-900">
+        <div className="mx-auto max-w-3xl px-4 text-center">
+          <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c]">
+            Your turn
+          </p>
+          <h2 className="mt-3 text-3xl md:text-5xl font-bold text-slate-50 font-display leading-[1.05] tracking-tight">
+            Still reading? Run the number.
           </h2>
           <p className="mt-4 text-lg text-slate-400">
             Get a free estimate and expert advice tailored to your situation.
