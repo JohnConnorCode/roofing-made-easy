@@ -1,8 +1,9 @@
 'use client'
 
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import NextImage from 'next/image'
 import { Logo } from '@/components/ui/logo'
 import { formatCurrency } from '@/lib/utils'
 import { cn } from '@/lib/utils'
@@ -22,7 +23,7 @@ import {
   Layers,
   AlertTriangle,
   FileText,
-  Image,
+  ImageIcon,
   Search,
   MessageSquare,
   Handshake,
@@ -32,6 +33,7 @@ import {
   Loader2,
 } from 'lucide-react'
 import { TrustSignals } from './TrustSignals'
+import { NextStepsPanel } from './NextStepsPanel'
 import type { RoofPitch, TimelineUrgency } from '@/lib/supabase/types'
 
 function getIncludedItems(jobType: JobType | null): string[] {
@@ -112,6 +114,7 @@ export interface EstimateDocumentProps {
   onBack?: () => void
   onStartNew?: () => void
   calendlyUrl?: string
+  shareUrl?: string
   isPublicView?: boolean
   onCreateAccount?: () => void
   accountStatus?: 'created' | 'existed' | 'failed' | null
@@ -260,16 +263,17 @@ export function EstimateDocument({
   priceLikely,
   priceHigh,
   explanation,
-  aiExplanationStatus,
+  aiExplanationStatus: _aiExplanationStatus,
   factors,
   validUntil,
   onScheduleConsultation,
   onShare,
   onDownload,
-  onBack,
-  onStartNew,
+  onBack: _onBack,
+  onStartNew: _onStartNew,
   calendlyUrl,
-  isPublicView,
+  shareUrl,
+  isPublicView: _isPublicView,
   onCreateAccount,
   accountStatus,
   isDownloading = false,
@@ -290,6 +294,9 @@ export function EstimateDocument({
 }: EstimateDocumentProps) {
   const { phoneDisplay, phoneLink } = useContact()
 
+  // Cache current time to avoid impure Date.now() calls during render
+  const [cachedNow] = useState(() => Date.now())
+
   const handleCallNow = useCallback(() => {
     window.location.href = phoneLink
   }, [phoneLink])
@@ -303,14 +310,14 @@ export function EstimateDocument({
   const jobTypeLabel = jobType?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()) || 'Roofing Project'
   const materialLabel = roofMaterial?.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()) || 'Not specified'
 
-  const displayEstimateNumber = estimateNumber || `EST-${Date.now().toString(36).toUpperCase()}`
-  const displayEstimateDate = estimateDate || new Date().toLocaleDateString('en-US', {
+  const displayEstimateNumber = estimateNumber || `EST-${cachedNow.toString(36).toUpperCase()}`
+  const displayEstimateDate = estimateDate || new Date(cachedNow).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
   })
 
-  const validityDate = validUntil || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
+  const validityDate = validUntil || new Date(cachedNow + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
@@ -318,8 +325,8 @@ export function EstimateDocument({
 
   const hasProjectDetails = roofSizeSqft || roofAgeYears || stories > 1 || hasSkylights || hasChimneys || hasSolarPanels || issues.length > 0 || timelineUrgency || hasInsuranceClaim || photos.length > 0
 
-  const validityDateObj = validUntil ? new Date(validUntil) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-  const now = new Date()
+  const validityDateObj = validUntil ? new Date(validUntil) : new Date(cachedNow + 30 * 24 * 60 * 60 * 1000)
+  const now = new Date(cachedNow)
   const daysUntilExpiry = Math.ceil((validityDateObj.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
   const isExpired = daysUntilExpiry < 0
   const isExpiringSoon = !isExpired && daysUntilExpiry <= 7
@@ -356,11 +363,11 @@ export function EstimateDocument({
         </h1>
         {fullAddress && (
           <p className="mt-3 text-slate-400 flex items-center justify-center gap-1.5 text-base">
-            <MapPin className="h-4 w-4 text-slate-500" />
+            <MapPin className="h-4 w-4 text-slate-400" />
             {fullAddress}
           </p>
         )}
-        <div className="mt-3 flex items-center justify-center gap-4 text-xs text-slate-500">
+        <div className="mt-3 flex items-center justify-center gap-4 text-xs text-slate-400">
           <span className="flex items-center gap-1.5">
             <FileText className="h-3.5 w-3.5" />
             {displayEstimateNumber}
@@ -376,7 +383,7 @@ export function EstimateDocument({
       <Card className="overflow-hidden border-0 shadow-xl shadow-black/20">
         <CardHeader className="bg-gradient-to-r from-[#c9a25c] to-[#9a7432] text-[#0c0f14] py-3 px-6">
           <CardTitle className="text-center text-sm font-semibold text-[#0c0f14] uppercase tracking-wider">
-            Estimated Investment &mdash; {jobTypeLabel}
+            Estimated Investment: {jobTypeLabel}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0 bg-[#161a23]">
@@ -400,11 +407,11 @@ export function EstimateDocument({
                 />
               </div>
               <div className="mt-2 flex justify-between text-xs">
-                <div className="text-slate-500">
+                <div className="text-slate-400">
                   <span className="block text-[10px] uppercase tracking-wide">Low</span>
                   <span className="font-medium text-slate-400">{formatCurrency(priceLow)}</span>
                 </div>
-                <div className="text-slate-500 text-right">
+                <div className="text-slate-400 text-right">
                   <span className="block text-[10px] uppercase tracking-wide">High</span>
                   <span className="font-medium text-slate-400">{formatCurrency(priceHigh)}</span>
                 </div>
@@ -415,7 +422,7 @@ export function EstimateDocument({
           {/* Price factors */}
           {factors && factors.length > 0 && (
             <div className="border-t border-slate-700/50 mx-6 pt-4 pb-2">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Price Factors</p>
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Price Factors</p>
               <div className="space-y-2">
                 {factors.map((factor, index) => (
                   <div key={index} className="flex items-center justify-between text-sm">
@@ -435,7 +442,7 @@ export function EstimateDocument({
 
           {/* AI Explanation */}
           <div className="m-4 rounded-lg bg-[#0c0f14]/60 border border-slate-700/50 p-5">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Estimate Summary</p>
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Estimate Summary</p>
             {explanation ? (
               <FormattedExplanation text={explanation} />
             ) : (
@@ -469,21 +476,20 @@ export function EstimateDocument({
       </Card>
 
       {/* ================================================================
-          SECTION 5: PRIMARY CTA - Don't make them scroll further
+          SECTION 5: NEXT STEPS PANEL - Decisive 4-path decision helper
           ================================================================ */}
-      <div className="space-y-4">
-        <div className="text-center">
-          <p className="text-sm text-slate-400">
-            Ready to move forward? Your free consultation confirms exact pricing.
-          </p>
-        </div>
-        <CTABlock
-          onScheduleConsultation={onScheduleConsultation}
-          handleCallNow={handleCallNow}
-          phoneNumber={phoneDisplay}
-          calendlyUrl={calendlyUrl}
-        />
-      </div>
+      <NextStepsPanel
+        phoneDisplay={phoneDisplay}
+        phoneLink={phoneLink}
+        calendlyUrl={calendlyUrl}
+        shareUrl={shareUrl}
+        onScheduleConsultation={onScheduleConsultation}
+        onShare={onShare || (() => {})}
+        onDownload={onDownload || (() => {})}
+        onCreateAccount={onCreateAccount}
+        accountStatus={accountStatus}
+        isDownloading={isDownloading}
+      />
 
       {/* ================================================================
           SECTION 6: WHAT HAPPENS NEXT - Reduce anxiety, show the path
@@ -504,7 +510,7 @@ export function EstimateDocument({
                 </div>
                 <p className="text-xs font-bold text-[#c9a25c] uppercase tracking-wider mb-1">Step {step}</p>
                 <p className="text-sm font-semibold text-slate-200">{title}</p>
-                <p className="text-xs text-slate-500 mt-1">{desc}</p>
+                <p className="text-xs text-slate-400 mt-1">{desc}</p>
               </div>
             ))}
           </div>
@@ -530,37 +536,37 @@ export function EstimateDocument({
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-4">
               {roofSizeSqft && (
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Roof Size</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wide">Roof Size</p>
                   <p className="text-slate-200 font-medium">{roofSizeSqft.toLocaleString()} sq ft</p>
                 </div>
               )}
               {roofMaterial && (
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Material</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wide">Material</p>
                   <p className="text-slate-200 font-medium">{materialLabel}</p>
                 </div>
               )}
               {roofAgeYears !== null && roofAgeYears !== undefined && (
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Roof Age</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wide">Roof Age</p>
                   <p className="text-slate-200 font-medium">{roofAgeYears} years</p>
                 </div>
               )}
               {stories > 1 && (
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Stories</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wide">Stories</p>
                   <p className="text-slate-200 font-medium">{stories} Stories</p>
                 </div>
               )}
               {roofPitch && roofPitch !== 'unknown' && (
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Roof Pitch</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wide">Roof Pitch</p>
                   <p className="text-slate-200 font-medium">{formatPitch(roofPitch)}</p>
                 </div>
               )}
               {timelineUrgency && (
                 <div>
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Timeline</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wide">Timeline</p>
                   <p className="text-slate-200 font-medium">{formatTimeline(timelineUrgency)}</p>
                 </div>
               )}
@@ -568,7 +574,7 @@ export function EstimateDocument({
 
             {(hasSkylights || hasChimneys || hasSolarPanels) && (
               <div className="border-t border-slate-700/50 pt-4 mb-4">
-                <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Roof Features</p>
+                <p className="text-xs text-slate-400 uppercase tracking-wide mb-2">Roof Features</p>
                 <div className="flex flex-wrap gap-2">
                   {hasSkylights && (
                     <span className="px-2.5 py-1 bg-slate-800 text-slate-300 text-xs rounded-md">Skylights</span>
@@ -587,7 +593,7 @@ export function EstimateDocument({
               <div className="border-t border-slate-700/50 pt-4 mb-4">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertTriangle className="h-4 w-4 text-red-400" />
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Issues Identified</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wide">Issues Identified</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {issues.map((issue) => (
@@ -603,7 +609,7 @@ export function EstimateDocument({
               <div className="border-t border-slate-700/50 pt-4 mb-4">
                 <div className="flex items-center gap-2 mb-2">
                   <FileText className="h-4 w-4 text-blue-400" />
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">Insurance Claim</p>
+                  <p className="text-xs text-slate-400 uppercase tracking-wide">Insurance Claim</p>
                 </div>
                 <p className="text-slate-200 text-sm">
                   {insuranceCompany || 'Insurance claim in progress'}
@@ -614,24 +620,26 @@ export function EstimateDocument({
             {photos.length > 0 && (
               <div className="border-t border-slate-700/50 pt-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Image className="h-4 w-4 text-[#c9a25c]" />
-                  <p className="text-xs text-slate-500 uppercase tracking-wide">
+                  <ImageIcon className="h-4 w-4 text-[#c9a25c]" />
+                  <p className="text-xs text-slate-400 uppercase tracking-wide">
                     {photos.length} {photos.length === 1 ? 'Photo' : 'Photos'} Uploaded
                   </p>
                 </div>
                 <div className="grid grid-cols-6 gap-2">
                   {photos.slice(0, 6).map((photo, index) => (
-                    <div key={index} className="aspect-square overflow-hidden rounded bg-slate-800">
-                      <img
+                    <div key={index} className="relative aspect-square overflow-hidden rounded bg-slate-800">
+                      <NextImage
                         src={photo.previewUrl}
                         alt={`Roof photo ${index + 1}`}
-                        className="h-full w-full object-cover"
+                        fill
+                        className="object-cover"
+                        unoptimized
                       />
                     </div>
                   ))}
                 </div>
                 {photos.length > 6 && (
-                  <p className="text-xs text-slate-500 mt-1">+{photos.length - 6} more</p>
+                  <p className="text-xs text-slate-400 mt-1">+{photos.length - 6} more</p>
                 )}
               </div>
             )}
@@ -648,7 +656,7 @@ export function EstimateDocument({
             <ClipboardCheck className="h-5 w-5 text-[#c9a25c]" />
             <h3 className="font-semibold text-slate-100">Before You Accept Any Roofing Bid</h3>
           </div>
-          <p className="text-sm text-slate-500 mb-4">
+          <p className="text-sm text-slate-400 mb-4">
             Protect yourself and your investment. Use this checklist when comparing estimates.
           </p>
           <div className="grid gap-2 md:grid-cols-2">
@@ -659,7 +667,7 @@ export function EstimateDocument({
               'Check online reviews and ask for local references',
               'Confirm the exact materials and brands to be used',
               'Ensure the contract includes a start and completion date',
-              'Ask about the warranty \u2014 workmanship AND manufacturer',
+              'Ask about the warranty: workmanship AND manufacturer',
               'Understand the payment schedule (never pay 100% upfront)',
               'Ask if they pull the necessary building permits',
               'Check for a lien waiver clause protecting your property',
@@ -708,7 +716,7 @@ export function EstimateDocument({
                   Your Project Portal is Ready
                 </h3>
                 <p className="text-sm text-slate-400 mb-5 max-w-md mx-auto">
-                  We&apos;ve set up your project portal — check your email for access. View your estimate, explore financing options, and track your project anytime.
+                  We&apos;ve set up your project portal. Check your email for access. View your estimate, explore financing options, and track your project anytime.
                 </p>
                 <Button
                   variant="primary"
@@ -795,7 +803,7 @@ export function EstimateDocument({
       {/* ================================================================
           SECTION 12: DISCLAIMER + FOOTER
           ================================================================ */}
-      <div className="rounded-lg bg-[#1a1f2e]/60 border border-slate-700/50 px-5 py-4 text-center text-xs text-slate-500 space-y-1">
+      <div className="rounded-lg bg-[#1a1f2e]/60 border border-slate-700/50 px-5 py-4 text-center text-xs text-slate-400 space-y-1">
         <p>
           This is a preliminary estimate based on the information you provided.
           Final pricing confirmed after free on-site inspection. No obligation.

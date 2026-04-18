@@ -114,7 +114,11 @@ export default function EstimatePage() {
   }, [leadId, shareToken, showToast, trackEngagement, isDownloading])
 
   const handleShare = useCallback(async () => {
-    const shareUrl = window.location.href
+    // Share the public read-only estimate URL, not the funnel URL.
+    // This is the link a spouse / relative should open.
+    const shareUrl = shareToken
+      ? `${window.location.origin}/estimate/${shareToken}`
+      : window.location.href
     const shareData = {
       title: 'My Roofing Estimate',
       text: estimate
@@ -137,7 +141,7 @@ export default function EstimatePage() {
         showToast('Unable to copy link', 'error')
       }
     }
-  }, [estimate, showToast])
+  }, [estimate, showToast, shareToken])
 
   const handleBack = useCallback(() => {
     router.back()
@@ -316,6 +320,7 @@ export default function EstimatePage() {
       onStartNew={handleStartNew}
       onCreateAccount={handleCreateAccount}
       calendlyUrl={CALENDLY_URL}
+      shareUrl={shareToken ? `${typeof window !== 'undefined' ? window.location.origin : ''}/estimate/${shareToken}` : undefined}
       accountStatus={accountStatus}
       isDownloading={isDownloading}
       // Project details

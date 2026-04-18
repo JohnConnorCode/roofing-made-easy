@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import { Shield } from 'lucide-react'
 import { useCurrentStep, useFunnelStore } from '@/stores/funnelStore'
 import { ProgressBar } from './progress-bar'
 import { cn } from '@/lib/utils'
@@ -67,6 +68,16 @@ export function FunnelLayout({ children, className }: FunnelLayoutProps) {
         role="main"
       >
         {children}
+
+        {/* Reassurance footer — reminds the user their work is safe */}
+        {currentStep < 4 && (
+          <div className="mt-10 flex items-center justify-center gap-2 text-xs text-slate-500">
+            <Shield className="h-3.5 w-3.5 text-[#c9a25c]/60" />
+            <span>
+              Your progress saves as you go. You can close this tab and come back &mdash; nothing is lost.
+            </span>
+          </div>
+        )}
       </main>
 
       {/* Site Footer */}
