@@ -192,6 +192,7 @@ export async function PATCH(
                 .select('id')
                 .eq('job_id', jobId)
                 .eq('payment_type', 'progress')
+                .is('deleted_at', null)
                 .ilike('notes', `${milestone.milestone_name}%`)
 
               if (existingInvoices && existingInvoices.length > 0) {

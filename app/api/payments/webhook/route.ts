@@ -189,6 +189,7 @@ async function handlePaymentSuccess(
       .from('invoices')
       .select('total')
       .eq('id', invoice_id)
+      .is('deleted_at', null)
       .single()
 
     if (invoice) {
@@ -202,6 +203,7 @@ async function handlePaymentSuccess(
           paid_at: newBalance <= 0 ? new Date().toISOString() : null,
         } as never)
         .eq('id', invoice_id)
+        .is('deleted_at', null)
     }
   }
 

@@ -7,11 +7,17 @@ import { JobProgress, EmptyState } from '@/components/customer'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Hammer } from 'lucide-react'
 import { useAnalytics } from '@/lib/analytics'
+import { useCustomerJobRealtime } from '@/lib/realtime/useCustomerJobRealtime'
 
 export default function ProjectPage() {
-  const { selectedLeadId, jobs, setJobs } = useCustomerStore()
+  const { customer, selectedLeadId, jobs, setJobs } = useCustomerStore()
   const { trackEngagement } = useAnalytics()
   const [isLoading, setIsLoading] = useState(true)
+
+  // Live updates — when the payments webhook flips pending_deposit → pending_start
+  // (or any other server-side transition), the UI re-renders immediately. Initial
+  // fetch below still runs — realtime is an enhancement, not a replacement.
+  useCustomerJobRealtime(customer?.id ?? null)
 
   useEffect(() => {
     async function fetchJobs() {

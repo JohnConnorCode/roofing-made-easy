@@ -57,6 +57,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         )
       `)
       .eq('id', invoiceId)
+      .is('deleted_at', null)
       .single()
 
     if (error || !invoice) {

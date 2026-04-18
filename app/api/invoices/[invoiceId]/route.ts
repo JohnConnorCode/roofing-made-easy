@@ -51,6 +51,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         invoice_payments(*)
       `)
       .eq('id', invoiceId)
+      .is('deleted_at', null)
       .single()
 
     if (error || !invoice) {
@@ -95,6 +96,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .from('invoices')
       .select('id, status, invoice_number, total')
       .eq('id', invoiceId)
+      .is('deleted_at', null)
       .single()
 
     if (fetchError || !existingInvoice) {
@@ -130,6 +132,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .from('invoices')
       .update(updateData as never)
       .eq('id', invoiceId)
+      .is('deleted_at', null)
       .select(`
         *,
         invoice_line_items(*),
@@ -178,6 +181,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       .from('invoices')
       .select('id, status, invoice_number, total')
       .eq('id', invoiceId)
+      .is('deleted_at', null)
       .single()
 
     if (fetchError || !invoice) {
@@ -195,13 +199,16 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       )
     }
 
+    // Soft delete — financial records must survive for audit. Restore via
+    // POST /api/invoices/[invoiceId]/restore if deleted in error.
     const { error: deleteError } = await supabase
       .from('invoices')
-      .delete()
+      .update({ deleted_at: new Date().toISOString() } as never)
       .eq('id', invoiceId)
+      .is('deleted_at', null)
 
     if (deleteError) {
-      logger.error('Error deleting invoice', { error: String(deleteError) })
+      logger.error('Error soft-deleting invoice', { error: String(deleteError) })
       return NextResponse.json(
         { error: 'Failed to delete invoice' },
         { status: 500 }

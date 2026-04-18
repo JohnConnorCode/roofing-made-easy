@@ -40,6 +40,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         invoice_line_items(*)
       `)
       .eq('id', invoiceId)
+      .is('deleted_at', null)
       .single()
 
     if (error || !invoice) {

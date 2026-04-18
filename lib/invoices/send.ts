@@ -29,6 +29,7 @@ export async function sendInvoiceEmail(
       )
     `)
     .eq('id', invoiceId)
+    .is('deleted_at', null)
     .single()
 
   if (fetchError || !invoice) {

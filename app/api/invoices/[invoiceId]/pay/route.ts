@@ -52,11 +52,12 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     const supabase = await createClient()
 
-    // Get the invoice
+    // Get the invoice (soft-deleted invoices cannot be paid)
     const { data: invoice, error: fetchError } = await supabase
       .from('invoices')
       .select('id, lead_id, customer_id, invoice_number, total, balance_due, status')
       .eq('id', invoiceId)
+      .is('deleted_at', null)
       .single()
 
     if (fetchError || !invoice) {

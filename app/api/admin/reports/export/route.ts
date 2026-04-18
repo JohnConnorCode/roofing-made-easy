@@ -48,6 +48,7 @@ export async function GET(request: NextRequest) {
       const { data: invoices } = await supabase
         .from('invoices')
         .select('invoice_number, status, total, amount_paid, balance_due, bill_to_name, issue_date, due_date')
+        .is('deleted_at', null)
         .order('issue_date', { ascending: false })
 
       csvContent = 'Invoice Number,Status,Total,Amount Paid,Balance Due,Bill To,Issue Date,Due Date\n'

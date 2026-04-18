@@ -125,6 +125,7 @@ export interface CustomerActions {
 
   // Jobs
   setJobs: (jobs: CustomerJob[]) => void
+  updateJob: (id: string, updates: Partial<CustomerJob>) => void
 
   // Reset
   resetCustomerStore: () => void
@@ -207,6 +208,9 @@ export const useCustomerStore = create<CustomerState & CustomerActions>()(
 
       // Jobs
       setJobs: (jobs) => set({ jobs }),
+      updateJob: (id, updates) => set((state) => ({
+        jobs: state.jobs.map((j) => (j.id === id ? { ...j, ...updates } : j)),
+      })),
 
       // Reset
       resetCustomerStore: () => set(initialState),

@@ -49,6 +49,7 @@ export async function POST(
       .from('invoices')
       .select('id, balance_due, status')
       .eq('id', invoiceId)
+      .is('deleted_at', null)
       .single()
 
     if (!invoice) {

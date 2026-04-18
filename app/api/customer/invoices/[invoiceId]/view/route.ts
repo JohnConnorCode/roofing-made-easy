@@ -29,6 +29,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       .from('invoices')
       .select('id, lead_id, customer_id, status')
       .eq('id', invoiceId)
+      .is('deleted_at', null)
       .single()
 
     if (!invoice) {

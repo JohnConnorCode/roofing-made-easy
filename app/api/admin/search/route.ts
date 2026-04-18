@@ -82,6 +82,7 @@ export async function GET(request: NextRequest) {
       .from('invoices')
       .select('id, invoice_number, bill_to_name, total, status')
       .or(`invoice_number.ilike.${searchPattern},bill_to_name.ilike.${searchPattern}`)
+      .is('deleted_at', null)
       .limit(limit)
 
     if (invoices) {

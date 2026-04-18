@@ -41,6 +41,7 @@ export async function GET() {
     }
 
     const { data: invoices, error } = await query
+      .is('deleted_at', null)
       .not('status', 'eq', 'draft')
       .order('created_at', { ascending: false })
 

@@ -35,6 +35,7 @@ export async function GET() {
       const { data: invoices } = await supabase
         .from('invoices')
         .select('id, invoice_number, bill_to_name, bill_to_email, total, amount_paid, balance_due, issue_date, due_date, status')
+        .is('deleted_at', null)
         .not('status', 'in', '(paid,cancelled,refunded)')
         .gt('balance_due', 0)
         .order('due_date', { ascending: true })

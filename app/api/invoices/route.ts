@@ -63,6 +63,7 @@ export async function GET(request: NextRequest) {
         invoice_line_items(*),
         invoice_payments(*)
       `, { count: 'exact' })
+      .is('deleted_at', null)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1)
 
