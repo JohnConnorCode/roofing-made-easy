@@ -109,7 +109,7 @@ function LineItemRow({
 
       {/* Item code */}
       <td className="py-3 px-2">
-        <span className="text-xs font-mono text-slate-500">{item.item_code}</span>
+        <span className="text-xs font-mono text-slate-400">{item.item_code}</span>
       </td>
 
       {/* Name */}
@@ -120,7 +120,7 @@ function LineItemRow({
             <span className="ml-2 text-xs text-[#c9a25c]">(Optional)</span>
           )}
           {item.notes && (
-            <p className="text-xs text-slate-500 mt-0.5">{item.notes}</p>
+            <p className="text-xs text-slate-400 mt-0.5">{item.notes}</p>
           )}
         </div>
       </td>
@@ -154,7 +154,7 @@ function LineItemRow({
           </button>
         )}
         {item.waste_factor > 1 && (
-          <span className="text-xs text-slate-500 block">
+          <span className="text-xs text-slate-400 block">
             ({item.quantity.toFixed(2)} + {((item.waste_factor - 1) * 100).toFixed(0)}% waste)
           </span>
         )}
@@ -183,7 +183,7 @@ function LineItemRow({
           <Button
             variant="ghost"
             size="sm"
-            className="h-7 w-7 p-0 text-slate-500 hover:text-red-400"
+            className="h-7 w-7 p-0 text-slate-400 hover:text-red-400"
             onClick={() => onRemove?.(item.id)}
           >
             <svg
@@ -237,7 +237,7 @@ export function LineItemTable({
 
   // Group and sort items
   const groupedItems = useMemo(() => {
-    let items = [...lineItems]
+    const items = [...lineItems]
 
     // Sort
     if (sortBy === 'name') {

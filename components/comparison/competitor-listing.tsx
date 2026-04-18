@@ -59,7 +59,7 @@ interface ContractorTypeCardProps {
   city: MSCity
 }
 
-function ContractorTypeCard({ contractorType, city }: ContractorTypeCardProps) {
+function ContractorTypeCard({ contractorType }: ContractorTypeCardProps) {
   return (
     <div className="bg-slate-deep border border-gold/10 rounded-xl p-6 hover:border-gold/20 transition-colors">
       {/* Header */}
@@ -115,22 +115,6 @@ function ContractorTypeCard({ contractorType, city }: ContractorTypeCardProps) {
       </div>
     </div>
   )
-}
-
-// Legacy interface for backward compatibility
-interface CompetitorCompany {
-  id: string
-  name: string
-  description: string
-  services: string[]
-  yearsInBusiness?: number
-  serviceArea: string
-}
-
-// Legacy props interface - competitors param is now ignored
-interface LegacyCompetitorListingProps {
-  city: MSCity
-  competitors?: CompetitorCompany[]
 }
 
 // Named export for flexibility

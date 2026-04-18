@@ -107,7 +107,7 @@ function ToastItem({
   const iconMap = {
     success: <CheckCircle className="h-5 w-5 text-green-600" />,
     error: <AlertCircle className="h-5 w-5 text-red-600" />,
-    info: <Info className="h-5 w-5 text-slate-600" />,
+    info: <Info className="h-5 w-5 text-slate-400" />,
   }
 
   return (

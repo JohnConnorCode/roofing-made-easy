@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { isRealPortfolioData } from '@/lib/data/portfolio'
+import { getAllBlogPosts } from '@/lib/data/blog'
 
 const INDEXNOW_KEY = process.env.INDEXNOW_KEY || ''
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
@@ -12,6 +13,9 @@ export async function POST() {
   if (!INDEXNOW_KEY) {
     return NextResponse.json({ error: 'INDEXNOW_KEY not configured' }, { status: 500 })
   }
+
+  // Build blog post URLs dynamically
+  const blogUrls = (await getAllBlogPosts()).map(post => `${BASE_URL}/blog/${post.slug}`)
 
   // Collect all important URLs to submit
   const urls = [
@@ -29,11 +33,7 @@ export async function POST() {
     `${BASE_URL}/pricing/roof-replacement-cost`,
     `${BASE_URL}/pricing/metal-roof-cost`,
     `${BASE_URL}/pricing/roof-repair-cost`,
-    `${BASE_URL}/blog/new-roof-cost-mississippi-2026`,
-    `${BASE_URL}/blog/metal-roof-vs-shingles-cost`,
-    `${BASE_URL}/blog/roof-replacement-cost-factors`,
-    `${BASE_URL}/blog/free-roof-inspection-what-to-expect`,
-    `${BASE_URL}/blog/mississippi-storm-damage-insurance-coverage`,
+    ...blogUrls,
   ]
 
   try {
@@ -53,7 +53,7 @@ export async function POST() {
       submitted: urls.length,
       message: response.ok ? 'URLs submitted to IndexNow (Bing, Yandex, Seznam, Naver)' : 'Submission may have failed',
     })
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'IndexNow submission failed' }, { status: 500 })
   }
 }

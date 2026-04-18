@@ -149,7 +149,7 @@ export function getScoreTierDisplay(tier: LeadScore['tier']): {
     case 'cool':
       return {
         label: 'Cool',
-        className: 'bg-slate-100 text-slate-600',
+        className: 'bg-slate-100 text-slate-400',
         emoji: '',
       }
   }

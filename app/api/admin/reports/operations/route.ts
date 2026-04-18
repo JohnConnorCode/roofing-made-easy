@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     const jobIds = jobRows.map(j => j.id)
 
     // Fetch time entries, daily logs, change orders, and status history in parallel
-    const [timeResult, logsResult, changeOrderResult, statusHistoryResult] = await Promise.all([
+    const [timeResult, logsResult, changeOrderResult, _statusHistoryResult] = await Promise.all([
       jobIds.length > 0
         ? supabase
             .from('time_entries')
@@ -82,10 +82,6 @@ export async function GET(request: NextRequest) {
     const changeOrders = (changeOrderResult.data || []) as Array<{
       job_id: string; cost_delta: number; status: string; reason: string | null; created_at: string
     }>
-    const statusHistory = (statusHistoryResult.data || []) as Array<{
-      job_id: string; old_status: string | null; new_status: string; created_at: string
-    }>
-
     // Schedule Adherence
     const completedJobs = jobRows.filter(j =>
       ['completed', 'warranty_active', 'closed'].includes(j.status)

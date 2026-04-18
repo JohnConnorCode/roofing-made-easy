@@ -4,7 +4,7 @@
 
 import twilio from 'twilio'
 import { createClient } from '@/lib/supabase/server'
-import { getBusinessConfig, getPhoneDisplay } from '@/lib/config/business'
+import { getPhoneDisplay } from '@/lib/config/business'
 import type { MessageStatus } from './types'
 
 interface SendSMSOptions {

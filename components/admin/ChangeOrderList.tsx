@@ -228,13 +228,13 @@ export function ChangeOrderList({ jobId, contractAmount }: ChangeOrderListProps)
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-slate-500">Original Contract</p>
+            <p className="text-sm text-slate-400">Original Contract</p>
             <p className="text-xl font-bold text-slate-900">{formatCurrency(contractAmount - netDelta)}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-slate-500">Net Change</p>
+            <p className="text-sm text-slate-400">Net Change</p>
             <p className={`text-xl font-bold ${netDelta >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {netDelta >= 0 ? '+' : ''}{formatCurrency(netDelta)}
             </p>
@@ -242,7 +242,7 @@ export function ChangeOrderList({ jobId, contractAmount }: ChangeOrderListProps)
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-slate-500">Updated Contract</p>
+            <p className="text-sm text-slate-400">Updated Contract</p>
             <p className="text-xl font-bold text-slate-900">{formatCurrency(contractAmount)}</p>
           </CardContent>
         </Card>
@@ -311,13 +311,13 @@ export function ChangeOrderList({ jobId, contractAmount }: ChangeOrderListProps)
                   Cancel
                 </Button>
               </div>
-              <p className="text-xs text-slate-500">Use positive values for additions, negative for reductions</p>
+              <p className="text-xs text-slate-400">Use positive values for additions, negative for reductions</p>
             </div>
           )}
 
           {/* List */}
           {changeOrders.length === 0 ? (
-            <p className="text-slate-500 text-center py-6">No change orders yet</p>
+            <p className="text-slate-400 text-center py-6">No change orders yet</p>
           ) : (
             <div className="space-y-2">
               {changeOrders.map((co) => {
@@ -378,14 +378,14 @@ export function ChangeOrderList({ jobId, contractAmount }: ChangeOrderListProps)
                   <div key={co.id} className="flex items-center justify-between p-3 rounded-lg border border-slate-200">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs font-mono text-slate-500">{co.change_order_number}</span>
+                        <span className="text-xs font-mono text-slate-400">{co.change_order_number}</span>
                         <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${statusConfig.className}`}>
                           <StatusIcon className="h-3 w-3" />
                           {statusConfig.label}
                         </span>
                       </div>
                       <p className="text-sm font-medium text-slate-900 truncate">{co.description}</p>
-                      {co.reason && <p className="text-xs text-slate-500 mt-0.5">{co.reason}</p>}
+                      {co.reason && <p className="text-xs text-slate-400 mt-0.5">{co.reason}</p>}
                       <div className="flex items-center gap-2 mt-1">
                         <p className="text-xs text-slate-400">{formatDate(co.created_at)}</p>
                         {co.created_by_user && formatUserName(co.created_by_user) && (
@@ -408,7 +408,7 @@ export function ChangeOrderList({ jobId, contractAmount }: ChangeOrderListProps)
                           <button
                             onClick={() => startEdit(co)}
                             disabled={saving}
-                            className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded disabled:opacity-50"
+                            className="p-1.5 text-slate-400 hover:text-slate-400 hover:bg-slate-100 rounded disabled:opacity-50"
                             aria-label={`Edit change order ${co.change_order_number}`}
                           >
                             <Pencil className="h-4 w-4" />

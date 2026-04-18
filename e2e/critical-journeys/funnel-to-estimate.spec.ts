@@ -5,7 +5,7 @@
  * through to receiving an estimate. This is the primary revenue flow.
  */
 
-import { test, expect, Page } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 import { generateTestEmail, generateTestPhone } from '../helpers/test-data'
 
 // Test data for this journey
@@ -33,7 +33,7 @@ test.describe('Lead Funnel to Estimate Journey', () => {
         await request.patch(`/api/leads/${createdLeadId}`, {
           data: { status: 'archived' },
         })
-      } catch (e) {
+      } catch {
         console.log('Cleanup: Could not archive test lead')
       }
     }

@@ -65,14 +65,14 @@ function createMockPricingRule(overrides: PricingRuleInput = {}) {
 
 // Mock Supabase client
 function createMockQueryBuilder(table: string) {
-  let filters: Array<{ column: string; value: unknown; operator: string }> = []
+  const filters: Array<{ column: string; value: unknown; operator: string }> = []
   let insertData: unknown = null
   let updateData: unknown = null
   let isSingle = false
-  let orderColumns: string[] = []
+  const orderColumns: string[] = []
 
   const builder = {
-    select: (columns?: string) => builder,
+    select: (_columns?: string) => builder,
     insert: (data: unknown) => {
       insertData = data
       return builder
@@ -81,7 +81,7 @@ function createMockQueryBuilder(table: string) {
       updateData = data
       return builder
     },
-    upsert: (data: unknown, opts?: { onConflict?: string }) => {
+    upsert: (data: unknown, _opts?: { onConflict?: string }) => {
       insertData = data
       return builder
     },

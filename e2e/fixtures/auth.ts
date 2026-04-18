@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test'
+import { Page } from '@playwright/test'
 
 /**
  * Shared authentication fixture for admin E2E tests.

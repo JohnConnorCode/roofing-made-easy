@@ -99,7 +99,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url,
-      siteName: 'Smart Roof Pricing',
+      siteName: 'Farrell Roofing',
       locale: 'en_US',
       type: 'article',
       images: [

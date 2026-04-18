@@ -15,7 +15,7 @@ describe('BarChart', () => {
   })
 
   it('renders correct number of bars for vertical chart (default)', () => {
-    const { container } = render(<BarChart data={sampleData} />)
+    const { container: _container } = render(<BarChart data={sampleData} />)
     // Each vertical bar item is a flex column div containing the value, bar, and label
     // The labels are rendered as text content
     for (const item of sampleData) {

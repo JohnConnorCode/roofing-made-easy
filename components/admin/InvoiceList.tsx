@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Table,
@@ -53,14 +53,14 @@ interface InvoiceListProps {
 }
 
 const STATUS_CONFIG: Record<string, { icon: React.ElementType; className: string; label: string }> = {
-  draft: { icon: FileText, className: 'text-slate-500 bg-slate-100', label: 'Draft' },
+  draft: { icon: FileText, className: 'text-slate-400 bg-slate-100', label: 'Draft' },
   sent: { icon: Send, className: 'text-blue-600 bg-blue-100', label: 'Sent' },
   viewed: { icon: Eye, className: 'text-purple-600 bg-purple-100', label: 'Viewed' },
   paid: { icon: CheckCircle, className: 'text-green-600 bg-green-100', label: 'Paid' },
   partially_paid: { icon: Clock, className: 'text-amber-600 bg-amber-100', label: 'Partial' },
   overdue: { icon: AlertCircle, className: 'text-red-600 bg-red-100', label: 'Overdue' },
-  cancelled: { icon: XCircle, className: 'text-slate-500 bg-slate-100', label: 'Cancelled' },
-  refunded: { icon: RefreshCw, className: 'text-slate-600 bg-slate-100', label: 'Refunded' },
+  cancelled: { icon: XCircle, className: 'text-slate-400 bg-slate-100', label: 'Cancelled' },
+  refunded: { icon: RefreshCw, className: 'text-slate-400 bg-slate-100', label: 'Refunded' },
 }
 
 export function InvoiceList({
@@ -79,14 +79,9 @@ export function InvoiceList({
   const [sendingInvoiceId, setSendingInvoiceId] = useState<string | null>(null)
   const [sendSuccess, setSendSuccess] = useState<string | null>(null)
   const [sendError, setSendError] = useState<string | null>(null)
+  const hasInitialInvoices = useRef(!!initialInvoices)
 
-  useEffect(() => {
-    if (!initialInvoices) {
-      fetchInvoices()
-    }
-  }, [leadId, customerId, jobId, statusFilter])
-
-  async function fetchInvoices() {
+  const fetchInvoices = useCallback(async () => {
     try {
       setLoading(true)
       const params = new URLSearchParams()
@@ -105,7 +100,13 @@ export function InvoiceList({
     } finally {
       setLoading(false)
     }
-  }
+  }, [leadId, customerId, jobId, statusFilter])
+
+  useEffect(() => {
+    if (!hasInitialInvoices.current) {
+      fetchInvoices()
+    }
+  }, [fetchInvoices])
 
   function getCustomerName(invoice: InvoiceListItem): string {
     if (invoice.bill_to_name) return invoice.bill_to_name
@@ -213,7 +214,7 @@ export function InvoiceList({
       {filteredInvoices.length === 0 ? (
         <div className="text-center py-12 bg-slate-50 rounded-lg border border-dashed border-slate-200">
           <FileText className="mx-auto h-12 w-12 text-slate-300 mb-3" />
-          <p className="text-slate-500">No invoices found</p>
+          <p className="text-slate-400">No invoices found</p>
           {showCreateButton && (
             <Button
               variant="outline"
@@ -256,7 +257,7 @@ export function InvoiceList({
                       <div>
                         <div className="font-medium text-slate-900">{getCustomerName(invoice)}</div>
                         {invoice.bill_to_email && (
-                          <div className="text-xs text-slate-500">{invoice.bill_to_email}</div>
+                          <div className="text-xs text-slate-400">{invoice.bill_to_email}</div>
                         )}
                       </div>
                     </TableCell>
@@ -266,7 +267,7 @@ export function InvoiceList({
                         {statusConfig.label}
                       </span>
                     </TableCell>
-                    <TableCell className="capitalize text-slate-500">
+                    <TableCell className="capitalize text-slate-400">
                       {invoice.payment_type.replace('_', ' ')}
                     </TableCell>
                     <TableCell className="text-right font-medium">
@@ -291,7 +292,7 @@ export function InvoiceList({
                             e.stopPropagation()
                             window.open(`/api/invoices/${invoice.id}/pdf`, '_blank')
                           }}
-                          className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded"
+                          className="p-1.5 text-slate-400 hover:text-slate-400 hover:bg-slate-100 rounded"
                           title="Download PDF"
                         >
                           <Download className="h-4 w-4" />

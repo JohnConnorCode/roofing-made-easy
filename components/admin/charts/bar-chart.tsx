@@ -28,7 +28,7 @@ export function BarChart({ data, height = 200, formatValue, horizontal = false }
           return (
             <div key={idx}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm text-slate-600 truncate">{item.label}</span>
+                <span className="text-sm text-slate-400 truncate">{item.label}</span>
                 <span className="text-sm font-medium text-slate-900 ml-2">
                   {formatValue ? formatValue(item.value) : item.value.toLocaleString()}
                 </span>
@@ -53,7 +53,7 @@ export function BarChart({ data, height = 200, formatValue, horizontal = false }
         const color = item.color || defaultColors[idx % defaultColors.length]
         return (
           <div key={idx} className="flex-1 flex flex-col items-center gap-1">
-            <span className="text-[10px] text-slate-500 font-medium">
+            <span className="text-[10px] text-slate-400 font-medium">
               {formatValue ? formatValue(item.value) : item.value.toLocaleString()}
             </span>
             <div
@@ -61,7 +61,7 @@ export function BarChart({ data, height = 200, formatValue, horizontal = false }
               style={{ height: Math.max(barHeight, 2), backgroundColor: color }}
               title={`${item.label}: ${formatValue ? formatValue(item.value) : item.value}`}
             />
-            <span className="text-[10px] text-slate-500 truncate w-full text-center">{item.label}</span>
+            <span className="text-[10px] text-slate-400 truncate w-full text-center">{item.label}</span>
           </div>
         )
       })}

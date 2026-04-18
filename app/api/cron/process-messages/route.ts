@@ -13,6 +13,7 @@ import { sendEmail } from '@/lib/communication/send-email'
 import { sendSMS } from '@/lib/communication/send-sms'
 import { emailWrapper } from '@/lib/email/templates'
 import { logger } from '@/lib/logger'
+import { safeCompare } from '@/lib/utils'
 
 const CRON_SECRET = process.env.CRON_SECRET
 
@@ -53,9 +54,9 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Verify cron secret - ALWAYS required in all environments
-  const authHeader = request.headers.get('authorization')
-  if (authHeader !== `Bearer ${CRON_SECRET}`) {
+  // Verify cron secret using constant-time comparison
+  const authHeader = request.headers.get('authorization') || ''
+  if (!safeCompare(authHeader, `Bearer ${CRON_SECRET}`)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

@@ -187,7 +187,7 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
       {/* Back button */}
       <button
         onClick={() => router.back()}
-        className="inline-flex items-center text-sm text-slate-500 hover:text-slate-700"
+        className="inline-flex items-center text-sm text-slate-400 hover:text-slate-700"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
         Back
@@ -217,24 +217,24 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
               <h3 className="font-medium text-slate-900 mb-3">Customer Information</h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <span className="text-slate-500">Name:</span>
+                  <span className="text-slate-400">Name:</span>
                   <span className="ml-2 text-slate-900">{customerName}</span>
                 </div>
                 {contact?.email && (
                   <div>
-                    <span className="text-slate-500">Email:</span>
+                    <span className="text-slate-400">Email:</span>
                     <span className="ml-2 text-slate-900">{contact.email}</span>
                   </div>
                 )}
                 {contact?.phone && (
                   <div>
-                    <span className="text-slate-500">Phone:</span>
+                    <span className="text-slate-400">Phone:</span>
                     <span className="ml-2 text-slate-900">{contact.phone}</span>
                   </div>
                 )}
                 {property && (
                   <div className="col-span-2">
-                    <span className="text-slate-500">Address:</span>
+                    <span className="text-slate-400">Address:</span>
                     <span className="ml-2 text-slate-900">
                       {property.street_address}, {property.city}, {property.state} {property.zip_code}
                     </span>
@@ -308,7 +308,7 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
 
             <div className="space-y-3">
               {/* Header */}
-              <div className="grid grid-cols-12 gap-2 text-xs font-medium text-slate-500 uppercase">
+              <div className="grid grid-cols-12 gap-2 text-xs font-medium text-slate-400 uppercase">
                 <div className="col-span-5">Description</div>
                 <div className="col-span-2">Qty</div>
                 <div className="col-span-2">Price</div>
@@ -398,12 +398,12 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
 
             <div className="space-y-3 mb-6">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Subtotal</span>
+                <span className="text-slate-400">Subtotal</span>
                 <span className="font-medium">${subtotal.toFixed(2)}</span>
               </div>
 
               <div className="flex items-center gap-2">
-                <label className="text-sm text-slate-500 whitespace-nowrap">Discount %</label>
+                <label className="text-sm text-slate-400 whitespace-nowrap">Discount %</label>
                 <Input
                   type="number"
                   min="0"
@@ -413,11 +413,11 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
                   onChange={e => setFormData(prev => ({ ...prev, discountPercent: parseFloat(e.target.value) || 0 }))}
                   className="w-20"
                 />
-                <span className="text-sm text-slate-500">-${discountAmount.toFixed(2)}</span>
+                <span className="text-sm text-slate-400">-${discountAmount.toFixed(2)}</span>
               </div>
 
               <div className="flex items-center gap-2">
-                <label className="text-sm text-slate-500 whitespace-nowrap">Tax Rate</label>
+                <label className="text-sm text-slate-400 whitespace-nowrap">Tax Rate</label>
                 <Input
                   type="number"
                   min="0"
@@ -427,7 +427,7 @@ export function InvoiceForm({ leadId, estimateId, initialData }: InvoiceFormProp
                   onChange={e => setFormData(prev => ({ ...prev, taxRate: parseFloat(e.target.value) || 0 }))}
                   className="w-20"
                 />
-                <span className="text-sm text-slate-500">${taxAmount.toFixed(2)}</span>
+                <span className="text-sm text-slate-400">${taxAmount.toFixed(2)}</span>
               </div>
 
               <div className="pt-3 border-t border-slate-200">

@@ -71,7 +71,7 @@ const TableCell = forwardRef<
   <td
     ref={ref}
     className={cn(
-      'px-3 py-3 align-middle text-slate-600',
+      'px-3 py-3 align-middle text-slate-400',
       '[&:has([role=checkbox])]:pr-0',
       className
     )}

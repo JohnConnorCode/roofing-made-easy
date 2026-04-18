@@ -63,7 +63,7 @@ export function LocalPricingSection({ city }: LocalPricingSectionProps) {
 
           {/* CTA Card */}
           <CTACard
-            title="Get Your Free Estimate"
+            title="Get My Free Estimate"
             description={`Find out exactly what your ${city.name} roofing project will cost. Our estimates are free, detailed, and come with no obligation.`}
           />
         </div>

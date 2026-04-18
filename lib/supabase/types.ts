@@ -10,6 +10,69 @@ export type Database = {
   public: {
     Tables: {
       // ============================================
+      // BLOG POSTS (Migration 052)
+      // ============================================
+      blog_posts: {
+        Row: {
+          id: string
+          slug: string
+          title: string
+          excerpt: string
+          content: string
+          category: string
+          author: string
+          read_time: number
+          featured: boolean
+          tags: string[]
+          image: string | null
+          status: 'draft' | 'scheduled' | 'published' | 'archived'
+          publish_at: string | null
+          published_at: string | null
+          topic_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          slug: string
+          title: string
+          excerpt: string
+          content: string
+          category: string
+          author?: string
+          read_time?: number
+          featured?: boolean
+          tags?: string[]
+          image?: string | null
+          status?: 'draft' | 'scheduled' | 'published' | 'archived'
+          publish_at?: string | null
+          published_at?: string | null
+          topic_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          slug?: string
+          title?: string
+          excerpt?: string
+          content?: string
+          category?: string
+          author?: string
+          read_time?: number
+          featured?: boolean
+          tags?: string[]
+          image?: string | null
+          status?: 'draft' | 'scheduled' | 'published' | 'archived'
+          publish_at?: string | null
+          published_at?: string | null
+          topic_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      // ============================================
       // CUSTOMER HUB TABLES (Migration 005)
       // ============================================
       customers: {

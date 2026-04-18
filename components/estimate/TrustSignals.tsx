@@ -79,7 +79,7 @@ export function TrustSignals() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-slate-100">{testimonial.name}</p>
-                    <div className="flex items-center gap-1 text-xs text-slate-500">
+                    <div className="flex items-center gap-1 text-xs text-slate-400">
                       <MapPin className="h-3 w-3" />
                       <span>{testimonial.location}</span>
                     </div>

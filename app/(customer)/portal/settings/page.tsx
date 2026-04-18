@@ -18,7 +18,6 @@ import {
   Trash2,
   Save,
   Plus,
-  Loader2,
 } from 'lucide-react'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 import type { NotificationPreferences } from '@/lib/supabase/types'
@@ -81,7 +80,7 @@ export default function SettingsPage() {
       const data = await response.json()
       updateCustomer(data)
       showToast('Profile updated successfully', 'success')
-    } catch (error) {
+    } catch {
       showToast('Failed to update profile', 'error')
     } finally {
       setIsSubmitting(false)
@@ -107,7 +106,7 @@ export default function SettingsPage() {
 
       updateCustomer({ notification_preferences: notificationData })
       showToast('Notification preferences updated', 'success')
-    } catch (error) {
+    } catch {
       showToast('Failed to update preferences', 'error')
     } finally {
       setIsSubmitting(false)
@@ -179,7 +178,7 @@ export default function SettingsPage() {
         updateLinkedLead(linkedLead.lead_id, { nickname })
       }
       showToast('Property updated', 'success')
-    } catch (error) {
+    } catch {
       showToast('Failed to update property', 'error')
     }
   }
@@ -424,7 +423,7 @@ export default function SettingsPage() {
               <CardContent>
                 {linkedLeads.length === 0 ? (
                   <div className="text-center py-8">
-                    <Home className="h-12 w-12 text-slate-600 mx-auto mb-4" />
+                    <Home className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                     <p className="text-slate-400 mb-4">No properties linked yet</p>
                     <Button
                       variant="outline"

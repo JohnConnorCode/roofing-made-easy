@@ -107,8 +107,8 @@ export default function ReportsPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
-            <p className="text-slate-500">Financial overview and business intelligence</p>
+            <h1 className="text-2xl font-bold text-slate-50">Reports</h1>
+            <p className="text-slate-400">Financial overview and business intelligence</p>
           </div>
           <div className="flex gap-2">
             <a href="/api/admin/reports/export?type=jobs" download>
@@ -126,10 +126,10 @@ export default function ReportsPage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchSummary}>
               Try Again
             </Button>
@@ -142,12 +142,12 @@ export default function ReportsPage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Revenue MTD</p>
-                    <p className="text-3xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Revenue MTD</p>
+                    <p className="text-3xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-24 inline-block" /> : formatCurrency(summary?.currentMonth.revenue || 0)}
                     </p>
                   </div>
@@ -158,12 +158,12 @@ export default function ReportsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Gross Margin MTD</p>
-                    <p className="text-3xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Gross Margin MTD</p>
+                    <p className="text-3xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-24 inline-block" /> : `${(summary?.currentMonth.margin || 0).toFixed(1)}%`}
                     </p>
                   </div>
@@ -171,17 +171,17 @@ export default function ReportsPage() {
                     <TrendingUp className="h-6 w-6 text-blue-600" />
                   </div>
                 </div>
-                <p className="mt-2 text-sm text-slate-500">
+                <p className="mt-2 text-sm text-slate-400">
                   Profit: {isLoading ? <Skeleton className="h-4 w-20 inline-block" /> : formatCurrency(summary?.currentMonth.profit || 0)}
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Outstanding AR</p>
+                    <p className="text-sm text-slate-400">Outstanding AR</p>
                     <p className="text-3xl font-bold text-amber-600">
                       {isLoading ? <Skeleton className="h-8 w-24 inline-block" /> : formatCurrency(summary?.arSummary.totalAR || 0)}
                     </p>
@@ -190,18 +190,18 @@ export default function ReportsPage() {
                     <Receipt className="h-6 w-6 text-amber-600" />
                   </div>
                 </div>
-                <p className="mt-2 text-sm text-slate-500">
+                <p className="mt-2 text-sm text-slate-400">
                   {summary?.arSummary.totalInvoices || 0} open invoices
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Active Jobs</p>
-                    <p className="text-3xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Active Jobs</p>
+                    <p className="text-3xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-24 inline-block" /> : summary?.activeJobs || 0}
                     </p>
                   </div>
@@ -217,7 +217,7 @@ export default function ReportsPage() {
           {/* Lead Conversion Funnel */}
           <FadeInSection delay={200} animation="slide-up">
           {funnel && funnel.funnel.length > 0 && (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2">
@@ -225,7 +225,7 @@ export default function ReportsPage() {
                     Lead Conversion Funnel
                   </CardTitle>
                   <div className="text-right">
-                    <p className="text-sm text-slate-500">{funnel.summary.totalLeads} total leads</p>
+                    <p className="text-sm text-slate-400">{funnel.summary.totalLeads} total leads</p>
                     <p className="text-sm font-medium text-green-600">{funnel.summary.conversionRate}% conversion</p>
                   </div>
                 </div>
@@ -247,7 +247,7 @@ export default function ReportsPage() {
           <FadeInSection delay={300} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Link href="/reports/funnel">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -255,8 +255,8 @@ export default function ReportsPage() {
                         <Target className="h-5 w-5 text-purple-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Funnel Analytics</h3>
-                        <p className="text-sm text-slate-500">Drop-off rates, time per step, source attribution</p>
+                        <h3 className="font-medium text-slate-50">Funnel Analytics</h3>
+                        <p className="text-sm text-slate-400">Drop-off rates, time per step, source attribution</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -266,7 +266,7 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/revenue">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -274,8 +274,8 @@ export default function ReportsPage() {
                         <BarChart3 className="h-5 w-5 text-green-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Revenue & Profitability</h3>
-                        <p className="text-sm text-slate-500">Monthly revenue, expense breakdown, job-level P&L</p>
+                        <h3 className="font-medium text-slate-50">Revenue & Profitability</h3>
+                        <p className="text-sm text-slate-400">Monthly revenue, expense breakdown, job-level P&L</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -285,7 +285,7 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/aging">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -293,8 +293,8 @@ export default function ReportsPage() {
                         <Receipt className="h-5 w-5 text-amber-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">AR Aging</h3>
-                        <p className="text-sm text-slate-500">Aging bucket summary with drill-down invoice table</p>
+                        <h3 className="font-medium text-slate-50">AR Aging</h3>
+                        <p className="text-sm text-slate-400">Aging bucket summary with drill-down invoice table</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -304,7 +304,7 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/lead-response">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -312,8 +312,8 @@ export default function ReportsPage() {
                         <Clock className="h-5 w-5 text-blue-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Lead Response</h3>
-                        <p className="text-sm text-slate-500">Speed-to-lead metrics and follow-up performance</p>
+                        <h3 className="font-medium text-slate-50">Lead Response</h3>
+                        <p className="text-sm text-slate-400">Speed-to-lead metrics and follow-up performance</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -323,7 +323,7 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/operations">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -331,8 +331,8 @@ export default function ReportsPage() {
                         <Hammer className="h-5 w-5 text-indigo-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Operations</h3>
-                        <p className="text-sm text-slate-500">Schedule adherence, crew productivity, change orders</p>
+                        <h3 className="font-medium text-slate-50">Operations</h3>
+                        <p className="text-sm text-slate-400">Schedule adherence, crew productivity, change orders</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -342,7 +342,7 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/team">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -350,8 +350,8 @@ export default function ReportsPage() {
                         <Users className="h-5 w-5 text-violet-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Team Performance</h3>
-                        <p className="text-sm text-slate-500">Crew and project manager productivity and revenue</p>
+                        <h3 className="font-medium text-slate-50">Team Performance</h3>
+                        <p className="text-sm text-slate-400">Crew and project manager productivity and revenue</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -361,7 +361,7 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/insurance-claims">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -369,8 +369,8 @@ export default function ReportsPage() {
                         <Shield className="h-5 w-5 text-rose-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Insurance Claims</h3>
-                        <p className="text-sm text-slate-500">Claims pipeline, carrier performance, stuck claims</p>
+                        <h3 className="font-medium text-slate-50">Insurance Claims</h3>
+                        <p className="text-sm text-slate-400">Claims pipeline, carrier performance, stuck claims</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -380,7 +380,7 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/financing">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -388,8 +388,8 @@ export default function ReportsPage() {
                         <Landmark className="h-5 w-5 text-emerald-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Financing</h3>
-                        <p className="text-sm text-slate-500">Application pipeline, lender stats, conversion impact</p>
+                        <h3 className="font-medium text-slate-50">Financing</h3>
+                        <p className="text-sm text-slate-400">Application pipeline, lender stats, conversion impact</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -399,7 +399,7 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/estimate-accuracy">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -407,8 +407,8 @@ export default function ReportsPage() {
                         <Crosshair className="h-5 w-5 text-cyan-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Estimate Accuracy</h3>
-                        <p className="text-sm text-slate-500">Estimate vs actual cost variance and trends</p>
+                        <h3 className="font-medium text-slate-50">Estimate Accuracy</h3>
+                        <p className="text-sm text-slate-400">Estimate vs actual cost variance and trends</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -418,7 +418,7 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/document-compliance">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -426,8 +426,8 @@ export default function ReportsPage() {
                         <FileCheck className="h-5 w-5 text-orange-600" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Document Compliance</h3>
-                        <p className="text-sm text-slate-500">Missing permits, contracts, and expiring documents</p>
+                        <h3 className="font-medium text-slate-50">Document Compliance</h3>
+                        <p className="text-sm text-slate-400">Missing permits, contracts, and expiring documents</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />
@@ -437,16 +437,16 @@ export default function ReportsPage() {
             </Link>
 
             <Link href="/reports/material-costs">
-              <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+              <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="rounded-lg bg-slate-100 p-2">
-                        <Package className="h-5 w-5 text-slate-600" />
+                      <div className="rounded-lg bg-slate-900/60 p-2">
+                        <Package className="h-5 w-5 text-slate-400" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-slate-900">Material Costs</h3>
-                        <p className="text-sm text-slate-500">Vendor spend, category breakdown, cost trends</p>
+                        <h3 className="font-medium text-slate-50">Material Costs</h3>
+                        <p className="text-sm text-slate-400">Vendor spend, category breakdown, cost trends</p>
                       </div>
                     </div>
                     <ArrowUpRight className="h-5 w-5 text-slate-400" />

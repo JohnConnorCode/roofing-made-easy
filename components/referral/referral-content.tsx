@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import {
   Gift,
@@ -207,7 +206,7 @@ export default function ReferralContent() {
                     {isSubmitting ? 'Creating your link...' : 'Get My Referral Link'}
                   </Button>
                 </form>
-                <p className="text-xs text-slate-500 text-center mt-4">
+                <p className="text-xs text-slate-400 text-center mt-4">
                   By joining, you agree to our referral program terms.
                 </p>
               </>
@@ -217,12 +216,12 @@ export default function ReferralContent() {
                   <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#3d7a5a]/20 mb-4">
                     <CheckCircle className="h-7 w-7 text-[#3d7a5a]" />
                   </div>
-                  <h2 className="text-xl font-bold text-slate-100">You're In!</h2>
+                  <h2 className="text-xl font-bold text-slate-100">You&apos;re In!</h2>
                   <p className="text-slate-400 mt-2">Share your link to start earning rewards</p>
                 </div>
 
                 <div className="bg-[#0c0f14] border border-slate-600 rounded-lg p-4 mb-6">
-                  <p className="text-xs text-slate-500 mb-2">Your Referral Link</p>
+                  <p className="text-xs text-slate-400 mb-2">Your Referral Link</p>
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
@@ -275,7 +274,7 @@ export default function ReferralContent() {
       <section className="py-8 bg-[#0c0f14] border-t border-slate-800">
         <div className="mx-auto max-w-4xl px-4">
           <h3 className="text-sm font-semibold text-slate-400 mb-4">Program Terms</h3>
-          <ul className="text-xs text-slate-500 space-y-2">
+          <ul className="text-xs text-slate-400 space-y-2">
             <li>Rewards are paid after the referred project is completed and paid in full.</li>
             <li>Referrals must be new customers who have not previously received a quote from Smart Roof Pricing.</li>
             <li>There is no limit to the number of referrals you can make.</li>

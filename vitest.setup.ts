@@ -31,7 +31,7 @@ vi.mock('next/headers', () => ({
 vi.mock('next/cache', () => ({
   revalidateTag: vi.fn(),
   revalidatePath: vi.fn(),
-  unstable_cache: (fn: Function) => fn,
+  unstable_cache: (fn: (...args: unknown[]) => unknown) => fn,
 }))
 
 // Mock business config loader (uses unstable_cache + Supabase internally)

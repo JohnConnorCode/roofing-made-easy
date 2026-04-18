@@ -56,14 +56,14 @@ function VariableItem({
         <span className="text-xs font-medium text-[#c9a25c] uppercase tracking-wide">
           {name}
         </span>
-        <span className="text-xs text-slate-500">{info.unit}</span>
+        <span className="text-xs text-slate-400">{info.unit}</span>
       </div>
       <div className="mt-1">
         <span className="text-2xl font-bold text-slate-100">
           {typeof value === 'number' ? value.toLocaleString() : value}
         </span>
       </div>
-      <p className="text-xs text-slate-500 mt-1">{info.label}</p>
+      <p className="text-xs text-slate-400 mt-1">{info.label}</p>
     </div>
   )
 }
@@ -186,19 +186,19 @@ export function VariablesDisplay({
                   </h5>
                   <div className="grid grid-cols-4 gap-2 text-sm">
                     <div>
-                      <span className="text-slate-500">SQ:</span>{' '}
+                      <span className="text-slate-400">SQ:</span>{' '}
                       <span className="text-slate-200">{slope.SQ}</span>
                     </div>
                     <div>
-                      <span className="text-slate-500">Eave:</span>{' '}
+                      <span className="text-slate-400">Eave:</span>{' '}
                       <span className="text-slate-200">{slope.EAVE} LF</span>
                     </div>
                     <div>
-                      <span className="text-slate-500">Ridge:</span>{' '}
+                      <span className="text-slate-400">Ridge:</span>{' '}
                       <span className="text-slate-200">{slope.RIDGE} LF</span>
                     </div>
                     <div>
-                      <span className="text-slate-500">Rake:</span>{' '}
+                      <span className="text-slate-400">Rake:</span>{' '}
                       <span className="text-slate-200">{slope.RAKE} LF</span>
                     </div>
                   </div>

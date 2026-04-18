@@ -82,7 +82,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`)
+      const sanitizedSearch = search.replace(/[%_'"\\]/g, '').trim()
+      if (sanitizedSearch) {
+        query = query.or(`name.ilike.%${sanitizedSearch}%,description.ilike.%${sanitizedSearch}%`)
+      }
     }
 
     const { data: workflows, error, count } = await query

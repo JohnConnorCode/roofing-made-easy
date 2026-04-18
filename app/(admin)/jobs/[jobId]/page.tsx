@@ -106,7 +106,7 @@ export default function JobDetailPage() {
       const data = await response.json()
       setJob(data.job)
       setStatusHistory(data.statusHistory || [])
-    } catch (err) {
+    } catch {
       setError('Unable to load job. Please try again.')
     } finally {
       setIsLoading(false)
@@ -241,7 +241,7 @@ export default function JobDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <AlertTriangle className="h-12 w-12 text-amber-500" />
-        <p className="mt-4 text-lg font-medium text-slate-900">{error || 'Job not found'}</p>
+        <p className="mt-4 text-lg font-medium text-slate-50">{error || 'Job not found'}</p>
         <div className="mt-4 flex gap-3">
           <Button variant="outline" onClick={fetchJob} leftIcon={<RefreshCw className="h-4 w-4" />}>
             Try Again
@@ -274,9 +274,9 @@ export default function JobDetailPage() {
             Back
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">{job.job_number}</h1>
+            <h1 className="text-2xl font-bold text-slate-50">{job.job_number}</h1>
             {job.property_city && (
-              <p className="text-slate-500 flex items-center gap-1">
+              <p className="text-slate-400 flex items-center gap-1">
                 <MapPin className="h-4 w-4" />
                 {job.property_address && `${job.property_address}, `}
                 {job.property_city}, {job.property_state} {job.property_zip}
@@ -297,7 +297,7 @@ export default function JobDetailPage() {
 
       <FadeInSection delay={100} animation="slide-up">
       {/* Tabs */}
-      <div className="border-b border-slate-200">
+      <div className="border-b border-white/5">
         <div className="flex gap-1 -mb-px">
           {TABS.map((tab) => (
             <button
@@ -306,7 +306,7 @@ export default function JobDetailPage() {
               className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === tab.id
                   ? 'border-gold text-gold'
-                  : 'border-transparent text-slate-500 hover:text-slate-700'
+                  : 'border-transparent text-slate-400 hover:text-slate-50'
               }`}
             >
               <tab.icon className="h-4 w-4" />
@@ -332,28 +332,28 @@ export default function JobDetailPage() {
             <CardContent className="space-y-3">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-slate-500">Status</p>
+                  <p className="text-sm text-slate-400">Status</p>
                   <span className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${JOB_STATUS_COLORS[job.status]}`}>
                     {JOB_STATUS_LABELS[job.status]}
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500">Job Number</p>
+                  <p className="text-sm text-slate-400">Job Number</p>
                   <p className="font-medium">{job.job_number}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500">Created</p>
+                  <p className="text-sm text-slate-400">Created</p>
                   <p className="font-medium">{formatDate(job.created_at)}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500">Warranty Type</p>
+                  <p className="text-sm text-slate-400">Warranty Type</p>
                   <p className="font-medium">{job.warranty_type || 'N/A'}</p>
                 </div>
               </div>
               {job.notes && (
                 <div className="pt-3 border-t">
-                  <p className="text-sm text-slate-500">Notes</p>
-                  <p className="text-sm text-slate-700 whitespace-pre-wrap">{job.notes}</p>
+                  <p className="text-sm text-slate-400">Notes</p>
+                  <p className="text-sm text-slate-300 whitespace-pre-wrap">{job.notes}</p>
                 </div>
               )}
             </CardContent>
@@ -370,19 +370,19 @@ export default function JobDetailPage() {
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-slate-500">Scheduled Start</p>
+                  <p className="text-sm text-slate-400">Scheduled Start</p>
                   <p className="font-medium">{job.scheduled_start ? formatDate(job.scheduled_start) : 'Not set'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500">Scheduled End</p>
+                  <p className="text-sm text-slate-400">Scheduled End</p>
                   <p className="font-medium">{job.scheduled_end ? formatDate(job.scheduled_end) : 'Not set'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500">Actual Start</p>
+                  <p className="text-sm text-slate-400">Actual Start</p>
                   <p className="font-medium">{job.actual_start ? formatDate(job.actual_start) : 'Not started'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-500">Actual End</p>
+                  <p className="text-sm text-slate-400">Actual End</p>
                   <p className="font-medium">{job.actual_end ? formatDate(job.actual_end) : 'In progress'}</p>
                 </div>
               </div>
@@ -399,7 +399,7 @@ export default function JobDetailPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
-                <p className="text-sm text-slate-500">Assigned Team</p>
+                <p className="text-sm text-slate-400">Assigned Team</p>
                 {job.team ? (
                   <p className="font-medium flex items-center gap-2">
                     <span className="h-3 w-3 rounded-full" style={{ backgroundColor: job.team.color }} />
@@ -410,7 +410,7 @@ export default function JobDetailPage() {
                 )}
               </div>
               <div>
-                <p className="text-sm text-slate-500">Project Manager</p>
+                <p className="text-sm text-slate-400">Project Manager</p>
                 {job.project_manager ? (
                   <p className="font-medium">
                     {job.project_manager.first_name} {job.project_manager.last_name}
@@ -433,29 +433,29 @@ export default function JobDetailPage() {
             <CardContent>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-sm text-slate-500">Contract Amount</span>
+                  <span className="text-sm text-slate-400">Contract Amount</span>
                   <span className="font-medium">{formatCurrency(job.contract_amount)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-slate-500">Material Cost</span>
+                  <span className="text-sm text-slate-400">Material Cost</span>
                   <span className="font-medium text-red-600">-{formatCurrency(job.material_cost)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-slate-500">Labor Cost</span>
+                  <span className="text-sm text-slate-400">Labor Cost</span>
                   <span className="font-medium text-red-600">-{formatCurrency(job.labor_cost)}</span>
                 </div>
                 <div className="flex justify-between pt-3 border-t">
-                  <span className="text-sm font-medium text-slate-700">Gross Profit</span>
+                  <span className="text-sm font-medium text-slate-300">Gross Profit</span>
                   <span className={`font-bold ${grossProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                     {formatCurrency(grossProfit)} ({margin.toFixed(1)}%)
                   </span>
                 </div>
                 <div className="flex justify-between pt-2">
-                  <span className="text-sm text-slate-500">Total Invoiced</span>
+                  <span className="text-sm text-slate-400">Total Invoiced</span>
                   <span className="font-medium">{formatCurrency(job.total_invoiced)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-slate-500">Total Paid</span>
+                  <span className="text-sm text-slate-400">Total Paid</span>
                   <span className="font-medium text-green-600">{formatCurrency(job.total_paid)}</span>
                 </div>
               </div>
@@ -514,7 +514,7 @@ export default function JobDetailPage() {
                 rows={3}
               />
               <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-sm text-slate-600">
+                <label className="flex items-center gap-2 text-sm text-slate-400">
                   <input
                     type="checkbox"
                     checked={logForm.work_delayed}
@@ -534,7 +534,7 @@ export default function JobDetailPage() {
           )}
           <CardContent>
             {dailyLogs.length === 0 ? (
-              <p className="text-slate-500 text-center py-8">No daily logs recorded yet</p>
+              <p className="text-slate-400 text-center py-8">No daily logs recorded yet</p>
             ) : (
               <div className="space-y-4">
                 {dailyLogs.map((log) => (
@@ -548,11 +548,11 @@ export default function JobDetailPage() {
                         )}
                       </div>
                       {log.hours_worked && (
-                        <span className="text-sm text-slate-500">{log.hours_worked}h</span>
+                        <span className="text-sm text-slate-400">{log.hours_worked}h</span>
                       )}
                     </div>
                     {log.work_performed && (
-                      <p className="text-sm text-slate-700">{log.work_performed}</p>
+                      <p className="text-sm text-slate-300">{log.work_performed}</p>
                     )}
                     {log.weather_conditions && (
                       <p className="text-xs text-slate-400 mt-1">Weather: {log.weather_conditions}</p>
@@ -574,28 +574,28 @@ export default function JobDetailPage() {
         <div className="space-y-4">
           {/* Expense Summary */}
           <div className="grid gap-4 md:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Total Expenses</p>
-                <p className="text-xl font-bold text-slate-900">{formatCurrency(expenseTotals.total || 0)}</p>
+                <p className="text-sm text-slate-400">Total Expenses</p>
+                <p className="text-xl font-bold text-slate-50">{formatCurrency(expenseTotals.total || 0)}</p>
               </CardContent>
             </Card>
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Materials</p>
-                <p className="text-xl font-bold text-slate-900">{formatCurrency(expenseTotals.materials || 0)}</p>
+                <p className="text-sm text-slate-400">Materials</p>
+                <p className="text-xl font-bold text-slate-50">{formatCurrency(expenseTotals.materials || 0)}</p>
               </CardContent>
             </Card>
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Labor</p>
-                <p className="text-xl font-bold text-slate-900">{formatCurrency(expenseTotals.labor || 0)}</p>
+                <p className="text-sm text-slate-400">Labor</p>
+                <p className="text-xl font-bold text-slate-50">{formatCurrency(expenseTotals.labor || 0)}</p>
               </CardContent>
             </Card>
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Other</p>
-                <p className="text-xl font-bold text-slate-900">
+                <p className="text-sm text-slate-400">Other</p>
+                <p className="text-xl font-bold text-slate-50">
                   {formatCurrency(
                     (expenseTotals.subcontractor || 0) +
                     (expenseTotals.permit || 0) +
@@ -625,7 +625,7 @@ export default function JobDetailPage() {
                     onChange={(e) => setExpenseForm({ ...expenseForm, expense_date: e.target.value })}
                   />
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
+                    <label className="block text-sm font-medium text-slate-300 mb-1">Category</label>
                     <Select
                       options={[
                         { value: 'materials', label: 'Materials' },
@@ -672,12 +672,12 @@ export default function JobDetailPage() {
             )}
             <CardContent>
               {expenses.length === 0 ? (
-                <p className="text-slate-500 text-center py-8">No expenses recorded yet</p>
+                <p className="text-slate-400 text-center py-8">No expenses recorded yet</p>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Date</th>
                         <th className="pb-3 pr-4">Category</th>
                         <th className="pb-3 pr-4">Description</th>
@@ -690,12 +690,12 @@ export default function JobDetailPage() {
                         <tr key={exp.id} className="border-b last:border-0">
                           <td className="py-3 pr-4 text-sm">{formatDate(exp.expense_date)}</td>
                           <td className="py-3 pr-4">
-                            <span className="text-xs rounded-full bg-slate-100 px-2 py-1 capitalize">
+                            <span className="text-xs rounded-full bg-slate-900/60 px-2 py-1 capitalize">
                               {exp.category}
                             </span>
                           </td>
-                          <td className="py-3 pr-4 text-sm text-slate-700">{exp.description}</td>
-                          <td className="py-3 pr-4 text-sm text-slate-500">{exp.vendor || '-'}</td>
+                          <td className="py-3 pr-4 text-sm text-slate-300">{exp.description}</td>
+                          <td className="py-3 pr-4 text-sm text-slate-400">{exp.vendor || '-'}</td>
                           <td className="py-3 text-sm font-medium text-right">{formatCurrency(exp.amount)}</td>
                         </tr>
                       ))}
@@ -714,26 +714,26 @@ export default function JobDetailPage() {
           <div className="grid gap-4 md:grid-cols-4">
             <Card>
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Contract Amount</p>
-                <p className="text-xl font-bold text-slate-900">{formatCurrency(job.contract_amount)}</p>
+                <p className="text-sm text-slate-400">Contract Amount</p>
+                <p className="text-xl font-bold text-slate-50">{formatCurrency(job.contract_amount)}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Total Invoiced</p>
-                <p className="text-xl font-bold text-slate-900">{formatCurrency(job.total_invoiced)}</p>
+                <p className="text-sm text-slate-400">Total Invoiced</p>
+                <p className="text-xl font-bold text-slate-50">{formatCurrency(job.total_invoiced)}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Total Paid</p>
+                <p className="text-sm text-slate-400">Total Paid</p>
                 <p className="text-xl font-bold text-green-600">{formatCurrency(job.total_paid)}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Outstanding</p>
-                <p className={`text-xl font-bold ${(job.total_invoiced - job.total_paid) > 0 ? 'text-amber-600' : 'text-slate-900'}`}>
+                <p className="text-sm text-slate-400">Outstanding</p>
+                <p className={`text-xl font-bold ${(job.total_invoiced - job.total_paid) > 0 ? 'text-amber-600' : 'text-slate-50'}`}>
                   {formatCurrency(job.total_invoiced - job.total_paid)}
                 </p>
               </CardContent>
@@ -772,7 +772,7 @@ export default function JobDetailPage() {
           </CardHeader>
           <CardContent>
             {statusHistory.length === 0 ? (
-              <p className="text-slate-500 text-center py-8">No status changes recorded</p>
+              <p className="text-slate-400 text-center py-8">No status changes recorded</p>
             ) : (
               <div className="space-y-4">
                 {statusHistory.map((entry) => (
@@ -795,7 +795,7 @@ export default function JobDetailPage() {
                         {entry.changed_by_user && ` by ${entry.changed_by_user.first_name} ${entry.changed_by_user.last_name}`}
                       </p>
                       {entry.notes && (
-                        <p className="text-sm text-slate-600 mt-1">{entry.notes}</p>
+                        <p className="text-sm text-slate-400 mt-1">{entry.notes}</p>
                       )}
                     </div>
                   </div>

@@ -10,7 +10,6 @@
 
 import { test, expect } from '@playwright/test'
 import { loginAsAdmin, hasAdminCredentials } from '../fixtures/auth'
-import { generateTestEmail, generateTestPhone } from '../helpers/test-data'
 
 test.describe('Admin Lead Management - Full Flow', () => {
   test.skip(!hasAdminCredentials(), 'Requires TEST_ADMIN_EMAIL and TEST_ADMIN_PASSWORD')

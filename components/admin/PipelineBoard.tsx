@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { LeadCard, type LeadCardData, type CardFieldKey } from './LeadCard'
 import { formatCurrency } from '@/lib/utils'
-import { ChevronDown, ChevronUp, Loader2, X, Settings2, CheckSquare, Square, MoveRight, Trash2, Tag } from 'lucide-react'
+import { ChevronDown, ChevronUp, Loader2, X, Settings2, CheckSquare, Square, MoveRight, Trash2 } from 'lucide-react'
 import { LEAD_STATUSES } from '@/lib/constants/status'
 import { PipelineConfigModal } from './PipelineConfigModal'
 import { Button } from '@/components/ui/button'
@@ -439,7 +439,7 @@ export function PipelineBoard({
             <span className="text-sm font-medium text-slate-900">
               {selectedLeads.size} selected
               {selectedValue > 0 && (
-                <span className="text-slate-500 ml-2">
+                <span className="text-slate-400 ml-2">
                   ({formatCurrency(selectedValue)} total value)
                 </span>
               )}
@@ -506,7 +506,7 @@ export function PipelineBoard({
           {dynamicColumns.length === 0 && (
             <button
               onClick={() => setShowSecondary(!showSecondary)}
-              className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700"
+              className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-700"
             >
               {showSecondary ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
               {showSecondary ? 'Hide additional statuses' : 'Show all statuses'}
@@ -519,7 +519,7 @@ export function PipelineBoard({
             className={`flex items-center gap-2 text-sm px-3 py-1.5 rounded-md transition-colors ${
               isBulkMode
                 ? 'bg-gold-light/20 text-gold-dark'
-                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
             }`}
           >
             {isBulkMode ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
@@ -529,7 +529,7 @@ export function PipelineBoard({
           {isBulkMode && (
             <button
               onClick={selectAll}
-              className="text-sm text-slate-500 hover:text-slate-700"
+              className="text-sm text-slate-400 hover:text-slate-700"
             >
               {selectedLeads.size === leads.length ? 'Deselect all' : 'Select all'}
             </button>
@@ -546,7 +546,7 @@ export function PipelineBoard({
         {/* Configure button */}
         <button
           onClick={() => setIsConfigOpen(true)}
-          className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 px-3 py-1.5 rounded-md hover:bg-slate-100 transition-colors"
+          className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-700 px-3 py-1.5 rounded-md hover:bg-slate-100 transition-colors"
         >
           <Settings2 className="h-4 w-4" />
           Configure
@@ -585,12 +585,12 @@ export function PipelineBoard({
                     )}
                     <h3 className="font-semibold text-slate-900 text-sm">{column.label}</h3>
                   </div>
-                  <span className="bg-white px-2 py-0.5 rounded-full text-xs font-semibold text-slate-600 shadow-sm">
+                  <span className="bg-white px-2 py-0.5 rounded-full text-xs font-semibold text-slate-400 shadow-sm">
                     {stats.count}
                   </span>
                 </div>
                 {stats.value > 0 && (
-                  <p className="text-xs text-slate-600 mt-1">
+                  <p className="text-xs text-slate-400 mt-1">
                     {formatCurrency(stats.value)} pipeline
                   </p>
                 )}
@@ -679,7 +679,7 @@ export function PipelineBoard({
             }}
           >
             <div className="px-3 py-2 border-b flex items-center justify-between">
-              <span className="text-xs font-medium text-slate-500">Move to</span>
+              <span className="text-xs font-medium text-slate-400">Move to</span>
               <button
                 onClick={closeMoveMenu}
                 className="p-1 hover:bg-slate-100 rounded"

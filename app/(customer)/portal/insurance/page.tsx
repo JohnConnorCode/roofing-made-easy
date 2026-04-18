@@ -11,7 +11,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/toast'
 import { ClaimTracker, ResourceLibrary, EstimateSummary, Breadcrumbs } from '@/components/customer'
 import {
-  Shield,
   Plus,
   Mail,
   Phone,
@@ -120,6 +119,7 @@ export default function InsurancePage() {
         customerNotes: '',
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLeadId, intake, existingClaim])
 
   const handleCreateClaim = async (e: React.FormEvent) => {
@@ -369,17 +369,17 @@ export default function InsurancePage() {
                 <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
                   <Users className="h-5 w-5 text-gold-light mx-auto mb-1" />
                   <p className="text-sm font-medium text-slate-200">Expert Guidance</p>
-                  <p className="text-xs text-slate-500">We handle the process</p>
+                  <p className="text-xs text-slate-400">We handle the process</p>
                 </div>
                 <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
                   <Clock className="h-5 w-5 text-gold-light mx-auto mb-1" />
                   <p className="text-sm font-medium text-slate-200">Track Progress</p>
-                  <p className="text-xs text-slate-500">Real-time updates</p>
+                  <p className="text-xs text-slate-400">Real-time updates</p>
                 </div>
                 <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
                   <DollarSign className="h-5 w-5 text-gold-light mx-auto mb-1" />
                   <p className="text-sm font-medium text-slate-200">Maximize Payout</p>
-                  <p className="text-xs text-slate-500">Get what you deserve</p>
+                  <p className="text-xs text-slate-400">Get what you deserve</p>
                 </div>
               </div>
 
@@ -401,7 +401,7 @@ export default function InsurancePage() {
                     <li className="flex gap-2"><span className="text-gold-light font-medium">6.</span> Get a roofing estimate</li>
                     <li className="flex gap-2"><span className="text-gold-light font-medium">7.</span> Review adjuster report</li>
                   </ul>
-                  <p className="text-xs text-slate-500 mb-4">
+                  <p className="text-xs text-slate-400 mb-4">
                     {intake?.has_insurance_claim
                       ? "We see you have an insurance claim. Let's track it together."
                       : "Don't worry if you haven't completed all steps. Start tracking and we'll guide you."}
@@ -444,19 +444,19 @@ export default function InsurancePage() {
               <CardContent className="space-y-3">
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <p className="text-slate-500">Estimate</p>
+                    <p className="text-slate-400">Estimate</p>
                     <p className="text-slate-200 font-medium">{formatCurrency(insuranceGap.estimateAmount)}</p>
                   </div>
                   <div>
-                    <p className="text-slate-500">Approved</p>
+                    <p className="text-slate-400">Approved</p>
                     <p className="text-slate-200 font-medium">{formatCurrency(insuranceGap.approved)}</p>
                   </div>
                   <div>
-                    <p className="text-slate-500">Deductible</p>
+                    <p className="text-slate-400">Deductible</p>
                     <p className="text-slate-200 font-medium">-{formatCurrency(insuranceGap.deductible)}</p>
                   </div>
                   <div>
-                    <p className="text-slate-500">Net Payout</p>
+                    <p className="text-slate-400">Net Payout</p>
                     <p className="text-slate-200 font-medium">{formatCurrency(insuranceGap.netPayout)}</p>
                   </div>
                 </div>
@@ -615,17 +615,17 @@ export default function InsurancePage() {
                 <DollarSign className="h-5 w-5 text-gold-light" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-200">Financing Options</p>
-                  <p className="text-xs text-slate-500">Cover any gap with affordable payments</p>
+                  <p className="text-xs text-slate-400">Cover any gap with affordable payments</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-gold-light transition-colors" />
+                <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-gold-light transition-colors" />
               </Link>
               <Link href="/portal/assistance" className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-800 transition-colors group">
                 <HandHeart className="h-5 w-5 text-gold-light" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-200">Assistance Programs</p>
-                  <p className="text-xs text-slate-500">Grants and programs you may qualify for</p>
+                  <p className="text-xs text-slate-400">Grants and programs you may qualify for</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-gold-light transition-colors" />
+                <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-gold-light transition-colors" />
               </Link>
             </CardContent>
           </Card>

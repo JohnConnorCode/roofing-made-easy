@@ -30,7 +30,7 @@ export default function FunnelError({
           Something went wrong
         </h2>
         <p className="mt-3 text-sm text-slate-400">
-          We hit an unexpected issue loading this page. Your information has been saved — please try again, or give us a call for immediate help.
+          We hit an unexpected issue loading this page. Your information has been saved. Please try again, or give us a call for immediate help.
         </p>
         <div className="mt-8 flex flex-col gap-3">
           <button

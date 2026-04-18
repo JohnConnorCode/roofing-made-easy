@@ -132,7 +132,7 @@ export default function ClaimValueEstimator({ estimateAmount = 0 }: ClaimValueEs
             </div>
             {isCustom && (
               <div className="mt-2 relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <input
                   type="text"
                   inputMode="numeric"
@@ -187,7 +187,7 @@ export default function ClaimValueEstimator({ estimateAmount = 0 }: ClaimValueEs
                 </span>
               </button>
             </div>
-            <p className="text-xs text-slate-500 mt-2">
+            <p className="text-xs text-slate-400 mt-2">
               {coverageType === 'rcv'
                 ? 'RCV covers the full cost to replace with new, equivalent materials.'
                 : 'ACV deducts depreciation based on your roof\'s age and condition.'}
@@ -214,7 +214,7 @@ export default function ClaimValueEstimator({ estimateAmount = 0 }: ClaimValueEs
                 onChange={(e) => setDepreciationPercent(Number(e.target.value))}
                 className="w-full h-2 rounded-full appearance-none cursor-pointer bg-slate-700 accent-[#c9a25c]"
               />
-              <div className="flex justify-between text-xs text-slate-500 mt-1">
+              <div className="flex justify-between text-xs text-slate-400 mt-1">
                 <span>0%</span>
                 <span>25%</span>
                 <span>50%</span>
@@ -291,7 +291,7 @@ export default function ClaimValueEstimator({ estimateAmount = 0 }: ClaimValueEs
                     <span className="font-semibold text-slate-100">
                       {formatCurrency(Math.round(calculations.monthlyPayment))}/month
                     </span>{' '}
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-slate-400">
                       ({FINANCING_RATE}% APR, {FINANCING_TERM_MONTHS} months)
                     </span>
                   </p>

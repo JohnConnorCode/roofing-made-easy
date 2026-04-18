@@ -13,7 +13,7 @@ import type {
   LineItemCategory
 } from '@/lib/supabase/types'
 import type { AiResult, PhotoAnalysisResult } from './provider'
-import type { PhotoMeasurementResult, DetectedFeature } from './photo-measurements'
+import type { PhotoMeasurementResult } from './photo-measurements'
 
 export interface LineItemSuggestionInput {
   variables: RoofVariables
@@ -59,7 +59,7 @@ export interface LineItemSuggestionResult {
 }
 
 // Common line item codes and their triggers
-const LINE_ITEM_TRIGGERS: Record<string, {
+const _LINE_ITEM_TRIGGERS: Record<string, {
   triggers: string[]
   category: string
   priority: 'required' | 'recommended' | 'optional'

@@ -16,7 +16,6 @@ import {
   Users,
   DollarSign,
   List,
-  Loader2,
   Search,
   Filter,
   X,
@@ -83,7 +82,7 @@ export default function PipelinePage() {
       const data = await response.json()
       setLeads(data.leads || [])
       setStats(data.stats || null)
-    } catch (err) {
+    } catch {
       setError('Unable to load pipeline data. Please try again.')
     } finally {
       setIsLoading(false)
@@ -291,8 +290,8 @@ export default function PipelinePage() {
       <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Pipeline</h1>
-          <p className="text-slate-500">
+          <h1 className="text-2xl font-bold text-slate-50">Pipeline</h1>
+          <p className="text-slate-400">
             {hasActiveFilters
               ? `Showing ${filteredLeads.length} of ${leads.length} leads`
               : 'Drag leads between columns to update status'}
@@ -342,53 +341,53 @@ export default function PipelinePage() {
       {/* Filters panel */}
       <FadeInSection delay={100} animation="slide-up">
       {showFilters && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex flex-col gap-4 md:flex-row md:items-end">
               {/* Search */}
               <div className="flex-1">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Search</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Search</label>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                   <Input
                     placeholder="Search by name, email, phone, or address..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 bg-white border-slate-300 text-slate-900"
+                    className="pl-10"
                   />
                 </div>
               </div>
 
               {/* Job Type */}
               <div className="md:w-44">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Job Type</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Job Type</label>
                 <Select
                   options={JOB_TYPE_OPTIONS}
                   value={jobTypeFilter}
                   onChange={setJobTypeFilter}
-                  className="bg-white border-slate-300 text-slate-900"
+                  className=""
                 />
               </div>
 
               {/* Date Range */}
               <div className="md:w-40">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Created</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Created</label>
                 <Select
                   options={DATE_RANGE_OPTIONS}
                   value={dateRangeFilter}
                   onChange={setDateRangeFilter}
-                  className="bg-white border-slate-300 text-slate-900"
+                  className=""
                 />
               </div>
 
               {/* Value Range */}
               <div className="md:w-44">
-                <label className="block text-sm font-medium text-slate-700 mb-1">Estimate Value</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Estimate Value</label>
                 <Select
                   options={VALUE_RANGE_OPTIONS}
                   value={valueRangeFilter}
                   onChange={setValueRangeFilter}
-                  className="bg-white border-slate-300 text-slate-900"
+                  className=""
                 />
               </div>
 
@@ -399,7 +398,7 @@ export default function PipelinePage() {
                   size="sm"
                   onClick={clearFilters}
                   leftIcon={<X className="h-4 w-4" />}
-                  className="text-slate-500"
+                  className="text-slate-400"
                 >
                   Clear
                 </Button>
@@ -414,25 +413,25 @@ export default function PipelinePage() {
       <FadeInSection delay={200} animation="slide-up">
       {stats && (
         <div className="grid gap-4 md:grid-cols-4">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="flex items-center gap-4 p-4">
-              <div className="rounded-lg bg-slate-100 p-3">
-                <Users className="h-5 w-5 text-slate-600" />
+              <div className="rounded-lg bg-slate-900/60 p-3">
+                <Users className="h-5 w-5 text-slate-400" />
               </div>
               <div>
-                <p className="text-sm text-slate-500">Total Leads</p>
-                <p className="text-2xl font-bold text-slate-900">{stats.totalLeads}</p>
+                <p className="text-sm text-slate-400">Total Leads</p>
+                <p className="text-2xl font-bold text-slate-50">{stats.totalLeads}</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="flex items-center gap-4 p-4">
               <div className="rounded-lg bg-green-100 p-3">
                 <DollarSign className="h-5 w-5 text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-slate-500">Pipeline Value</p>
+                <p className="text-sm text-slate-400">Pipeline Value</p>
                 <p className="text-2xl font-bold text-green-600">
                   {formatCurrency(stats.totalPipelineValue)}
                 </p>
@@ -440,25 +439,25 @@ export default function PipelinePage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="flex items-center gap-4 p-4">
               <div className="rounded-lg bg-gold-light/20 p-3">
                 <TrendingUp className="h-5 w-5 text-gold" />
               </div>
               <div>
-                <p className="text-sm text-slate-500">Win Rate</p>
+                <p className="text-sm text-slate-400">Win Rate</p>
                 <p className="text-2xl font-bold text-gold">{winRate}%</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="flex items-center gap-4 p-4">
               <div className="rounded-lg bg-emerald-100 p-3">
                 <DollarSign className="h-5 w-5 text-emerald-600" />
               </div>
               <div>
-                <p className="text-sm text-slate-500">Deals Won</p>
+                <p className="text-sm text-slate-400">Deals Won</p>
                 <p className="text-2xl font-bold text-emerald-600">{wonCount}</p>
               </div>
             </CardContent>
@@ -485,10 +484,10 @@ export default function PipelinePage() {
       {/* Pipeline board */}
       <FadeInSection delay={300} animation="slide-up">
       {error ? (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-gold" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button
               variant="outline"
               size="sm"

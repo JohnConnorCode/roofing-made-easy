@@ -1,10 +1,8 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Select } from '@/components/ui/select'
-import { formatDate } from '@/lib/utils'
 import {
   ChevronLeft,
   ChevronRight,
@@ -88,7 +86,7 @@ export default function TeamSchedulePage() {
 
       const data = await response.json()
       setSchedule(data.schedule || [])
-    } catch (err) {
+    } catch {
       setError('Unable to load team schedule.')
     } finally {
       setIsLoading(false)
@@ -140,8 +138,8 @@ export default function TeamSchedulePage() {
             </Button>
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Team Schedule</h1>
-            <p className="text-slate-500">Weekly view of crew assignments and availability</p>
+            <h1 className="text-2xl font-bold text-slate-50">Team Schedule</h1>
+            <p className="text-slate-400">Weekly view of crew assignments and availability</p>
           </div>
         </div>
       </div>
@@ -149,7 +147,7 @@ export default function TeamSchedulePage() {
 
       <FadeInSection delay={100} animation="slide-up">
       {/* Week Navigation */}
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -162,7 +160,7 @@ export default function TeamSchedulePage() {
               <Button variant="outline" size="sm" onClick={() => navigateWeek(1)}>
                 <ChevronRight className="h-4 w-4" />
               </Button>
-              <h2 className="text-lg font-semibold text-slate-900 ml-2">
+              <h2 className="text-lg font-semibold text-slate-50 ml-2">
                 {weekDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                 {' - '}
                 {weekDates[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -183,10 +181,10 @@ export default function TeamSchedulePage() {
 
       <FadeInSection delay={200} animation="slide-up">
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchSchedule}>
               Try Again
             </Button>
@@ -195,7 +193,7 @@ export default function TeamSchedulePage() {
       )}
 
       {!error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-0">
             {isLoading ? (
               <div className="p-6">
@@ -204,14 +202,14 @@ export default function TeamSchedulePage() {
             ) : schedule.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12">
                 <Users className="h-10 w-10 text-slate-300" />
-                <p className="mt-3 text-slate-600">No team members found</p>
+                <p className="mt-3 text-slate-400">No team members found</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[800px]">
                   <thead>
                     <tr className="border-b">
-                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-500 w-40">
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-400 w-40">
                         Team Member
                       </th>
                       {weekDates.map((date) => {
@@ -221,7 +219,7 @@ export default function TeamSchedulePage() {
                           <th
                             key={dateStr}
                             className={`px-2 py-3 text-center text-sm font-medium min-w-[120px] ${
-                              isToday ? 'bg-gold/5 text-gold' : 'text-slate-500'
+                              isToday ? 'bg-gold/5 text-gold' : 'text-slate-400'
                             }`}
                           >
                             <div>{date.toLocaleDateString('en-US', { weekday: 'short' })}</div>
@@ -236,10 +234,10 @@ export default function TeamSchedulePage() {
                       <tr key={memberSchedule.member.id} className="border-b last:border-0">
                         <td className="px-4 py-3">
                           <div>
-                            <p className="text-sm font-medium text-slate-900">
+                            <p className="text-sm font-medium text-slate-50">
                               {memberSchedule.member.first_name} {memberSchedule.member.last_name}
                             </p>
-                            <p className="text-xs text-slate-500 capitalize">{memberSchedule.member.role.replace('_', ' ')}</p>
+                            <p className="text-xs text-slate-400 capitalize">{memberSchedule.member.role.replace('_', ' ')}</p>
                           </div>
                         </td>
                         {weekDates.map((date) => {

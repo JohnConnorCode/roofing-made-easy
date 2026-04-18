@@ -1,9 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import NextImage from 'next/image'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
@@ -147,7 +146,7 @@ export default function LeadDetailPage() {
   const [isResendingEstimate, setIsResendingEstimate] = useState(false)
   const [isDownloadingPDF, setIsDownloadingPDF] = useState(false)
 
-  const fetchLead = async () => {
+  const fetchLead = useCallback(async () => {
     setIsLoading(true)
     setError(null)
     try {
@@ -161,16 +160,16 @@ export default function LeadDetailPage() {
       } else {
         setError('Lead not found')
       }
-    } catch (err) {
+    } catch {
       setError('Unable to load lead. Please try again.')
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [leadId])
 
   useEffect(() => {
     fetchLead()
-  }, [leadId])
+  }, [fetchLead])
 
   const handleStatusChange = async (newStatus: string) => {
     if (!lead) return
@@ -200,7 +199,7 @@ export default function LeadDetailPage() {
       }
       setLead({ ...lead, status: newStatus })
       showToast(`Status updated to "${newStatus.replace('_', ' ')}"`, 'success')
-    } catch (err) {
+    } catch {
       showToast('Failed to update status. Please try again.', 'error')
     } finally {
       setIsSaving(false)
@@ -259,7 +258,7 @@ export default function LeadDetailPage() {
       window.URL.revokeObjectURL(url)
 
       showToast('PDF downloaded', 'success')
-    } catch (err) {
+    } catch {
       showToast('Failed to download PDF', 'error')
     } finally {
       setIsDownloadingPDF(false)
@@ -274,7 +273,7 @@ export default function LeadDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <AlertTriangle className="h-12 w-12 text-amber-500" />
-        <p className="mt-4 text-lg font-medium text-slate-900">
+        <p className="mt-4 text-lg font-medium text-slate-50">
           {error || "This lead doesn't exist or may have been archived."}
         </p>
         <div className="mt-4 flex gap-3">
@@ -321,10 +320,10 @@ export default function LeadDetailPage() {
             Back
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-bold text-slate-50">
               {contact?.first_name} {contact?.last_name}
             </h1>
-            <p className="text-slate-500">
+            <p className="text-slate-400">
               Lead created {formatDate(lead.created_at)}
             </p>
           </div>
@@ -368,23 +367,23 @@ export default function LeadDetailPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm text-slate-500">Name</p>
+              <p className="text-sm text-slate-400">Name</p>
               <p className="font-medium">
                 {contact?.first_name} {contact?.last_name}
               </p>
             </div>
             <div>
-              <p className="text-sm text-slate-500">Email</p>
+              <p className="text-sm text-slate-400">Email</p>
               <p className="font-medium">{contact?.email || 'N/A'}</p>
             </div>
             <div>
-              <p className="text-sm text-slate-500">Phone</p>
+              <p className="text-sm text-slate-400">Phone</p>
               <p className="font-medium">
                 {contact?.phone ? formatPhone(contact.phone) : 'N/A'}
               </p>
             </div>
             <div>
-              <p className="text-sm text-slate-500">Preferred Contact</p>
+              <p className="text-sm text-slate-400">Preferred Contact</p>
               <p className="font-medium capitalize">
                 {contact?.preferred_contact_method || 'N/A'}
               </p>
@@ -402,12 +401,12 @@ export default function LeadDetailPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm text-slate-500">Address</p>
+              <p className="text-sm text-slate-400">Address</p>
               <p className="font-medium">
                 {property?.street_address || 'N/A'}
               </p>
               {property?.city && (
-                <p className="text-slate-600">
+                <p className="text-slate-400">
                   {property.city}, {property.state} {property.zip_code}
                 </p>
               )}
@@ -426,19 +425,19 @@ export default function LeadDetailPage() {
           <CardContent>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-slate-500">Job Type</p>
+                <p className="text-sm text-slate-400">Job Type</p>
                 <p className="font-medium capitalize">
                   {intake?.job_type?.replace('_', ' ') || 'N/A'}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-slate-500">Material</p>
+                <p className="text-sm text-slate-400">Material</p>
                 <p className="font-medium capitalize">
                   {intake?.roof_material?.replace('_', ' ') || 'N/A'}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-slate-500">Size</p>
+                <p className="text-sm text-slate-400">Size</p>
                 <p className="font-medium">
                   {intake?.roof_size_sqft
                     ? `${intake.roof_size_sqft.toLocaleString()} sq ft`
@@ -446,11 +445,11 @@ export default function LeadDetailPage() {
                 </p>
               </div>
               <div>
-                <p className="text-sm text-slate-500">Stories</p>
+                <p className="text-sm text-slate-400">Stories</p>
                 <p className="font-medium">{intake?.stories || 'N/A'}</p>
               </div>
               <div>
-                <p className="text-sm text-slate-500">Pitch</p>
+                <p className="text-sm text-slate-400">Pitch</p>
                 <p className="font-medium capitalize">
                   {intake?.roof_pitch?.replace('_', ' ') || 'N/A'}
                 </p>
@@ -480,7 +479,7 @@ export default function LeadDetailPage() {
                 ))}
               </div>
             ) : (
-              <p className="text-slate-500">No issues reported</p>
+              <p className="text-slate-400">No issues reported</p>
             )}
           </CardContent>
         </Card>
@@ -495,13 +494,13 @@ export default function LeadDetailPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div>
-              <p className="text-sm text-slate-500">Urgency</p>
+              <p className="text-sm text-slate-400">Urgency</p>
               <p className="font-medium capitalize">
                 {intake?.timeline_urgency?.replace('_', ' ') || 'N/A'}
               </p>
             </div>
             <div>
-              <p className="text-sm text-slate-500">Insurance Claim</p>
+              <p className="text-sm text-slate-400">Insurance Claim</p>
               <p className="font-medium">
                 {intake?.has_insurance_claim ? 'Yes' : 'No'}
               </p>
@@ -551,7 +550,7 @@ export default function LeadDetailPage() {
                     estimate.estimate_status === 'sent' ? 'bg-blue-100 text-blue-700' :
                     estimate.estimate_status === 'rejected' ? 'bg-red-100 text-red-700' :
                     estimate.estimate_status === 'expired' ? 'bg-orange-100 text-orange-700' :
-                    'bg-slate-100 text-slate-600'
+                    'bg-slate-900/60 text-slate-400'
                   }`}>
                     {(estimate.estimate_status || 'draft').charAt(0).toUpperCase() + (estimate.estimate_status || 'draft').slice(1)}
                   </span>
@@ -563,21 +562,21 @@ export default function LeadDetailPage() {
                     </span>
                   )}
                   {estimate.ai_explanation_provider && (
-                    <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-slate-50 text-slate-500">
+                    <span className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium bg-slate-900/40 text-slate-400">
                       via {estimate.ai_explanation_provider}
                     </span>
                   )}
                 </div>
                 <div className="flex items-end justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Range</p>
+                    <p className="text-sm text-slate-400">Range</p>
                     <p className="text-lg font-medium">
                       {formatCurrency(estimate.price_low)} -{' '}
                       {formatCurrency(estimate.price_high)}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-slate-500">Most Likely</p>
+                    <p className="text-sm text-slate-400">Most Likely</p>
                     <p className="text-2xl font-bold text-amber-600">
                       {formatCurrency(estimate.price_likely)}
                     </p>
@@ -585,14 +584,14 @@ export default function LeadDetailPage() {
                 </div>
                 {estimate.ai_explanation && (
                   <div>
-                    <p className="text-sm text-slate-500">AI Summary</p>
-                    <p className="text-sm text-slate-700">{estimate.ai_explanation}</p>
+                    <p className="text-sm text-slate-400">AI Summary</p>
+                    <p className="text-sm text-slate-300">{estimate.ai_explanation}</p>
                   </div>
                 )}
                 {/* Show email delivery info */}
                 {contact?.email && (
-                  <div className="pt-2 border-t border-slate-200">
-                    <p className="text-xs text-slate-500 flex items-center gap-1">
+                  <div className="pt-2 border-t border-white/5">
+                    <p className="text-xs text-slate-400 flex items-center gap-1">
                       <Mail className="h-3 w-3" />
                       {estimate.sent_at
                         ? `Sent to ${contact.email} on ${formatDate(estimate.sent_at)}`
@@ -603,7 +602,7 @@ export default function LeadDetailPage() {
                 )}
               </div>
             ) : (
-              <p className="text-slate-500">No estimate generated</p>
+              <p className="text-slate-400">No estimate generated</p>
             )}
           </CardContent>
         </Card>
@@ -686,39 +685,39 @@ export default function LeadDetailPage() {
           <CardContent>
             <div className="grid gap-4 md:grid-cols-3">
               {/* Customer Account */}
-              <div className="rounded-lg border border-slate-200 p-4">
+              <div className="rounded-lg border border-white/5 p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <User className="h-4 w-4 text-slate-500" />
-                  <p className="text-sm font-medium text-slate-700">Customer Account</p>
+                  <User className="h-4 w-4 text-slate-400" />
+                  <p className="text-sm font-medium text-slate-300">Customer Account</p>
                 </div>
                 {lead.customer_lead?.customer ? (
                   <div>
-                    <p className="text-sm text-slate-900">
+                    <p className="text-sm text-slate-50">
                       {lead.customer_lead.customer.first_name} {lead.customer_lead.customer.last_name}
                     </p>
-                    <p className="text-xs text-slate-500">{lead.customer_lead.customer.email}</p>
+                    <p className="text-xs text-slate-400">{lead.customer_lead.customer.email}</p>
                     <span className="inline-flex items-center gap-1 mt-2 text-xs text-green-600 bg-green-50 px-2 py-1 rounded">
                       <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
                       Active
                     </span>
                   </div>
                 ) : (
-                  <p className="text-sm text-slate-500">No account created</p>
+                  <p className="text-sm text-slate-400">No account created</p>
                 )}
               </div>
 
               {/* Financing Status */}
-              <div className="rounded-lg border border-slate-200 p-4">
+              <div className="rounded-lg border border-white/5 p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <CreditCard className="h-4 w-4 text-slate-500" />
-                  <p className="text-sm font-medium text-slate-700">Financing</p>
+                  <CreditCard className="h-4 w-4 text-slate-400" />
+                  <p className="text-sm font-medium text-slate-300">Financing</p>
                 </div>
                 {lead.financing_applications && lead.financing_applications.length > 0 ? (
                   <div>
-                    <p className="text-sm text-slate-900">
+                    <p className="text-sm text-slate-50">
                       {formatCurrency(lead.financing_applications[0].amount_requested)} requested
                     </p>
-                    <p className="text-xs text-slate-500 capitalize">
+                    <p className="text-xs text-slate-400 capitalize">
                       Credit: {lead.financing_applications[0].credit_range?.replace('_', ' ')}
                     </p>
                     <span className={`inline-flex items-center gap-1 mt-2 text-xs px-2 py-1 rounded ${
@@ -732,23 +731,23 @@ export default function LeadDetailPage() {
                     </span>
                   </div>
                 ) : (
-                  <p className="text-sm text-slate-500">Not interested</p>
+                  <p className="text-sm text-slate-400">Not interested</p>
                 )}
               </div>
 
               {/* Insurance Claim Status */}
-              <div className="rounded-lg border border-slate-200 p-4">
+              <div className="rounded-lg border border-white/5 p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Shield className="h-4 w-4 text-slate-500" />
-                  <p className="text-sm font-medium text-slate-700">Insurance Claim</p>
+                  <Shield className="h-4 w-4 text-slate-400" />
+                  <p className="text-sm font-medium text-slate-300">Insurance Claim</p>
                 </div>
                 {lead.insurance_claims && lead.insurance_claims.length > 0 ? (
                   <div>
-                    <p className="text-sm text-slate-900">
+                    <p className="text-sm text-slate-50">
                       {lead.insurance_claims[0].insurance_company || 'Company not specified'}
                     </p>
                     {lead.insurance_claims[0].claim_number && (
-                      <p className="text-xs text-slate-500 font-mono">
+                      <p className="text-xs text-slate-400 font-mono">
                         #{lead.insurance_claims[0].claim_number}
                       </p>
                     )}
@@ -765,17 +764,17 @@ export default function LeadDetailPage() {
                 ) : intake?.has_insurance_claim ? (
                   <p className="text-sm text-amber-600">Claim indicated, not tracked</p>
                 ) : (
-                  <p className="text-sm text-slate-500">No claim</p>
+                  <p className="text-sm text-slate-400">No claim</p>
                 )}
               </div>
             </div>
 
             {/* Assistance Programs */}
             {lead.program_applications && lead.program_applications.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-slate-200">
+              <div className="mt-4 pt-4 border-t border-white/5">
                 <div className="flex items-center gap-2 mb-2">
-                  <HandHeart className="h-4 w-4 text-slate-500" />
-                  <p className="text-sm font-medium text-slate-700">
+                  <HandHeart className="h-4 w-4 text-slate-400" />
+                  <p className="text-sm font-medium text-slate-300">
                     Assistance Programs ({lead.program_applications.length})
                   </p>
                 </div>
@@ -788,7 +787,7 @@ export default function LeadDetailPage() {
                           ? 'text-green-600 bg-green-50'
                           : app.status === 'denied'
                           ? 'text-red-600 bg-red-50'
-                          : 'text-slate-600 bg-slate-100'
+                          : 'text-slate-400 bg-slate-900/60'
                       }`}
                     >
                       {app.program_id} - {app.status.replace('_', ' ')}

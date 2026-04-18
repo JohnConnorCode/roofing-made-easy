@@ -37,7 +37,7 @@ export function ProgressBar({ currentStep, totalSteps = 3 }: ProgressBarProps) {
                     'flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300',
                     isCompleted && 'bg-[#c9a25c] text-[#0c0f14]',
                     isCurrent && 'bg-[#c9a25c]/20 border-2 border-[#c9a25c] text-[#c9a25c]',
-                    !isCompleted && !isCurrent && 'bg-slate-800 text-slate-500'
+                    !isCompleted && !isCurrent && 'bg-slate-800 text-slate-400'
                   )}
                 >
                   {isCompleted ? (
@@ -104,7 +104,7 @@ export function ProgressBar({ currentStep, totalSteps = 3 }: ProgressBarProps) {
                       <Icon
                         className={cn(
                           'h-5 w-5 transition-colors',
-                          isCurrent ? 'text-[#c9a25c]' : 'text-slate-500'
+                          isCurrent ? 'text-[#c9a25c]' : 'text-slate-400'
                         )}
                       />
                     )}
@@ -114,7 +114,7 @@ export function ProgressBar({ currentStep, totalSteps = 3 }: ProgressBarProps) {
                   <span
                     className={cn(
                       'mt-2 text-sm font-medium transition-colors whitespace-nowrap',
-                      isCurrent ? 'text-[#c9a25c]' : isCompleted ? 'text-slate-300' : 'text-slate-500'
+                      isCurrent ? 'text-[#c9a25c]' : isCompleted ? 'text-slate-300' : 'text-slate-400'
                     )}
                   >
                     {step.label}

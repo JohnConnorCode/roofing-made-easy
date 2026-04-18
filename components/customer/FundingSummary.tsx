@@ -192,7 +192,7 @@ export function FundingSummary({
                 {formatCurrency(remaining)}
               </span>
               {monthlyPayment > 0 && (
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-400">
                   ~{formatCurrency(Math.round(monthlyPayment))}/mo
                 </p>
               )}

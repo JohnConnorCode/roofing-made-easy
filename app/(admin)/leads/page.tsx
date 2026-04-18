@@ -20,7 +20,6 @@ import {
   Inbox,
   Kanban,
   ArrowUpDown,
-  Download,
   Plus
 } from 'lucide-react'
 import { SkeletonLeadsTable } from '@/components/ui/skeleton'
@@ -111,7 +110,7 @@ export default function LeadsPage() {
         setLeads(data.leads)
         setTotal(data.total || data.leads.length)
       }
-    } catch (err) {
+    } catch {
       setError('Unable to load leads. Please try again.')
     } finally {
       setIsLoading(false)
@@ -279,7 +278,7 @@ export default function LeadsPage() {
 
   const SortHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
     <th
-      className="pb-3 pr-4 cursor-pointer hover:text-slate-700 select-none"
+      className="pb-3 pr-4 cursor-pointer hover:text-slate-50 select-none"
       onClick={() => handleSort(field)}
     >
       <div className="flex items-center gap-1">
@@ -294,8 +293,8 @@ export default function LeadsPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Leads</h1>
-            <p className="text-slate-500">Manage your roofing leads</p>
+            <h1 className="text-2xl font-bold text-slate-50">Leads</h1>
+            <p className="text-slate-400">Manage your roofing leads</p>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/leads/pipeline">
@@ -312,7 +311,7 @@ export default function LeadsPage() {
 
       {/* Filters */}
       <FadeInSection delay={100} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="relative flex-1">
@@ -321,14 +320,14 @@ export default function LeadsPage() {
                 placeholder="Search by name, email, or city..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-white border-slate-300 text-slate-900"
+                className="pl-10"
               />
             </div>
             <Select
               options={STATUS_OPTIONS}
               value={status}
               onChange={setStatus}
-              className="md:w-48 bg-white border-slate-300 text-slate-900"
+              className="md:w-48"
             />
           </div>
         </CardContent>
@@ -337,12 +336,12 @@ export default function LeadsPage() {
 
       {/* Leads table */}
       <FadeInSection delay={200} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardHeader>
-          <CardTitle className="text-slate-900">
+          <CardTitle className="text-slate-50">
             {total} Lead{total !== 1 ? 's' : ''}
             {selectedLeads.size > 0 && (
-              <span className="ml-2 text-sm font-normal text-slate-500">
+              <span className="ml-2 text-sm font-normal text-slate-400">
                 ({selectedLeads.size} selected)
               </span>
             )}
@@ -354,7 +353,7 @@ export default function LeadsPage() {
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-8">
               <AlertTriangle className="h-10 w-10 text-gold" />
-              <p className="mt-3 text-slate-600">{error}</p>
+              <p className="mt-3 text-slate-400">{error}</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -368,7 +367,7 @@ export default function LeadsPage() {
           ) : leads.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8">
               <Inbox className="h-10 w-10 text-slate-300" />
-              <p className="mt-3 text-slate-600">No leads found</p>
+              <p className="mt-3 text-slate-400">No leads found</p>
               <p className="text-sm text-slate-400">
                 {search || status ? 'Try adjusting your filters.' : 'New submissions will appear here automatically.'}
               </p>
@@ -378,7 +377,7 @@ export default function LeadsPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b text-left text-sm text-slate-500">
+                    <tr className="border-b text-left text-sm text-slate-400">
                       <th className="pb-3 pr-2 w-8">
                         <Checkbox
                           checked={selectedLeads.size === sortedLeads.length && sortedLeads.length > 0}
@@ -414,7 +413,7 @@ export default function LeadsPage() {
                         <tr
                           key={lead.id}
                           className={`border-b last:border-0 transition-colors ${
-                            isSelected ? 'bg-gold-light/10' : 'hover:bg-slate-50'
+                            isSelected ? 'bg-gold-light/10' : 'hover:bg-slate-900/40'
                           }`}
                         >
                           <td className="py-3 pr-2">
@@ -433,7 +432,7 @@ export default function LeadsPage() {
                                 : 'Unknown'}
                             </Link>
                           </td>
-                          <td className="hidden py-3 pr-4 text-sm text-slate-600 md:table-cell">
+                          <td className="hidden py-3 pr-4 text-sm text-slate-400 md:table-cell">
                             {contact?.email && (
                               <div>{contact.email}</div>
                             )}
@@ -441,7 +440,7 @@ export default function LeadsPage() {
                               <div>{formatPhone(contact.phone)}</div>
                             )}
                           </td>
-                          <td className="hidden py-3 pr-4 text-slate-600 lg:table-cell">
+                          <td className="hidden py-3 pr-4 text-slate-400 lg:table-cell">
                             {property?.city && property?.state
                               ? `${property.city}, ${property.state}`
                               : 'N/A'}
@@ -463,10 +462,10 @@ export default function LeadsPage() {
                               {scoreTier.label}
                             </span>
                           </td>
-                          <td className="py-3 pr-4 text-slate-600">
+                          <td className="py-3 pr-4 text-slate-400">
                             {lead.current_step}/8
                           </td>
-                          <td className="py-3 text-slate-600">
+                          <td className="py-3 text-slate-400">
                             {formatDate(lead.created_at)}
                           </td>
                         </tr>
@@ -479,7 +478,7 @@ export default function LeadsPage() {
               {/* Pagination */}
               {totalPages > 1 && (
                 <div className="mt-4 flex items-center justify-between">
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-slate-400">
                     Showing {offset + 1}-{Math.min(offset + LIMIT, total)} of {total}
                   </p>
                   <div className="flex gap-2">

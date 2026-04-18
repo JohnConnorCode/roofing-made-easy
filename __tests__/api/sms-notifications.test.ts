@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { SMS_TEMPLATES } from '@/lib/sms/twilio'
 
 // Mock twilio - the module isn't loaded in tests

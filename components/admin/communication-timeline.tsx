@@ -73,7 +73,7 @@ const STATUS_COLORS = {
   cancelled: 'text-slate-400',
 }
 
-export function CommunicationTimeline({ leadId, customerId, jobId }: CommunicationTimelineProps) {
+export function CommunicationTimeline({ leadId, customerId, jobId: _jobId }: CommunicationTimelineProps) {
   const [logs, setLogs] = useState<CommunicationLog[]>([])
   const [scheduled, setScheduled] = useState<ScheduledMessage[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -102,7 +102,7 @@ export function CommunicationTimeline({ leadId, customerId, jobId }: Communicati
     } finally {
       setIsLoading(false)
     }
-  }, [leadId, customerId, jobId])
+  }, [leadId, customerId])
 
   useEffect(() => {
     fetchCommunications()
@@ -130,7 +130,7 @@ export function CommunicationTimeline({ leadId, customerId, jobId }: Communicati
     return (
       <div className="text-center py-6">
         <Mail className="h-8 w-8 mx-auto text-slate-300 mb-2" />
-        <p className="text-sm text-slate-500">No communications yet</p>
+        <p className="text-sm text-slate-400">No communications yet</p>
       </div>
     )
   }
@@ -140,7 +140,7 @@ export function CommunicationTimeline({ leadId, customerId, jobId }: Communicati
       {/* Scheduled messages */}
       {scheduled.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-xs font-medium text-slate-500 uppercase tracking-wider">Scheduled</h4>
+          <h4 className="text-xs font-medium text-slate-400 uppercase tracking-wider">Scheduled</h4>
           {scheduled.map((msg) => {
             const ChannelIcon = CHANNEL_ICONS[msg.channel]
 
@@ -160,7 +160,7 @@ export function CommunicationTimeline({ leadId, customerId, jobId }: Communicati
                     </span>
                   </div>
                   {msg.workflow && (
-                    <div className="flex items-center gap-1 mt-1 text-xs text-slate-500">
+                    <div className="flex items-center gap-1 mt-1 text-xs text-slate-400">
                       <Zap className="h-3 w-3" />
                       {msg.workflow.name}
                     </div>
@@ -180,7 +180,7 @@ export function CommunicationTimeline({ leadId, customerId, jobId }: Communicati
       {/* Communication history */}
       {logs.length > 0 && (
         <div className="space-y-2">
-          <h4 className="text-xs font-medium text-slate-500 uppercase tracking-wider">History</h4>
+          <h4 className="text-xs font-medium text-slate-400 uppercase tracking-wider">History</h4>
           {logs.map((log) => {
             const ChannelIcon = CHANNEL_ICONS[log.channel]
             const StatusIcon = STATUS_ICONS[log.status as keyof typeof STATUS_ICONS] || Clock
@@ -209,12 +209,12 @@ export function CommunicationTimeline({ leadId, customerId, jobId }: Communicati
                   </div>
 
                   {log.subject && (
-                    <p className="text-sm text-slate-600 mt-0.5 font-medium">
+                    <p className="text-sm text-slate-400 mt-0.5 font-medium">
                       {log.subject}
                     </p>
                   )}
 
-                  <p className="text-sm text-slate-500 mt-1 line-clamp-2">
+                  <p className="text-sm text-slate-400 mt-1 line-clamp-2">
                     {log.body}
                   </p>
 

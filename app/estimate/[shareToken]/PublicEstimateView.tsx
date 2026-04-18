@@ -127,9 +127,9 @@ export function PublicEstimateView({
       {/* Simple header for public view */}
       <header className="border-b border-slate-800 bg-[#0c0f14]/95 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-          <a href="/" className="text-xl font-bold text-white">
+          <Link href="/" className="text-xl font-bold text-white">
             <span className="text-[#c9a25c]">Smart Roof</span> Pricing
-          </a>
+          </Link>
           <a
             href={phoneLink}
             className="text-sm text-slate-400 hover:text-[#c9a25c] transition-colors"
@@ -192,7 +192,7 @@ export function PublicEstimateView({
       {/* Simple footer */}
       <footer className="border-t border-slate-800 py-8">
         <div className="mx-auto max-w-6xl px-4 text-center">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-400">
             &copy; {new Date().getFullYear()} Farrell Roofing LLC. All rights reserved.
           </p>
         </div>

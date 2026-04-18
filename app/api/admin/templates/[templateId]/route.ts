@@ -213,7 +213,7 @@ export async function DELETE(
     }
 
     // Check if any workflows are using this template
-    const { data: workflows, count } = await supabase
+    const { count } = await supabase
       .from('automation_workflows')
       .select('id', { count: 'exact' })
       .eq('template_id', templateId)

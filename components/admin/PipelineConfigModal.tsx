@@ -230,7 +230,7 @@ export function PipelineConfigModal({
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-400"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -246,7 +246,7 @@ export function PipelineConfigModal({
                 'px-6 py-3 text-sm font-medium transition-colors',
                 activeTab === 'stages'
                   ? 'border-b-2 border-gold text-gold'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-slate-400 hover:text-slate-700'
               )}
             >
               Pipeline Stages
@@ -257,7 +257,7 @@ export function PipelineConfigModal({
                 'px-6 py-3 text-sm font-medium transition-colors',
                 activeTab === 'fields'
                   ? 'border-b-2 border-gold text-gold'
-                  : 'text-slate-500 hover:text-slate-700'
+                  : 'text-slate-400 hover:text-slate-700'
               )}
             >
               Card Fields
@@ -269,7 +269,7 @@ export function PipelineConfigModal({
         <div className="max-h-[60vh] overflow-y-auto p-4">
           {activeTab === 'stages' ? (
             <div className="space-y-4">
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-400">
                 Drag stages to reorder. Toggle visibility to show/hide columns.
               </p>
 
@@ -346,7 +346,7 @@ export function PipelineConfigModal({
                         className={cn(
                           'rounded p-1.5 transition-colors',
                           stage.is_visible
-                            ? 'text-slate-600 hover:bg-slate-100'
+                            ? 'text-slate-400 hover:bg-slate-100'
                             : 'text-slate-300 hover:bg-slate-100'
                         )}
                         title={stage.is_visible ? 'Hide stage' : 'Show stage'}
@@ -362,7 +362,7 @@ export function PipelineConfigModal({
                         <>
                           <button
                             onClick={() => setEditingStageId(stage.id)}
-                            className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+                            className="rounded p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-400"
                             title="Edit stage"
                           >
                             <Palette className="h-4 w-4" />
@@ -421,7 +421,7 @@ export function PipelineConfigModal({
             </div>
           ) : (
             <div className="space-y-4">
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-400">
                 Select which fields to display on lead cards in the pipeline view.
               </p>
 

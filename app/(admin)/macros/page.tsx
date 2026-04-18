@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { useToast } from '@/components/ui/toast'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Plus, Edit2, Trash2, FileText, Star, Copy, X, Loader2 } from 'lucide-react'
+import { Plus, Edit2, Trash2, FileText, Star, Copy, X } from 'lucide-react'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
@@ -99,11 +99,7 @@ export default function MacrosPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [tagsInput, setTagsInput] = useState('')
 
-  useEffect(() => {
-    fetchMacros()
-  }, [])
-
-  async function fetchMacros() {
+  const fetchMacros = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch('/api/macros?include_line_items=true')
@@ -111,12 +107,16 @@ export default function MacrosPage() {
 
       const data = await response.json()
       setMacros(data.macros || [])
-    } catch (error) {
+    } catch {
       showToast('Failed to load templates', 'error')
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [showToast])
+
+  useEffect(() => {
+    fetchMacros()
+  }, [fetchMacros])
 
   const handleSetDefault = async (macroId: string) => {
     try {
@@ -130,7 +130,7 @@ export default function MacrosPage() {
 
       showToast('Default template updated', 'success')
       fetchMacros()
-    } catch (error) {
+    } catch {
       showToast('Failed to set default', 'error')
     }
   }
@@ -246,7 +246,7 @@ export default function MacrosPage() {
 
       showToast('Template duplicated', 'success')
       fetchMacros()
-    } catch (error) {
+    } catch {
       showToast('Failed to duplicate template', 'error')
     }
   }
@@ -265,10 +265,10 @@ export default function MacrosPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-slate-50">
             Estimate Templates
           </h1>
-          <p className="text-slate-500">
+          <p className="text-slate-400">
             Pre-built line item bundles for quick estimate creation
           </p>
         </div>
@@ -287,30 +287,30 @@ export default function MacrosPage() {
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardContent className="pt-6">
-            <p className="text-sm text-slate-500">Total Templates</p>
-            <p className="text-2xl font-bold text-slate-900">{macros.length}</p>
+            <p className="text-sm text-slate-400">Total Templates</p>
+            <p className="text-2xl font-bold text-slate-50">{macros.length}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-sm text-slate-500">System Templates</p>
-            <p className="text-2xl font-bold text-slate-900">
+            <p className="text-sm text-slate-400">System Templates</p>
+            <p className="text-2xl font-bold text-slate-50">
               {macros.filter((m) => m.is_system).length}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-sm text-slate-500">Custom Templates</p>
-            <p className="text-2xl font-bold text-slate-900">
+            <p className="text-sm text-slate-400">Custom Templates</p>
+            <p className="text-2xl font-bold text-slate-50">
               {macros.filter((m) => !m.is_system).length}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-sm text-slate-500">Total Uses</p>
-            <p className="text-2xl font-bold text-slate-900">
+            <p className="text-sm text-slate-400">Total Uses</p>
+            <p className="text-2xl font-bold text-slate-50">
               {macros.reduce((sum, m) => sum + m.usage_count, 0)}
             </p>
           </CardContent>
@@ -330,8 +330,8 @@ export default function MacrosPage() {
         <div className="space-y-8">
           {Object.entries(groupedMacros).map(([jobType, items]) => (
             <div key={jobType}>
-              <h2 className="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                <FileText className="h-5 w-5 text-slate-500" />
+              <h2 className="text-lg font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                <FileText className="h-5 w-5 text-slate-400" />
                 {JOB_TYPE_LABELS[jobType as MacroJobType]}
                 <span className="text-sm font-normal text-slate-400">
                   ({items.length})
@@ -350,7 +350,7 @@ export default function MacrosPage() {
                           )}
                         </CardTitle>
                         {macro.is_system && (
-                          <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">
+                          <span className="text-xs bg-slate-900/60 text-slate-400 px-2 py-0.5 rounded">
                             System
                           </span>
                         )}
@@ -369,14 +369,14 @@ export default function MacrosPage() {
                         {macro.tags?.slice(0, 2).map((tag) => (
                           <span
                             key={tag}
-                            className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded"
+                            className="text-xs bg-slate-900/60 text-slate-400 px-2 py-0.5 rounded"
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
 
-                      <div className="flex items-center justify-between text-sm text-slate-500 mb-3">
+                      <div className="flex items-center justify-between text-sm text-slate-400 mb-3">
                         <span>
                           {(macro as unknown as Record<string, unknown>).line_items ? ((macro as unknown as Record<string, unknown>).line_items as unknown[]).length : 0} line items
                         </span>
@@ -442,21 +442,21 @@ export default function MacrosPage() {
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeModal}
           />
-          <div className="relative mx-4 w-full max-w-lg rounded-lg bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto">
+          <div className="relative mx-4 w-full max-w-lg rounded-lg bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-label={editingMacro ? 'Edit Template' : 'Create Template'}>
             <button
               onClick={closeModal}
-              className="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
+              className="absolute right-4 top-4 text-slate-400 hover:text-slate-400"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">
+            <h2 className="text-lg font-semibold text-slate-50 mb-4">
               {editingMacro ? 'Edit Template' : 'Create Template'}
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Name *
                 </label>
                 <Input
@@ -470,7 +470,7 @@ export default function MacrosPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Description
                 </label>
                 <Input
@@ -484,7 +484,7 @@ export default function MacrosPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Roof Type
                   </label>
                   <Select
@@ -499,7 +499,7 @@ export default function MacrosPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Job Type
                   </label>
                   <Select
@@ -516,7 +516,7 @@ export default function MacrosPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Tags
                 </label>
                 <Input
@@ -524,7 +524,7 @@ export default function MacrosPage() {
                   onChange={(e) => setTagsInput(e.target.value)}
                   placeholder="Comma-separated tags, e.g., popular, budget"
                 />
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-400 mt-1">
                   Separate tags with commas
                 </p>
               </div>

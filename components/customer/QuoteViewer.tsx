@@ -7,11 +7,9 @@ import {
   FileText,
   Download,
   Calendar,
-  DollarSign,
   CheckCircle,
   Clock,
   Loader2,
-  Eye,
   AlertTriangle,
   RefreshCw,
   X,
@@ -231,13 +229,13 @@ export function QuoteViewer({
         <div className="rounded-lg bg-gradient-to-r from-gold-light/10 to-transparent border border-gold-light/20 p-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Project Type</p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Project Type</p>
               <p className="text-slate-200 font-medium capitalize">
                 {jobType?.replace(/_/g, ' ') || 'Roofing Service'}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Estimated Cost</p>
+              <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Estimated Cost</p>
               <p className="text-2xl font-bold text-gold-light">
                 {formatCurrency(displayPrice)}
               </p>
@@ -252,11 +250,11 @@ export function QuoteViewer({
           <div className="flex items-center justify-between pt-4 border-t border-slate-700">
             <div className="flex items-center gap-4">
               <div>
-                <p className="text-xs text-slate-500">Low Estimate</p>
+                <p className="text-xs text-slate-400">Low Estimate</p>
                 <p className="text-sm text-slate-300">{formatCurrency(estimate.price_low)}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">High Estimate</p>
+                <p className="text-xs text-slate-400">High Estimate</p>
                 <p className="text-sm text-slate-300">{formatCurrency(estimate.price_high)}</p>
               </div>
             </div>
@@ -285,7 +283,7 @@ export function QuoteViewer({
               <X className="h-5 w-5 text-slate-400" />
               <div>
                 <p className="text-sm font-medium text-slate-400">Quote Declined</p>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-400">
                   Contact us if you change your mind or would like a revised quote
                 </p>
               </div>
@@ -399,7 +397,7 @@ export function QuoteViewer({
 
         {/* What's Included */}
         <div className="pt-4 border-t border-slate-700">
-          <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Quote Includes</p>
+          <p className="text-xs text-slate-400 uppercase tracking-wider mb-3">Quote Includes</p>
           <div className="grid grid-cols-2 gap-2">
             {quoteIncludes.map((item) => (
               <div key={item} className="flex items-center gap-2 text-sm text-slate-300">
@@ -415,7 +413,7 @@ export function QuoteViewer({
       {showAcceptModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70" onClick={() => setShowAcceptModal(false)} />
-          <div className="relative bg-slate-deep rounded-xl shadow-xl max-w-md w-full border border-slate-700">
+          <div role="dialog" aria-modal="true" aria-label="Accept Quote" className="relative bg-slate-deep rounded-xl shadow-xl max-w-md w-full border border-slate-700">
             <div className="p-6">
               <h3 className="text-xl font-semibold text-slate-100 mb-2">Accept Quote</h3>
               <p className="text-sm text-slate-400 mb-6">
@@ -425,46 +423,53 @@ export function QuoteViewer({
 
               <form onSubmit={handleAcceptQuote} className="space-y-4">
                 {submitError && (
-                  <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+                  <div role="alert" className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
                     {submitError}
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-sm text-slate-400 mb-1">Full Name *</label>
+                  <label htmlFor="accept-name" className="block text-sm text-slate-400 mb-1">Full Name *</label>
                   <input
+                    id="accept-name"
                     type="text"
                     value={acceptName}
                     onChange={e => setAcceptName(e.target.value)}
                     className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-gold-light"
                     placeholder="John Smith"
                     required
+                    aria-required="true"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm text-slate-400 mb-1">Email *</label>
+                  <label htmlFor="accept-email" className="block text-sm text-slate-400 mb-1">Email *</label>
                   <input
+                    id="accept-email"
                     type="email"
                     value={acceptEmail}
                     onChange={e => setAcceptEmail(e.target.value)}
                     className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-gold-light"
                     placeholder="john@example.com"
                     required
+                    aria-required="true"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm text-slate-400 mb-1">Type your name to sign *</label>
+                  <label htmlFor="accept-signature" className="block text-sm text-slate-400 mb-1">Type your name to sign *</label>
                   <input
+                    id="accept-signature"
                     type="text"
                     value={signature}
                     onChange={e => setSignature(e.target.value)}
                     className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 italic font-serif text-lg focus:outline-none focus:ring-2 focus:ring-gold-light"
                     placeholder="John Smith"
                     required
+                    aria-required="true"
+                    aria-describedby="signature-hint"
                   />
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p id="signature-hint" className="text-xs text-slate-400 mt-1">
                     This serves as your electronic signature
                   </p>
                 </div>
@@ -498,7 +503,7 @@ export function QuoteViewer({
       {showRejectModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70" onClick={() => setShowRejectModal(false)} />
-          <div className="relative bg-slate-deep rounded-xl shadow-xl max-w-md w-full border border-slate-700">
+          <div role="dialog" aria-modal="true" aria-label="Decline Quote" className="relative bg-slate-deep rounded-xl shadow-xl max-w-md w-full border border-slate-700">
             <div className="p-6">
               <h3 className="text-xl font-semibold text-slate-100 mb-2">Decline Quote</h3>
               <p className="text-sm text-slate-400 mb-6">
@@ -507,20 +512,22 @@ export function QuoteViewer({
 
               <form onSubmit={handleRejectQuote} className="space-y-4">
                 {submitError && (
-                  <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+                  <div role="alert" className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
                     {submitError}
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-sm text-slate-400 mb-1">Reason for declining *</label>
+                  <label htmlFor="reject-reason" className="block text-sm text-slate-400 mb-1">Reason for declining *</label>
                   <textarea
+                    id="reject-reason"
                     value={rejectReason}
                     onChange={e => setRejectReason(e.target.value)}
                     className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-200 focus:outline-none focus:ring-2 focus:ring-gold-light resize-none"
                     rows={3}
                     placeholder="Price too high, timing not right, went with another company, etc."
                     required
+                    aria-required="true"
                   />
                 </div>
 

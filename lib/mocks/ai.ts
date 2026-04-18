@@ -20,10 +20,10 @@ import type {
   AdvisorInput,
   AdvisorResult,
 } from '@/lib/ai/provider'
-import { simulateDelay, getMockDelay } from './config'
+import { simulateDelay } from './config'
 
 export class MockAiProvider implements AiProvider {
-  name: 'mock' = 'mock'
+  name = 'mock' as const
 
   async analyzePhoto(_input: PhotoAnalysisInput): Promise<AiResult<PhotoAnalysisResult>> {
     const startTime = Date.now()

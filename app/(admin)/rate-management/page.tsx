@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { formatCurrency } from '@/lib/utils'
 import { Save, RotateCcw } from 'lucide-react'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 import { SkeletonPageContent } from '@/components/ui/skeleton'
+import { useToast } from '@/components/ui/toast'
 
 interface PricingRule {
   id: string
@@ -28,7 +28,7 @@ export default function PricingPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { showToast } = useToast()
 
   useEffect(() => {
     async function fetchRules() {
@@ -40,14 +40,14 @@ export default function PricingPage() {
           setOriginalRules(JSON.parse(JSON.stringify(data.rules)))
         }
       } catch {
-        setError('Failed to load pricing rules.')
+        showToast('Failed to load pricing rules.', 'error')
       } finally {
         setIsLoading(false)
       }
     }
 
     fetchRules()
-  }, [])
+  }, [showToast])
 
   const handleRuleChange = (
     id: string,
@@ -84,7 +84,7 @@ export default function PricingPage() {
       setOriginalRules(JSON.parse(JSON.stringify(rules)))
       setHasChanges(false)
     } catch {
-      setError('Failed to save pricing rules. Please try again.')
+      showToast('Failed to save pricing rules. Please try again.', 'error')
     } finally {
       setIsSaving(false)
     }
@@ -110,8 +110,8 @@ export default function PricingPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Pricing Rules</h1>
-            <p className="text-slate-500">Configure base rates, multipliers, and fees</p>
+            <h1 className="text-2xl font-bold text-slate-50">Pricing Rules</h1>
+            <p className="text-slate-400">Configure base rates, multipliers, and fees</p>
           </div>
 
           {hasChanges && (
@@ -148,7 +148,7 @@ export default function PricingPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b text-left text-sm text-slate-500">
+                  <tr className="border-b text-left text-sm text-slate-400">
                     <th className="pb-3 pr-4">Name</th>
                     <th className="pb-3 pr-4">Base Rate</th>
                     <th className="pb-3 pr-4">Multiplier</th>
@@ -165,7 +165,7 @@ export default function PricingPage() {
                           <div>
                             <p className="font-medium">{rule.display_name}</p>
                             {rule.description && (
-                              <p className="text-sm text-slate-500">
+                              <p className="text-sm text-slate-400">
                                 {rule.description}
                               </p>
                             )}

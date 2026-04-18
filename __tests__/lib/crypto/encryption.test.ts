@@ -108,7 +108,7 @@ describe('encryption without key', () => {
 
     // This test verifies the error message when key is missing
     // We can't easily test this without mocking, so we just verify the function exists
-    const { isEncryptionConfigured } = await import(modulePath)
+    const { isEncryptionConfigured: _isEncryptionConfigured } = await import(modulePath)
 
     // Without key, should report not configured
     // Note: This may fail due to module caching - in real scenario would need jest.resetModules()

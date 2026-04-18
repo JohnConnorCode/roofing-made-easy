@@ -201,7 +201,7 @@ export default function AffordabilityAnalyzer({
                   </span>
                   <span className="text-lg font-bold text-slate-100">
                     ${scenario.monthlyPayment.toFixed(2)}
-                    <span className="text-xs font-normal text-slate-500">
+                    <span className="text-xs font-normal text-slate-400">
                       /mo
                     </span>
                   </span>

@@ -83,7 +83,7 @@ export function OptionCard({
               {title}
             </h3>
             {description && (
-              <p className="mt-0.5 text-xs text-slate-500 leading-tight">{description}</p>
+              <p className="mt-0.5 text-xs text-slate-400 leading-tight">{description}</p>
             )}
           </div>
         </div>

@@ -242,7 +242,7 @@ export function EstimateContentPanel({ onSuccess, onError, onTotalChange }: Esti
               <span className={`px-2 py-0.5 rounded text-xs ${CONTENT_TYPE_COLORS[type]}`}>
                 {CONTENT_TYPE_LABELS[type]}
               </span>
-              <span className="text-sm font-normal text-slate-500">({items.length} items)</span>
+              <span className="text-sm font-normal text-slate-400">({items.length} items)</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -273,10 +273,10 @@ export function EstimateContentPanel({ onSuccess, onError, onTotalChange }: Esti
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-slate-600 mt-2">{item.content}</p>
+                          <p className="text-sm text-slate-400 mt-2">{item.content}</p>
                           {isModified && (
                             <details className="mt-2">
-                              <summary className="text-xs text-slate-400 cursor-pointer hover:text-slate-600">
+                              <summary className="text-xs text-slate-400 cursor-pointer hover:text-slate-400">
                                 View default text
                               </summary>
                               <p className="text-xs text-slate-400 mt-1 italic">{item.default_content}</p>
@@ -347,7 +347,7 @@ export function EstimateContentPanel({ onSuccess, onError, onTotalChange }: Esti
                 <h2 className="text-xl font-bold text-slate-900">
                   Edit Estimate Content
                 </h2>
-                <button onClick={handleEditClose} className="text-slate-400 hover:text-slate-600">
+                <button onClick={handleEditClose} className="text-slate-400 hover:text-slate-400">
                   <X className="h-5 w-5" />
                 </button>
               </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -107,11 +107,7 @@ export default function LineItemsPage() {
   const [formData, setFormData] = useState<LineItemFormData>(emptyFormData)
   const [isSaving, setIsSaving] = useState(false)
 
-  useEffect(() => {
-    fetchLineItems()
-  }, [categoryFilter])
-
-  async function fetchLineItems() {
+  const fetchLineItems = useCallback(async () => {
     setIsLoading(true)
     try {
       const params = new URLSearchParams()
@@ -124,12 +120,16 @@ export default function LineItemsPage() {
 
       const data = await response.json()
       setLineItems(data.lineItems || [])
-    } catch (error) {
+    } catch {
       showToast('Failed to load line items', 'error')
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [categoryFilter, showToast])
+
+  useEffect(() => {
+    fetchLineItems()
+  }, [fetchLineItems])
 
   const filteredItems = lineItems.filter((item) => {
     if (!search) return true
@@ -224,7 +224,7 @@ export default function LineItemsPage() {
 
       showToast('Line item deleted', 'success')
       fetchLineItems()
-    } catch (error) {
+    } catch {
       showToast('Failed to delete line item', 'error')
     }
   }
@@ -242,8 +242,8 @@ export default function LineItemsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Line Items</h1>
-          <p className="text-slate-500">
+          <h1 className="text-2xl font-bold text-slate-50">Line Items</h1>
+          <p className="text-slate-400">
             Manage your roofing line item catalog ({lineItems.length} items)
           </p>
         </div>
@@ -300,7 +300,7 @@ export default function LineItemsPage() {
         <Card>
           <CardContent className="py-12 text-center">
             <Package className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-600">No line items found</p>
+            <p className="text-slate-400">No line items found</p>
             <p className="text-sm text-slate-400">
               {search || categoryFilter !== 'all'
                 ? 'Try adjusting your search or filters'
@@ -317,7 +317,7 @@ export default function LineItemsPage() {
                   <span className="capitalize">
                     {category.replace('_', ' ')}
                   </span>
-                  <span className="text-sm font-normal text-slate-500">
+                  <span className="text-sm font-normal text-slate-400">
                     {items.length} items
                   </span>
                 </CardTitle>
@@ -326,7 +326,7 @@ export default function LineItemsPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-slate-200 bg-slate-50 text-sm text-slate-600">
+                      <tr className="border-b border-white/5 bg-slate-900/40 text-sm text-slate-400">
                         <th className="py-2 px-4 text-left font-medium">Code</th>
                         <th className="py-2 px-4 text-left font-medium">Name</th>
                         <th className="py-2 px-4 text-center font-medium">Unit</th>
@@ -341,27 +341,27 @@ export default function LineItemsPage() {
                       {items.map((item) => (
                         <tr
                           key={item.id}
-                          className="border-b border-slate-100 hover:bg-slate-50"
+                          className="border-b border-slate-100 hover:bg-slate-900/40"
                         >
                           <td className="py-3 px-4">
-                            <span className="font-mono text-sm text-slate-600">
+                            <span className="font-mono text-sm text-slate-400">
                               {item.item_code}
                             </span>
                           </td>
                           <td className="py-3 px-4">
                             <div>
-                              <p className="font-medium text-slate-900">
+                              <p className="font-medium text-slate-50">
                                 {item.name}
                               </p>
                               {item.description && (
-                                <p className="text-xs text-slate-500 line-clamp-1">
+                                <p className="text-xs text-slate-400 line-clamp-1">
                                   {item.description}
                                 </p>
                               )}
                             </div>
                           </td>
                           <td className="py-3 px-4 text-center">
-                            <span className="text-sm bg-slate-100 px-2 py-0.5 rounded">
+                            <span className="text-sm bg-slate-900/60 px-2 py-0.5 rounded">
                               {item.unit_type}
                             </span>
                           </td>
@@ -420,22 +420,22 @@ export default function LineItemsPage() {
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeModal}
           />
-          <div className="relative mx-4 w-full max-w-lg rounded-lg bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto">
+          <div className="relative mx-4 w-full max-w-lg rounded-lg bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-label={editingItem ? 'Edit Line Item' : 'Add Line Item'}>
             <button
               onClick={closeModal}
-              className="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
+              className="absolute right-4 top-4 text-slate-400 hover:text-slate-400"
             >
               <X className="h-5 w-5" />
             </button>
 
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">
+            <h2 className="text-lg font-semibold text-slate-50 mb-4">
               {editingItem ? 'Edit Line Item' : 'Add Line Item'}
             </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Item Code *
                   </label>
                   <Input
@@ -448,7 +448,7 @@ export default function LineItemsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Category *
                   </label>
                   <Select
@@ -465,7 +465,7 @@ export default function LineItemsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Name *
                 </label>
                 <Input
@@ -479,7 +479,7 @@ export default function LineItemsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Description
                 </label>
                 <Input
@@ -492,7 +492,7 @@ export default function LineItemsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-slate-300 mb-1">
                   Unit Type *
                 </label>
                 <Select
@@ -506,7 +506,7 @@ export default function LineItemsPage() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Material Cost
                   </label>
                   <Input
@@ -523,7 +523,7 @@ export default function LineItemsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Labor Cost
                   </label>
                   <Input
@@ -540,7 +540,7 @@ export default function LineItemsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Equipment Cost
                   </label>
                   <Input

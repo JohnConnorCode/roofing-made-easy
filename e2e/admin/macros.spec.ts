@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test'
 import { loginAsAdmin, hasAdminCredentials } from '../fixtures/auth'
-import { testMacro } from '../helpers/test-data'
 
 test.describe('Estimate Templates (Macros)', () => {
   test.skip(!hasAdminCredentials(), 'Requires TEST_ADMIN_EMAIL and TEST_ADMIN_PASSWORD')

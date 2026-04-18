@@ -52,7 +52,7 @@ export const JOB_STATUS_COLORS: Record<JobStatus, string> = {
   punch_list: 'bg-orange-100 text-orange-700',
   completed: 'bg-green-100 text-green-700',
   warranty_active: 'bg-teal-100 text-teal-700',
-  closed: 'bg-slate-100 text-slate-500',
+  closed: 'bg-slate-100 text-slate-400',
 }
 
 // Valid status transitions

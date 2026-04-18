@@ -53,7 +53,7 @@ export function HowToChooseSection({ city }: HowToChooseSectionProps) {
 
   const localConsiderations = [
     `${city.name}'s humid subtropical climate means your roof needs materials that resist algae and mold growth.`,
-    `Spring storms in ${city.county} County can bring high winds and hail—consider impact-resistant shingles.`,
+    `Spring storms in ${city.county} County can bring high winds and hail, so consider impact-resistant shingles.`,
     `Ensure your contractor pulls proper permits from ${city.county} County building department.`,
     `Ask about experience with local building codes specific to Northeast Mississippi.`
   ]
@@ -68,7 +68,7 @@ export function HowToChooseSection({ city }: HowToChooseSectionProps) {
               How to Choose the Right Roofer in {city.name}
             </h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Selecting a roofing contractor is a significant decision. Here's what to look for
+              Selecting a roofing contractor is a significant decision. Here&apos;s what to look for
               when choosing a roofer in {city.name}, Mississippi.
             </p>
           </div>
@@ -127,14 +127,14 @@ export function HowToChooseSection({ city }: HowToChooseSectionProps) {
               Understanding Roofing Estimates in {city.name}
             </h3>
             <p className="text-slate-300 leading-relaxed mb-4">
-              When comparing roofing estimates from contractors in {city.name}, you'll
+              When comparing roofing estimates from contractors in {city.name}, you&apos;ll
               typically see costs broken down into materials, labor, and additional items
               like permits and debris removal. The average roof replacement in {city.name}
               ranges from {city.stats.avgReplacementCost}, depending on roof size, pitch,
               and material selection.
             </p>
             <p className="text-slate-300 leading-relaxed mb-4">
-              Don't automatically choose the lowest bid. Instead, compare what's included:
+              Don&apos;t automatically choose the lowest bid. Instead, compare what&apos;s included:
               the quality of shingles or materials, underlayment specifications, flashing
               work, and warranty terms. A slightly higher quote that includes premium
               materials and a strong workmanship warranty often represents better long-term
@@ -143,7 +143,7 @@ export function HowToChooseSection({ city }: HowToChooseSectionProps) {
             <p className="text-slate-300 leading-relaxed">
               Given {city.localContent.weatherChallenges[0]?.toLowerCase() || 'local weather conditions'},
               investing in quality materials and professional installation protects your
-              home and can save significant money on repairs over your roof's lifetime.
+              home and can save significant money on repairs over your roof&apos;s lifetime.
               Most roofs in the {city.name} area last {city.stats.avgRoofAge} with proper
               installation and maintenance.
             </p>

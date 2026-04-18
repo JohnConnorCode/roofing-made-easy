@@ -31,7 +31,7 @@ export async function sendEmail(options: SendEmailOptions): Promise<{ success: b
   }
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: `${FROM_NAME} <${FROM_EMAIL}>`,
       to: Array.isArray(options.to) ? options.to : [options.to],
       subject: options.subject,

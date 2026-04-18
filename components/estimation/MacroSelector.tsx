@@ -80,7 +80,7 @@ function MacroCard({
             {JOB_TYPE_LABELS[macro.job_type]}
           </span>
           {macro.usage_count > 0 && (
-            <span className="text-xs text-slate-500 ml-auto">
+            <span className="text-xs text-slate-400 ml-auto">
               Used {macro.usage_count}x
             </span>
           )}
@@ -90,7 +90,7 @@ function MacroCard({
             {macro.tags.slice(0, 4).map((tag) => (
               <span
                 key={tag}
-                className="text-xs text-slate-500 bg-slate-800 px-1.5 py-0.5 rounded"
+                className="text-xs text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded"
               >
                 {tag}
               </span>

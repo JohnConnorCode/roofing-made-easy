@@ -55,7 +55,7 @@ export function MaterialsList({ roofMaterial }: MaterialsListProps) {
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                    <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">
                       {material.label}
                     </p>
                     <h4 className="font-semibold text-slate-100">{material.name}</h4>

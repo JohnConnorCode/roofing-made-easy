@@ -44,10 +44,10 @@ function createMockResult(overrides: Partial<PhotoMeasurementResult> = {}): Phot
 
 describe('enrichMeasurementResult', () => {
   // We'll test the logic by importing the module
-  let module: typeof import('@/lib/ai/photo-measurements')
+  let _photoModule: typeof import('@/lib/ai/photo-measurements')
 
   beforeEach(async () => {
-    module = await import('@/lib/ai/photo-measurements')
+    _photoModule = await import('@/lib/ai/photo-measurements')
   })
 
   describe('pitch category calculation', () => {
@@ -82,7 +82,7 @@ describe('enrichMeasurementResult', () => {
       const features: DetectedFeature[] = [
         { type: 'skylight', count: 2, confidence: 0.9 },
       ]
-      const result = createMockResult({ detectedFeatures: features })
+      const _result = createMockResult({ detectedFeatures: features })
       expect(features.find(f => f.type === 'skylight')?.count).toBe(2)
     })
 
@@ -110,7 +110,7 @@ describe('enrichMeasurementResult', () => {
 
   describe('gutter estimation', () => {
     it('estimates gutter from eave length', () => {
-      const result = createMockResult({
+      const _result = createMockResult({
         estimatedFootprintLengthFt: 50,
         estimatedFootprintWidthFt: 30,
         roofStyle: 'gable',
@@ -127,11 +127,11 @@ describe('mergePhotoResults', () => {
   describe('weighted average calculations', () => {
     it('uses weighted average by confidence', () => {
       // Two results with different confidences
-      const result1 = createMockResult({
+      const _result1 = createMockResult({
         confidence: 0.9,
         estimatedTotalSqFt: 2500,
       })
-      const result2 = createMockResult({
+      const _result2 = createMockResult({
         confidence: 0.6,
         estimatedTotalSqFt: 2000,
       })
@@ -282,8 +282,8 @@ describe('analyzePhotoForMeasurements error handling', () => {
   beforeEach(async () => {
     // Clear module cache for fresh import
     vi.resetModules()
-    const module = await import('@/lib/ai/photo-measurements')
-    analyzePhotoForMeasurements = module.analyzePhotoForMeasurements
+    const photoMod = await import('@/lib/ai/photo-measurements')
+    analyzePhotoForMeasurements = photoMod.analyzePhotoForMeasurements
   })
 
   it('returns error when no API key configured', async () => {
@@ -314,8 +314,8 @@ describe('analyzeMultiplePhotos', () => {
   let analyzeMultiplePhotos: typeof import('@/lib/ai/photo-measurements').analyzeMultiplePhotos
 
   beforeEach(async () => {
-    const module = await import('@/lib/ai/photo-measurements')
-    analyzeMultiplePhotos = module.analyzeMultiplePhotos
+    const photoMod = await import('@/lib/ai/photo-measurements')
+    analyzeMultiplePhotos = photoMod.analyzeMultiplePhotos
   })
 
   it('returns error for empty input array', async () => {

@@ -48,7 +48,7 @@ export function EstimateSummaryCard({
             <p className="text-3xl font-bold text-[#c9a25c] mt-1">
               {formatCurrency(priceLikely)}
             </p>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-400 mt-1">
               Range: {formatCurrency(priceLow)} - {formatCurrency(priceHigh)}
             </p>
           </div>
@@ -66,19 +66,19 @@ export function EstimateSummaryCard({
         <CardContent className="space-y-3">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-xs text-slate-500">Material</p>
+              <p className="text-xs text-slate-400">Material</p>
               <p className="font-semibold text-slate-200">
                 {formatCurrency(totalMaterial)}
               </p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Labor</p>
+              <p className="text-xs text-slate-400">Labor</p>
               <p className="font-semibold text-slate-200">
                 {formatCurrency(totalLabor)}
               </p>
             </div>
             <div>
-              <p className="text-xs text-slate-500">Equipment</p>
+              <p className="text-xs text-slate-400">Equipment</p>
               <p className="font-semibold text-slate-200">
                 {formatCurrency(totalEquipment)}
               </p>
@@ -92,16 +92,16 @@ export function EstimateSummaryCard({
                 {formatCurrency(subtotal)}
               </span>
             </div>
-            <div className="flex justify-between items-center text-sm text-slate-500">
+            <div className="flex justify-between items-center text-sm text-slate-400">
               <span>Overhead ({overheadPercent}%)</span>
               <span>{formatCurrency(overheadAmount)}</span>
             </div>
-            <div className="flex justify-between items-center text-sm text-slate-500">
+            <div className="flex justify-between items-center text-sm text-slate-400">
               <span>Profit ({profitPercent}%)</span>
               <span>{formatCurrency(profitAmount)}</span>
             </div>
             {taxPercent > 0 && (
-              <div className="flex justify-between items-center text-sm text-slate-500">
+              <div className="flex justify-between items-center text-sm text-slate-400">
                 <span>Tax ({taxPercent}%)</span>
                 <span>{formatCurrency(taxAmount)}</span>
               </div>
@@ -115,7 +115,7 @@ export function EstimateSummaryCard({
                 {formatCurrency(priceLikely)}
               </span>
             </div>
-            <p className="text-xs text-slate-500 text-right mt-1">
+            <p className="text-xs text-slate-400 text-right mt-1">
               {formatCurrency(priceLow)} - {formatCurrency(priceHigh)}
             </p>
           </div>
@@ -183,7 +183,7 @@ export function EstimateSummaryCard({
               />
             </div>
           )}
-          <div className="flex justify-between text-xs text-slate-500 mt-1">
+          <div className="flex justify-between text-xs text-slate-400 mt-1">
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-blue-500" /> Materials
             </span>

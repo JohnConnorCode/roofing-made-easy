@@ -40,7 +40,7 @@ export async function generateMetadata({
     return { title: 'Service Not Found' }
   }
 
-  const title = `${service.name} | Northeast Mississippi | Smart Roof Pricing`
+  const title = `${service.name} | Northeast Mississippi | Farrell Roofing`
   const description = `${service.fullDescription.slice(0, 150)}... Get a free estimate for ${service.name.toLowerCase()} in Tupelo and surrounding areas.`
   const url = `${BASE_URL}/services/${service.slug}`
   const ogImageUrl = `${BASE_URL}/api/og?type=service&title=${encodeURIComponent(service.name)}&subtitle=${encodeURIComponent(service.shortDescription)}`
@@ -65,7 +65,7 @@ export async function generateMetadata({
       title,
       description,
       url,
-      siteName: 'Smart Roof Pricing',
+      siteName: 'Farrell Roofing',
       locale: 'en_US',
       type: 'website',
       images: [
@@ -73,7 +73,7 @@ export async function generateMetadata({
           url: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: `${service.name} - Smart Roof Pricing`,
+          alt: `${service.name} - Farrell Roofing`,
           type: 'image/png',
         },
       ],
@@ -213,7 +213,7 @@ export default async function ServiceDetailPage({
                     className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
                     rightIcon={<ArrowRight className="h-4 w-4" />}
                   >
-                    Get Free Estimate
+                    Get My Free Estimate
                   </Button>
                 </Link>
               </div>

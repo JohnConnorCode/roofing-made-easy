@@ -142,7 +142,7 @@ export default function DetailedEstimateBuilderPage() {
 
       // Refresh estimate totals
       await recalculateEstimate()
-    } catch (error) {
+    } catch {
       showToast('Failed to update line item', 'error')
     }
   }
@@ -168,7 +168,7 @@ export default function DetailedEstimateBuilderPage() {
       )
 
       await recalculateEstimate()
-    } catch (error) {
+    } catch {
       showToast('Failed to update quantity', 'error')
     }
   }
@@ -187,7 +187,7 @@ export default function DetailedEstimateBuilderPage() {
       setLineItems((prev) => prev.filter((li) => li.id !== id))
       await recalculateEstimate()
       showToast('Line item removed', 'success')
-    } catch (error) {
+    } catch {
       showToast('Failed to remove line item', 'error')
     }
   }
@@ -230,7 +230,7 @@ export default function DetailedEstimateBuilderPage() {
 
       showToast('Estimate saved successfully', 'success')
       setCurrentStep('summary')
-    } catch (error) {
+    } catch {
       showToast('Failed to save estimate', 'error')
     } finally {
       setIsSaving(false)
@@ -259,10 +259,10 @@ export default function DetailedEstimateBuilderPage() {
             Back to Lead
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-bold text-slate-50">
               Detailed Estimate Builder
             </h1>
-            <p className="text-slate-500">
+            <p className="text-slate-400">
               Create a professional line-item estimate
             </p>
           </div>
@@ -288,14 +288,14 @@ export default function DetailedEstimateBuilderPage() {
               className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                 currentStep === step.id
                   ? 'bg-amber-100 text-amber-800'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-900/60 text-slate-400 hover:bg-slate-900/60'
               }`}
             >
               <span
                 className={`flex h-6 w-6 items-center justify-center rounded-full text-xs ${
                   currentStep === step.id
                     ? 'bg-amber-600 text-white'
-                    : 'bg-slate-300 text-slate-600'
+                    : 'bg-slate-300 text-slate-400'
                 }`}
               >
                 {step.number}
@@ -451,7 +451,7 @@ export default function DetailedEstimateBuilderPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-600 mb-4">
+                <p className="text-slate-400 mb-4">
                   Your detailed estimate has been saved and is ready for review.
                 </p>
 

@@ -3,7 +3,7 @@
  * GET - Returns lead counts by status for funnel visualization
  */
 
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireAdmin } from '@/lib/api/auth'
 import { logger } from '@/lib/logger'
@@ -34,7 +34,7 @@ const STATUS_LABELS: Record<string, string> = {
   archived: 'Archived',
 }
 
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     const { error: authError } = await requireAdmin()
     if (authError) return authError

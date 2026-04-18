@@ -137,14 +137,14 @@ function createMockLead(options: LeadOptions = {}) {
 
 // Mock Supabase client
 function createMockQueryBuilder(table: string) {
-  let filters: Array<{ column: string; value: unknown; operator: string }> = []
+  const filters: Array<{ column: string; value: unknown; operator: string }> = []
   let insertData: unknown = null
   let updateData: unknown = null
   let isSingle = false
   let limitCount = 100
 
   const builder = {
-    select: (columns?: string) => builder,
+    select: (_columns?: string) => builder,
     insert: (data: unknown) => {
       insertData = data
       return builder
@@ -161,7 +161,7 @@ function createMockQueryBuilder(table: string) {
       filters.push({ column, value, operator: 'gte' })
       return builder
     },
-    order: (column: string, opts?: { ascending?: boolean }) => builder,
+    order: (_column: string, _opts?: { ascending?: boolean }) => builder,
     limit: (n: number) => {
       limitCount = n
       return builder
@@ -208,7 +208,7 @@ function executeEstimateQuery(
   if (updateData) {
     if (table === 'estimates') {
       // Mark existing estimates as superseded
-      for (const [id, estimate] of mockEstimates.entries()) {
+      for (const [_id, estimate] of mockEstimates.entries()) {
         const leadIdFilter = filters.find(f => f.column === 'lead_id')
         if (leadIdFilter && estimate.lead_id === leadIdFilter.value) {
           estimate.is_superseded = true

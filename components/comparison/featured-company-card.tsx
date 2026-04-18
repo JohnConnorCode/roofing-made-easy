@@ -2,7 +2,7 @@
 // Full company profile with credentials and primary CTA
 
 import { MSCity } from '@/lib/data/ms-locations'
-import { BUSINESS_CONFIG, getPhoneDisplay, getFullAddress } from '@/lib/config/business'
+import { BUSINESS_CONFIG, getPhoneDisplay } from '@/lib/config/business'
 import {
   Shield,
   Award,
@@ -153,7 +153,7 @@ export function FeaturedCompanyCard({ city }: FeaturedCompanyCardProps) {
             href="/"
             className="flex-1 inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-6 py-4 rounded-lg transition-all btn-press"
           >
-            Get Your Free Estimate
+            Free Estimate
             <ArrowRight className="w-5 h-5" />
           </Link>
           <Link

@@ -100,7 +100,7 @@ function linkLeadToCustomer(customerId: string, leadOverrides: LeadInput = {}) {
 
 // Mock Supabase client
 function createMockQueryBuilder(table: string) {
-  let filters: Array<{ column: string; value: unknown; operator: string }> = []
+  const filters: Array<{ column: string; value: unknown; operator: string }> = []
   let orFilter: string | null = null
   let updateData: unknown = null
   let isSingle = false
@@ -108,7 +108,7 @@ function createMockQueryBuilder(table: string) {
   let rangeEnd = 49
 
   const builder = {
-    select: (columns?: string, opts?: { count?: string }) => {
+    select: (_columns?: string, _opts?: { count?: string }) => {
       return builder
     },
     update: (data: unknown) => {
@@ -123,7 +123,7 @@ function createMockQueryBuilder(table: string) {
       orFilter = query
       return builder
     },
-    order: (column: string, opts?: { ascending?: boolean }) => {
+    order: (_column: string, _opts?: { ascending?: boolean }) => {
       return builder
     },
     range: (start: number, end: number) => {
@@ -280,7 +280,7 @@ describe('Customers API', () => {
 
     it('should return all customers with computed fields', async () => {
       const customer1 = createMockCustomer({ first_name: 'Alice', last_name: 'Smith' })
-      const customer2 = createMockCustomer({ first_name: 'Bob', last_name: 'Jones' })
+      const _customer2 = createMockCustomer({ first_name: 'Bob', last_name: 'Jones' })
 
       // Link a lead to customer1
       linkLeadToCustomer(customer1.id, { status: 'won' })
@@ -589,8 +589,8 @@ describe('Customer Lead Statistics', () => {
     const customer = createMockCustomer()
 
     // Mock leads with different estimate values
-    const lead1 = linkLeadToCustomer(customer.id)
-    const lead2 = linkLeadToCustomer(customer.id)
+    const _lead1 = linkLeadToCustomer(customer.id)
+    const _lead2 = linkLeadToCustomer(customer.id)
 
     // Override estimates
     const cl1 = mockCustomerLeads.get(customer.id)!

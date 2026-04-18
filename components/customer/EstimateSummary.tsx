@@ -54,16 +54,16 @@ export function EstimateSummary({
               <p className="text-2xl font-bold text-gold-light">
                 {formatCurrency(estimate.priceLikely)}
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 Range: {formatCurrency(estimate.priceLow)} - {formatCurrency(estimate.priceHigh)}
               </p>
             </div>
             {property?.address && (
               <div className="text-right">
-                <p className="text-xs text-slate-500">Property</p>
+                <p className="text-xs text-slate-400">Property</p>
                 <p className="text-sm text-slate-300">{property.address}</p>
                 {property.city && property.state && (
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-400">
                     {property.city}, {property.state}
                   </p>
                 )}
@@ -90,7 +90,7 @@ export function EstimateSummary({
         {/* Price range */}
         <div className="flex items-end justify-center gap-8">
           <div className="text-center">
-            <p className="text-sm text-slate-500">Low</p>
+            <p className="text-sm text-slate-400">Low</p>
             <p className="text-xl font-semibold text-slate-300">
               {formatCurrency(estimate.priceLow)}
             </p>
@@ -104,7 +104,7 @@ export function EstimateSummary({
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-slate-500">High</p>
+            <p className="text-sm text-slate-400">High</p>
             <p className="text-xl font-semibold text-slate-300">
               {formatCurrency(estimate.priceHigh)}
             </p>
@@ -123,7 +123,7 @@ export function EstimateSummary({
               }}
             />
           </div>
-          <div className="mt-2 flex justify-between text-xs text-slate-500">
+          <div className="mt-2 flex justify-between text-xs text-slate-400">
             <span>{formatCurrency(estimate.priceLow)}</span>
             <span>{formatCurrency(estimate.priceHigh)}</span>
           </div>

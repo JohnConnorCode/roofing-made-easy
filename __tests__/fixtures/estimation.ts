@@ -4,7 +4,6 @@
 
 import type {
   RoofVariables,
-  SlopeVariables,
   LineItem,
   GeographicPricing,
   EstimateLineItem,

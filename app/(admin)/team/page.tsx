@@ -17,10 +17,10 @@ import {
   ChevronRight,
   Mail,
   Phone,
-  Shield,
   Pencil,
   UserX,
 } from 'lucide-react'
+import Image from 'next/image'
 import type { UserRole } from '@/lib/team/types'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 import { Skeleton, SkeletonCard } from '@/components/ui/skeleton'
@@ -88,7 +88,7 @@ const ROLE_COLORS: Record<UserRole, string> = {
   manager: 'bg-purple-100 text-purple-700',
   sales: 'bg-blue-100 text-blue-700',
   crew_lead: 'bg-green-100 text-green-700',
-  crew: 'bg-slate-100 text-slate-700',
+  crew: 'bg-white/10 text-slate-200',
 }
 
 const ROLE_LABELS: Record<UserRole, string> = {
@@ -384,8 +384,8 @@ export default function TeamPage() {
       <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Team Management</h1>
-          <p className="text-slate-500">Manage users, roles, and teams</p>
+          <h1 className="text-2xl font-bold text-slate-50">Team Management</h1>
+          <p className="text-slate-400">Manage users, roles, and teams</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -427,12 +427,12 @@ export default function TeamPage() {
 
       {/* Tabs */}
       <FadeInSection delay={100} animation="slide-up">
-      <div className="flex border-b border-slate-200">
+      <div className="flex border-b border-white/5">
         <button
           className={`px-4 py-2 -mb-px text-sm font-medium border-b-2 transition-colors ${
             activeTab === 'users'
               ? 'border-gold text-gold'
-              : 'border-transparent text-slate-500 hover:text-slate-700'
+              : 'border-transparent text-slate-400 hover:text-slate-50'
           }`}
           onClick={() => setActiveTab('users')}
         >
@@ -442,7 +442,7 @@ export default function TeamPage() {
           className={`px-4 py-2 -mb-px text-sm font-medium border-b-2 transition-colors ${
             activeTab === 'teams'
               ? 'border-gold text-gold'
-              : 'border-transparent text-slate-500 hover:text-slate-700'
+              : 'border-transparent text-slate-400 hover:text-slate-50'
           }`}
           onClick={() => setActiveTab('teams')}
         >
@@ -452,7 +452,7 @@ export default function TeamPage() {
           className={`px-4 py-2 -mb-px text-sm font-medium border-b-2 transition-colors ${
             activeTab === 'invitations'
               ? 'border-gold text-gold'
-              : 'border-transparent text-slate-500 hover:text-slate-700'
+              : 'border-transparent text-slate-400 hover:text-slate-50'
           }`}
           onClick={() => setActiveTab('invitations')}
         >
@@ -466,7 +466,7 @@ export default function TeamPage() {
       {activeTab === 'users' && (
         <>
           {/* Filters */}
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
               <div className="flex flex-col gap-4 md:flex-row">
                 <div className="relative flex-1">
@@ -475,23 +475,23 @@ export default function TeamPage() {
                     placeholder="Search by name or email..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="pl-10 bg-white border-slate-300 text-slate-900"
+                    className="pl-10"
                   />
                 </div>
                 <Select
                   options={ROLE_OPTIONS}
                   value={roleFilter}
                   onChange={setRoleFilter}
-                  className="md:w-48 bg-white border-slate-300 text-slate-900"
+                  className="md:w-48"
                 />
               </div>
             </CardContent>
           </Card>
 
           {/* Users list */}
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
-              <CardTitle className="text-slate-900">Active Users</CardTitle>
+              <CardTitle className="text-slate-50">Active Users</CardTitle>
             </CardHeader>
             <CardContent>
               {isLoading ? (
@@ -508,7 +508,7 @@ export default function TeamPage() {
                   ))}
                 </div>
               ) : activeUsers.length === 0 ? (
-                <div className="text-center py-8 text-slate-500">
+                <div className="text-center py-8 text-slate-400">
                   <Users className="h-10 w-10 text-slate-300 mx-auto mb-2" />
                   No users found
                 </div>
@@ -517,15 +517,18 @@ export default function TeamPage() {
                   {activeUsers.map((user) => (
                     <div key={user.id} className="py-4 flex items-center gap-4">
                       {/* Avatar */}
-                      <div className="h-10 w-10 rounded-full bg-slate-200 flex items-center justify-center">
+                      <div className="h-10 w-10 rounded-full bg-slate-900/60 flex items-center justify-center">
                         {user.avatar_url ? (
-                          <img
+                          <Image
                             src={user.avatar_url}
                             alt={user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email}
+                            width={40}
+                            height={40}
                             className="h-10 w-10 rounded-full object-cover"
+                            unoptimized
                           />
                         ) : (
-                          <span className="text-slate-600 font-medium">
+                          <span className="text-slate-400 font-medium">
                             {(user.first_name?.[0] || user.email[0]).toUpperCase()}
                           </span>
                         )}
@@ -534,7 +537,7 @@ export default function TeamPage() {
                       {/* Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="font-medium text-slate-900 truncate">
+                          <span className="font-medium text-slate-50 truncate">
                             {user.first_name && user.last_name
                               ? `${user.first_name} ${user.last_name}`
                               : user.email}
@@ -543,7 +546,7 @@ export default function TeamPage() {
                             {ROLE_LABELS[user.role]}
                           </span>
                         </div>
-                        <div className="flex items-center gap-4 text-sm text-slate-500">
+                        <div className="flex items-center gap-4 text-sm text-slate-400">
                           {user.email && (
                             <span className="flex items-center gap-1">
                               <Mail className="h-3 w-3" />
@@ -560,7 +563,7 @@ export default function TeamPage() {
                         {user.team_names && user.team_names.length > 0 && (
                           <div className="mt-1 flex gap-1">
                             {user.team_names.map((team, i) => (
-                              <span key={i} className="px-2 py-0.5 bg-slate-100 rounded text-xs text-slate-600">
+                              <span key={i} className="px-2 py-0.5 bg-slate-900/60 rounded text-xs text-slate-400">
                                 {team}
                               </span>
                             ))}
@@ -583,19 +586,19 @@ export default function TeamPage() {
 
           {/* Inactive users */}
           {inactiveUsers.length > 0 && (
-            <Card className="bg-white border-slate-200 opacity-60">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl opacity-60">
               <CardHeader>
-                <CardTitle className="text-slate-700">Inactive Users</CardTitle>
+                <CardTitle className="text-slate-300">Inactive Users</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="divide-y">
                   {inactiveUsers.map((user) => (
                     <div key={user.id} className="py-4 flex items-center gap-4">
-                      <div className="h-10 w-10 rounded-full bg-slate-200 flex items-center justify-center">
+                      <div className="h-10 w-10 rounded-full bg-slate-900/60 flex items-center justify-center">
                         <UserX className="h-5 w-5 text-slate-400" />
                       </div>
                       <div className="flex-1">
-                        <span className="text-slate-600">
+                        <span className="text-slate-400">
                           {user.first_name && user.last_name
                             ? `${user.first_name} ${user.last_name}`
                             : user.email}
@@ -623,10 +626,10 @@ export default function TeamPage() {
               ))}
             </div>
           ) : teams.length === 0 ? (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="py-8 text-center">
                 <Users className="h-12 w-12 mx-auto text-slate-300 mb-3" />
-                <p className="text-slate-600">No teams yet</p>
+                <p className="text-slate-400">No teams yet</p>
                 <p className="text-sm text-slate-400 mb-4">Create a team to organize your crew</p>
                 <Button onClick={() => setShowCreateTeamModal(true)} leftIcon={<Plus className="h-4 w-4" />}>
                   Create Team
@@ -635,7 +638,7 @@ export default function TeamPage() {
             </Card>
           ) : (
             teams.map((team) => (
-              <Card key={team.id} className="bg-white border-slate-200">
+              <Card key={team.id} className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
                 <CardContent className="p-4">
                   <div
                     className="flex items-center gap-4 cursor-pointer"
@@ -649,13 +652,13 @@ export default function TeamPage() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-slate-900">{team.name}</span>
-                        <span className="text-sm text-slate-500">
+                        <span className="font-medium text-slate-50">{team.name}</span>
+                        <span className="text-sm text-slate-400">
                           ({team.member_count} member{team.member_count !== 1 ? 's' : ''})
                         </span>
                       </div>
                       {team.manager && (
-                        <div className="text-sm text-slate-500">
+                        <div className="text-sm text-slate-400">
                           Manager: {team.manager.first_name} {team.manager.last_name}
                         </div>
                       )}
@@ -670,22 +673,22 @@ export default function TeamPage() {
                   {expandedTeams.has(team.id) && (
                     <div className="mt-4 pt-4 border-t border-slate-100">
                       {team.description && (
-                        <p className="text-sm text-slate-600 mb-4">{team.description}</p>
+                        <p className="text-sm text-slate-400 mb-4">{team.description}</p>
                       )}
 
                       {/* Team members list */}
                       {team.team_members && team.team_members.length > 0 && (
                         <div className="mb-4">
-                          <p className="text-xs font-medium text-slate-500 mb-2">Members</p>
+                          <p className="text-xs font-medium text-slate-400 mb-2">Members</p>
                           <div className="flex flex-wrap gap-2">
                             {team.team_members.map((m) => (
-                              <div key={m.user.id} className="flex items-center gap-1.5 rounded-full bg-slate-50 border border-slate-200 px-3 py-1">
-                                <span className="text-sm text-slate-700">
+                              <div key={m.user.id} className="flex items-center gap-1.5 rounded-full bg-slate-900/40 border border-white/5 px-3 py-1">
+                                <span className="text-sm text-slate-300">
                                   {m.user.first_name && m.user.last_name
                                     ? `${m.user.first_name} ${m.user.last_name}`
                                     : 'Unknown'}
                                 </span>
-                                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-medium ${ROLE_COLORS[m.user.role as UserRole] || 'bg-slate-100 text-slate-600'}`}>
+                                <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-medium ${ROLE_COLORS[m.user.role as UserRole] || 'bg-slate-900/60 text-slate-400'}`}>
                                   {ROLE_LABELS[m.user.role as UserRole] || m.user.role}
                                 </span>
                               </div>
@@ -713,9 +716,9 @@ export default function TeamPage() {
 
       {/* Invitations Tab */}
       {activeTab === 'invitations' && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardHeader>
-            <CardTitle className="text-slate-900">Pending Invitations</CardTitle>
+            <CardTitle className="text-slate-50">Pending Invitations</CardTitle>
           </CardHeader>
           <CardContent>
             {isLoading ? (
@@ -734,7 +737,7 @@ export default function TeamPage() {
             ) : invitations.length === 0 ? (
               <div className="text-center py-8">
                 <Mail className="h-12 w-12 mx-auto text-slate-300 mb-3" />
-                <p className="text-slate-600">No pending invitations</p>
+                <p className="text-slate-400">No pending invitations</p>
                 <p className="text-sm text-slate-400">Invite users to join your team</p>
               </div>
             ) : (
@@ -746,12 +749,12 @@ export default function TeamPage() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-slate-900">{invitation.email}</span>
+                        <span className="font-medium text-slate-50">{invitation.email}</span>
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${ROLE_COLORS[invitation.role]}`}>
                           {ROLE_LABELS[invitation.role]}
                         </span>
                       </div>
-                      <div className="text-sm text-slate-500">
+                      <div className="text-sm text-slate-400">
                         Invited {formatDate(invitation.created_at)}
                         {invitation.inviter && ` by ${invitation.inviter.first_name} ${invitation.inviter.last_name}`}
                       </div>
@@ -780,12 +783,12 @@ export default function TeamPage() {
       {/* Invite User Modal */}
       {showInviteModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-label="Invite User">
             <div className="p-6">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">Invite User</h2>
+              <h2 className="text-xl font-bold text-slate-50 mb-4">Invite User</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Email Address
                   </label>
                   <Input
@@ -796,7 +799,7 @@ export default function TeamPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Role
                   </label>
                   <Select
@@ -806,7 +809,7 @@ export default function TeamPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Team (optional)
                   </label>
                   <Select
@@ -819,7 +822,7 @@ export default function TeamPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Personal Message (optional)
                   </label>
                   <textarea
@@ -851,12 +854,12 @@ export default function TeamPage() {
       {/* Create Team Modal */}
       {showCreateTeamModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-label="Create Team">
             <div className="p-6">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">Create Team</h2>
+              <h2 className="text-xl font-bold text-slate-50 mb-4">Create Team</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Team Name
                   </label>
                   <Input
@@ -866,7 +869,7 @@ export default function TeamPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Description (optional)
                   </label>
                   <textarea
@@ -878,7 +881,7 @@ export default function TeamPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Team Color
                   </label>
                   <div className="flex gap-2">
@@ -895,7 +898,7 @@ export default function TeamPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Team Manager (optional)
                   </label>
                   <Select
@@ -935,23 +938,23 @@ export default function TeamPage() {
       {/* Edit User Modal */}
       {showEditUserModal && editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-label="Edit User">
             <div className="p-6">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">Edit User</h2>
+              <h2 className="text-xl font-bold text-slate-50 mb-4">Edit User</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     User
                   </label>
-                  <p className="text-slate-900">
+                  <p className="text-slate-50">
                     {editingUser.first_name && editingUser.last_name
                       ? `${editingUser.first_name} ${editingUser.last_name}`
                       : editingUser.email}
                   </p>
-                  <p className="text-sm text-slate-500">{editingUser.email}</p>
+                  <p className="text-sm text-slate-400">{editingUser.email}</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Role
                   </label>
                   <Select
@@ -961,7 +964,7 @@ export default function TeamPage() {
                   />
                 </div>
                 <div>
-                  <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                  <label className="flex items-center gap-2 text-sm font-medium text-slate-300">
                     <input
                       type="checkbox"
                       checked={editUserActive}
@@ -970,7 +973,7 @@ export default function TeamPage() {
                     />
                     Active
                   </label>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-xs text-slate-400">
                     Inactive users cannot access the system
                   </p>
                 </div>
@@ -995,12 +998,12 @@ export default function TeamPage() {
       {/* Edit Team Modal */}
       {showEditTeamModal && editingTeam && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-label="Edit Team">
             <div className="p-6">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">Edit Team</h2>
+              <h2 className="text-xl font-bold text-slate-50 mb-4">Edit Team</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Team Name
                   </label>
                   <Input
@@ -1010,7 +1013,7 @@ export default function TeamPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Description (optional)
                   </label>
                   <textarea
@@ -1022,7 +1025,7 @@ export default function TeamPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Team Color
                   </label>
                   <div className="flex gap-2">
@@ -1039,7 +1042,7 @@ export default function TeamPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Team Manager (optional)
                   </label>
                   <Select

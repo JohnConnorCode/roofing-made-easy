@@ -15,8 +15,8 @@ function NewInvoiceContent() {
     <AdminPageTransition className="p-6 space-y-6">
       <FadeInSection delay={0} animation="fade-in">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Create Invoice</h1>
-          <p className="text-slate-500 mt-1">Create a new invoice for a customer</p>
+          <h1 className="text-2xl font-bold text-slate-50">Create Invoice</h1>
+          <p className="text-slate-400 mt-1">Create a new invoice for a customer</p>
         </div>
       </FadeInSection>
 

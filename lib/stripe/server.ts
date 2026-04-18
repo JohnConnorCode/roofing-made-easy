@@ -3,7 +3,6 @@ import { getStripeCredentials } from '@/lib/credentials/loader'
 
 // Cached Stripe client and webhook secret
 let cachedStripe: Stripe | null = null
-let cachedWebhookSecret: string | undefined
 
 /**
  * Get a Stripe client instance
@@ -17,12 +16,10 @@ async function getStripeClient(): Promise<Stripe | null> {
   if (cachedStripe) return cachedStripe
 
   cachedStripe = new Stripe(credentials.secretKey, {
-    apiVersion: '2026-01-28.clover',
+    apiVersion: '2026-02-25.clover',
     typescript: true,
     timeout: 30000,
   })
-
-  cachedWebhookSecret = credentials.webhookSecret
 
   return cachedStripe
 }
@@ -38,7 +35,7 @@ async function getWebhookSecret(): Promise<string | undefined> {
 // Legacy export for backwards compatibility (will be null at module load)
 export const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2026-01-28.clover',
+      apiVersion: '2026-02-25.clover',
       typescript: true,
       timeout: 30000,
     })

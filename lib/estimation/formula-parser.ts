@@ -5,7 +5,7 @@
  * Examples: "SQ*1.10", "EAVE+RAKE", "F1SQ+F2SQ+F3SQ", "(SQ-5)*0.9"
  */
 
-import type { RoofVariables, SlopeVariables } from '@/lib/supabase/types'
+import type { RoofVariables } from '@/lib/supabase/types'
 
 // Token types for lexer
 type TokenType =

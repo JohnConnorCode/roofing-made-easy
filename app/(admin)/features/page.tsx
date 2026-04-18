@@ -196,7 +196,7 @@ export default function AdminFeaturesPage() {
                     <stage.icon className="h-4 w-4 text-white" />
                     <span className="text-white text-sm font-medium">{stage.label}</span>
                   </div>
-                  {i < 6 && <ChevronRight className="h-4 w-4 text-slate-600 mx-1" />}
+                  {i < 6 && <ChevronRight className="h-4 w-4 text-slate-400 mx-1" />}
                 </div>
               ))}
             </div>
@@ -328,7 +328,7 @@ export default function AdminFeaturesPage() {
                   <div className={`${status.color} rounded-lg px-3 py-1.5`}>
                     <span className="text-white text-xs font-medium">{status.label}</span>
                   </div>
-                  {i < 8 && <ChevronRight className="h-3 w-3 text-slate-600 mx-0.5" />}
+                  {i < 8 && <ChevronRight className="h-3 w-3 text-slate-400 mx-0.5" />}
                 </div>
               ))}
             </div>
@@ -408,7 +408,7 @@ export default function AdminFeaturesPage() {
                 </div>
               ))}
             </div>
-            <p className="text-slate-500 text-xs mt-3">
+            <p className="text-slate-400 text-xs mt-3">
               Vendor tracking, receipt uploads, and approval workflow included.
             </p>
           </InfoCard>
@@ -532,8 +532,8 @@ export default function AdminFeaturesPage() {
                 {['Pending', 'In Progress', 'Completed', 'Cancelled'].map((s, i) => (
                   <div key={s} className="flex items-center">
                     <span className="bg-slate-800 rounded px-2 py-1 text-xs text-slate-300">{s}</span>
-                    {i < 2 && <ChevronRight className="h-3 w-3 text-slate-600 mx-1" />}
-                    {i === 2 && <span className="text-slate-600 text-xs mx-1">/</span>}
+                    {i < 2 && <ChevronRight className="h-3 w-3 text-slate-400 mx-1" />}
+                    {i === 2 && <span className="text-slate-400 text-xs mx-1">/</span>}
                   </div>
                 ))}
               </div>
@@ -750,7 +750,7 @@ export default function AdminFeaturesPage() {
                   <span key={step} className="bg-slate-800/50 rounded px-2 py-1 text-xs text-slate-400 text-center">{step}</span>
                 ))}
               </div>
-              <p className="text-slate-500 text-xs mt-3">Photo upload with AI analysis. PDF download and share.</p>
+              <p className="text-slate-400 text-xs mt-3">Photo upload with AI analysis. PDF download and share.</p>
             </InfoCard>
             <InfoCard title="Project Tracking">
               <p className="text-slate-400 text-sm mb-3">
@@ -853,7 +853,7 @@ export default function AdminFeaturesPage() {
                 <p className="text-slate-400 text-xs">Knows location, income, and eligibility. Finds applicable programs.</p>
               </div>
             </div>
-            <p className="text-slate-500 text-xs mt-3">All advisors include suggested questions and actionable links.</p>
+            <p className="text-slate-400 text-xs mt-3">All advisors include suggested questions and actionable links.</p>
           </InfoCard>
         </section>
 
@@ -1091,7 +1091,7 @@ function SectionHeader({ icon: Icon, title, subtitle, link }: {
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">{title}</h2>
-          <p className="text-slate-500 text-sm">{subtitle}</p>
+          <p className="text-slate-400 text-sm">{subtitle}</p>
         </div>
       </div>
       {link && (
@@ -1107,7 +1107,7 @@ function SectionDivider({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-4 my-12">
       <div className="flex-1 h-px bg-slate-800" />
-      <span className="text-slate-500 text-xs font-medium uppercase tracking-widest">{label}</span>
+      <span className="text-slate-400 text-xs font-medium uppercase tracking-widest">{label}</span>
       <div className="flex-1 h-px bg-slate-800" />
     </div>
   )
@@ -1142,7 +1142,7 @@ function ViewItem({ number, title, desc }: { number: string; title: string; desc
       </div>
       <div>
         <p className="text-white font-medium text-sm">{title}</p>
-        <p className="text-slate-500 text-xs">{desc}</p>
+        <p className="text-slate-400 text-xs">{desc}</p>
       </div>
     </div>
   )
@@ -1191,7 +1191,7 @@ function StatusBadge({ color, label, desc }: { color: string; label: string; des
     <div className="text-center">
       <div className={`w-3 h-3 rounded-full ${colors[color]} mx-auto mb-1`} />
       <p className="text-white text-sm font-medium">{label}</p>
-      <p className="text-slate-500 text-xs">{desc}</p>
+      <p className="text-slate-400 text-xs">{desc}</p>
     </div>
   )
 }
@@ -1216,8 +1216,8 @@ function RoleCard({ icon: Icon, role, color, desc }: {
 function AutomationExample({ trigger, action }: { trigger: string; action: string }) {
   return (
     <div className="bg-slate-800/50 rounded-lg p-3 mb-2 text-xs">
-      <p className="text-slate-500"><span className="text-[#c9a25c]">When:</span> {trigger}</p>
-      <p className="text-slate-500"><span className="text-[#c9a25c]">Do:</span> {action}</p>
+      <p className="text-slate-400"><span className="text-[#c9a25c]">When:</span> {trigger}</p>
+      <p className="text-slate-400"><span className="text-[#c9a25c]">Do:</span> {action}</p>
     </div>
   )
 }
@@ -1226,7 +1226,7 @@ function SettingsCard({ title, desc, link }: { title: string; desc: string; link
   const content = (
     <div className="bg-[#1a1f2e] rounded-lg p-4 border border-slate-800 hover:border-slate-700 transition-colors">
       <p className="text-white text-sm font-medium">{title}</p>
-      <p className="text-slate-500 text-xs">{desc}</p>
+      <p className="text-slate-400 text-xs">{desc}</p>
     </div>
   )
 
@@ -1241,7 +1241,7 @@ function FAQ({ q, children }: { q: string; children: React.ReactNode }) {
     <details className="group bg-[#1a1f2e] rounded-lg border border-slate-800">
       <summary className="flex items-center justify-between p-4 cursor-pointer text-white text-sm font-medium">
         {q}
-        <ChevronRight className="h-4 w-4 text-slate-500 group-open:rotate-90 transition-transform" />
+        <ChevronRight className="h-4 w-4 text-slate-400 group-open:rotate-90 transition-transform" />
       </summary>
       <div className="px-4 pb-4 text-slate-400 text-sm">
         {children}

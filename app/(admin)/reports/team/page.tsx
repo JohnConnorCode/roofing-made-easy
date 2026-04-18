@@ -77,8 +77,8 @@ export default function TeamPerformancePage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Team Performance</h1>
-            <p className="text-slate-500">Crew and project manager productivity and profitability</p>
+            <h1 className="text-2xl font-bold text-slate-50">Team Performance</h1>
+            <p className="text-slate-400">Crew and project manager productivity and profitability</p>
           </div>
           <Button
             variant="outline"
@@ -92,10 +92,10 @@ export default function TeamPerformancePage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>
               Try Again
             </Button>
@@ -108,12 +108,12 @@ export default function TeamPerformancePage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Total Teams</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Total Teams</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.teams.length || 0}
                     </p>
                   </div>
@@ -124,12 +124,12 @@ export default function TeamPerformancePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Top Team</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Top Team</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : topTeam?.name || 'N/A'}
                     </p>
                   </div>
@@ -143,12 +143,12 @@ export default function TeamPerformancePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Active Jobs</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Active Jobs</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : totalActive}
                     </p>
                   </div>
@@ -160,11 +160,11 @@ export default function TeamPerformancePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Total Revenue</p>
+                    <p className="text-sm text-slate-400">Total Revenue</p>
                     <p className="text-2xl font-bold text-green-600">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : formatCurrency(totalRevenue)}
                     </p>
@@ -180,7 +180,7 @@ export default function TeamPerformancePage() {
 
           {/* Revenue by Team Chart */}
           <FadeInSection delay={200} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="h-5 w-5 text-blue-600" />
@@ -197,10 +197,10 @@ export default function TeamPerformancePage() {
                     return (
                       <div key={team.id}>
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm font-medium text-slate-700">{team.name}</span>
-                          <span className="text-sm font-semibold text-slate-900">{formatCurrency(team.revenue)}</span>
+                          <span className="text-sm font-medium text-slate-300">{team.name}</span>
+                          <span className="text-sm font-semibold text-slate-50">{formatCurrency(team.revenue)}</span>
                         </div>
-                        <div className="h-4 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-4 bg-slate-900/60 rounded-full overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all duration-500"
                             style={{
@@ -223,7 +223,7 @@ export default function TeamPerformancePage() {
 
           {/* Team Breakdown Table */}
           <FadeInSection delay={300} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-blue-600" />
@@ -237,7 +237,7 @@ export default function TeamPerformancePage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Team</th>
                         <th className="pb-3 pr-4 text-right">Jobs</th>
                         <th className="pb-3 pr-4 text-right">Active</th>
@@ -254,27 +254,27 @@ export default function TeamPerformancePage() {
                           ? Math.round(((team.revenue - team.costs) / team.revenue) * 100)
                           : 0
                         return (
-                          <tr key={team.id} className="border-b last:border-0 hover:bg-slate-50">
+                          <tr key={team.id} className="border-b last:border-0 hover:bg-slate-900/40">
                             <td className="py-3 pr-4">
                               <div className="flex items-center gap-2">
                                 <div
                                   className="w-3 h-3 rounded-full"
                                   style={{ backgroundColor: team.color || '#94a3b8' }}
                                 />
-                                <span className="font-medium text-slate-700">{team.name}</span>
+                                <span className="font-medium text-slate-300">{team.name}</span>
                               </div>
                             </td>
-                            <td className="py-3 pr-4 text-right text-slate-600">{team.totalJobs}</td>
-                            <td className="py-3 pr-4 text-right text-slate-600">{team.activeJobs}</td>
-                            <td className="py-3 pr-4 text-right text-slate-600">{team.completedJobs}</td>
-                            <td className="py-3 pr-4 text-right font-medium text-slate-900">{formatCurrency(team.revenue)}</td>
-                            <td className="py-3 pr-4 text-right text-slate-600">{formatCurrency(team.costs)}</td>
+                            <td className="py-3 pr-4 text-right text-slate-400">{team.totalJobs}</td>
+                            <td className="py-3 pr-4 text-right text-slate-400">{team.activeJobs}</td>
+                            <td className="py-3 pr-4 text-right text-slate-400">{team.completedJobs}</td>
+                            <td className="py-3 pr-4 text-right font-medium text-slate-50">{formatCurrency(team.revenue)}</td>
+                            <td className="py-3 pr-4 text-right text-slate-400">{formatCurrency(team.costs)}</td>
                             <td className="py-3 pr-4 text-right">
                               <span className={`font-medium ${margin >= 30 ? 'text-green-600' : margin >= 15 ? 'text-amber-600' : 'text-red-600'}`}>
                                 {margin}%
                               </span>
                             </td>
-                            <td className="py-3 text-right text-slate-600">{formatCurrency(team.collected)}</td>
+                            <td className="py-3 text-right text-slate-400">{formatCurrency(team.collected)}</td>
                           </tr>
                         )
                       })}
@@ -291,7 +291,7 @@ export default function TeamPerformancePage() {
 
           {/* PM Breakdown Table */}
           <FadeInSection delay={400} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-purple-600" />
@@ -305,7 +305,7 @@ export default function TeamPerformancePage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Name</th>
                         <th className="pb-3 pr-4 text-right">Total Jobs</th>
                         <th className="pb-3 pr-4 text-right">Revenue</th>
@@ -314,11 +314,11 @@ export default function TeamPerformancePage() {
                     </thead>
                     <tbody>
                       {data.projectManagers.map(pm => (
-                        <tr key={pm.id} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{pm.name || 'Unassigned'}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{pm.totalJobs}</td>
-                          <td className="py-3 pr-4 text-right font-medium text-slate-900">{formatCurrency(pm.revenue)}</td>
-                          <td className="py-3 text-right text-slate-600">{pm.completedJobs}</td>
+                        <tr key={pm.id} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{pm.name || 'Unassigned'}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{pm.totalJobs}</td>
+                          <td className="py-3 pr-4 text-right font-medium text-slate-50">{formatCurrency(pm.revenue)}</td>
+                          <td className="py-3 text-right text-slate-400">{pm.completedJobs}</td>
                         </tr>
                       ))}
                     </tbody>

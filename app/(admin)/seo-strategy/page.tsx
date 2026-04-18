@@ -483,7 +483,7 @@ export default function SEOStrategyPage() {
               <BotCard name="anthropic-ai" service="Anthropic crawler" />
             </div>
             <div className="mt-4 bg-[#0c0f14] rounded-lg p-3">
-              <p className="text-xs text-slate-500 mb-1">Allowed paths for AI bots:</p>
+              <p className="text-xs text-slate-400 mb-1">Allowed paths for AI bots:</p>
               <p className="text-sm text-[#c9a25c] font-mono">/  /llms.txt  /llms-full.txt  /services/  /blog/  /about  /contact</p>
             </div>
           </div>
@@ -563,19 +563,19 @@ export default function SEOStrategyPage() {
               <h3 className="text-white font-semibold text-sm mb-3">Data Source Files</h3>
               <ul className="space-y-2 text-sm text-slate-400">
                 <li className="flex items-center gap-2">
-                  <Layers className="h-3.5 w-3.5 text-slate-600" />
+                  <Layers className="h-3.5 w-3.5 text-slate-400" />
                   <code className="text-[#c9a25c] text-xs">lib/data/ms-locations.ts</code> — Cities & counties
                 </li>
                 <li className="flex items-center gap-2">
-                  <Layers className="h-3.5 w-3.5 text-slate-600" />
+                  <Layers className="h-3.5 w-3.5 text-slate-400" />
                   <code className="text-[#c9a25c] text-xs">lib/data/services.ts</code> — Service definitions
                 </li>
                 <li className="flex items-center gap-2">
-                  <Layers className="h-3.5 w-3.5 text-slate-600" />
+                  <Layers className="h-3.5 w-3.5 text-slate-400" />
                   <code className="text-[#c9a25c] text-xs">lib/data/blog.ts</code> — Blog content
                 </li>
                 <li className="flex items-center gap-2">
-                  <Layers className="h-3.5 w-3.5 text-slate-600" />
+                  <Layers className="h-3.5 w-3.5 text-slate-400" />
                   <code className="text-[#c9a25c] text-xs">lib/data/ms-competitors.ts</code> — Competitor data
                 </li>
               </ul>
@@ -723,19 +723,19 @@ export default function SEOStrategyPage() {
               <h3 className="text-white font-semibold mb-4">Domain Configuration</h3>
               <ul className="space-y-3 text-sm">
                 <li className="text-slate-300">
-                  <span className="text-slate-500 text-xs block">Primary Domain</span>
+                  <span className="text-slate-400 text-xs block">Primary Domain</span>
                   <code className="text-[#c9a25c]">www.smartroofpricing.com</code>
                 </li>
                 <li className="text-slate-300">
-                  <span className="text-slate-500 text-xs block">Sitemap</span>
+                  <span className="text-slate-400 text-xs block">Sitemap</span>
                   <code className="text-[#c9a25c]">www.smartroofpricing.com/sitemap.xml</code>
                 </li>
                 <li className="text-slate-300">
-                  <span className="text-slate-500 text-xs block">Robots</span>
+                  <span className="text-slate-400 text-xs block">Robots</span>
                   <code className="text-[#c9a25c]">www.smartroofpricing.com/robots.txt</code>
                 </li>
                 <li className="text-slate-300">
-                  <span className="text-slate-500 text-xs block">Deployment</span>
+                  <span className="text-slate-400 text-xs block">Deployment</span>
                   <code className="text-[#c9a25c]">Vercel (production)</code>
                 </li>
               </ul>
@@ -885,7 +885,7 @@ function SectionHeader({ icon: Icon, title, subtitle }: {
       </div>
       <div>
         <h2 className="text-xl font-bold text-white">{title}</h2>
-        <p className="text-slate-500 text-sm">{subtitle}</p>
+        <p className="text-slate-400 text-sm">{subtitle}</p>
       </div>
     </div>
   )
@@ -896,7 +896,7 @@ function StatCard({ number, label, desc }: { number: string; label: string; desc
     <div className="bg-[#1a1f2e] rounded-lg p-3 border border-slate-800 text-center">
       <p className="text-2xl font-bold text-[#c9a25c]">{number}</p>
       <p className="text-white text-xs font-medium">{label}</p>
-      <p className="text-slate-500 text-xs">{desc}</p>
+      <p className="text-slate-400 text-xs">{desc}</p>
     </div>
   )
 }
@@ -948,9 +948,9 @@ function SchemaFileCard({ path, description, schemas, onCopy, copied }: {
       <div className="mt-3 space-y-1.5">
         {schemas.map((s) => (
           <div key={s.name} className="flex items-center gap-2 text-xs">
-            <Code className="h-3 w-3 text-slate-600 flex-shrink-0" />
+            <Code className="h-3 w-3 text-slate-400 flex-shrink-0" />
             <span className="text-white font-mono">{s.name}</span>
-            <span className="text-slate-500">— {s.desc}</span>
+            <span className="text-slate-400">— {s.desc}</span>
             {s.guarded && (
               <span className="text-amber-400 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/10">guarded</span>
             )}
@@ -975,11 +975,11 @@ function SitemapCategory({ name, count, format, priority, freq }: {
           <span className="text-white text-sm font-medium">{name}</span>
           <span className="text-[#c9a25c] text-xs bg-[#c9a25c]/10 px-1.5 py-0.5 rounded">{count}</span>
         </div>
-        <p className="text-slate-500 text-xs font-mono truncate">{format}</p>
+        <p className="text-slate-400 text-xs font-mono truncate">{format}</p>
       </div>
       <div className="text-right flex-shrink-0">
         <p className="text-slate-400 text-xs">Priority: {priority}</p>
-        <p className="text-slate-500 text-xs">{freq}</p>
+        <p className="text-slate-400 text-xs">{freq}</p>
       </div>
     </div>
   )
@@ -989,7 +989,7 @@ function BotCard({ name, service }: { name: string; service: string }) {
   return (
     <div className="bg-[#0c0f14] rounded-lg p-3 text-center">
       <p className="text-white text-sm font-mono font-medium">{name}</p>
-      <p className="text-slate-500 text-xs">{service}</p>
+      <p className="text-slate-400 text-xs">{service}</p>
     </div>
   )
 }
@@ -1005,7 +1005,7 @@ function ContentPageRow({ path, keyword, volume, onCopy, copied }: {
     <div className="flex items-center gap-3 bg-[#0c0f14] rounded-lg p-3">
       <div className="flex-1 min-w-0">
         <PathBadge path={`app/pricing${path === '/pricing' ? '/page.tsx' : path.replace('/pricing/', '/') + '/page.tsx'}`} onCopy={onCopy} copied={copied} />
-        <p className="text-slate-500 text-xs mt-1">Target: <span className="text-slate-300">{keyword}</span></p>
+        <p className="text-slate-400 text-xs mt-1">Target: <span className="text-slate-300">{keyword}</span></p>
       </div>
       <div className="flex-shrink-0">
         <span className="text-[#c9a25c] text-xs font-medium bg-[#c9a25c]/10 px-2 py-1 rounded">{volume}</span>
@@ -1017,10 +1017,10 @@ function ContentPageRow({ path, keyword, volume, onCopy, copied }: {
 function BlogRow({ slug, title }: { slug: string; title: string }) {
   return (
     <div className="flex items-start gap-2 bg-[#0c0f14] rounded-lg p-2.5">
-      <FileText className="h-3.5 w-3.5 text-slate-600 mt-0.5 flex-shrink-0" />
+      <FileText className="h-3.5 w-3.5 text-slate-400 mt-0.5 flex-shrink-0" />
       <div className="min-w-0">
         <p className="text-white text-xs font-medium truncate">{title}</p>
-        <p className="text-slate-500 text-xs font-mono">/blog/{slug}</p>
+        <p className="text-slate-400 text-xs font-mono">/blog/{slug}</p>
       </div>
     </div>
   )
@@ -1035,7 +1035,7 @@ function LinkComponentRow({ name, desc, usedOn }: {
     <div className="flex items-center gap-3 bg-[#0c0f14] rounded-lg p-3">
       <div className="flex-1 min-w-0">
         <span className="text-white text-sm font-mono">{name}</span>
-        <p className="text-slate-500 text-xs">{desc}</p>
+        <p className="text-slate-400 text-xs">{desc}</p>
       </div>
       <span className="text-[#c9a25c] text-xs bg-[#c9a25c]/10 px-2 py-1 rounded flex-shrink-0">{usedOn}</span>
     </div>
@@ -1056,7 +1056,7 @@ function OGRouteCard({ path, title, description, params, onCopy, copied }: {
       <PathBadge path={path} onCopy={onCopy} copied={copied} />
       <p className="text-slate-400 text-xs mt-2 mb-2">{description}</p>
       <div className="bg-[#0c0f14] rounded px-2 py-1">
-        <span className="text-slate-500 text-xs">Params: </span>
+        <span className="text-slate-400 text-xs">Params: </span>
         <span className="text-[#c9a25c] text-xs font-mono">{params}</span>
       </div>
     </div>
@@ -1075,7 +1075,7 @@ function MaintenanceCard({ frequency, color, borderColor, items }: {
       <ul className="space-y-2">
         {items.map((item, i) => (
           <li key={i} className="flex items-start gap-2 text-xs text-slate-400">
-            <RefreshCw className="h-3 w-3 text-slate-600 mt-0.5 flex-shrink-0" />
+            <RefreshCw className="h-3 w-3 text-slate-400 mt-0.5 flex-shrink-0" />
             {item}
           </li>
         ))}
@@ -1088,7 +1088,7 @@ function ToolBadge({ name, purpose }: { name: string; purpose: string }) {
   return (
     <div className="bg-[#0c0f14] rounded-lg p-3 text-center">
       <p className="text-white text-xs font-medium">{name}</p>
-      <p className="text-slate-500 text-[10px]">{purpose}</p>
+      <p className="text-slate-400 text-[10px]">{purpose}</p>
     </div>
   )
 }

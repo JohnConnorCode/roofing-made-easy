@@ -78,7 +78,7 @@ export default function RevenueReportPage() {
         const profitData = await profitRes.json()
         setProfitability(profitData)
       }
-    } catch (err) {
+    } catch {
       setError('Unable to load report data.')
     } finally {
       setIsLoading(false)
@@ -114,8 +114,8 @@ export default function RevenueReportPage() {
               </Button>
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Revenue & Profitability</h1>
-              <p className="text-slate-500">Monthly trends, team performance, and expense analysis</p>
+              <h1 className="text-2xl font-bold text-slate-50">Revenue & Profitability</h1>
+              <p className="text-slate-400">Monthly trends, team performance, and expense analysis</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -135,7 +135,7 @@ export default function RevenueReportPage() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>Try Again</Button>
           </CardContent>
         </Card>
@@ -152,34 +152,34 @@ export default function RevenueReportPage() {
           {/* Summary Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Total Revenue</p>
-                <p className="text-2xl font-bold text-slate-900">
+                <p className="text-sm text-slate-400">Total Revenue</p>
+                <p className="text-2xl font-bold text-slate-50">
                   {formatCurrency(profitability?.summary.totalRevenue || 0)}
                 </p>
               </CardContent>
             </Card>
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Total Costs</p>
+                <p className="text-sm text-slate-400">Total Costs</p>
                 <p className="text-2xl font-bold text-red-600">
                   {formatCurrency(profitability?.summary.totalCosts || 0)}
                 </p>
               </CardContent>
             </Card>
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Gross Profit</p>
+                <p className="text-sm text-slate-400">Gross Profit</p>
                 <p className="text-2xl font-bold text-green-600">
                   {formatCurrency(profitability?.summary.totalProfit || 0)}
                 </p>
               </CardContent>
             </Card>
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-4">
-                <p className="text-sm text-slate-500">Avg Margin</p>
-                <p className="text-2xl font-bold text-slate-900">
+                <p className="text-sm text-slate-400">Avg Margin</p>
+                <p className="text-2xl font-bold text-slate-50">
                   {profitability?.summary.avgMargin || 0}%
                 </p>
               </CardContent>
@@ -190,7 +190,7 @@ export default function RevenueReportPage() {
           {/* Charts */}
           <FadeInSection delay={200} animation="slide-up">
           <div className="grid gap-6 lg:grid-cols-2">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
@@ -206,7 +206,7 @@ export default function RevenueReportPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <DollarSign className="h-5 w-5" />
@@ -228,7 +228,7 @@ export default function RevenueReportPage() {
           {/* Team Revenue */}
           <FadeInSection delay={300} animation="slide-up">
           {teamRevenue.length > 0 && (
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle>Revenue by Team</CardTitle>
               </CardHeader>
@@ -250,7 +250,7 @@ export default function RevenueReportPage() {
 
           {/* Job P&L Table */}
           <FadeInSection delay={400} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle>Job-Level Profitability</CardTitle>
             </CardHeader>
@@ -258,7 +258,7 @@ export default function RevenueReportPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b text-left text-sm text-slate-500">
+                    <tr className="border-b text-left text-sm text-slate-400">
                       <th className="px-4 py-3">Job</th>
                       <th className="px-4 py-3">Status</th>
                       <th className="px-4 py-3">Team</th>
@@ -270,16 +270,16 @@ export default function RevenueReportPage() {
                   </thead>
                   <tbody>
                     {(profitability?.jobs || []).slice(0, 20).map((job) => (
-                      <tr key={job.id} className="border-b last:border-0 hover:bg-slate-50">
+                      <tr key={job.id} className="border-b last:border-0 hover:bg-slate-900/40">
                         <td className="px-4 py-3">
                           <Link href={`/jobs/${job.id}`} className="text-sm font-medium text-gold hover:underline">
                             {job.job_number}
                           </Link>
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-600 capitalize">
+                        <td className="px-4 py-3 text-sm text-slate-400 capitalize">
                           {job.status.replace(/_/g, ' ')}
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-600">{job.team || '-'}</td>
+                        <td className="px-4 py-3 text-sm text-slate-400">{job.team || '-'}</td>
                         <td className="px-4 py-3 text-sm text-right">{formatCurrency(job.contract_amount)}</td>
                         <td className="px-4 py-3 text-sm text-right text-red-600">{formatCurrency(job.total_cost)}</td>
                         <td className={`px-4 py-3 text-sm text-right font-medium ${job.profit >= 0 ? 'text-green-600' : 'text-red-600'}`}>

@@ -174,7 +174,7 @@ export function AiAdvisorChat({
             Ask questions about your {topic} options
           </p>
         </div>
-        <ChevronDown className="h-5 w-5 text-slate-500 flex-shrink-0" />
+        <ChevronDown className="h-5 w-5 text-slate-400 flex-shrink-0" />
       </button>
     )
   }
@@ -194,7 +194,7 @@ export function AiAdvisorChat({
           {compact && (
             <button
               onClick={() => setIsExpanded(false)}
-              className="text-slate-500 hover:text-slate-300 p-1"
+              className="text-slate-400 hover:text-slate-300 p-1"
             >
               <ChevronUp className="h-4 w-4" />
             </button>
@@ -258,7 +258,7 @@ export function AiAdvisorChat({
         {/* Suggested Questions */}
         {messages.length === 0 && suggestedQuestions.length > 0 && (
           <div className="space-y-2">
-            <p className="text-xs text-slate-500">Suggested questions:</p>
+            <p className="text-xs text-slate-400">Suggested questions:</p>
             <div className="flex flex-wrap gap-2">
               {suggestedQuestions.map((question, i) => (
                 <button
@@ -319,14 +319,14 @@ export function AiAdvisorChat({
           </Button>
         </form>
 
-        <div className="flex items-center justify-center gap-2 text-xs text-slate-500">
+        <div className="flex items-center justify-center gap-2 text-xs text-slate-400">
           <span>Prefer to talk to a person?</span>
           <a href={phoneLinkHref} className="text-[#c9a25c] hover:underline">
             Call {phoneDisplay}
           </a>
         </div>
 
-        <p className="text-[10px] text-slate-600 text-center">
+        <p className="text-[10px] text-slate-400 text-center">
           AI advisor provides general guidance, not professional financial or legal advice.
         </p>
       </CardContent>

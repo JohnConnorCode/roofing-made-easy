@@ -106,7 +106,7 @@ function button(text: string, url: string): string {
     <table role="presentation" cellspacing="0" cellpadding="0" border="0">
       <tr>
         <td style="border-radius: 8px; background-color: ${BRAND_COLORS.gold};">
-          <a href="${url}" target="_blank" style="display: inline-block; padding: 14px 28px; color: ${BRAND_COLORS.ink}; text-decoration: none; font-size: 14px; font-weight: 600;">${text}</a>
+          <a href="${url}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 14px 28px; color: ${BRAND_COLORS.ink}; text-decoration: none; font-size: 14px; font-weight: 600;">${text}</a>
         </td>
       </tr>
     </table>

@@ -409,7 +409,7 @@ function adjustForBusinessHours(
   const [startHour, startMin] = startTime.split(':').map(Number)
   const [endHour, endMin] = endTime.split(':').map(Number)
 
-  let adjusted = new Date(time)
+  const adjusted = new Date(time)
 
   // Keep adjusting until we find a valid business time
   for (let i = 0; i < 14; i++) {

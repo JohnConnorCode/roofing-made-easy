@@ -51,7 +51,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
     return (
       <Card className="border-slate-700">
         <CardContent className="py-8 text-center">
-          <Shield className="h-12 w-12 text-slate-600 mx-auto mb-4" />
+          <Shield className="h-12 w-12 text-slate-400 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-slate-200 mb-2">No Claim Started</h3>
           <p className="text-slate-400 mb-4">
             Start tracking your insurance claim to stay organized and on top of deadlines.
@@ -86,7 +86,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
             </div>
             {claim.claimNumber && (
               <div className="text-right">
-                <p className="text-xs text-slate-500">Claim #</p>
+                <p className="text-xs text-slate-400">Claim #</p>
                 <p className="text-sm font-mono text-slate-300">{claim.claimNumber}</p>
               </div>
             )}
@@ -130,7 +130,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
                           ? 'border-yellow-500 bg-yellow-500/10 text-yellow-400'
                           : isCurrent
                           ? 'border-gold-light bg-gold-light/10 text-gold-light'
-                          : 'border-slate-600 bg-slate-800 text-slate-500'
+                          : 'border-slate-600 bg-slate-800 text-slate-400'
                       )}>
                         {isCompleted ? (
                           <CheckCircle className="h-4 w-4" />
@@ -147,7 +147,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
                         isCompleted ? 'text-success' :
                         showDenied ? 'text-red-400' :
                         showAppealing ? 'text-yellow-400' :
-                        isCurrent ? 'text-gold-light' : 'text-slate-500'
+                        isCurrent ? 'text-gold-light' : 'text-slate-400'
                       )}>
                         {showDenied ? 'Denied' : showAppealing ? 'Appealing' : step.label}
                       </span>
@@ -170,7 +170,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
             <div className="rounded-lg bg-slate-deep border border-slate-700 p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-500">Insurance Company</p>
+                  <p className="text-sm text-slate-400">Insurance Company</p>
                   <p className="text-slate-200 font-medium">{claim.insuranceCompany}</p>
                 </div>
                 {companyInfo && (
@@ -189,7 +189,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
           {/* Adjuster info */}
           {claim.adjusterName && (
             <div className="mt-4 rounded-lg bg-slate-deep border border-slate-700 p-4">
-              <p className="text-sm text-slate-500 mb-2">Adjuster Information</p>
+              <p className="text-sm text-slate-400 mb-2">Adjuster Information</p>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-200">{claim.adjusterName}</p>
@@ -204,7 +204,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
                 </div>
                 {claim.adjusterVisitDate && (
                   <div className="text-right">
-                    <p className="text-xs text-slate-500">Scheduled Visit</p>
+                    <p className="text-xs text-slate-400">Scheduled Visit</p>
                     <p className="text-sm text-slate-300 flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {formatDate(claim.adjusterVisitDate)}
@@ -225,7 +225,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
                     ${claim.claimAmountApproved.toLocaleString()}
                   </p>
                   {claim.deductible !== null && claim.deductible !== undefined && (
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-slate-400">
                       Deductible: ${claim.deductible.toLocaleString()}
                     </p>
                   )}
@@ -286,7 +286,7 @@ export function ClaimTracker({ claim, onUpdateStatus, onAddNote }: ClaimTrackerP
                       )}>
                         {CLAIM_STATUS_LABELS[event.status]?.label || event.status}
                       </span>
-                      <span className="text-xs text-slate-500">
+                      <span className="text-xs text-slate-400">
                         {formatDate(event.date)}
                       </span>
                     </div>

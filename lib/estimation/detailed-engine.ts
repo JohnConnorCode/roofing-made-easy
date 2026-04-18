@@ -17,8 +17,7 @@ import type {
   UnitType,
   Json,
 } from '@/lib/supabase/types'
-import { evaluateFormula, calculateQuantityWithWaste } from './formula-parser'
-import { getEmptyVariables } from './variables'
+import { calculateQuantityWithWaste } from './formula-parser'
 
 // =============================================================================
 // TYPES
@@ -293,7 +292,7 @@ export class DetailedPricingEngine {
    */
   applyMacro(
     macro: EstimateMacro & { line_items?: MacroLineItemWithLineItem[] },
-    variables: RoofVariables
+    _variables: RoofVariables
   ): LineItemInput[] {
     if (!macro.line_items) {
       return []

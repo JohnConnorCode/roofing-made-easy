@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { EstimatePDF, type EstimatePDFData } from '@/lib/pdf/estimate-pdf'
+import { describe, it, expect } from 'vitest'
+import { type EstimatePDFData } from '@/lib/pdf/estimate-pdf'
 
 // Note: @react-pdf/renderer requires special handling in tests
 // We test the component interface and data transformations

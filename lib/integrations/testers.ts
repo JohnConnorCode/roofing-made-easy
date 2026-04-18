@@ -57,7 +57,7 @@ export async function testStripeConnection(
 ): Promise<TestResult> {
   try {
     const stripe = new Stripe(credentials.secretKey, {
-      apiVersion: '2026-01-28.clover',
+      apiVersion: '2026-02-25.clover',
     })
 
     // Retrieve balance is a simple read operation

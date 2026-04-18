@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     const result = await sendEmail({
       to,
-      subject: 'Test Email - Smart Roof Pricing Notifications',
+      subject: 'Test Email - Farrell Roofing Notifications',
       html: `
 <!DOCTYPE html>
 <html>
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
 </html>
       `.trim(),
       text: `
-Test Email - Smart Roof Pricing
+Test Email - Farrell Roofing
 
 Your email notifications are configured correctly!
 

@@ -296,7 +296,7 @@ function enrichMeasurementResult(parsed: Partial<PhotoMeasurementResult>): Photo
 
   // Estimate linear footage based on roof style
   const roofStyle = parsed.roofStyle || 'gable'
-  let eaveLf = perimeter
+  const eaveLf = perimeter
   let ridgeLf = lengthFt // Gable default
   let rakeLf = widthFt * 2 // Gable default
   let valleyLf = 0

@@ -7,7 +7,6 @@ import {
   TrendingDown,
   Users,
   DollarSign,
-  Clock,
   Target,
   BarChart3,
 } from 'lucide-react'
@@ -190,7 +189,7 @@ export function SimpleAnalytics({ leads }: SimpleAnalyticsProps) {
                 <stat.icon className={`h-6 w-6 ${stat.color}`} />
               </div>
               <div>
-                <p className="text-sm text-slate-500">{stat.title}</p>
+                <p className="text-sm text-slate-400">{stat.title}</p>
                 <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
                 <p className="text-xs text-slate-400">{stat.subtitle}</p>
               </div>
@@ -217,7 +216,7 @@ export function SimpleAnalytics({ leads }: SimpleAnalyticsProps) {
                   return (
                     <div key={status}>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-slate-600 capitalize">
+                        <span className="text-slate-400 capitalize">
                           {statusLabels[status] || status}
                         </span>
                         <span className="font-medium text-slate-900">{count}</span>
@@ -252,7 +251,7 @@ export function SimpleAnalytics({ leads }: SimpleAnalyticsProps) {
                   return (
                     <div key={type}>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="text-slate-600 capitalize">
+                        <span className="text-slate-400 capitalize">
                           {jobTypeLabels[type] || type.replace('_', ' ')}
                         </span>
                         <span className="font-medium text-slate-900">{count}</span>
@@ -279,7 +278,7 @@ export function SimpleAnalytics({ leads }: SimpleAnalyticsProps) {
         <CardContent>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center p-4 bg-slate-50 rounded-lg">
-              <p className="text-sm text-slate-500 mb-1">Est. Closed Value</p>
+              <p className="text-sm text-slate-400 mb-1">Est. Closed Value</p>
               <p className="text-3xl font-bold text-green-600">
                 {formatCurrency(analytics.revenue)}
               </p>
@@ -288,14 +287,14 @@ export function SimpleAnalytics({ leads }: SimpleAnalyticsProps) {
               </p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">
-              <p className="text-sm text-slate-500 mb-1">Average Deal Size</p>
+              <p className="text-sm text-slate-400 mb-1">Average Deal Size</p>
               <p className="text-3xl font-bold text-slate-700">
                 {formatCurrency(analytics.avgDealSize)}
               </p>
               <p className="text-xs text-slate-400 mt-1">Per closed project</p>
             </div>
             <div className="text-center p-4 bg-slate-50 rounded-lg">
-              <p className="text-sm text-slate-500 mb-1">Pipeline</p>
+              <p className="text-sm text-slate-400 mb-1">Pipeline</p>
               <p className="text-3xl font-bold text-amber-600">
                 {formatCurrency(analytics.pipelineValue)}
               </p>

@@ -1,7 +1,7 @@
 import CustomerLayoutClient from './customer-layout-client'
 
 export const metadata = {
-  title: 'Customer Portal | Roofing Made Easy',
+  title: 'Customer Portal | Farrell Roofing',
   description: 'Access your estimates, financing options, insurance assistance, and assistance programs.',
 }
 

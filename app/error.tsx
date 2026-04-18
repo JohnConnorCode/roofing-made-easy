@@ -23,8 +23,8 @@ export default function Error({
           <AlertTriangle className="h-8 w-8 text-red-600" />
         </div>
         <h1 className="mt-6 text-2xl font-bold text-slate-900">Something went wrong</h1>
-        <p className="mt-2 text-slate-600">
-          We're sorry, but something unexpected happened. Please try again.
+        <p className="mt-2 text-slate-400">
+          We&apos;re sorry, but something unexpected happened. Please try again.
         </p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -35,6 +35,7 @@ export default function Error({
             <RefreshCw className="h-5 w-5" />
             Try Again
           </button>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- Error boundary needs hard navigation */}
           <a
             href="/"
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 transition-colors hover:bg-slate-50"
@@ -47,9 +48,9 @@ export default function Error({
         {process.env.NODE_ENV === 'development' && error.message && (
           <div className="mt-8 max-w-lg rounded-lg bg-slate-100 p-4 text-left">
             <p className="text-sm font-medium text-slate-700">Error details:</p>
-            <pre className="mt-2 overflow-auto text-xs text-slate-600">{error.message}</pre>
+            <pre className="mt-2 overflow-auto text-xs text-slate-400">{error.message}</pre>
             {error.digest && (
-              <p className="mt-2 text-xs text-slate-500">Error ID: {error.digest}</p>
+              <p className="mt-2 text-xs text-slate-400">Error ID: {error.digest}</p>
             )}
           </div>
         )}

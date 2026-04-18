@@ -156,7 +156,7 @@ export default function ClaimLetterGenerator({ leadId }: ClaimLetterGeneratorPro
                   'resize-y placeholder:text-slate-600'
                 )}
               />
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 You can edit this letter before copying. Review all details for accuracy.
               </p>
             </div>

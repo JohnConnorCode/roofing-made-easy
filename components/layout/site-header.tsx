@@ -13,6 +13,7 @@ import { isRealPortfolioData } from '@/lib/data/portfolio'
 const allNavLinks = [
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
+  { href: '/pricing', label: 'Pricing' },
   { href: '/service-areas', label: 'Service Areas' },
   { href: '/portfolio', label: 'Portfolio' },
   { href: '/blog', label: 'Blog' },
@@ -75,7 +76,7 @@ export function SiteHeader() {
               <span>{config.address.city}, {config.address.stateCode} &amp; Surrounding Areas</span>
             </span>
           </div>
-          <div className="flex items-center gap-4 text-slate-500">
+          <div className="flex items-center gap-4 text-slate-400">
             <span>{hoursText}</span>
             <span className="h-3.5 w-px bg-slate-700" />
             <Link href="/portal" className="flex items-center gap-1.5 text-slate-400 hover:text-gold transition-colors">
@@ -127,7 +128,7 @@ export function SiteHeader() {
                       <link.icon className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
                       <div>
                         <div className="text-sm font-medium text-slate-200">{link.label}</div>
-                        <div className="text-xs text-slate-500">{link.description}</div>
+                        <div className="text-xs text-slate-400">{link.description}</div>
                       </div>
                     </Link>
                   ))}
@@ -202,7 +203,7 @@ export function SiteHeader() {
               transitionDuration: '250ms',
             }}
           >
-            <div className="text-xs text-slate-500 uppercase tracking-wider py-2">Resources</div>
+            <div className="text-xs text-slate-400 uppercase tracking-wider py-2">Resources</div>
             {resourceLinks.map(link => (
               <Link
                 key={link.href}
@@ -230,7 +231,7 @@ export function SiteHeader() {
               className="bg-gold hover:bg-gold-light text-ink font-semibold px-5 py-3.5 rounded-lg transition-all text-center w-full"
               onClick={closeMobileMenu}
             >
-              Get Free Estimate
+              Free Estimate
             </StartFunnelButton>
             <a
               href={phoneLink}

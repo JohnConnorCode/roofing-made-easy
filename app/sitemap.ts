@@ -5,7 +5,7 @@ import { getAllBlogPosts } from '@/lib/data/blog'
 import { getAllServiceSlugs } from '@/lib/data/ms-services'
 import { isRealPortfolioData } from '@/lib/data/portfolio'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
   // Use fixed dates for static content - only update when content actually changes
@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const cities = getAllCities()
   const counties = getAllCounties()
   const services = getAllServices()
-  const blogPosts = getAllBlogPosts()
+  const blogPosts = await getAllBlogPosts()
   const msServiceSlugs = getAllServiceSlugs()
 
   // Static pages with priority ordering

@@ -90,7 +90,7 @@ export function FollowUpReminder({
     return (
       <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-slate-500">
+          <div className="flex items-center gap-2 text-slate-400">
             <Bell className="h-5 w-5" />
             <span className="text-sm">No follow-up scheduled</span>
           </div>
@@ -111,7 +111,7 @@ export function FollowUpReminder({
         </h4>
         <div className="grid md:grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">
+            <label className="block text-xs font-medium text-slate-400 mb-1">
               Follow-up Date
             </label>
             <input
@@ -123,7 +123,7 @@ export function FollowUpReminder({
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">
+            <label className="block text-xs font-medium text-slate-400 mb-1">
               Note (optional)
             </label>
             <input
@@ -197,7 +197,7 @@ export function FollowUpReminder({
             <p className="font-medium text-slate-900 text-sm">
               {reminder?.isComplete ? 'Completed' : isOverdue ? 'Overdue!' : 'Follow-up scheduled'}
             </p>
-            <p className="text-sm text-slate-600 flex items-center gap-1 mt-1">
+            <p className="text-sm text-slate-400 flex items-center gap-1 mt-1">
               <Calendar className="h-3 w-3" />
               {reminder && new Date(reminder.dueDate).toLocaleDateString('en-US', {
                 weekday: 'short',
@@ -206,7 +206,7 @@ export function FollowUpReminder({
               })}
             </p>
             {reminder?.note && (
-              <p className="text-sm text-slate-500 mt-1">{reminder.note}</p>
+              <p className="text-sm text-slate-400 mt-1">{reminder.note}</p>
             )}
           </div>
         </div>
@@ -221,7 +221,7 @@ export function FollowUpReminder({
             </button>
             <button
               onClick={() => setIsEditing(true)}
-              className="p-1.5 rounded-lg hover:bg-slate-200 text-slate-500 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-slate-200 text-slate-400 transition-colors"
               title="Edit"
             >
               <Clock className="h-4 w-4" />

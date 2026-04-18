@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { formatCurrency, formatDate } from '@/lib/utils'
+import { formatCurrency } from '@/lib/utils'
 import { User, Mail, Phone, FileText, TrendingUp } from 'lucide-react'
 
 export interface CustomerData {
@@ -41,7 +41,7 @@ export function CustomerCard({ customer }: CustomerCardProps) {
         <div className="flex-1 min-w-0">
           <h3 className="font-medium text-slate-900 truncate">{name}</h3>
 
-          <div className="flex flex-wrap gap-3 mt-2 text-sm text-slate-500">
+          <div className="flex flex-wrap gap-3 mt-2 text-sm text-slate-400">
             {customer.email && (
               <span className="flex items-center gap-1">
                 <Mail className="h-3.5 w-3.5" />
@@ -62,7 +62,7 @@ export function CustomerCard({ customer }: CustomerCardProps) {
               <FileText className="h-4 w-4 text-slate-400" />
               <span className="text-sm">
                 <span className="font-medium text-slate-900">{customer.leads_count}</span>
-                <span className="text-slate-500"> lead{customer.leads_count !== 1 ? 's' : ''}</span>
+                <span className="text-slate-400"> lead{customer.leads_count !== 1 ? 's' : ''}</span>
               </span>
             </div>
 
@@ -71,7 +71,7 @@ export function CustomerCard({ customer }: CustomerCardProps) {
                 <TrendingUp className="h-4 w-4 text-green-500" />
                 <span className="text-sm">
                   <span className="font-medium text-green-600">{customer.won_leads}</span>
-                  <span className="text-slate-500"> won</span>
+                  <span className="text-slate-400"> won</span>
                 </span>
               </div>
             )}

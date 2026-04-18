@@ -12,8 +12,10 @@ function escapeXml(str: string): string {
     .replace(/'/g, '&apos;')
 }
 
+export const revalidate = 3600
+
 export async function GET() {
-  const posts = getAllBlogPosts()
+  const posts = await getAllBlogPosts()
 
   const items = posts
     .map((post) => {

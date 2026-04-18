@@ -35,18 +35,23 @@ export function DonutChart({
   const center = size / 2
   const defaultColors = ['#d4a853', '#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444', '#6366f1', '#14b8a6']
 
-  let cumulativeOffset = 0
+  // Pre-compute cumulative offsets to avoid mutation during render
+  const segments = data.reduce<Array<{ percentage: number; offset: number }>>((acc, item) => {
+    const percentage = item.value / total
+    const prevOffset = acc.length > 0 ? acc[acc.length - 1].offset + acc[acc.length - 1].percentage : 0
+    acc.push({ percentage, offset: prevOffset })
+    return acc
+  }, [])
 
   return (
     <div className="flex items-center gap-6">
       <div className="relative shrink-0" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="-rotate-90">
           {data.map((item, idx) => {
-            const percentage = item.value / total
+            const { percentage, offset } = segments[idx]
             const dashLength = circumference * percentage
-            const dashOffset = circumference * cumulativeOffset
+            const dashOffset = circumference * offset
             const color = item.color || defaultColors[idx % defaultColors.length]
-            cumulativeOffset += percentage
 
             return (
               <circle
@@ -67,7 +72,7 @@ export function DonutChart({
         {(centerLabel || centerValue) && (
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             {centerValue && <span className="text-lg font-bold text-slate-900">{centerValue}</span>}
-            {centerLabel && <span className="text-[10px] text-slate-500">{centerLabel}</span>}
+            {centerLabel && <span className="text-[10px] text-slate-400">{centerLabel}</span>}
           </div>
         )}
       </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { formatCurrency } from '@/lib/utils'
 import { Phone, Mail, MapPin, Calendar, GripVertical, MoveRight, Camera, Shield, Clock } from 'lucide-react'
 import { URGENCY_MAP, JOB_TYPE_MAP } from '@/lib/constants/status'
@@ -66,14 +67,17 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick, visibleFields
   const photoCount = lead.uploads?.length || 0
   const hasInsurance = intake?.has_insurance_claim || false
 
+  // Cache current time for stable render
+  const [now] = useState(() => Date.now())
+
   // Calculate days in stage
   const stageEnteredDate = lead.stage_entered_at ? new Date(lead.stage_entered_at) : new Date(lead.updated_at || lead.created_at)
-  const daysInStage = Math.floor((Date.now() - stageEnteredDate.getTime()) / (1000 * 60 * 60 * 24))
+  const daysInStage = Math.floor((now - stageEnteredDate.getTime()) / (1000 * 60 * 60 * 24))
 
   // Calculate last activity relative time
   const lastActivityDate = new Date(lead.updated_at || lead.created_at)
   const getRelativeTime = (date: Date) => {
-    const diffMs = Date.now() - date.getTime()
+    const diffMs = now - date.getTime()
     const diffMins = Math.floor(diffMs / (1000 * 60))
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
@@ -106,7 +110,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick, visibleFields
       {onMoveClick && (
         <button
           onClick={onMoveClick}
-          className="absolute right-1 top-1 p-1.5 rounded-md bg-slate-100 hover:bg-gold-light/20 text-slate-500 hover:text-gold-muted opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute right-1 top-1 p-1.5 rounded-md bg-slate-100 hover:bg-gold-light/20 text-slate-400 hover:text-gold-muted opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
           title="Move to..."
           aria-label={`Move ${name} to another stage`}
         >
@@ -134,7 +138,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick, visibleFields
 
         {/* Location */}
         {showField('location') && (
-          <div className="flex items-center gap-1 text-xs text-slate-600 mb-2">
+          <div className="flex items-center gap-1 text-xs text-slate-400 mb-2">
             <MapPin className="h-3 w-3 text-slate-400" />
             <span className="truncate">{location}</span>
           </div>
@@ -155,7 +159,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick, visibleFields
           )}
           {/* Photo count badge */}
           {showField('photo_count') && photoCount > 0 && (
-            <span className="text-xs px-1.5 py-0.5 rounded font-medium bg-slate-100 text-slate-600 flex items-center gap-0.5">
+            <span className="text-xs px-1.5 py-0.5 rounded font-medium bg-slate-100 text-slate-400 flex items-center gap-0.5">
               <Camera className="h-3 w-3" />
               {photoCount}
             </span>
@@ -170,7 +174,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick, visibleFields
           {/* Days in stage badge */}
           {showField('days_in_stage') && daysInStage > 0 && (
             <span className={`text-xs px-1.5 py-0.5 rounded font-medium flex items-center gap-0.5 ${
-              daysInStage > 7 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'
+              daysInStage > 7 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-400'
             }`}>
               <Clock className="h-3 w-3" />
               {daysInStage}d
@@ -200,7 +204,7 @@ export function LeadCard({ lead, onClick, isDragging, onMoveClick, visibleFields
               <Mail className="h-3.5 w-3.5" />
             </a>
           )}
-          <span className="ml-auto text-xs text-slate-500 flex items-center gap-1">
+          <span className="ml-auto text-xs text-slate-400 flex items-center gap-1">
             {showField('last_activity') ? (
               <>{getRelativeTime(lastActivityDate)}</>
             ) : (

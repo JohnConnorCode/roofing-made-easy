@@ -373,7 +373,7 @@ export async function PATCH(
   { params }: { params: Promise<{ leadId: string; estimateId: string }> }
 ) {
   try {
-    const { leadId, estimateId } = await params
+    const { estimateId } = await params
     const body = await request.json()
     const parsed = updateLineItemSchema.safeParse(body)
 

@@ -110,7 +110,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`)
+      const sanitizedSearch = search.replace(/[%_'"\\]/g, '').trim()
+      if (sanitizedSearch) {
+        query = query.or(`title.ilike.%${sanitizedSearch}%,description.ilike.%${sanitizedSearch}%`)
+      }
     }
 
     const { data: tasks, error, count } = await query

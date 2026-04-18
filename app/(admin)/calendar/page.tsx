@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { useToast } from '@/components/ui/toast'
-import { formatDate } from '@/lib/utils'
 import {
   ChevronLeft,
   ChevronRight,
@@ -220,7 +219,7 @@ export default function CalendarPage() {
 
       const data = await response.json()
       setEvents(data.events || [])
-    } catch (err) {
+    } catch {
       setError('Unable to load calendar events.')
     } finally {
       setIsLoading(false)
@@ -271,8 +270,8 @@ export default function CalendarPage() {
       <FadeInSection delay={0} animation="fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Calendar</h1>
-          <p className="text-slate-500">Schedule jobs, appointments, and team activities</p>
+          <h1 className="text-2xl font-bold text-slate-50">Calendar</h1>
+          <p className="text-slate-400">Schedule jobs, appointments, and team activities</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -293,7 +292,7 @@ export default function CalendarPage() {
 
       {/* Controls */}
       <FadeInSection delay={100} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -306,7 +305,7 @@ export default function CalendarPage() {
               <Button variant="outline" size="sm" onClick={() => navigate(1)}>
                 <ChevronRight className="h-4 w-4" />
               </Button>
-              <h2 className="text-lg font-semibold text-slate-900 ml-2">{headerLabel}</h2>
+              <h2 className="text-lg font-semibold text-slate-50 ml-2">{headerLabel}</h2>
             </div>
             <div className="flex items-center gap-2">
               <Select
@@ -329,10 +328,10 @@ export default function CalendarPage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchEvents}>
               Try Again
             </Button>
@@ -345,21 +344,21 @@ export default function CalendarPage() {
         <div className="grid gap-6 lg:grid-cols-4">
           {/* Calendar Grid */}
           <div className="lg:col-span-3">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-4">
                 {viewMode === 'month' && (
                   <>
                     {/* Day headers */}
                     <div className="grid grid-cols-7 gap-px mb-2">
                       {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                        <div key={day} className="text-center text-xs font-medium text-slate-500 py-2">
+                        <div key={day} className="text-center text-xs font-medium text-slate-400 py-2">
                           {day}
                         </div>
                       ))}
                     </div>
 
                     {/* Calendar cells */}
-                    <div className="relative grid grid-cols-7 gap-px bg-slate-200 border border-slate-200 rounded-lg overflow-hidden">
+                    <div className="relative grid grid-cols-7 gap-px bg-slate-900/60 border border-white/5 rounded-lg overflow-hidden">
                       {/* Empty month overlay */}
                       {!isLoading && events.length === 0 && (
                         <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
@@ -371,7 +370,7 @@ export default function CalendarPage() {
                       )}
                       {/* Empty cells before first day */}
                       {Array.from({ length: firstDay }).map((_, i) => (
-                        <div key={`empty-${i}`} className="bg-slate-50 min-h-[80px] p-1" />
+                        <div key={`empty-${i}`} className="bg-slate-900/40 min-h-[80px] p-1" />
                       ))}
 
                       {/* Day cells */}
@@ -386,12 +385,12 @@ export default function CalendarPage() {
                           <div
                             key={dateStr}
                             onClick={() => setSelectedDate(dateStr)}
-                            className={`bg-white min-h-[80px] p-1 cursor-pointer transition-colors hover:bg-slate-50 ${
+                            className={`bg-white min-h-[80px] p-1 cursor-pointer transition-colors hover:bg-slate-900/40 ${
                               isSelected ? 'ring-2 ring-gold ring-inset' : ''
                             }`}
                           >
                             <span className={`text-xs font-medium inline-flex items-center justify-center h-6 w-6 rounded-full ${
-                              isToday ? 'bg-gold text-white' : 'text-slate-700'
+                              isToday ? 'bg-gold text-white' : 'text-slate-300'
                             }`}>
                               {day}
                             </span>
@@ -430,9 +429,9 @@ export default function CalendarPage() {
                       const isToday = dateStr === today
 
                       return (
-                        <div key={dateStr} className={`rounded-lg border p-3 ${isToday ? 'border-gold bg-gold/5' : 'border-slate-200'}`}>
+                        <div key={dateStr} className={`rounded-lg border p-3 ${isToday ? 'border-gold bg-gold/5' : 'border-white/5'}`}>
                           <div className="flex items-center gap-2 mb-2">
-                            <span className={`text-sm font-medium ${isToday ? 'text-gold' : 'text-slate-700'}`}>
+                            <span className={`text-sm font-medium ${isToday ? 'text-gold' : 'text-slate-300'}`}>
                               {dayDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                             </span>
                             <span className="text-xs text-slate-400">{dayEvents.length} events</span>
@@ -444,17 +443,17 @@ export default function CalendarPage() {
                               {dayEvents.map((event) => (
                                 <div
                                   key={event.id}
-                                  className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 rounded px-1 -mx-1 transition-colors"
+                                  className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-900/40 rounded px-1 -mx-1 transition-colors"
                                   onClick={() => openEditModal(event)}
                                 >
                                   <span
                                     className="h-2 w-2 rounded-full shrink-0"
                                     style={{ backgroundColor: event.color || EVENT_TYPE_COLORS[event.event_type] }}
                                   />
-                                  <span className="text-xs text-slate-500">
+                                  <span className="text-xs text-slate-400">
                                     {new Date(event.start_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
                                   </span>
-                                  <span className="text-sm text-slate-700 truncate">{event.title}</span>
+                                  <span className="text-sm text-slate-300 truncate">{event.title}</span>
                                 </div>
                               ))}
                             </div>
@@ -474,11 +473,11 @@ export default function CalendarPage() {
                     ) : events.length === 0 ? (
                       <div className="text-center py-8">
                         <CalendarDays className="h-10 w-10 text-slate-300 mx-auto" />
-                        <p className="mt-2 text-slate-500">No events for this day</p>
+                        <p className="mt-2 text-slate-400">No events for this day</p>
                       </div>
                     ) : (
                       events.map((event) => (
-                        <div key={event.id} className="rounded-lg border border-slate-200 p-4 cursor-pointer hover:border-slate-300 transition-colors" onClick={() => openEditModal(event)}>
+                        <div key={event.id} className="rounded-lg border border-white/5 p-4 cursor-pointer hover:border-slate-300 transition-colors" onClick={() => openEditModal(event)}>
                           <div className="flex items-start justify-between">
                             <div>
                               <div className="flex items-center gap-2">
@@ -486,12 +485,12 @@ export default function CalendarPage() {
                                   className="h-3 w-3 rounded-full"
                                   style={{ backgroundColor: event.color || EVENT_TYPE_COLORS[event.event_type] }}
                                 />
-                                <h3 className="font-medium text-slate-900">{event.title}</h3>
+                                <h3 className="font-medium text-slate-50">{event.title}</h3>
                               </div>
                               {event.description && (
-                                <p className="text-sm text-slate-600 mt-1">{event.description}</p>
+                                <p className="text-sm text-slate-400 mt-1">{event.description}</p>
                               )}
-                              <div className="flex items-center gap-4 mt-2 text-xs text-slate-500">
+                              <div className="flex items-center gap-4 mt-2 text-xs text-slate-400">
                                 <span className="flex items-center gap-1">
                                   <Clock className="h-3 w-3" />
                                   {new Date(event.start_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
@@ -506,7 +505,7 @@ export default function CalendarPage() {
                                 )}
                               </div>
                             </div>
-                            <span className="text-xs rounded-full px-2 py-0.5 bg-slate-100 text-slate-600 capitalize">
+                            <span className="text-xs rounded-full px-2 py-0.5 bg-slate-900/60 text-slate-400 capitalize">
                               {EVENT_TYPE_LABELS[event.event_type] || event.event_type}
                             </span>
                           </div>
@@ -521,7 +520,7 @@ export default function CalendarPage() {
 
           {/* Side Panel */}
           <div className="lg:col-span-1">
-            <Card className="bg-white border-slate-200 sticky top-4">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl sticky top-4">
               <CardHeader>
                 <CardTitle className="text-sm">
                   {selectedDate
@@ -535,9 +534,9 @@ export default function CalendarPage() {
                 ) : (
                   <div className="space-y-3">
                     {selectedEvents.map((event) => (
-                      <div key={event.id} className="border-l-2 pl-3 py-1 cursor-pointer hover:bg-slate-50 rounded-r transition-colors" style={{ borderColor: event.color || EVENT_TYPE_COLORS[event.event_type] }} onClick={() => openEditModal(event)}>
-                        <p className="text-sm font-medium text-slate-900">{event.title}</p>
-                        <p className="text-xs text-slate-500">
+                      <div key={event.id} className="border-l-2 pl-3 py-1 cursor-pointer hover:bg-slate-900/40 rounded-r transition-colors" style={{ borderColor: event.color || EVENT_TYPE_COLORS[event.event_type] }} onClick={() => openEditModal(event)}>
+                        <p className="text-sm font-medium text-slate-50">{event.title}</p>
+                        <p className="text-xs text-slate-400">
                           {event.all_day ? 'All day' : new Date(event.start_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
                         </p>
                         {event.job && (
@@ -557,12 +556,12 @@ export default function CalendarPage() {
 
                 {/* Event type legend */}
                 <div className="mt-6 pt-4 border-t">
-                  <p className="text-xs font-medium text-slate-500 mb-2">Event Types</p>
+                  <p className="text-xs font-medium text-slate-400 mb-2">Event Types</p>
                   <div className="space-y-1">
                     {Object.entries(EVENT_TYPE_LABELS).map(([type, label]) => (
                       <div key={type} className="flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full" style={{ backgroundColor: EVENT_TYPE_COLORS[type] }} />
-                        <span className="text-xs text-slate-600">{label}</span>
+                        <span className="text-xs text-slate-400">{label}</span>
                       </div>
                     ))}
                   </div>
@@ -576,18 +575,18 @@ export default function CalendarPage() {
       {/* Event Modal (Add / Edit) */}
       {showEventModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4" role="dialog" aria-modal="true" aria-label={editingEvent ? 'Edit Event' : 'Add Event'}>
             <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-slate-50">
                 {editingEvent ? 'Edit Event' : 'Add Event'}
               </h2>
-              <button onClick={() => setShowEventModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowEventModal(false)} className="text-slate-400 hover:text-slate-400">
                 <X className="h-5 w-5" />
               </button>
             </div>
             <div className="p-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Title</label>
                 <Input
                   placeholder="Event title"
                   value={eventForm.title}
@@ -595,7 +594,7 @@ export default function CalendarPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Type</label>
                 <Select
                   options={Object.entries(EVENT_TYPE_LABELS).map(([value, label]) => ({ value, label }))}
                   value={eventForm.event_type}
@@ -604,7 +603,7 @@ export default function CalendarPage() {
               </div>
               <div className="grid gap-4 grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Start</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">Start</label>
                   <Input
                     type="datetime-local"
                     value={eventForm.start_at}
@@ -612,7 +611,7 @@ export default function CalendarPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">End</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">End</label>
                   <Input
                     type="datetime-local"
                     value={eventForm.end_at}
@@ -621,7 +620,7 @@ export default function CalendarPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Location (optional)</label>
+                <label className="block text-sm font-medium text-slate-300 mb-1">Location (optional)</label>
                 <Input
                   placeholder="e.g., 123 Main St"
                   value={eventForm.location}

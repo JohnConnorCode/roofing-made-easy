@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireCustomer } from '@/lib/api/auth'
 import { logger } from '@/lib/logger'
 
 // GET - List customer's invoices
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const { customerId, error: authError } = await requireCustomer()
     if (authError) return authError

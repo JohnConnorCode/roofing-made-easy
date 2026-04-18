@@ -7,7 +7,7 @@ import { gtagEvent } from './gtag'
 
 export function useAnalytics(leadId?: string) {
   const pathname = usePathname()
-  const pageEnteredAt = useRef<number>(Date.now())
+  const pageEnteredAt = useRef<number>(0)
 
   // Initialize tracker and track page views on route change
   useEffect(() => {

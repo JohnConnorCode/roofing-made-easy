@@ -19,8 +19,9 @@ interface ProgressTimelineProps {
 export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTimelineProps) {
   if (orientation === 'horizontal') {
     return (
-      <div className="w-full overflow-x-auto">
-        <div className="flex items-start justify-between min-w-[640px]">
+      <div className="w-full">
+        {/* Horizontal layout for sm+ screens */}
+        <div className="hidden sm:flex items-start justify-between">
           {steps.map((step, index) => (
             <div
               key={step.id}
@@ -45,7 +46,7 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
                     <span
                       className={cn(
                         'text-sm font-semibold',
-                        step.status === 'current' ? 'text-gold-light' : 'text-slate-500'
+                        step.status === 'current' ? 'text-gold-light' : 'text-slate-400'
                       )}
                     >
                       {index + 1}
@@ -70,13 +71,69 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
                   className={cn(
                     'text-xs font-medium',
                     step.status === 'current' ? 'text-gold-light' :
-                    step.status === 'completed' ? 'text-slate-300' : 'text-slate-500'
+                    step.status === 'completed' ? 'text-slate-300' : 'text-slate-400'
                   )}
                 >
                   {step.label}
                 </p>
                 {step.date && (
-                  <p className="text-xs text-slate-500 mt-0.5">{step.date}</p>
+                  <p className="text-xs text-slate-400 mt-0.5">{step.date}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Vertical layout for mobile (< sm) */}
+        <div className="sm:hidden relative">
+          {steps.map((step, index) => (
+            <div key={step.id} className="relative flex gap-3 pb-6 last:pb-0">
+              {/* Connecting line */}
+              {index < steps.length - 1 && (
+                <div
+                  className={cn(
+                    'absolute left-[19px] top-10 h-full w-0.5',
+                    step.status === 'completed' ? 'bg-success' : 'bg-slate-700'
+                  )}
+                />
+              )}
+
+              {/* Step circle */}
+              <div
+                className={cn(
+                  'relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 shrink-0',
+                  step.status === 'completed' && 'border-success bg-success',
+                  step.status === 'current' && 'border-gold-light bg-gold-light/10',
+                  step.status === 'upcoming' && 'border-slate-600 bg-slate-800'
+                )}
+              >
+                {step.status === 'completed' ? (
+                  <Check className="h-5 w-5 text-white" />
+                ) : (
+                  <span
+                    className={cn(
+                      'text-sm font-semibold',
+                      step.status === 'current' ? 'text-gold-light' : 'text-slate-400'
+                    )}
+                  >
+                    {index + 1}
+                  </span>
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 pt-2">
+                <p
+                  className={cn(
+                    'text-xs font-medium',
+                    step.status === 'current' ? 'text-gold-light' :
+                    step.status === 'completed' ? 'text-slate-300' : 'text-slate-400'
+                  )}
+                >
+                  {step.label}
+                </p>
+                {step.date && (
+                  <p className="text-xs text-slate-400 mt-0.5">{step.date}</p>
                 )}
               </div>
             </div>
@@ -116,7 +173,7 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
               <span
                 className={cn(
                   'text-sm font-semibold',
-                  step.status === 'current' ? 'text-gold-light' : 'text-slate-500'
+                  step.status === 'current' ? 'text-gold-light' : 'text-slate-400'
                 )}
               >
                 {index + 1}
@@ -131,13 +188,13 @@ export function ProgressTimeline({ steps, orientation = 'vertical' }: ProgressTi
                 className={cn(
                   'font-medium',
                   step.status === 'current' ? 'text-gold-light' :
-                  step.status === 'completed' ? 'text-slate-200' : 'text-slate-500'
+                  step.status === 'completed' ? 'text-slate-200' : 'text-slate-400'
                 )}
               >
                 {step.label}
               </h4>
               {step.date && (
-                <span className="text-xs text-slate-500">{step.date}</span>
+                <span className="text-xs text-slate-400">{step.date}</span>
               )}
             </div>
             {step.description && (

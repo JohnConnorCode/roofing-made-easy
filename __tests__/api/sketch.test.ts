@@ -26,7 +26,7 @@ vi.mock('@/lib/supabase/server', () => ({
 }))
 
 function createMockQueryBuilder(table: string) {
-  let filters: Array<{ column: string; value: unknown; operator: string }> = []
+  const filters: Array<{ column: string; value: unknown; operator: string }> = []
   let insertData: unknown = null
   let updateData: unknown = null
   let isDelete = false

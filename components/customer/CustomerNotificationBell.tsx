@@ -186,6 +186,7 @@ export function CustomerNotificationBell() {
       {isOpen && (
         <div
           role="dialog"
+          aria-modal="true"
           aria-label="Notifications"
           tabIndex={-1}
           className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-1rem)] bg-slate-deep rounded-lg shadow-xl border border-slate-700 z-50 overflow-hidden"
@@ -211,8 +212,8 @@ export function CustomerNotificationBell() {
               </div>
             ) : notifications.length === 0 ? (
               <div className="text-center py-8">
-                <Bell className="h-8 w-8 text-slate-500 mx-auto" />
-                <p className="mt-2 text-sm text-slate-500">No notifications</p>
+                <Bell className="h-8 w-8 text-slate-400 mx-auto" />
+                <p className="mt-2 text-sm text-slate-400">No notifications</p>
               </div>
             ) : (
               notifications.map((notification) => (
@@ -232,16 +233,16 @@ export function CustomerNotificationBell() {
                           {notification.title}
                         </p>
                         {notification.message && (
-                          <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{notification.message}</p>
+                          <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">{notification.message}</p>
                         )}
-                        <p className="text-[10px] text-slate-500 mt-1">{formatDate(notification.created_at)}</p>
+                        <p className="text-[10px] text-slate-400 mt-1">{formatDate(notification.created_at)}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
                       {!notification.read_at && (
                         <button
                           onClick={() => markAsRead(notification.id)}
-                          className="p-1 text-slate-500 hover:text-green-400 transition-colors"
+                          className="p-1 text-slate-400 hover:text-green-400 transition-colors"
                           aria-label={`Mark as read: ${notification.title}`}
                         >
                           <Check className="h-3.5 w-3.5" />
@@ -249,7 +250,7 @@ export function CustomerNotificationBell() {
                       )}
                       <button
                         onClick={() => dismiss(notification.id)}
-                        className="p-1 text-slate-500 hover:text-red-400 transition-colors"
+                        className="p-1 text-slate-400 hover:text-red-400 transition-colors"
                         aria-label={`Dismiss: ${notification.title}`}
                       >
                         <X className="h-3.5 w-3.5" />

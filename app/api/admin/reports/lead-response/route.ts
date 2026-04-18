@@ -148,11 +148,6 @@ export async function GET(request: NextRequest) {
       }))
       .sort((a, b) => a.date.localeCompare(b.date))
 
-    // Stale leads: open leads with no activity in 48+ hours
-    const openLeads = leadRows.filter(l =>
-      !['won', 'lost', 'archived'].includes(l.status)
-    )
-
     // Get latest activity per lead for open leads
     const latestActivityByLead = new Map<string, string>()
     for (const act of activityRows) {

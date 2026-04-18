@@ -71,7 +71,7 @@ export function ComparisonHero({ city }: ComparisonHeroProps) {
             href="/"
             className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all btn-press"
           >
-            Get Your Free Estimate
+            Get My Free Estimate
           </Link>
         </div>
       </div>

@@ -30,12 +30,6 @@ export function CollapsibleSection({
     defaultOpen ? undefined : 0
   )
 
-  useEffect(() => {
-    if (contentRef.current) {
-      setContentHeight(isOpen ? contentRef.current.scrollHeight : 0)
-    }
-  }, [isOpen])
-
   // Update height when children change (e.g., conditional fields appear)
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -49,6 +43,14 @@ export function CollapsibleSection({
     }
   }, [isOpen])
 
+  const handleToggle = () => {
+    const nextOpen = !isOpen
+    if (contentRef.current) {
+      setContentHeight(nextOpen ? contentRef.current.scrollHeight : 0)
+    }
+    setIsOpen(nextOpen)
+  }
+
   return (
     <div
       className={cn(
@@ -59,7 +61,7 @@ export function CollapsibleSection({
     >
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         className="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-slate-700/30"
         aria-expanded={isOpen}
         aria-controls={panelId}

@@ -113,7 +113,7 @@ function ResetPasswordForm() {
           <CardContent className="pt-8 text-center">
             <Loader2 className="h-8 w-8 animate-spin text-[#c9a25c] mx-auto mb-4" />
             <p className="text-slate-400">Verifying your reset link...</p>
-            <p className="text-sm text-slate-500 mt-4">
+            <p className="text-sm text-slate-400 mt-4">
               If this takes too long, your link may have expired.{' '}
               <Link href="/customer/forgot-password" className="text-[#c9a25c] hover:text-[#d4b06c]">
                 Request a new one
@@ -160,7 +160,7 @@ function ResetPasswordForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-300"
+                  className="absolute right-3 top-[38px] text-slate-400 hover:text-slate-300"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />

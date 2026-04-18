@@ -130,7 +130,7 @@ export default function DamageDocGuide({ detectedIssues }: DamageDocGuideProps) 
                             {getInsuranceTerminology(item.issue)}
                           </span>
                           {item.description && (
-                            <span className="text-xs text-slate-500 block mt-1">
+                            <span className="text-xs text-slate-400 block mt-1">
                               {item.description}
                             </span>
                           )}
@@ -170,12 +170,12 @@ export default function DamageDocGuide({ detectedIssues }: DamageDocGuideProps) 
                       key={index}
                       className="flex items-start gap-2 rounded-lg border border-slate-700 bg-[#0c0f14] p-3"
                     >
-                      <Square className="h-4 w-4 text-slate-500 mt-0.5 flex-shrink-0" />
+                      <Square className="h-4 w-4 text-slate-400 mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="text-sm text-slate-300 font-medium block">
                           {item.label}
                         </span>
-                        <span className="text-xs text-slate-500 block mt-0.5">
+                        <span className="text-xs text-slate-400 block mt-0.5">
                           {item.detail}
                         </span>
                       </div>
@@ -198,12 +198,12 @@ export default function DamageDocGuide({ detectedIssues }: DamageDocGuideProps) 
                   key={index}
                   className="flex items-start gap-2 rounded-lg border border-slate-700 bg-[#0c0f14] p-3"
                 >
-                  <Square className="h-4 w-4 text-slate-500 mt-0.5 flex-shrink-0" />
+                  <Square className="h-4 w-4 text-slate-400 mt-0.5 flex-shrink-0" />
                   <div>
                     <span className="text-sm text-slate-300 font-medium block">
                       {item.label}
                     </span>
-                    <span className="text-xs text-slate-500 block mt-0.5">
+                    <span className="text-xs text-slate-400 block mt-0.5">
                       {item.detail}
                     </span>
                   </div>

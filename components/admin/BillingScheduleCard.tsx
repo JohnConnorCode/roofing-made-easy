@@ -113,7 +113,7 @@ export function BillingScheduleCard({ jobId, contractAmount }: BillingScheduleCa
     const inv = milestone.invoice
     if (inv.status === 'paid') return { label: 'Paid', icon: CheckCircle, className: 'text-green-600', linkable: true }
     if (inv.status === 'sent' || inv.status === 'viewed') return { label: 'Sent', icon: FileText, className: 'text-blue-600', linkable: true }
-    return { label: 'Draft', icon: FileText, className: 'text-slate-500', linkable: true }
+    return { label: 'Draft', icon: FileText, className: 'text-slate-400', linkable: true }
   }
 
   if (loading) {
@@ -165,7 +165,7 @@ export function BillingScheduleCard({ jobId, contractAmount }: BillingScheduleCa
 
         {milestones.length === 0 ? (
           <div className="text-center py-6">
-            <p className="text-slate-500 mb-4">No billing schedule set up yet</p>
+            <p className="text-slate-400 mb-4">No billing schedule set up yet</p>
             <div className="flex flex-col sm:flex-row gap-2 justify-center">
               {BILLING_TEMPLATES.map((template) => (
                 <Button
@@ -195,10 +195,10 @@ export function BillingScheduleCard({ jobId, contractAmount }: BillingScheduleCa
                     <div className="text-sm font-medium text-slate-900 truncate">
                       {milestone.milestone_name}
                     </div>
-                    <span className="text-xs text-slate-500 shrink-0">
+                    <span className="text-xs text-slate-400 shrink-0">
                       {milestone.percentage}%
                     </span>
-                    <span className="text-xs bg-slate-100 text-slate-600 rounded-full px-2 py-0.5 shrink-0">
+                    <span className="text-xs bg-slate-100 text-slate-400 rounded-full px-2 py-0.5 shrink-0">
                       {JOB_STATUS_LABELS[milestone.trigger_status] || milestone.trigger_status}
                     </span>
                   </div>

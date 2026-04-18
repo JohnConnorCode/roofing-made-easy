@@ -27,7 +27,7 @@ export function VariablesReference() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-slate-500 mb-4">
+          <p className="text-sm text-slate-400 mb-4">
             Use these variables in your email and SMS templates. They will be replaced with actual
             values when messages are sent.
           </p>
@@ -36,13 +36,13 @@ export function VariablesReference() {
             <table className="min-w-full divide-y divide-slate-200">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Variable
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Description
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Example
                   </th>
                 </tr>
@@ -51,7 +51,7 @@ export function VariablesReference() {
                 {categories.map(category => (
                   <Fragment key={category}>
                     <tr className="bg-slate-50/50">
-                      <td colSpan={3} className="px-4 py-2 text-xs font-semibold text-slate-500 uppercase">
+                      <td colSpan={3} className="px-4 py-2 text-xs font-semibold text-slate-400 uppercase">
                         {category}
                       </td>
                     </tr>
@@ -64,7 +64,7 @@ export function VariablesReference() {
                               {`{{${variable}}}`}
                             </code>
                           </td>
-                          <td className="px-4 py-3 text-sm text-slate-600">
+                          <td className="px-4 py-3 text-sm text-slate-400">
                             {description}
                           </td>
                           <td className="px-4 py-3 text-sm text-slate-400 italic">
@@ -88,7 +88,7 @@ export function VariablesReference() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-3 text-sm text-slate-600">
+          <ul className="space-y-3 text-sm text-slate-400">
             <li className="flex items-start gap-2">
               <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
               Variables are case-sensitive. Use exactly as shown above.

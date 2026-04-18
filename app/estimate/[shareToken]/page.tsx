@@ -13,6 +13,7 @@ interface Props {
 interface LeadWithRelations {
   id: string
   share_token: string
+  share_token_expires_at: string | null
   status: string
   contacts: Array<{
     first_name: string | null
@@ -86,6 +87,7 @@ export default async function SharedEstimatePage({ params }: Props) {
     .select(`
       id,
       share_token,
+      share_token_expires_at,
       status,
       contacts (
         first_name,
@@ -128,6 +130,11 @@ export default async function SharedEstimatePage({ params }: Props) {
   const lead = data as LeadWithRelations | null
 
   if (leadError || !lead) {
+    notFound()
+  }
+
+  // Check if share token has expired
+  if (lead.share_token_expires_at && new Date(lead.share_token_expires_at) < new Date()) {
     notFound()
   }
 
@@ -255,12 +262,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ogImageUrl = `${BASE_URL}/api/og/estimate?${ogParams.toString()}`
 
   const title = estimateData?.city
-    ? `Your Roofing Estimate for ${estimateData.city} | Smart Roof Pricing`
-    : 'Your Roofing Estimate | Smart Roof Pricing'
+    ? `Your Roofing Estimate for ${estimateData.city} | Farrell Roofing`
+    : 'Your Roofing Estimate | Farrell Roofing'
 
   const description = estimateData?.price
-    ? `View your personalized roofing estimate from Smart Roof Pricing. Get detailed pricing and schedule your free consultation.`
-    : 'View your personalized roofing estimate from Smart Roof Pricing.'
+    ? `View your personalized roofing estimate from Farrell Roofing. Get detailed pricing and schedule your free consultation.`
+    : 'View your personalized roofing estimate from Farrell Roofing.'
 
   return {
     title,
@@ -273,7 +280,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      siteName: 'Smart Roof Pricing',
+      siteName: 'Farrell Roofing',
       images: [
         {
           url: ogImageUrl,

@@ -18,7 +18,6 @@ import {
   dripEdgeLineItem,
   ridgeVentLineItem,
   replacementLineItems,
-  defaultGeoPricing,
   highCostGeoPricing,
 } from '../fixtures/estimation'
 import type { RoofVariables } from '@/lib/supabase/types'

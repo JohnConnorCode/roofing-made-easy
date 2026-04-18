@@ -90,7 +90,7 @@ function PaymentForm({
         Pay {formatCurrency(amount)} Deposit
       </Button>
 
-      <p className="text-xs text-slate-500 text-center">
+      <p className="text-xs text-slate-400 text-center">
         Your payment is secured by Stripe. We never store your card details.
       </p>
     </form>

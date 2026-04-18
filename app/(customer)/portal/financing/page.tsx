@@ -273,25 +273,25 @@ export default function FinancingPage() {
             {/* Application details */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-slate-700">
               <div>
-                <p className="text-xs text-slate-500">Amount Requested</p>
+                <p className="text-xs text-slate-400">Amount Requested</p>
                 <p className="text-slate-200 font-medium">
                   {formatCurrency(existingApplication.amount_requested)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Credit Range</p>
+                <p className="text-xs text-slate-400">Credit Range</p>
                 <p className="text-slate-200 font-medium capitalize">
                   {existingApplication.credit_range.replace('_', ' ')}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Employment</p>
+                <p className="text-xs text-slate-400">Employment</p>
                 <p className="text-slate-200 font-medium capitalize">
                   {existingApplication.employment_status.replace(/_/g, ' ')}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Submitted</p>
+                <p className="text-xs text-slate-400">Submitted</p>
                 <p className="text-slate-200 font-medium">
                   {new Date(existingApplication.created_at).toLocaleDateString()}
                 </p>
@@ -304,14 +304,14 @@ export default function FinancingPage() {
                 <p className="text-sm text-success font-medium mb-2">Approved Terms</p>
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <p className="text-xs text-slate-500">Pre-Approved Amount</p>
+                    <p className="text-xs text-slate-400">Pre-Approved Amount</p>
                     <p className="text-xl font-bold text-success">
                       {formatCurrency(existingApplication.pre_approved_amount)}
                     </p>
                   </div>
                   {existingApplication.approved_rate && (
                     <div>
-                      <p className="text-xs text-slate-500">Rate</p>
+                      <p className="text-xs text-slate-400">Rate</p>
                       <p className="text-lg font-semibold text-slate-200">
                         {existingApplication.approved_rate}%
                       </p>
@@ -319,7 +319,7 @@ export default function FinancingPage() {
                   )}
                   {existingApplication.approved_term_months && (
                     <div>
-                      <p className="text-xs text-slate-500">Term</p>
+                      <p className="text-xs text-slate-400">Term</p>
                       <p className="text-lg font-semibold text-slate-200">
                         {existingApplication.approved_term_months} months
                       </p>
@@ -332,7 +332,7 @@ export default function FinancingPage() {
             {/* Lender info */}
             {existingApplication.lender_name && (
               <div className="rounded-lg bg-slate-deep border border-slate-700 p-4">
-                <p className="text-sm text-slate-500 mb-2">Your Lender</p>
+                <p className="text-sm text-slate-400 mb-2">Your Lender</p>
                 <p className="text-slate-200 font-medium">{existingApplication.lender_name}</p>
                 {existingApplication.lender_contact && (
                   <p className="text-sm text-slate-400">
@@ -377,17 +377,17 @@ export default function FinancingPage() {
             <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
               <DollarSign className="h-5 w-5 text-gold-light mx-auto mb-1" />
               <p className="text-sm font-medium text-slate-200">Affordable Payments</p>
-              <p className="text-xs text-slate-500">Fits your budget</p>
+              <p className="text-xs text-slate-400">Fits your budget</p>
             </div>
             <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
               <Shield className="h-5 w-5 text-gold-light mx-auto mb-1" />
               <p className="text-sm font-medium text-slate-200">Protect Now</p>
-              <p className="text-xs text-slate-500">Don&apos;t wait for worse</p>
+              <p className="text-xs text-slate-400">Don&apos;t wait for worse</p>
             </div>
             <div className="rounded-lg bg-slate-deep border border-slate-700 p-3 text-center">
               <CheckCircle className="h-5 w-5 text-gold-light mx-auto mb-1" />
               <p className="text-sm font-medium text-slate-200">Multiple Options</p>
-              <p className="text-xs text-slate-500">Best rates for you</p>
+              <p className="text-xs text-slate-400">Best rates for you</p>
             </div>
           </div>
 
@@ -435,19 +435,19 @@ export default function FinancingPage() {
                     >
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-medium text-slate-200">{scenario.name}</span>
-                        <span className="text-xs text-slate-500">{scenario.termMonths / 12} years at {scenario.estimatedRate}%</span>
+                        <span className="text-xs text-slate-400">{scenario.termMonths / 12} years at {scenario.estimatedRate}%</span>
                       </div>
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         <div>
-                          <p className="text-slate-500">Monthly Payment</p>
+                          <p className="text-slate-400">Monthly Payment</p>
                           <p className="text-lg font-bold text-gold-light">{formatCurrency(scenario.monthlyPayment)}</p>
                         </div>
                         <div>
-                          <p className="text-slate-500">Total Interest</p>
+                          <p className="text-slate-400">Total Interest</p>
                           <p className="text-slate-300">{formatCurrency(scenario.totalInterest)}</p>
                         </div>
                       </div>
-                      <p className="text-xs text-slate-500 mt-2">{scenario.recommendation}</p>
+                      <p className="text-xs text-slate-400 mt-2">{scenario.recommendation}</p>
                     </div>
                   ))}
                 </div>
@@ -485,9 +485,9 @@ export default function FinancingPage() {
               <Shield className="h-5 w-5 text-gold-light flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-slate-200">Have Insurance?</p>
-                <p className="text-xs text-slate-500">Your payout can reduce what you finance</p>
+                <p className="text-xs text-slate-400">Your payout can reduce what you finance</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-slate-500" />
+              <ArrowRight className="h-4 w-4 text-slate-400" />
             </CardContent>
           </Card>
         </Link>
@@ -497,9 +497,9 @@ export default function FinancingPage() {
               <HandHeart className="h-5 w-5 text-gold-light flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-slate-200">Need Help Covering Costs?</p>
-                <p className="text-xs text-slate-500">Check grants and assistance programs</p>
+                <p className="text-xs text-slate-400">Check grants and assistance programs</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-slate-500" />
+              <ArrowRight className="h-4 w-4 text-slate-400" />
             </CardContent>
           </Card>
         </Link>

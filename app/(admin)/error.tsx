@@ -22,8 +22,8 @@ export default function AdminError({
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100">
           <AlertTriangle className="h-7 w-7 text-red-600" />
         </div>
-        <h2 className="mt-4 text-xl font-bold text-slate-900">Something went wrong</h2>
-        <p className="mt-2 text-sm text-slate-600">
+        <h2 className="mt-4 text-xl font-bold text-slate-50">Something went wrong</h2>
+        <p className="mt-2 text-sm text-slate-400">
           An error occurred while loading this page. Please try again.
         </p>
         <button
@@ -34,8 +34,8 @@ export default function AdminError({
           Try Again
         </button>
         {process.env.NODE_ENV === 'development' && error.message && (
-          <div className="mt-6 max-w-md rounded-lg bg-slate-100 p-3 text-left">
-            <pre className="overflow-auto text-xs text-slate-600">{error.message}</pre>
+          <div className="mt-6 max-w-md rounded-lg bg-slate-900/60 p-3 text-left">
+            <pre className="overflow-auto text-xs text-slate-400">{error.message}</pre>
           </div>
         )}
       </div>

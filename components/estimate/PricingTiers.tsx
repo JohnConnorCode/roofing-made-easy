@@ -120,7 +120,7 @@ export function PricingTiers({ tiers, onSelectTier, selectedTier }: PricingTiers
                         {formatCurrency(tier.priceLikely)}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-400">
                       Range: {formatCurrency(tier.priceLow)} - {formatCurrency(tier.priceHigh)}
                     </p>
                     <p className="text-xs text-slate-400 mt-1">
@@ -130,7 +130,7 @@ export function PricingTiers({ tiers, onSelectTier, selectedTier }: PricingTiers
 
                   {/* Material */}
                   <div className="mb-4 p-3 rounded-lg bg-[#0c0f14]/50">
-                    <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Material</p>
+                    <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Material</p>
                     <p className="text-sm font-medium text-slate-100">{tier.material.name}</p>
                     <p className="text-xs text-slate-400">{tier.material.warranty}</p>
                   </div>
@@ -144,7 +144,7 @@ export function PricingTiers({ tiers, onSelectTier, selectedTier }: PricingTiers
                       </li>
                     ))}
                     {tier.features.length > 5 && (
-                      <li className="text-xs text-slate-500 pl-6">
+                      <li className="text-xs text-slate-400 pl-6">
                         +{tier.features.length - 5} more features
                       </li>
                     )}

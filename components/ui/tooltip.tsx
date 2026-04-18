@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { HelpCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -15,27 +15,26 @@ export function Tooltip({ content, children, className }: TooltipProps) {
   const [position, setPosition] = useState<'top' | 'bottom'>('top')
   const triggerRef = useRef<HTMLButtonElement>(null)
 
-  useEffect(() => {
-    if (visible && triggerRef.current) {
+  const show = useCallback(() => {
+    if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect()
-      if (rect.top < 80) {
-        setPosition('bottom')
-      } else {
-        setPosition('top')
-      }
+      setPosition(rect.top < 80 ? 'bottom' : 'top')
     }
-  }, [visible])
+    setVisible(true)
+  }, [])
+
+  const hide = useCallback(() => setVisible(false), [])
 
   return (
     <span className={cn('relative inline-flex', className)}>
       <button
         ref={triggerRef}
         type="button"
-        className="inline-flex items-center text-slate-500 hover:text-slate-300 focus:outline-none focus:text-slate-300 transition-colors"
-        onMouseEnter={() => setVisible(true)}
-        onMouseLeave={() => setVisible(false)}
-        onFocus={() => setVisible(true)}
-        onBlur={() => setVisible(false)}
+        className="inline-flex items-center text-slate-400 hover:text-slate-300 focus:outline-none focus:text-slate-300 transition-colors"
+        onMouseEnter={show}
+        onMouseLeave={hide}
+        onFocus={show}
+        onBlur={hide}
         aria-describedby={visible ? 'tooltip' : undefined}
       >
         {children || <HelpCircle className="h-3.5 w-3.5" />}

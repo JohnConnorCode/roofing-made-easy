@@ -89,7 +89,7 @@ export function JobProgress({ job, compact = false }: JobProgressProps) {
               <Hammer className="h-5 w-5 text-gold-light" />
               Project Progress
             </CardTitle>
-            <span className="text-xs text-slate-500">{job.job_number}</span>
+            <span className="text-xs text-slate-400">{job.job_number}</span>
           </div>
         </CardHeader>
         <CardContent>
@@ -107,7 +107,7 @@ export function JobProgress({ job, compact = false }: JobProgressProps) {
             <Hammer className="h-5 w-5 text-gold-light" />
             Project Progress
           </CardTitle>
-          <span className="text-xs text-slate-500">{job.job_number}</span>
+          <span className="text-xs text-slate-400">{job.job_number}</span>
         </div>
         {job.property_address && (
           <p className="text-sm text-slate-400 mt-1">{job.property_address}</p>
@@ -119,7 +119,7 @@ export function JobProgress({ job, compact = false }: JobProgressProps) {
         {/* Scheduled dates */}
         {(job.scheduled_start || job.scheduled_end) && (
           <div className="flex items-center gap-4 text-sm">
-            <Calendar className="h-4 w-4 text-slate-500" />
+            <Calendar className="h-4 w-4 text-slate-400" />
             {job.scheduled_start && (
               <span className="text-slate-400">
                 Start: <span className="text-slate-200">{formatDate(job.scheduled_start)}</span>
@@ -154,7 +154,7 @@ export function JobProgress({ job, compact = false }: JobProgressProps) {
                       </span>
                     </span>
                   </div>
-                  <span className="text-xs text-slate-500 shrink-0">
+                  <span className="text-xs text-slate-400 shrink-0">
                     {formatDate(update.created_at)}
                   </span>
                 </div>

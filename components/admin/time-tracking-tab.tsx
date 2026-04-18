@@ -135,11 +135,11 @@ export function TimeTrackingTab({ jobId, estimatedHours }: TimeTrackingTabProps)
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-slate-500">Total Hours Tracked</p>
+            <p className="text-sm text-slate-400">Total Hours Tracked</p>
             <p className="text-2xl font-bold text-slate-900">{summary.totalHours}h</p>
             {estimatedHours && (
               <div className="mt-2">
-                <div className="flex justify-between text-xs text-slate-500 mb-1">
+                <div className="flex justify-between text-xs text-slate-400 mb-1">
                   <span>{summary.totalHours}h / {estimatedHours}h estimated</span>
                   <span>{hoursPercent.toFixed(0)}%</span>
                 </div>
@@ -155,14 +155,14 @@ export function TimeTrackingTab({ jobId, estimatedHours }: TimeTrackingTabProps)
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-slate-500">Entries</p>
+            <p className="text-sm text-slate-400">Entries</p>
             <p className="text-2xl font-bold text-slate-900">{summary.entryCount}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-slate-500">Status</p>
-            <p className={`text-lg font-bold ${summary.hasActiveEntry ? 'text-green-600' : 'text-slate-500'}`}>
+            <p className="text-sm text-slate-400">Status</p>
+            <p className={`text-lg font-bold ${summary.hasActiveEntry ? 'text-green-600' : 'text-slate-400'}`}>
               {summary.hasActiveEntry ? 'Clocked In' : 'Not Clocked In'}
             </p>
           </CardContent>
@@ -190,7 +190,7 @@ export function TimeTrackingTab({ jobId, estimatedHours }: TimeTrackingTabProps)
                     placeholder="0"
                     className="w-20 rounded border border-slate-300 px-2 py-1 text-sm"
                   />
-                  <span className="text-sm text-slate-500">min break</span>
+                  <span className="text-sm text-slate-400">min break</span>
                 </div>
                 <input
                   type="text"
@@ -233,12 +233,12 @@ export function TimeTrackingTab({ jobId, estimatedHours }: TimeTrackingTabProps)
         </CardHeader>
         <CardContent>
           {entries.length === 0 ? (
-            <p className="text-slate-500 text-center py-8">No time entries recorded yet</p>
+            <p className="text-slate-400 text-center py-8">No time entries recorded yet</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b text-left text-sm text-slate-500">
+                  <tr className="border-b text-left text-sm text-slate-400">
                     <th className="pb-3 pr-4">Person</th>
                     <th className="pb-3 pr-4">Clock In</th>
                     <th className="pb-3 pr-4">Clock Out</th>
@@ -265,11 +265,11 @@ export function TimeTrackingTab({ jobId, estimatedHours }: TimeTrackingTabProps)
                           </span>
                         )}
                       </td>
-                      <td className="py-3 pr-4 text-sm text-slate-500">{entry.break_minutes}m</td>
+                      <td className="py-3 pr-4 text-sm text-slate-400">{entry.break_minutes}m</td>
                       <td className="py-3 pr-4 text-sm font-medium">
                         {entry.total_hours != null ? `${entry.total_hours}h` : '-'}
                       </td>
-                      <td className="py-3 pr-4 text-sm text-slate-500 max-w-[200px] truncate">
+                      <td className="py-3 pr-4 text-sm text-slate-400 max-w-[200px] truncate">
                         {entry.notes || '-'}
                       </td>
                       <td className="py-3">

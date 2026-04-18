@@ -10,7 +10,6 @@ import {
   FileText,
   Upload,
   Trash2,
-  Download,
   Image as ImageIcon,
   RefreshCw,
   X,
@@ -82,7 +81,7 @@ export function JobDocumentsTab({ jobId }: JobDocumentsTabProps) {
         })
 
         if (!urlRes.ok) throw new Error('Failed to get upload URL')
-        const { signedUrl, token, storagePath } = await urlRes.json()
+        const { signedUrl, storagePath } = await urlRes.json()
 
         // Upload file
         const uploadRes = await fetch(signedUrl, {
@@ -234,9 +233,9 @@ export function JobDocumentsTab({ jobId }: JobDocumentsTabProps) {
         </CardHeader>
         <CardContent>
           {files.length === 0 && photos.length === 0 ? (
-            <p className="text-slate-500 text-center py-8">No documents uploaded yet. Use the upload button above.</p>
+            <p className="text-slate-400 text-center py-8">No documents uploaded yet. Use the upload button above.</p>
           ) : files.length === 0 ? (
-            <p className="text-slate-500 text-center py-4">No non-image documents</p>
+            <p className="text-slate-400 text-center py-4">No non-image documents</p>
           ) : (
             <div className="space-y-2">
               {files.map((doc) => (
@@ -245,7 +244,7 @@ export function JobDocumentsTab({ jobId }: JobDocumentsTabProps) {
                     <FileText className="h-5 w-5 text-slate-400 shrink-0" />
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-slate-900 truncate">{doc.title}</p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-slate-400">
                         <span className="capitalize">{doc.document_type.replace('_', ' ')}</span>
                         {' · '}
                         {formatDate(doc.created_at)}

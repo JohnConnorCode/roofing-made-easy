@@ -41,7 +41,7 @@ vi.mock('@/lib/api/auth', () => ({
 }))
 
 function createMockQueryBuilder(table: string) {
-  let filters: Array<{ column: string; value: unknown; operator: string }> = []
+  const filters: Array<{ column: string; value: unknown; operator: string }> = []
   let containsFilter: { column: string; value: unknown[] } | null = null
   let insertData: unknown = null
   let updateData: unknown = null

@@ -66,8 +66,6 @@ export default function AssistancePage() {
     linkedLeads,
     selectedLeadId,
     programApplications,
-    eligiblePrograms,
-    setEligiblePrograms,
     addProgramApplication,
     updateProgramApplication,
   } = useCustomerStore()
@@ -105,6 +103,7 @@ export default function AssistancePage() {
     if (property?.state && !eligibilityData.state) {
       setEligibilityData((prev) => ({ ...prev, state: property.state || '' }))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [property?.state])
 
   // Filter and search programs
@@ -312,7 +311,7 @@ export default function AssistancePage() {
       {/* Search + Type pills */}
       <div className="space-y-3">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
             placeholder="Search programs..."
             value={searchQuery}
@@ -581,7 +580,7 @@ export default function AssistancePage() {
       {filteredPrograms.length === 0 ? (
         <Card variant="dark" className="border-slate-700">
           <CardContent className="py-8 text-center">
-            <HandHeart className="h-12 w-12 text-slate-600 mx-auto mb-4" />
+            <HandHeart className="h-12 w-12 text-slate-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-slate-200 mb-2">No Programs Found</h3>
             <p className="text-slate-400 mb-3">
               {searchQuery
@@ -632,9 +631,9 @@ export default function AssistancePage() {
                 <DollarSign className="h-5 w-5 text-gold-light flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-200">Need Financing?</p>
-                  <p className="text-xs text-slate-500">Affordable payment plans for any remaining costs</p>
+                  <p className="text-xs text-slate-400">Affordable payment plans for any remaining costs</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-slate-500" />
+                <ArrowRight className="h-4 w-4 text-slate-400" />
               </CardContent>
             </Card>
           </Link>
@@ -644,9 +643,9 @@ export default function AssistancePage() {
                 <Shield className="h-5 w-5 text-gold-light flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-slate-200">Have Insurance?</p>
-                  <p className="text-xs text-slate-500">Track your claim and get help filing</p>
+                  <p className="text-xs text-slate-400">Track your claim and get help filing</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-slate-500" />
+                <ArrowRight className="h-4 w-4 text-slate-400" />
               </CardContent>
             </Card>
           </Link>

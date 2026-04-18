@@ -108,14 +108,14 @@ const TYPE_COLORS: Record<TaskType, string> = {
   follow_up: 'bg-gold-light/30 text-gold-dark',
   meeting: 'bg-pink-100 text-pink-700',
   inspection: 'bg-orange-100 text-orange-700',
-  internal: 'bg-slate-100 text-slate-700',
+  internal: 'bg-white/10 text-slate-200',
 }
 
 const PRIORITY_COLORS: Record<TaskPriority, string> = {
   urgent: 'bg-red-100 text-red-700 border-red-200',
   high: 'bg-orange-100 text-orange-700 border-orange-200',
   medium: 'bg-yellow-100 text-yellow-700 border-yellow-200',
-  low: 'bg-slate-100 text-slate-600 border-slate-200',
+  low: 'bg-slate-900/60 text-slate-400 border-white/5',
 }
 
 const STATUS_ICONS: Record<TaskStatus, React.ComponentType<{ className?: string }>> = {
@@ -278,8 +278,8 @@ export default function TasksPage() {
       <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Tasks</h1>
-          <p className="text-slate-500">Manage team tasks and follow-ups</p>
+          <h1 className="text-2xl font-bold text-slate-50">Tasks</h1>
+          <p className="text-slate-400">Manage team tasks and follow-ups</p>
         </div>
         <Button
           size="sm"
@@ -313,34 +313,34 @@ export default function TasksPage() {
       <FadeInSection delay={100} animation="slide-up">
       {summary && (
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
-              <div className="text-2xl font-bold text-slate-900">{summary.pending}</div>
-              <div className="text-sm text-slate-500">Pending</div>
+              <div className="text-2xl font-bold text-slate-50">{summary.pending}</div>
+              <div className="text-sm text-slate-400">Pending</div>
             </CardContent>
           </Card>
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-blue-600">{summary.in_progress}</div>
-              <div className="text-sm text-slate-500">In Progress</div>
+              <div className="text-sm text-slate-400">In Progress</div>
             </CardContent>
           </Card>
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-green-600">{summary.completed}</div>
-              <div className="text-sm text-slate-500">Completed</div>
+              <div className="text-sm text-slate-400">Completed</div>
             </CardContent>
           </Card>
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-red-600">{summary.overdue}</div>
-              <div className="text-sm text-slate-500">Overdue</div>
+              <div className="text-sm text-slate-400">Overdue</div>
             </CardContent>
           </Card>
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-slate-400">{summary.cancelled}</div>
-              <div className="text-sm text-slate-500">Cancelled</div>
+              <div className="text-sm text-slate-400">Cancelled</div>
             </CardContent>
           </Card>
         </div>
@@ -349,7 +349,7 @@ export default function TasksPage() {
 
       {/* Filters */}
       <FadeInSection delay={200} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center">
             <div className="relative flex-1">
@@ -358,28 +358,28 @@ export default function TasksPage() {
                 placeholder="Search tasks..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-white border-slate-300 text-slate-900"
+                className="pl-10"
               />
             </div>
             <Select
               options={STATUS_OPTIONS}
               value={statusFilter}
               onChange={setStatusFilter}
-              className="md:w-36 bg-white border-slate-300 text-slate-900"
+              className="md:w-36"
             />
             <Select
               options={TYPE_OPTIONS}
               value={typeFilter}
               onChange={setTypeFilter}
-              className="md:w-36 bg-white border-slate-300 text-slate-900"
+              className="md:w-36"
             />
             <Select
               options={PRIORITY_OPTIONS}
               value={priorityFilter}
               onChange={setPriorityFilter}
-              className="md:w-36 bg-white border-slate-300 text-slate-900"
+              className="md:w-36"
             />
-            <label className="flex items-center gap-2 text-sm text-slate-600 whitespace-nowrap">
+            <label className="flex items-center gap-2 text-sm text-slate-400 whitespace-nowrap">
               <Checkbox
                 checked={showOverdue}
                 onChange={(e) => setShowOverdue(e.target.checked)}
@@ -393,9 +393,9 @@ export default function TasksPage() {
 
       {/* Tasks List */}
       <FadeInSection delay={300} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardHeader>
-          <CardTitle className="text-slate-900">
+          <CardTitle className="text-slate-50">
             {total} Task{total !== 1 ? 's' : ''}
           </CardTitle>
         </CardHeader>
@@ -403,7 +403,7 @@ export default function TasksPage() {
           {isLoading ? (
             <div className="space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="p-4 rounded-lg border border-slate-200">
+                <div key={i} className="p-4 rounded-lg border border-white/5">
                   <div className="flex items-start gap-3">
                     <Skeleton className="h-5 w-5 mt-1 rounded-full" />
                     <div className="flex-1">
@@ -425,7 +425,7 @@ export default function TasksPage() {
           ) : filteredTasks.length === 0 ? (
             <div className="text-center py-8">
               <FileText className="h-12 w-12 mx-auto text-slate-300 mb-3" />
-              <p className="text-slate-600">No tasks found</p>
+              <p className="text-slate-400">No tasks found</p>
               <p className="text-sm text-slate-400">Create a task to get started</p>
             </div>
           ) : (
@@ -441,7 +441,7 @@ export default function TasksPage() {
                     className={`p-4 rounded-lg border ${
                       overdueTask
                         ? 'border-red-200 bg-red-50'
-                        : 'border-slate-200 bg-white hover:bg-slate-50'
+                        : 'border-white/5 bg-white hover:bg-slate-900/40'
                     } transition-colors`}
                   >
                     <div className="flex items-start gap-3">
@@ -469,7 +469,7 @@ export default function TasksPage() {
                             className={`font-medium ${
                               task.status === 'completed'
                                 ? 'text-slate-400 line-through'
-                                : 'text-slate-900'
+                                : 'text-slate-50'
                             }`}
                           >
                             {task.title}
@@ -484,12 +484,12 @@ export default function TasksPage() {
                         </div>
 
                         {task.description && (
-                          <p className="text-sm text-slate-500 mt-1 line-clamp-2">
+                          <p className="text-sm text-slate-400 mt-1 line-clamp-2">
                             {task.description}
                           </p>
                         )}
 
-                        <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
+                        <div className="flex items-center gap-4 mt-2 text-sm text-slate-400">
                           {task.due_at && (
                             <span className={`flex items-center gap-1 ${overdueTask ? 'text-red-600 font-medium' : ''}`}>
                               <Calendar className="h-3 w-3" />
@@ -541,7 +541,7 @@ export default function TasksPage() {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="mt-4 flex items-center justify-between">
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-400">
                 Showing {offset + 1}-{Math.min(offset + LIMIT, total)} of {total}
               </p>
               <div className="flex gap-2">
@@ -573,12 +573,12 @@ export default function TasksPage() {
       {/* Create Task Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-label="Create Task">
             <div className="p-6">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">Create Task</h2>
+              <h2 className="text-xl font-bold text-slate-50 mb-4">Create Task</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Title <span className="text-red-500">*</span>
                   </label>
                   <Input
@@ -589,7 +589,7 @@ export default function TasksPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Description
                   </label>
                   <textarea
@@ -603,7 +603,7 @@ export default function TasksPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-300 mb-1">
                       Type
                     </label>
                     <Select
@@ -613,7 +613,7 @@ export default function TasksPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-300 mb-1">
                       Priority
                     </label>
                     <Select
@@ -625,7 +625,7 @@ export default function TasksPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Assign To
                   </label>
                   <Select
@@ -644,7 +644,7 @@ export default function TasksPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Due Date
                   </label>
                   <Input

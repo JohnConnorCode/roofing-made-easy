@@ -69,7 +69,7 @@ export default function ARAgingPage() {
       setInvoices(data.invoices || [])
       setBuckets(data.buckets || {})
       setTotalAR(data.summary?.totalAR || 0)
-    } catch (err) {
+    } catch {
       setError('Unable to load AR aging data.')
     } finally {
       setIsLoading(false)
@@ -95,8 +95,8 @@ export default function ARAgingPage() {
               </Button>
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Accounts Receivable Aging</h1>
-              <p className="text-slate-500">Outstanding invoices by aging bucket</p>
+              <h1 className="text-2xl font-bold text-slate-50">Accounts Receivable Aging</h1>
+              <p className="text-slate-400">Outstanding invoices by aging bucket</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -116,7 +116,7 @@ export default function ARAgingPage() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>Try Again</Button>
           </CardContent>
         </Card>
@@ -132,12 +132,12 @@ export default function ARAgingPage() {
         <>
           {/* Total AR */}
           <FadeInSection delay={100} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-500">Total Outstanding AR</p>
-                  <p className="text-3xl font-bold text-slate-900">{formatCurrency(totalAR)}</p>
+                  <p className="text-sm text-slate-400">Total Outstanding AR</p>
+                  <p className="text-3xl font-bold text-slate-50">{formatCurrency(totalAR)}</p>
                 </div>
                 <div className="rounded-lg bg-amber-100 p-3">
                   <Receipt className="h-6 w-6 text-amber-600" />
@@ -160,11 +160,11 @@ export default function ARAgingPage() {
                   className={`rounded-lg border-2 p-4 text-left transition-all ${
                     isActive
                       ? `${BUCKET_COLORS[key]} ring-2 ring-offset-1 ring-current`
-                      : 'bg-white border-slate-200 hover:border-slate-300'
+                      : 'border-white/5 bg-slate-950/40 backdrop-blur-xl hover:border-slate-300'
                   }`}
                 >
-                  <p className={`text-sm font-medium ${isActive ? '' : 'text-slate-600'}`}>{label}</p>
-                  <p className={`text-xl font-bold mt-1 ${isActive ? '' : 'text-slate-900'}`}>
+                  <p className={`text-sm font-medium ${isActive ? '' : 'text-slate-400'}`}>{label}</p>
+                  <p className={`text-xl font-bold mt-1 ${isActive ? '' : 'text-slate-50'}`}>
                     {formatCurrency(bucket.total)}
                   </p>
                   <p className={`text-xs mt-0.5 ${isActive ? 'opacity-75' : 'text-slate-400'}`}>
@@ -178,7 +178,7 @@ export default function ARAgingPage() {
 
           {/* Invoice Table */}
           <FadeInSection delay={300} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle>
                 {activeBucket ? `${BUCKET_LABELS[activeBucket]} Invoices` : 'All Outstanding Invoices'}
@@ -189,13 +189,13 @@ export default function ARAgingPage() {
               {filteredInvoices.length === 0 ? (
                 <div className="text-center py-8">
                   <Receipt className="h-10 w-10 text-slate-300 mx-auto" />
-                  <p className="mt-2 text-slate-500">No outstanding invoices</p>
+                  <p className="mt-2 text-slate-400">No outstanding invoices</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="px-4 py-3">Invoice</th>
                         <th className="px-4 py-3">Customer</th>
                         <th className="px-4 py-3">Issue Date</th>
@@ -208,11 +208,11 @@ export default function ARAgingPage() {
                     </thead>
                     <tbody>
                       {filteredInvoices.map((inv) => (
-                        <tr key={inv.invoice_id} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="px-4 py-3 text-sm font-medium text-slate-900">{inv.invoice_number}</td>
-                          <td className="px-4 py-3 text-sm text-slate-600">{inv.bill_to_name || inv.bill_to_email || '-'}</td>
-                          <td className="px-4 py-3 text-sm text-slate-600">{inv.issue_date ? formatDate(inv.issue_date) : '-'}</td>
-                          <td className="px-4 py-3 text-sm text-slate-600">{inv.due_date ? formatDate(inv.due_date) : '-'}</td>
+                        <tr key={inv.invoice_id} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="px-4 py-3 text-sm font-medium text-slate-50">{inv.invoice_number}</td>
+                          <td className="px-4 py-3 text-sm text-slate-400">{inv.bill_to_name || inv.bill_to_email || '-'}</td>
+                          <td className="px-4 py-3 text-sm text-slate-400">{inv.issue_date ? formatDate(inv.issue_date) : '-'}</td>
+                          <td className="px-4 py-3 text-sm text-slate-400">{inv.due_date ? formatDate(inv.due_date) : '-'}</td>
                           <td className="px-4 py-3">
                             <span className={`text-xs rounded-full px-2 py-0.5 font-medium ${
                               inv.days_overdue === 0 ? 'bg-green-100 text-green-700' :

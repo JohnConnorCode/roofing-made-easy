@@ -64,7 +64,7 @@ function ConfirmDialog({
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
-            <p className="mt-2 text-sm text-slate-600">{message}</p>
+            <p className="mt-2 text-sm text-slate-400">{message}</p>
           </div>
         </div>
 

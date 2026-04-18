@@ -134,7 +134,7 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ leadId: string }> }
+  _ctx: { params: Promise<{ leadId: string }> }
 ) {
   try {
     // Require admin authentication

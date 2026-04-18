@@ -113,7 +113,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
                   </div>
                   <span className={cn(
                     'text-[10px] mt-1 whitespace-nowrap',
-                    step.completed ? 'text-success' : 'text-slate-500'
+                    step.completed ? 'text-success' : 'text-slate-400'
                   )}>
                     {step.label}
                   </span>
@@ -201,7 +201,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
                 label: r.label,
               }))}
             />
-            <p className="mt-1.5 text-sm text-slate-500">
+            <p className="mt-1.5 text-sm text-slate-400">
               {CREDIT_RANGES.find((r) => r.value === formData.creditRange)?.description}
             </p>
           </div>
@@ -218,7 +218,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
             </button>
           ) : (
             <div className="space-y-6 pt-4 border-t border-slate-700">
-              <p className="text-xs text-slate-500">Additional details help us find better rates for you.</p>
+              <p className="text-xs text-slate-400">Additional details help us find better rates for you.</p>
 
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-slate-300">
@@ -271,7 +271,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
                   checked={formData.coApplicant}
                   onChange={(e) => setFormData({ ...formData, coApplicant: e.target.checked })}
                 />
-                <p className="mt-1 ml-6 text-sm text-slate-500">
+                <p className="mt-1 ml-6 text-sm text-slate-400">
                   Adding a co-applicant may improve your approval chances and rates
                 </p>
               </div>
@@ -288,7 +288,7 @@ export function FinancingForm({ estimatedAmount, onSubmit, isLoading }: Financin
             >
               Check My Options
             </Button>
-            <p className="mt-3 text-xs text-slate-500 text-center">
+            <p className="mt-3 text-xs text-slate-400 text-center">
               This is a soft inquiry and will not affect your credit score.
               Your information is kept confidential and secure.
             </p>

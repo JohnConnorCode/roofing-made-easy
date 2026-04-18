@@ -30,7 +30,7 @@ vi.mock('@/lib/supabase/server', () => ({
 const {
   createNotification,
   notifyUser,
-  notifyAdmins,
+  notifyAdmins: _notifyAdmins,
   notifyJobStatusChange,
 } = await import('@/lib/notifications')
 

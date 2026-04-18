@@ -156,7 +156,7 @@ export function PriceAdjustmentModal({
           <h2 id="price-adjustment-title" className="text-xl font-semibold text-slate-900">Adjust Price</h2>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg"
+            className="p-2 text-slate-400 hover:text-slate-400 hover:bg-slate-100 rounded-lg"
           >
             <X className="h-5 w-5" />
           </button>
@@ -167,7 +167,7 @@ export function PriceAdjustmentModal({
           {/* Current Price Display */}
           <div className="bg-slate-50 rounded-lg p-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-slate-500">Current Price</span>
+              <span className="text-sm text-slate-400">Current Price</span>
               <span className="text-lg font-bold text-slate-900">
                 {formatCurrency(basePrice)}
               </span>

@@ -102,8 +102,8 @@ export default function MaterialCostsPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Material & Supplier Costs</h1>
-            <p className="text-slate-500">Vendor spend, category breakdown, and cost trends</p>
+            <h1 className="text-2xl font-bold text-slate-50">Material & Supplier Costs</h1>
+            <p className="text-slate-400">Vendor spend, category breakdown, and cost trends</p>
           </div>
           <div className="flex items-center gap-2">
             {[30, 60, 90, 180, 365].map(d => (
@@ -129,10 +129,10 @@ export default function MaterialCostsPage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>
               Try Again
             </Button>
@@ -145,12 +145,12 @@ export default function MaterialCostsPage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Total Material Cost</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Total Material Cost</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : formatCurrency(data?.summary.totalMaterialCost || 0)}
                     </p>
                   </div>
@@ -161,12 +161,12 @@ export default function MaterialCostsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Material % of Total</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Material % of Total</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${data?.summary.materialPctOfTotal || 0}%`}
                     </p>
                   </div>
@@ -177,12 +177,12 @@ export default function MaterialCostsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Unique Vendors</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Unique Vendors</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.uniqueVendors || 0}
                     </p>
                   </div>
@@ -193,12 +193,12 @@ export default function MaterialCostsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Avg Cost / Job</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Avg Cost / Job</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : formatCurrency(data?.summary.avgCostPerJob || 0)}
                     </p>
                   </div>
@@ -214,7 +214,7 @@ export default function MaterialCostsPage() {
           <FadeInSection delay={200} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2">
             {/* Monthly Cost Trend */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-blue-600" />
@@ -239,7 +239,7 @@ export default function MaterialCostsPage() {
             </Card>
 
             {/* Category Breakdown */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Package className="h-5 w-5 text-purple-600" />
@@ -269,7 +269,7 @@ export default function MaterialCostsPage() {
 
           {/* Vendor Breakdown Table */}
           <FadeInSection delay={300} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5 text-green-600" />
@@ -283,7 +283,7 @@ export default function MaterialCostsPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Vendor</th>
                         <th className="pb-3 pr-4 text-right">Total Spend</th>
                         <th className="pb-3 pr-4 text-right">Expenses</th>
@@ -293,12 +293,12 @@ export default function MaterialCostsPage() {
                     </thead>
                     <tbody>
                       {data.byVendor.map(v => (
-                        <tr key={v.vendor} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{v.vendor}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{formatCurrency(v.totalAmount)}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{v.expenseCount}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{formatCurrency(v.avgPerExpense)}</td>
-                          <td className="py-3 text-right text-slate-600">{v.jobCount}</td>
+                        <tr key={v.vendor} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{v.vendor}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{formatCurrency(v.totalAmount)}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{v.expenseCount}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{formatCurrency(v.avgPerExpense)}</td>
+                          <td className="py-3 text-right text-slate-400">{v.jobCount}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -314,7 +314,7 @@ export default function MaterialCostsPage() {
 
           {/* Top 20 Expenses Table */}
           <FadeInSection delay={400} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <DollarSign className="h-5 w-5 text-amber-600" />
@@ -328,7 +328,7 @@ export default function MaterialCostsPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Description</th>
                         <th className="pb-3 pr-4">Vendor</th>
                         <th className="pb-3 pr-4 text-right">Amount</th>
@@ -339,15 +339,15 @@ export default function MaterialCostsPage() {
                     </thead>
                     <tbody>
                       {data.topExpenses.map((e, idx) => (
-                        <tr key={`${e.jobNumber}-${e.vendor}-${e.amount}-${idx}`} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 text-slate-700 max-w-[200px] truncate">{e.description}</td>
-                          <td className="py-3 pr-4 text-slate-600">{e.vendor}</td>
-                          <td className="py-3 pr-4 text-right font-medium text-slate-900">{formatCurrency(e.amount)}</td>
+                        <tr key={`${e.jobNumber}-${e.vendor}-${e.amount}-${idx}`} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 text-slate-300 max-w-[200px] truncate">{e.description}</td>
+                          <td className="py-3 pr-4 text-slate-400">{e.vendor}</td>
+                          <td className="py-3 pr-4 text-right font-medium text-slate-50">{formatCurrency(e.amount)}</td>
                           <td className="py-3 pr-4">
-                            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">{categoryLabels[e.category] || titleCase(e.category)}</span>
+                            <span className="rounded-full bg-slate-900/60 px-2 py-0.5 text-xs text-slate-400">{categoryLabels[e.category] || titleCase(e.category)}</span>
                           </td>
-                          <td className="py-3 pr-4 text-slate-600">{e.jobNumber}</td>
-                          <td className="py-3 text-slate-600">{e.date ? new Date(e.date + 'T00:00:00').toLocaleDateString() : 'N/A'}</td>
+                          <td className="py-3 pr-4 text-slate-400">{e.jobNumber}</td>
+                          <td className="py-3 text-slate-400">{e.date ? new Date(e.date + 'T00:00:00').toLocaleDateString() : 'N/A'}</td>
                         </tr>
                       ))}
                     </tbody>

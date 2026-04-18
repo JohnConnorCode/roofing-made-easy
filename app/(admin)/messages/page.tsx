@@ -2,12 +2,10 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { formatDate } from '@/lib/utils'
 import {
-  Search,
   RefreshCw,
   AlertTriangle,
   Mail,
@@ -67,7 +65,7 @@ const STATUS_COLORS: Record<string, string> = {
   processing: 'bg-purple-100 text-purple-700',
   sent: 'bg-green-100 text-green-700',
   failed: 'bg-red-100 text-red-700',
-  cancelled: 'bg-slate-100 text-slate-500',
+  cancelled: 'bg-slate-900/60 text-slate-400',
 }
 
 const STATUS_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -158,8 +156,8 @@ export default function MessagesPage() {
       <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Scheduled Messages</h1>
-          <p className="text-slate-500">View and manage automated message queue</p>
+          <h1 className="text-2xl font-bold text-slate-50">Scheduled Messages</h1>
+          <p className="text-slate-400">View and manage automated message queue</p>
         </div>
         <Button
           variant="outline"
@@ -194,54 +192,54 @@ export default function MessagesPage() {
       {/* Summary Cards */}
       <FadeInSection delay={100} animation="slide-up">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-yellow-100">
                 <Clock className="h-5 w-5 text-yellow-600" />
               </div>
               <div>
-                <div className="text-2xl font-bold text-slate-900">{pendingCount}</div>
-                <div className="text-sm text-slate-500">Pending</div>
+                <div className="text-2xl font-bold text-slate-50">{pendingCount}</div>
+                <div className="text-sm text-slate-400">Pending</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-green-100">
                 <CheckCircle2 className="h-5 w-5 text-green-600" />
               </div>
               <div>
-                <div className="text-2xl font-bold text-slate-900">{sentCount}</div>
-                <div className="text-sm text-slate-500">Sent</div>
+                <div className="text-2xl font-bold text-slate-50">{sentCount}</div>
+                <div className="text-sm text-slate-400">Sent</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-red-100">
                 <XCircle className="h-5 w-5 text-red-600" />
               </div>
               <div>
-                <div className="text-2xl font-bold text-slate-900">{failedCount}</div>
-                <div className="text-sm text-slate-500">Failed</div>
+                <div className="text-2xl font-bold text-slate-50">{failedCount}</div>
+                <div className="text-sm text-slate-400">Failed</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-blue-100">
                 <Send className="h-5 w-5 text-blue-600" />
               </div>
               <div>
-                <div className="text-2xl font-bold text-slate-900">{total}</div>
-                <div className="text-sm text-slate-500">Total</div>
+                <div className="text-2xl font-bold text-slate-50">{total}</div>
+                <div className="text-sm text-slate-400">Total</div>
               </div>
             </div>
           </CardContent>
@@ -251,20 +249,20 @@ export default function MessagesPage() {
 
       {/* Filters */}
       <FadeInSection delay={200} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center">
             <Select
               options={STATUS_OPTIONS}
               value={statusFilter}
               onChange={(v) => { setStatusFilter(v); setOffset(0) }}
-              className="md:w-40 bg-white border-slate-300 text-slate-900"
+              className="md:w-40"
             />
             <Select
               options={CHANNEL_OPTIONS}
               value={channelFilter}
               onChange={(v) => { setChannelFilter(v); setOffset(0) }}
-              className="md:w-40 bg-white border-slate-300 text-slate-900"
+              className="md:w-40"
             />
             {(statusFilter || channelFilter) && (
               <Button
@@ -282,9 +280,9 @@ export default function MessagesPage() {
 
       {/* Messages List */}
       <FadeInSection delay={300} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardHeader>
-          <CardTitle className="text-slate-900">
+          <CardTitle className="text-slate-50">
             {total} Message{total !== 1 ? 's' : ''}
           </CardTitle>
         </CardHeader>
@@ -292,7 +290,7 @@ export default function MessagesPage() {
           {isLoading ? (
             <div className="space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="rounded-lg border border-slate-200 p-4">
+                <div key={i} className="rounded-lg border border-white/5 p-4">
                   <div className="flex items-start gap-3">
                     <Skeleton className="h-5 w-5 mt-1" />
                     <div className="flex-1">
@@ -313,7 +311,7 @@ export default function MessagesPage() {
           ) : messages.length === 0 ? (
             <div className="text-center py-8">
               <Mail className="h-12 w-12 mx-auto text-slate-300 mb-3" />
-              <p className="text-slate-600">No messages found</p>
+              <p className="text-slate-400">No messages found</p>
               <p className="text-sm text-slate-400">Messages will appear here when workflows trigger</p>
             </div>
           ) : (
@@ -326,7 +324,7 @@ export default function MessagesPage() {
                 return (
                   <div
                     key={msg.id}
-                    className="rounded-lg border border-slate-200 p-4 hover:bg-slate-50 transition-colors"
+                    className="rounded-lg border border-white/5 p-4 hover:bg-slate-900/40 transition-colors"
                   >
                     <div className="flex items-start gap-3">
                       {/* Channel icon */}
@@ -342,18 +340,18 @@ export default function MessagesPage() {
                             {msg.status}
                           </span>
                           {msg.workflow && (
-                            <span className="text-xs text-slate-500">
+                            <span className="text-xs text-slate-400">
                               via {msg.workflow.name}
                             </span>
                           )}
                         </div>
 
-                        <div className="font-medium text-slate-900 truncate">
+                        <div className="font-medium text-slate-50 truncate">
                           {msg.channel === 'email' ? msg.subject : msg.body.substring(0, 60)}
                           {msg.body.length > 60 && '...'}
                         </div>
 
-                        <div className="flex items-center gap-4 mt-1 text-sm text-slate-500">
+                        <div className="flex items-center gap-4 mt-1 text-sm text-slate-400">
                           <span className="flex items-center gap-1">
                             <User className="h-3 w-3" />
                             {msg.recipient_name || msg.recipient_email || msg.recipient_phone || 'Unknown'}
@@ -391,8 +389,8 @@ export default function MessagesPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between mt-6 pt-4 border-t border-slate-200">
-              <span className="text-sm text-slate-500">
+            <div className="flex items-center justify-between mt-6 pt-4 border-t border-white/5">
+              <span className="text-sm text-slate-400">
                 Page {currentPage} of {totalPages}
               </span>
               <div className="flex gap-2">

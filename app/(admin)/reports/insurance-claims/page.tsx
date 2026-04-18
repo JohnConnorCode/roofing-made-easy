@@ -83,8 +83,8 @@ export default function InsuranceClaimsPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Insurance Claims</h1>
-            <p className="text-slate-500">Claims pipeline, carrier performance, and stuck claims</p>
+            <h1 className="text-2xl font-bold text-slate-50">Insurance Claims</h1>
+            <p className="text-slate-400">Claims pipeline, carrier performance, and stuck claims</p>
           </div>
           <Button
             variant="outline"
@@ -98,10 +98,10 @@ export default function InsuranceClaimsPage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>
               Try Again
             </Button>
@@ -114,12 +114,12 @@ export default function InsuranceClaimsPage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Total Claims</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Total Claims</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.totalClaims || 0}
                     </p>
                   </div>
@@ -130,11 +130,11 @@ export default function InsuranceClaimsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Approval Rate</p>
+                    <p className="text-sm text-slate-400">Approval Rate</p>
                     <p className={`text-2xl font-bold ${
                       approvalRate >= 70 ? 'text-green-600' : approvalRate >= 50 ? 'text-amber-600' : 'text-red-600'
                     }`}>
@@ -151,12 +151,12 @@ export default function InsuranceClaimsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Avg Payout</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Avg Payout</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : formatCurrency(data?.summary.avgApprovedAmount || 0)}
                     </p>
                   </div>
@@ -167,12 +167,12 @@ export default function InsuranceClaimsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Avg Days to Approval</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Avg Days to Approval</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.avgDaysToApproval != null
                         ? `${data.summary.avgDaysToApproval}d`
                         : 'N/A'}
@@ -189,7 +189,7 @@ export default function InsuranceClaimsPage() {
 
           {/* Pipeline */}
           <FadeInSection delay={200} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-rose-600" />
@@ -217,7 +217,7 @@ export default function InsuranceClaimsPage() {
 
           {/* By Carrier Table */}
           <FadeInSection delay={300} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-blue-600" />
@@ -231,7 +231,7 @@ export default function InsuranceClaimsPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Carrier</th>
                         <th className="pb-3 pr-4 text-right">Claims</th>
                         <th className="pb-3 pr-4 text-right">Approved</th>
@@ -242,10 +242,10 @@ export default function InsuranceClaimsPage() {
                     </thead>
                     <tbody>
                       {data.byCarrier.map(c => (
-                        <tr key={c.carrier} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{c.carrier}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{c.claimCount}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{c.approvedCount}</td>
+                        <tr key={c.carrier} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{c.carrier}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{c.claimCount}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{c.approvedCount}</td>
                           <td className="py-3 pr-4 text-right">
                             <span className={`font-medium ${
                               c.approvalRate >= 70 ? 'text-green-600' : c.approvalRate >= 50 ? 'text-amber-600' : 'text-red-600'
@@ -253,8 +253,8 @@ export default function InsuranceClaimsPage() {
                               {c.approvalRate}%
                             </span>
                           </td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{formatCurrency(c.avgApprovedAmount)}</td>
-                          <td className="py-3 text-right text-slate-600">{c.avgDaysToApproval ?? 'N/A'}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{formatCurrency(c.avgApprovedAmount)}</td>
+                          <td className="py-3 text-right text-slate-400">{c.avgDaysToApproval ?? 'N/A'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -270,7 +270,7 @@ export default function InsuranceClaimsPage() {
 
           {/* Stuck Claims */}
           <FadeInSection delay={400} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-600" />
@@ -284,7 +284,7 @@ export default function InsuranceClaimsPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Claim #</th>
                         <th className="pb-3 pr-4">Carrier</th>
                         <th className="pb-3 pr-4">Status</th>
@@ -294,15 +294,15 @@ export default function InsuranceClaimsPage() {
                     </thead>
                     <tbody>
                       {data.stuckClaims.map(c => (
-                        <tr key={c.id} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{c.claimNumber}</td>
-                          <td className="py-3 pr-4 text-slate-600">{c.carrier}</td>
+                        <tr key={c.id} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{c.claimNumber}</td>
+                          <td className="py-3 pr-4 text-slate-400">{c.carrier}</td>
                           <td className="py-3 pr-4">
                             <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
                               {titleCase(c.status)}
                             </span>
                           </td>
-                          <td className="py-3 pr-4 text-slate-600">{c.causeOfLoss}</td>
+                          <td className="py-3 pr-4 text-slate-400">{c.causeOfLoss}</td>
                           <td className="py-3 text-right">
                             <span className={`font-medium ${
                               c.daysSinceCreated > 60 ? 'text-red-600' : 'text-amber-600'
@@ -325,7 +325,7 @@ export default function InsuranceClaimsPage() {
 
           {/* Cause of Loss */}
           <FadeInSection delay={500} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-purple-600" />

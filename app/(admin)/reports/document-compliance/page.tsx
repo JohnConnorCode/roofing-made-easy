@@ -94,8 +94,8 @@ export default function DocumentCompliancePage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Document Compliance</h1>
-            <p className="text-slate-500">Missing documents, permits, and expiring certifications</p>
+            <h1 className="text-2xl font-bold text-slate-50">Document Compliance</h1>
+            <p className="text-slate-400">Missing documents, permits, and expiring certifications</p>
           </div>
           <Button
             variant="outline"
@@ -109,10 +109,10 @@ export default function DocumentCompliancePage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>
               Try Again
             </Button>
@@ -125,11 +125,11 @@ export default function DocumentCompliancePage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Compliance Rate</p>
+                    <p className="text-sm text-slate-400">Compliance Rate</p>
                     <p className={`text-2xl font-bold ${complianceTextColor}`}>
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${complianceRate}%`}
                     </p>
@@ -144,11 +144,11 @@ export default function DocumentCompliancePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Missing Contracts</p>
+                    <p className="text-sm text-slate-400">Missing Contracts</p>
                     <p className={`text-2xl font-bold ${
                       (data?.summary.jobsMissingContract || 0) > 0 ? 'text-red-600' : 'text-green-600'
                     }`}>
@@ -162,11 +162,11 @@ export default function DocumentCompliancePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Missing Permits</p>
+                    <p className="text-sm text-slate-400">Missing Permits</p>
                     <p className={`text-2xl font-bold ${
                       (data?.summary.jobsMissingPermit || 0) > 0 ? 'text-amber-600' : 'text-green-600'
                     }`}>
@@ -180,11 +180,11 @@ export default function DocumentCompliancePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Expired Docs</p>
+                    <p className="text-sm text-slate-400">Expired Docs</p>
                     <p className={`text-2xl font-bold ${
                       (data?.summary.expiredDocumentCount || 0) > 0 ? 'text-red-600' : 'text-green-600'
                     }`}>
@@ -205,18 +205,18 @@ export default function DocumentCompliancePage() {
 
           {/* Overall Compliance Progress Bar */}
           <FadeInSection delay={200} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <CheckCircle className={`h-5 w-5 ${complianceTextColor}`} />
-                  <span className="font-medium text-slate-700">Overall Compliance</span>
+                  <span className="font-medium text-slate-300">Overall Compliance</span>
                 </div>
                 <span className={`text-lg font-bold ${complianceTextColor}`}>
                   {isLoading ? <Skeleton className="h-6 w-16 inline-block" /> : `${complianceRate}%`}
                 </span>
               </div>
-              <div className="h-4 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-4 bg-slate-900/60 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${complianceColor}`}
                   style={{ width: `${isLoading ? 0 : complianceRate}%` }}
@@ -229,7 +229,7 @@ export default function DocumentCompliancePage() {
 
           {/* Non-Compliant Jobs Table */}
           <FadeInSection delay={300} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-600" />
@@ -243,7 +243,7 @@ export default function DocumentCompliancePage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Job #</th>
                         <th className="pb-3 pr-4">Address</th>
                         <th className="pb-3 pr-4">Status</th>
@@ -253,11 +253,11 @@ export default function DocumentCompliancePage() {
                     </thead>
                     <tbody>
                       {data.nonCompliantJobs.map(j => (
-                        <tr key={j.jobId} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{j.jobNumber}</td>
-                          <td className="py-3 pr-4 text-slate-600 max-w-[200px] truncate">{j.address}</td>
+                        <tr key={j.jobId} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{j.jobNumber}</td>
+                          <td className="py-3 pr-4 text-slate-400 max-w-[200px] truncate">{j.address}</td>
                           <td className="py-3 pr-4">
-                            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
+                            <span className="rounded-full bg-slate-900/60 px-2 py-0.5 text-xs text-slate-400">
                               {titleCase(j.status)}
                             </span>
                           </td>
@@ -295,7 +295,7 @@ export default function DocumentCompliancePage() {
 
           {/* Document Coverage Chart */}
           <FadeInSection delay={400} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileCheck className="h-5 w-5 text-blue-600" />
@@ -325,7 +325,7 @@ export default function DocumentCompliancePage() {
 
           {/* Expiring Documents Table */}
           <FadeInSection delay={500} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Clock className="h-5 w-5 text-amber-600" />
@@ -339,7 +339,7 @@ export default function DocumentCompliancePage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Job #</th>
                         <th className="pb-3 pr-4">Document Type</th>
                         <th className="pb-3 pr-4">Expiration Date</th>
@@ -348,10 +348,10 @@ export default function DocumentCompliancePage() {
                     </thead>
                     <tbody>
                       {data.expiringDocuments.map((d, idx) => (
-                        <tr key={`${d.jobNumber}-${d.docType}-${d.expirationDate}-${idx}`} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{d.jobNumber}</td>
-                          <td className="py-3 pr-4 text-slate-600">{docTypeLabels[d.docType] || d.docType}</td>
-                          <td className="py-3 pr-4 text-slate-600">
+                        <tr key={`${d.jobNumber}-${d.docType}-${d.expirationDate}-${idx}`} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{d.jobNumber}</td>
+                          <td className="py-3 pr-4 text-slate-400">{docTypeLabels[d.docType] || d.docType}</td>
+                          <td className="py-3 pr-4 text-slate-400">
                             {new Date(d.expirationDate + 'T00:00:00').toLocaleDateString()}
                           </td>
                           <td className="py-3 text-right">

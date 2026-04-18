@@ -50,7 +50,6 @@ interface IntegrationCardProps {
 }
 
 export function IntegrationCard({
-  id,
   name,
   description,
   configured,
@@ -58,7 +57,6 @@ export function IntegrationCard({
   keyHint,
   lastTestedAt,
   lastTestSuccess,
-  lastTestError,
   fields,
   docsUrl,
   onSave,
@@ -124,7 +122,7 @@ export function IntegrationCard({
         setShowRemoveConfirm(false)
         setCredentials({})
       }
-    } catch (error) {
+    } catch {
       // Error handled silently
     } finally {
       setIsRemoving(false)
@@ -165,19 +163,19 @@ export function IntegrationCard({
             )}
             <div>
               <h4 className="font-semibold text-slate-900">{name}</h4>
-              <p className="text-sm text-slate-600 mt-0.5">{description}</p>
+              <p className="text-sm text-slate-400 mt-0.5">{description}</p>
               {configured && (
                 <div className="flex items-center gap-2 mt-2">
                   <span className={getSourceBadgeClasses(configuredVia)}>
                     {configuredVia === 'db' ? 'Configured in Settings' : 'Using Environment Variable'}
                   </span>
                   {keyHint && configuredVia === 'db' && (
-                    <span className="text-xs text-slate-500 font-mono">{keyHint}</span>
+                    <span className="text-xs text-slate-400 font-mono">{keyHint}</span>
                   )}
                 </div>
               )}
               {lastTestedAt && (
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-400 mt-1">
                   Last tested: {formatLastTested(lastTestedAt)}
                   {lastTestSuccess !== undefined && (
                     <span className={lastTestSuccess ? 'text-gold' : 'text-red-600'}>
@@ -197,7 +195,7 @@ export function IntegrationCard({
                 href={docsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-1.5 rounded hover:bg-slate-200 text-slate-500 hover:text-slate-700 transition-colors"
+                className="p-1.5 rounded hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition-colors"
                 title="View documentation"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -235,7 +233,7 @@ export function IntegrationCard({
                       <button
                         type="button"
                         onClick={() => toggleFieldVisibility(field.key)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-400"
                       >
                         {showFields[field.key] ? (
                           <EyeOff className="h-4 w-4" />
@@ -303,7 +301,7 @@ export function IntegrationCard({
                   <>
                     {showRemoveConfirm ? (
                       <div className="flex items-center gap-2 ml-auto">
-                        <span className="text-sm text-slate-600">Remove credentials?</span>
+                        <span className="text-sm text-slate-400">Remove credentials?</span>
                         <Button
                           variant="destructive"
                           size="sm"
@@ -325,7 +323,7 @@ export function IntegrationCard({
                         variant="ghost"
                         size="sm"
                         onClick={() => setShowRemoveConfirm(true)}
-                        className="ml-auto text-slate-500 hover:text-red-600"
+                        className="ml-auto text-slate-400 hover:text-red-600"
                         leftIcon={<Trash2 className="h-4 w-4" />}
                       >
                         Remove
@@ -336,7 +334,7 @@ export function IntegrationCard({
               </div>
 
               {/* Help text */}
-              <p className="text-xs text-slate-500 pt-2">
+              <p className="text-xs text-slate-400 pt-2">
                 Test your credentials before saving. Once saved, credentials are encrypted and stored securely.
                 {configuredVia === 'env' && (
                   <span className="block mt-1">
@@ -351,7 +349,7 @@ export function IntegrationCard({
         {/* Show message for non-configurable integrations */}
         {isExpanded && fields.length === 0 && (
           <div className="px-4 pb-4 border-t border-slate-100">
-            <p className="pt-4 text-sm text-slate-600">
+            <p className="pt-4 text-sm text-slate-400">
               This integration is configured via environment variables and cannot be modified through the UI.
             </p>
           </div>

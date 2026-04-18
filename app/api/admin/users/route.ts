@@ -27,7 +27,7 @@ const createUserSchema = z.object({
 // GET /api/admin/users - List all users
 export async function GET(request: NextRequest) {
   try {
-    const { user, error: authError } = await requirePermission('team', 'view')
+    const { error: authError } = await requirePermission('team', 'view')
     if (authError) return authError
 
     const supabase = await createClient()
@@ -59,7 +59,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%`)
+      const sanitizedSearch = search.replace(/[%_'"\\]/g, '').trim()
+      if (sanitizedSearch) {
+        query = query.or(`first_name.ilike.%${sanitizedSearch}%,last_name.ilike.%${sanitizedSearch}%,email.ilike.%${sanitizedSearch}%`)
+      }
     }
 
     const { data: users, error, count } = await query

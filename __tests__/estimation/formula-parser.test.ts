@@ -15,7 +15,7 @@ import {
   getSuggestedFormula,
   COMMON_FORMULAS,
 } from '@/lib/estimation/formula-parser'
-import { sampleVariables, simpleVariables, emptyVariables } from '../fixtures/estimation'
+import { sampleVariables } from '../fixtures/estimation'
 
 describe('evaluateFormula', () => {
   describe('basic operations', () => {

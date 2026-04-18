@@ -154,7 +154,7 @@ export function EmailPreviewModal({
           <div className="flex items-center gap-4">
             <h2 id="email-preview-title" className="text-lg font-semibold text-slate-900">Email Preview</h2>
             {preview?.subject && (
-              <span className="text-sm text-slate-500 truncate max-w-md">
+              <span className="text-sm text-slate-400 truncate max-w-md">
                 Subject: {preview.subject}
               </span>
             )}
@@ -167,7 +167,7 @@ export function EmailPreviewModal({
                 className={`p-2 rounded-md transition-colors ${
                   viewMode === 'desktop'
                     ? 'bg-white shadow text-slate-900'
-                    : 'text-slate-500 hover:text-slate-700'
+                    : 'text-slate-400 hover:text-slate-700'
                 }`}
                 title="Desktop view"
               >
@@ -178,7 +178,7 @@ export function EmailPreviewModal({
                 className={`p-2 rounded-md transition-colors ${
                   viewMode === 'mobile'
                     ? 'bg-white shadow text-slate-900'
-                    : 'text-slate-500 hover:text-slate-700'
+                    : 'text-slate-400 hover:text-slate-700'
                 }`}
                 title="Mobile view"
               >
@@ -193,7 +193,7 @@ export function EmailPreviewModal({
                 className={`p-2 rounded-md transition-colors ${
                   contentMode === 'rendered'
                     ? 'bg-white shadow text-slate-900'
-                    : 'text-slate-500 hover:text-slate-700'
+                    : 'text-slate-400 hover:text-slate-700'
                 }`}
                 title="Rendered view"
               >
@@ -204,7 +204,7 @@ export function EmailPreviewModal({
                 className={`p-2 rounded-md transition-colors ${
                   contentMode === 'source'
                     ? 'bg-white shadow text-slate-900'
-                    : 'text-slate-500 hover:text-slate-700'
+                    : 'text-slate-400 hover:text-slate-700'
                 }`}
                 title="HTML source"
               >
@@ -247,7 +247,7 @@ export function EmailPreviewModal({
             {/* Close */}
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
+              className="p-2 text-slate-400 hover:text-slate-400 transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
@@ -306,7 +306,7 @@ export function EmailPreviewModal({
         {preview?.sampleData && (
           <div className="p-4 border-t border-slate-200 bg-slate-50">
             <details className="text-sm">
-              <summary className="cursor-pointer text-slate-600 hover:text-slate-800 font-medium">
+              <summary className="cursor-pointer text-slate-400 hover:text-slate-800 font-medium">
                 View sample data used in preview
               </summary>
               <div className="mt-2 p-3 bg-white rounded border border-slate-200 max-h-48 overflow-auto">
@@ -317,7 +317,7 @@ export function EmailPreviewModal({
                     .map(([key, value]) => (
                       <div key={key} className="flex gap-2">
                         <span className="font-mono text-gold-dark">{`{{${key}}}`}</span>
-                        <span className="text-slate-600 truncate">{value}</span>
+                        <span className="text-slate-400 truncate">{value}</span>
                       </div>
                     ))}
                 </div>

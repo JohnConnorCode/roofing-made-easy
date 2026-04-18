@@ -28,6 +28,8 @@ export function ConfirmDialog({
   variant = 'default',
   isLoading = false,
 }: ConfirmDialogProps) {
+  const dialogRef = React.useRef<HTMLDivElement>(null)
+
   // Handle escape key
   React.useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -38,6 +40,30 @@ export function ConfirmDialog({
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
   }, [isOpen, onClose])
+
+  // Focus trap
+  React.useEffect(() => {
+    if (!isOpen || !dialogRef.current) return
+    const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+    const firstElement = focusableElements[0]
+    const lastElement = focusableElements[focusableElements.length - 1]
+    firstElement?.focus()
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+      if (e.shiftKey && document.activeElement === firstElement) {
+        e.preventDefault()
+        lastElement?.focus()
+      } else if (!e.shiftKey && document.activeElement === lastElement) {
+        e.preventDefault()
+        firstElement?.focus()
+      }
+    }
+    document.addEventListener('keydown', handleTab)
+    return () => document.removeEventListener('keydown', handleTab)
+  }, [isOpen])
 
   // Prevent body scroll when open
   React.useEffect(() => {
@@ -66,6 +92,7 @@ export function ConfirmDialog({
 
       {/* Dialog */}
       <div
+        ref={dialogRef}
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="confirm-dialog-title"
@@ -80,7 +107,7 @@ export function ConfirmDialog({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
+          className="absolute right-4 top-4 rounded-full p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-400 dark:hover:bg-slate-800"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
@@ -102,7 +129,7 @@ export function ConfirmDialog({
           {description && (
             <p
               id="confirm-dialog-description"
-              className="mt-2 text-sm text-slate-600 dark:text-slate-400"
+              className="mt-2 text-sm text-slate-400 dark:text-slate-400"
             >
               {description}
             </p>

@@ -75,8 +75,8 @@ vi.mock('@/lib/api/auth', () => ({
 }))
 
 function createMockQueryBuilder(table: string) {
-  let filters: Array<{ column: string; value: unknown; operator: string }> = []
-  let selectQuery = '*'
+  const filters: Array<{ column: string; value: unknown; operator: string }> = []
+  let _selectQuery = '*'
   let orderBy: { column: string; ascending: boolean } | null = null
   let insertData: Partial<MockPipelineStage> | null = null
   let updateData: Partial<MockPipelineStage> | null = null
@@ -86,7 +86,7 @@ function createMockQueryBuilder(table: string) {
 
   const builder = {
     select: (query?: string) => {
-      selectQuery = query || '*'
+      _selectQuery = query || '*'
       return builder
     },
     insert: (data: Partial<MockPipelineStage>) => {

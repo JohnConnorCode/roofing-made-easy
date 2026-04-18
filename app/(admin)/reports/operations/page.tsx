@@ -95,8 +95,8 @@ export default function OperationsPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Operations</h1>
-            <p className="text-slate-500">Schedule adherence, crew productivity, and job performance</p>
+            <h1 className="text-2xl font-bold text-slate-50">Operations</h1>
+            <p className="text-slate-400">Schedule adherence, crew productivity, and job performance</p>
           </div>
           <div className="flex items-center gap-2">
             {[30, 60, 90, 180, 365].map(d => (
@@ -122,10 +122,10 @@ export default function OperationsPage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>
               Try Again
             </Button>
@@ -138,11 +138,11 @@ export default function OperationsPage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Schedule Adherence</p>
+                    <p className="text-sm text-slate-400">Schedule Adherence</p>
                     <p className={`text-2xl font-bold ${
                       data?.scheduleAdherence.onTimePct === null ? 'text-slate-400'
                         : (data?.scheduleAdherence.onTimePct ?? 0) >= 80 ? 'text-green-600'
@@ -164,12 +164,12 @@ export default function OperationsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Avg Hours/Job</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Avg Hours/Job</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.productivitySummary.avgHoursPerJob || 0}
                     </p>
                   </div>
@@ -183,12 +183,12 @@ export default function OperationsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Change Order Rate</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Change Order Rate</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.changeOrders.avgPerJob || 0}
                     </p>
                   </div>
@@ -202,12 +202,12 @@ export default function OperationsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Avg Cycle Time</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Avg Cycle Time</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.cycleTime.avgDays != null
                         ? `${data?.cycleTime.avgDays}d`
                         : 'N/A'}
@@ -228,7 +228,7 @@ export default function OperationsPage() {
           <FadeInSection delay={200} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2">
             {/* Hours by Team */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5 text-blue-600" />
@@ -245,12 +245,12 @@ export default function OperationsPage() {
                       return (
                         <div key={team.teamId}>
                           <div className="flex items-center justify-between mb-1 text-sm">
-                            <span className="font-medium text-slate-700">{team.teamName}</span>
-                            <span className="text-slate-500">
+                            <span className="font-medium text-slate-300">{team.teamName}</span>
+                            <span className="text-slate-400">
                               {team.totalHours}h ({team.jobCount} jobs)
                             </span>
                           </div>
-                          <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                          <div className="h-3 bg-slate-900/60 rounded-full overflow-hidden">
                             <div
                               className="h-full bg-blue-500 rounded-full transition-all duration-500"
                               style={{ width: `${width}%` }}
@@ -267,10 +267,10 @@ export default function OperationsPage() {
             </Card>
 
             {/* Delay Reasons */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <CloudRain className="h-5 w-5 text-slate-600" />
+                  <CloudRain className="h-5 w-5 text-slate-400" />
                   Delay Reasons
                 </CardTitle>
               </CardHeader>
@@ -279,7 +279,7 @@ export default function OperationsPage() {
                   <SkeletonReportContent />
                 ) : data?.delays.reasons && data.delays.reasons.length > 0 ? (
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between text-sm text-slate-500 pb-2 border-b">
+                    <div className="flex items-center justify-between text-sm text-slate-400 pb-2 border-b">
                       <span>{data.delays.totalDelayDays} delay days total</span>
                       <span>{data.delays.weatherDays} weather-related</span>
                     </div>
@@ -290,10 +290,10 @@ export default function OperationsPage() {
                         <div key={item.reason} className="flex items-center gap-3">
                           <div className="flex-1">
                             <div className="flex justify-between text-sm mb-1">
-                              <span className="text-slate-700 truncate">{item.reason}</span>
-                              <span className="text-slate-500">{item.count} ({pct}%)</span>
+                              <span className="text-slate-300 truncate">{item.reason}</span>
+                              <span className="text-slate-400">{item.count} ({pct}%)</span>
                             </div>
-                            <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div className="h-2 bg-slate-900/60 rounded-full overflow-hidden">
                               <div
                                 className="h-full bg-amber-400 rounded-full"
                                 style={{ width: `${pct}%` }}
@@ -314,7 +314,7 @@ export default function OperationsPage() {
 
           {/* Late Jobs Table */}
           <FadeInSection delay={300} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-600" />
@@ -328,7 +328,7 @@ export default function OperationsPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Job #</th>
                         <th className="pb-3 pr-4">Scheduled End</th>
                         <th className="pb-3 pr-4">Actual End</th>
@@ -337,12 +337,12 @@ export default function OperationsPage() {
                     </thead>
                     <tbody>
                       {data.lateJobs.map(job => (
-                        <tr key={job.jobNumber} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{job.jobNumber}</td>
-                          <td className="py-3 pr-4 text-slate-600">
+                        <tr key={job.jobNumber} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{job.jobNumber}</td>
+                          <td className="py-3 pr-4 text-slate-400">
                             {new Date(job.scheduledEnd + 'T00:00:00').toLocaleDateString()}
                           </td>
-                          <td className="py-3 pr-4 text-slate-600">
+                          <td className="py-3 pr-4 text-slate-400">
                             {new Date(job.actualEnd + 'T00:00:00').toLocaleDateString()}
                           </td>
                           <td className="py-3 text-right">
@@ -369,7 +369,7 @@ export default function OperationsPage() {
 
           {/* Change Orders Summary */}
           <FadeInSection delay={400} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-amber-600" />
@@ -378,31 +378,31 @@ export default function OperationsPage() {
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-3 mb-6">
-                <div className="text-center p-4 bg-slate-50 rounded-lg">
-                  <p className="text-2xl font-bold text-slate-900">{data?.changeOrders.totalCount || 0}</p>
-                  <p className="text-sm text-slate-500">Total Change Orders</p>
+                <div className="text-center p-4 bg-slate-900/40 rounded-lg">
+                  <p className="text-2xl font-bold text-slate-50">{data?.changeOrders.totalCount || 0}</p>
+                  <p className="text-sm text-slate-400">Total Change Orders</p>
                 </div>
-                <div className="text-center p-4 bg-slate-50 rounded-lg">
-                  <p className="text-2xl font-bold text-slate-900">{data?.changeOrders.approvedCount || 0}</p>
-                  <p className="text-sm text-slate-500">Approved</p>
+                <div className="text-center p-4 bg-slate-900/40 rounded-lg">
+                  <p className="text-2xl font-bold text-slate-50">{data?.changeOrders.approvedCount || 0}</p>
+                  <p className="text-sm text-slate-400">Approved</p>
                 </div>
-                <div className="text-center p-4 bg-slate-50 rounded-lg">
+                <div className="text-center p-4 bg-slate-900/40 rounded-lg">
                   <p className={`text-2xl font-bold ${
                     (data?.changeOrders.totalCostImpact || 0) > 0 ? 'text-red-600' : 'text-green-600'
                   }`}>
                     {formatCurrency(data?.changeOrders.totalCostImpact || 0)}
                   </p>
-                  <p className="text-sm text-slate-500">Cost Impact</p>
+                  <p className="text-sm text-slate-400">Cost Impact</p>
                 </div>
               </div>
 
               {data?.changeOrders.reasons && data.changeOrders.reasons.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-slate-500">By Reason</p>
+                  <p className="text-sm font-medium text-slate-400">By Reason</p>
                   {data.changeOrders.reasons.map(item => (
                     <div key={item.reason} className="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0">
-                      <span className="text-sm text-slate-700 truncate">{item.reason}</span>
-                      <span className="text-sm font-semibold text-slate-900">{item.count}</span>
+                      <span className="text-sm text-slate-300 truncate">{item.reason}</span>
+                      <span className="text-sm font-semibold text-slate-50">{item.count}</span>
                     </div>
                   ))}
                 </div>

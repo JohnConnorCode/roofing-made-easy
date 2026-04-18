@@ -20,18 +20,14 @@ import {
   RefreshCw,
   Link2,
   Shield,
-  Zap,
   AlertTriangle,
   Star,
   CloudLightning,
-  HelpCircle,
-  Users,
   Camera,
-  MessageSquare,
 } from 'lucide-react'
 
 // ============================================================================
-// Content Strategy Page — SEO Playbook for Smart Roof Pricing
+// Content Strategy Page — SEO Playbook for Farrell Roofing
 // ============================================================================
 
 const NAV_SECTIONS = [
@@ -119,7 +115,7 @@ export default function ContentStrategyPage() {
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
             A step-by-step playbook for continuously adding pages and posts that
-            drive organic traffic, generate leads, and establish Smart Roof Pricing
+            drive organic traffic, generate leads, and establish Farrell Roofing
             as Mississippi&apos;s most trusted roofing authority.
           </p>
         </div>
@@ -141,7 +137,7 @@ export default function ContentStrategyPage() {
             <p className="text-slate-300 text-sm mb-4">
               Google now rewards <strong className="text-white">entities</strong> over pages. It evaluates who you are,
               where you serve, what you&apos;re known for, and whether real people search for you by name.
-              Every piece of content should reinforce that Smart Roof Pricing is Mississippi&apos;s roofing authority.
+              Every piece of content should reinforce that Farrell Roofing is Mississippi&apos;s roofing authority.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <StatCard number="36%" label="of local ranking" desc="comes from on-page signals" />
@@ -463,7 +459,7 @@ Structure:
 4. Each section: 200-400 words with actionable advice
 5. "Mississippi-Specific Considerations" section
 6. FAQ section (5 questions based on "People Also Ask" results for this topic)
-7. Conclusion with clear CTA to Smart Roof Pricing
+7. Conclusion with clear CTA to Farrell Roofing
 
 Requirements:
 - Reference Mississippi weather, building codes, and insurance practices
@@ -540,7 +536,7 @@ Include:
 2. How to assess damage (with safety warnings)
 3. Step-by-step process: document damage → contact insurance → get professional inspection → temporary protection → permanent repair
 4. Mississippi insurance specifics — filing deadlines, common pitfalls
-5. How Smart Roof Pricing can help — emergency response, insurance claim assistance
+5. How Farrell Roofing can help — emergency response, insurance claim assistance
 6. FAQ (3-4 questions)
 
 Tone: Calm, authoritative, helpful — not fear-mongering. These people may be stressed.
@@ -926,7 +922,7 @@ function SectionHeader({ icon: Icon, title, subtitle }: {
       </div>
       <div>
         <h2 className="text-xl font-bold text-white">{title}</h2>
-        <p className="text-slate-500 text-sm">{subtitle}</p>
+        <p className="text-slate-400 text-sm">{subtitle}</p>
       </div>
     </div>
   )
@@ -937,7 +933,7 @@ function StatCard({ number, label, desc }: { number: string; label: string; desc
     <div className="bg-[#0c0f14]/50 rounded-lg p-3 text-center">
       <p className="text-2xl font-bold text-[#c9a25c]">{number}</p>
       <p className="text-white text-xs font-medium">{label}</p>
-      <p className="text-slate-500 text-xs">{desc}</p>
+      <p className="text-slate-400 text-xs">{desc}</p>
     </div>
   )
 }
@@ -986,7 +982,7 @@ function ContentTypeCard({ icon: Icon, title, impact, impactColor, description, 
       </div>
       <p className="text-slate-400 text-sm mb-3">{description}</p>
       <div className="bg-[#0c0f14] rounded-lg px-3 py-2 mb-3">
-        <p className="text-xs text-slate-500">Example:</p>
+        <p className="text-xs text-slate-400">Example:</p>
         <p className="text-sm text-[#c9a25c]">{example}</p>
       </div>
       {existing && (
@@ -997,7 +993,7 @@ function ContentTypeCard({ icon: Icon, title, impact, impactColor, description, 
       <ul className="space-y-1.5">
         {tips.map((tip, i) => (
           <li key={i} className="flex items-start gap-2 text-xs text-slate-400">
-            <ChevronRight className="h-3 w-3 text-slate-600 mt-0.5 flex-shrink-0" />
+            <ChevronRight className="h-3 w-3 text-slate-400 mt-0.5 flex-shrink-0" />
             {tip}
           </li>
         ))}
@@ -1013,11 +1009,11 @@ function ClusterCard({ pillar, posts }: { pillar: string; posts: string[] }) {
         <p className="text-xs text-[#c9a25c] font-medium">Pillar Page</p>
         <p className="text-sm text-white font-semibold">{pillar}</p>
       </div>
-      <p className="text-xs text-slate-500 mb-2">Supporting Posts:</p>
+      <p className="text-xs text-slate-400 mb-2">Supporting Posts:</p>
       <ul className="space-y-1.5">
         {posts.map((post, i) => (
           <li key={i} className="flex items-start gap-2 text-xs text-slate-400">
-            <FileText className="h-3 w-3 text-slate-600 mt-0.5 flex-shrink-0" />
+            <FileText className="h-3 w-3 text-slate-400 mt-0.5 flex-shrink-0" />
             {post}
           </li>
         ))}
@@ -1040,7 +1036,7 @@ function PromptCard({ id, title, description, prompt, onCopy, copied }: {
         <div className="flex items-start justify-between mb-2">
           <div>
             <h3 className="text-white font-semibold">{title}</h3>
-            <p className="text-slate-500 text-xs">{description}</p>
+            <p className="text-slate-400 text-xs">{description}</p>
           </div>
           <button
             onClick={() => onCopy(id, prompt)}
@@ -1078,7 +1074,7 @@ function CalendarQuarter({ quarter, color, borderColor, items }: {
             <ul className="space-y-1.5">
               {item.tasks.map((task, i) => (
                 <li key={i} className="flex items-start gap-2 text-xs text-slate-400">
-                  <CheckCircle className="h-3 w-3 text-slate-600 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="h-3 w-3 text-slate-400 mt-0.5 flex-shrink-0" />
                   {task}
                 </li>
               ))}
@@ -1111,7 +1107,7 @@ function EEATCard({ letter, title, items }: { letter: string; title: string; ite
       <ul className="space-y-1.5">
         {items.map((item, i) => (
           <li key={i} className="text-xs text-slate-400 flex items-start gap-1.5">
-            <ChevronRight className="h-3 w-3 text-slate-600 mt-0.5 flex-shrink-0" />
+            <ChevronRight className="h-3 w-3 text-slate-400 mt-0.5 flex-shrink-0" />
             {item}
           </li>
         ))}
@@ -1137,7 +1133,7 @@ function LinkBuildCard({ priority, title, description, action }: {
       </div>
       <p className="text-slate-400 text-sm mb-3">{description}</p>
       <div className="bg-[#0c0f14] rounded-lg px-3 py-2">
-        <p className="text-xs text-slate-500">Action:</p>
+        <p className="text-xs text-slate-400">Action:</p>
         <p className="text-xs text-[#c9a25c]">{action}</p>
       </div>
     </div>
@@ -1155,7 +1151,7 @@ function RefreshCard({ frequency, color, items }: {
       <ul className="space-y-2">
         {items.map((item, i) => (
           <li key={i} className="flex items-start gap-2 text-xs text-slate-400">
-            <RefreshCw className="h-3 w-3 text-slate-600 mt-0.5 flex-shrink-0" />
+            <RefreshCw className="h-3 w-3 text-slate-400 mt-0.5 flex-shrink-0" />
             {item}
           </li>
         ))}
@@ -1181,7 +1177,7 @@ function MetricItem({ name, desc, tool }: { name: string; desc: string; tool: st
       <BarChart3 className="h-4 w-4 text-[#c9a25c] mt-0.5 flex-shrink-0" />
       <div>
         <p className="text-white text-sm font-medium">{name}</p>
-        <p className="text-slate-500 text-xs">{desc}</p>
+        <p className="text-slate-400 text-xs">{desc}</p>
         <p className="text-[#c9a25c] text-xs">{tool}</p>
       </div>
     </li>
@@ -1193,9 +1189,9 @@ function ToolCard({ name, desc, url }: { name: string; desc: string; url: string
     <div className="bg-[#0c0f14] rounded-lg p-3">
       <div className="flex items-center justify-between mb-1">
         <p className="text-white text-sm font-medium">{name}</p>
-        <Globe className="h-3.5 w-3.5 text-slate-600" />
+        <Globe className="h-3.5 w-3.5 text-slate-400" />
       </div>
-      <p className="text-slate-500 text-xs mb-1">{desc}</p>
+      <p className="text-slate-400 text-xs mb-1">{desc}</p>
       <p className="text-[#c9a25c] text-xs">{url}</p>
     </div>
   )

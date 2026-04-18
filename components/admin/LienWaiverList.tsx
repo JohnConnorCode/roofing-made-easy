@@ -23,7 +23,7 @@ interface LienWaiverListProps {
 }
 
 const STATUS_CONFIG: Record<string, { className: string; label: string }> = {
-  draft: { className: 'text-slate-600 bg-slate-100', label: 'Draft' },
+  draft: { className: 'text-slate-400 bg-slate-100', label: 'Draft' },
   sent: { className: 'text-blue-600 bg-blue-100', label: 'Sent' },
   signed: { className: 'text-green-600 bg-green-100', label: 'Signed' },
 }
@@ -258,7 +258,7 @@ export function LienWaiverList({ jobId }: LienWaiverListProps) {
           <div className="mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200 space-y-3">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label htmlFor="lw-type" className="text-xs text-slate-500 mb-1 block">Waiver Type</label>
+                <label htmlFor="lw-type" className="text-xs text-slate-400 mb-1 block">Waiver Type</label>
                 <select
                   id="lw-type"
                   value={waiverType}
@@ -271,7 +271,7 @@ export function LienWaiverList({ jobId }: LienWaiverListProps) {
                 </select>
               </div>
               <div>
-                <label htmlFor="lw-through-date" className="text-xs text-slate-500 mb-1 block">Through Date</label>
+                <label htmlFor="lw-through-date" className="text-xs text-slate-400 mb-1 block">Through Date</label>
                 <input
                   id="lw-through-date"
                   type="date"
@@ -343,7 +343,7 @@ export function LienWaiverList({ jobId }: LienWaiverListProps) {
 
         {/* List */}
         {waivers.length === 0 ? (
-          <p className="text-slate-500 text-center py-6">No lien waivers yet</p>
+          <p className="text-slate-400 text-center py-6">No lien waivers yet</p>
         ) : (
           <div className="space-y-2">
             {waivers.map((waiver) => {
@@ -356,7 +356,7 @@ export function LienWaiverList({ jobId }: LienWaiverListProps) {
                   <div key={waiver.id} className="p-3 rounded-lg border border-blue-200 bg-blue-50 space-y-2">
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label htmlFor={`edit-type-${waiver.id}`} className="text-xs text-slate-500 mb-1 block">Type</label>
+                        <label htmlFor={`edit-type-${waiver.id}`} className="text-xs text-slate-400 mb-1 block">Type</label>
                         <select
                           id={`edit-type-${waiver.id}`}
                           value={waiverType}
@@ -368,7 +368,7 @@ export function LienWaiverList({ jobId }: LienWaiverListProps) {
                         </select>
                       </div>
                       <div>
-                        <label htmlFor={`edit-date-${waiver.id}`} className="text-xs text-slate-500 mb-1 block">Through Date</label>
+                        <label htmlFor={`edit-date-${waiver.id}`} className="text-xs text-slate-400 mb-1 block">Through Date</label>
                         <input
                           id={`edit-date-${waiver.id}`}
                           type="date"
@@ -448,7 +448,7 @@ export function LienWaiverList({ jobId }: LienWaiverListProps) {
                     </div>
                     <div className="flex items-center gap-4 text-sm">
                       <span className="font-medium text-slate-900">{formatCurrency(waiver.amount)}</span>
-                      <span className="text-slate-500">Through {formatDate(waiver.through_date)}</span>
+                      <span className="text-slate-400">Through {formatDate(waiver.through_date)}</span>
                     </div>
                     {waiver.created_by_user && formatUserName(waiver.created_by_user) && (
                       <p className="text-xs text-slate-400 mt-0.5">Created by {formatUserName(waiver.created_by_user)}</p>
@@ -457,7 +457,7 @@ export function LienWaiverList({ jobId }: LienWaiverListProps) {
                   <div className="flex items-center gap-1 shrink-0 ml-4">
                     <button
                       onClick={() => window.open(`/api/admin/jobs/${jobId}/lien-waivers/${waiver.id}/pdf`, '_blank')}
-                      className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded"
+                      className="p-1.5 text-slate-400 hover:text-slate-400 hover:bg-slate-100 rounded"
                       aria-label="Download PDF"
                     >
                       <Download className="h-4 w-4" />
@@ -467,7 +467,7 @@ export function LienWaiverList({ jobId }: LienWaiverListProps) {
                         <button
                           onClick={() => startEdit(waiver)}
                           disabled={saving}
-                          className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded disabled:opacity-50"
+                          className="p-1.5 text-slate-400 hover:text-slate-400 hover:bg-slate-100 rounded disabled:opacity-50"
                           aria-label="Edit lien waiver"
                         >
                           <Pencil className="h-4 w-4" />

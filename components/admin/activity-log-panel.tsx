@@ -78,7 +78,7 @@ export function ActivityLogPanel({ entityType, entityId, limit = 10 }: ActivityL
 
   if (activities.length === 0) {
     return (
-      <p className="text-sm text-slate-500 text-center py-4">No recent activity</p>
+      <p className="text-sm text-slate-400 text-center py-4">No recent activity</p>
     )
   }
 
@@ -109,7 +109,7 @@ export function ActivityLogPanel({ entityType, entityId, limit = 10 }: ActivityL
               <div className="text-sm">
                 <span className="font-medium text-slate-700">{userName}</span>
                 {' '}
-                <span className="text-slate-500">{actionLabel}</span>
+                <span className="text-slate-400">{actionLabel}</span>
                 {entry.entity_name && (
                   <span className="text-slate-700"> — {entry.entity_name}</span>
                 )}

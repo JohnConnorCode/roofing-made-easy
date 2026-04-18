@@ -16,9 +16,9 @@ const contactSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    // Rate limiting for contact form
+    // Rate limiting for contact form (use leadCreation limit: 5/min)
     const clientIP = getClientIP(request)
-    const rateLimitResult = checkRateLimit(clientIP, 'general')
+    const rateLimitResult = checkRateLimit(clientIP, 'leadCreation')
 
     if (!rateLimitResult.success) {
       return rateLimitResponse(rateLimitResult)

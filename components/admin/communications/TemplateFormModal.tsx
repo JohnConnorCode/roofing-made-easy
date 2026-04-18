@@ -239,7 +239,7 @@ export function TemplateFormModal({
             <h2 className="text-xl font-bold text-slate-900">
               {editingTemplate ? 'Edit Template' : 'Create Template'}
             </h2>
-            <button onClick={handleClose} className="text-slate-400 hover:text-slate-600">
+            <button onClick={handleClose} className="text-slate-400 hover:text-slate-400">
               <X className="h-5 w-5" />
             </button>
           </div>
@@ -384,7 +384,7 @@ export function TemplateFormModal({
                   <button
                     key={variable}
                     type="button"
-                    className="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-xs font-mono text-slate-600 transition-colors"
+                    className="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-xs font-mono text-slate-400 transition-colors"
                     onClick={() => insertVariable(variable)}
                   >
                     {variable}

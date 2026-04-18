@@ -2,12 +2,9 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import {
   ImageIcon,
   Upload,
-  Download,
-  FileText,
   AlertTriangle,
   X,
   ChevronLeft,
@@ -17,6 +14,7 @@ import {
   CheckCircle,
   Loader2,
 } from 'lucide-react'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
 // File validation constants
@@ -49,7 +47,7 @@ interface DocumentHubProps {
 export function DocumentHub({
   photos,
   supabaseUrl,
-  leadId,
+  leadId: _leadId,
   onUpload,
   isUploading = false,
 }: DocumentHubProps) {
@@ -66,6 +64,24 @@ export function DocumentHub({
     }
   }, [validationErrors])
 
+  // Lightbox navigation
+  const openLightbox = useCallback((index: number) => setLightboxIndex(index), [])
+  const closeLightbox = useCallback(() => setLightboxIndex(null), [])
+
+  const goToPrevious = useCallback(() => {
+    setLightboxIndex(prev => {
+      if (prev === null) return null
+      return (prev - 1 + photos.length) % photos.length
+    })
+  }, [photos.length])
+
+  const goToNext = useCallback(() => {
+    setLightboxIndex(prev => {
+      if (prev === null) return null
+      return (prev + 1) % photos.length
+    })
+  }, [photos.length])
+
   // Keyboard navigation for lightbox
   useEffect(() => {
     if (lightboxIndex === null) return
@@ -78,7 +94,7 @@ export function DocumentHub({
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [lightboxIndex])
+  }, [lightboxIndex, closeLightbox, goToPrevious, goToNext])
 
   // Validate files before upload
   const validateFiles = useCallback((files: FileList): ValidationResult => {
@@ -154,19 +170,6 @@ export function DocumentHub({
     setImageError(prev => new Set(prev).add(photoId))
   }, [])
 
-  const openLightbox = (index: number) => setLightboxIndex(index)
-  const closeLightbox = () => setLightboxIndex(null)
-
-  const goToPrevious = () => {
-    if (lightboxIndex === null) return
-    setLightboxIndex((lightboxIndex - 1 + photos.length) % photos.length)
-  }
-
-  const goToNext = () => {
-    if (lightboxIndex === null) return
-    setLightboxIndex((lightboxIndex + 1) % photos.length)
-  }
-
   return (
     <Card variant="dark" className="border-slate-700">
       <CardHeader>
@@ -185,14 +188,14 @@ export function DocumentHub({
             <div className="flex items-start gap-2 text-red-400 text-sm">
               <AlertTriangle className="h-4 w-4 mt-0.5 flex-shrink-0" />
               <div className="flex-1">
-                <p className="font-medium mb-1">Some files couldn't be uploaded:</p>
+                <p className="font-medium mb-1">Some files couldn&apos;t be uploaded:</p>
                 <ul className="list-disc list-inside space-y-0.5 text-xs">
                   {validationErrors.map((error, i) => (
                     <li key={i}>{error}</li>
                   ))}
                 </ul>
               </div>
-              <button onClick={() => setValidationErrors([])} className="text-red-400 hover:text-red-300">
+              <button onClick={() => setValidationErrors([])} className="text-red-400 hover:text-red-300" aria-label="Dismiss errors">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -219,6 +222,7 @@ export function DocumentHub({
               onChange={handleFileInput}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               disabled={isUploading}
+              aria-label="Upload photos"
             />
             {isUploading ? (
               <div className="flex flex-col items-center gap-2">
@@ -231,7 +235,7 @@ export function DocumentHub({
                 <p className="text-sm text-slate-300">
                   Drag photos here or <span className="text-gold-light">click to browse</span>
                 </p>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-400">
                   JPEG, PNG, WebP, or HEIC. Max 10MB per file, up to 10 files.
                 </p>
               </div>
@@ -259,10 +263,12 @@ export function DocumentHub({
                       <span className="text-xs">Image unavailable</span>
                     </div>
                   ) : (
-                    <img
+                    <Image
                       src={photoUrl}
                       alt={photo.original_filename || 'Roof photo'}
-                      className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                      fill
+                      className="object-cover transition-transform group-hover:scale-105"
+                      unoptimized
                       onError={() => handleImageError(photo.id)}
                     />
                   )}
@@ -295,9 +301,9 @@ export function DocumentHub({
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <Camera className="h-10 w-10 text-slate-600" />
+            <Camera className="h-10 w-10 text-slate-400" />
             <p className="mt-3 text-slate-400">No photos uploaded yet</p>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-400">
               Upload photos of your roof to help us provide an accurate estimate
             </p>
           </div>
@@ -305,7 +311,7 @@ export function DocumentHub({
 
         {/* Photo count */}
         {photos.length > 0 && (
-          <p className="text-xs text-slate-500 text-center">
+          <p className="text-xs text-slate-400 text-center">
             {photos.length} photo{photos.length !== 1 ? 's' : ''} uploaded
           </p>
         )}
@@ -344,10 +350,13 @@ export function DocumentHub({
               className="max-w-[90vw] max-h-[85vh] relative"
               onClick={(e) => e.stopPropagation()}
             >
-              <img
+              <Image
                 src={getPhotoUrl(photos[lightboxIndex].storage_path)}
-                alt={photos[lightboxIndex].original_filename || 'Photo'}
+                alt={photos[lightboxIndex].original_filename || 'Uploaded photo'}
+                width={1200}
+                height={900}
                 className="max-w-full max-h-[85vh] object-contain"
+                unoptimized
               />
 
               {/* Photo Info */}

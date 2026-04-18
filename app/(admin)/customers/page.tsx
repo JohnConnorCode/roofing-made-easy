@@ -15,7 +15,6 @@ import {
   Users,
   DollarSign,
   TrendingUp,
-  Loader2
 } from 'lucide-react'
 import { AdminPageTransition, FadeInSection, StaggerContainer } from '@/components/admin/page-transition'
 import { SkeletonPageContent } from '@/components/ui/skeleton'
@@ -61,7 +60,7 @@ export default function CustomersPage() {
       if (data.globalStats) {
         setGlobalStats(data.globalStats)
       }
-    } catch (err) {
+    } catch {
       setError('Unable to load customers. Please try again.')
     } finally {
       setIsLoading(false)
@@ -88,56 +87,56 @@ export default function CustomersPage() {
       {/* Header */}
       <FadeInSection delay={0} animation="fade-in">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Customers</h1>
-          <p className="text-slate-500">Manage your customer relationships</p>
+          <h1 className="text-2xl font-bold text-slate-50">Customers</h1>
+          <p className="text-slate-400">Manage your customer relationships</p>
         </div>
       </FadeInSection>
 
       {/* Stats */}
       <StaggerContainer className="grid gap-4 md:grid-cols-4" staggerDelay={75}>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex items-center gap-4 p-4">
-            <div className="rounded-lg bg-slate-100 p-3">
-              <Users className="h-5 w-5 text-slate-600" />
+            <div className="rounded-lg bg-slate-900/60 p-3">
+              <Users className="h-5 w-5 text-slate-400" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Total Customers</p>
-              <p className="text-2xl font-bold text-slate-900">{total}</p>
+              <p className="text-sm text-slate-400">Total Customers</p>
+              <p className="text-2xl font-bold text-slate-50">{total}</p>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex items-center gap-4 p-4">
             <div className="rounded-lg bg-gold-light/20 p-3">
               <Users className="h-5 w-5 text-gold" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Total Leads</p>
-              <p className="text-2xl font-bold text-slate-900">{stats.totalLeads}</p>
+              <p className="text-sm text-slate-400">Total Leads</p>
+              <p className="text-2xl font-bold text-slate-50">{stats.totalLeads}</p>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex items-center gap-4 p-4">
             <div className="rounded-lg bg-green-100 p-3">
               <DollarSign className="h-5 w-5 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Total Value</p>
+              <p className="text-sm text-slate-400">Total Value</p>
               <p className="text-2xl font-bold text-green-600">{formatCurrency(stats.totalValue)}</p>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex items-center gap-4 p-4">
             <div className="rounded-lg bg-emerald-100 p-3">
               <TrendingUp className="h-5 w-5 text-emerald-600" />
             </div>
             <div>
-              <p className="text-sm text-slate-500">Deals Won</p>
+              <p className="text-sm text-slate-400">Deals Won</p>
               <p className="text-2xl font-bold text-emerald-600">{stats.wonDeals}</p>
             </div>
           </CardContent>
@@ -146,7 +145,7 @@ export default function CustomersPage() {
 
       {/* Search */}
       <FadeInSection delay={400} animation="slide-up">
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
@@ -154,7 +153,7 @@ export default function CustomersPage() {
                 placeholder="Search by name, email, or phone..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-white border-slate-300 text-slate-900"
+                className="pl-10"
               />
             </div>
           </CardContent>
@@ -163,9 +162,9 @@ export default function CustomersPage() {
 
       {/* Customer list */}
       <FadeInSection delay={500} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-slate-900">
+          <CardTitle className="text-slate-50">
             {total} Customer{total !== 1 ? 's' : ''}
           </CardTitle>
           <Button
@@ -183,7 +182,7 @@ export default function CustomersPage() {
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-8">
               <AlertTriangle className="h-10 w-10 text-amber-500" />
-              <p className="mt-3 text-slate-600">{error}</p>
+              <p className="mt-3 text-slate-400">{error}</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -197,7 +196,7 @@ export default function CustomersPage() {
           ) : customers.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8">
               <Users className="h-10 w-10 text-slate-300" />
-              <p className="mt-3 text-slate-600">No customers found</p>
+              <p className="mt-3 text-slate-400">No customers found</p>
               <p className="text-sm text-slate-400">
                 {search ? 'Try adjusting your search.' : 'Customers will appear here when they create accounts.'}
               </p>
@@ -211,7 +210,7 @@ export default function CustomersPage() {
               {/* Pagination */}
               {totalPages > 1 && (
                 <div className="mt-4 flex items-center justify-between pt-4 border-t">
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-slate-400">
                     Showing {offset + 1}-{Math.min(offset + LIMIT, total)} of {total}
                   </p>
                   <div className="flex gap-2">

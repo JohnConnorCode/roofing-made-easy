@@ -67,7 +67,7 @@ export function MobileCTABar() {
         <StartFunnelButton
           className="flex-1 flex items-center justify-center gap-2 px-4 py-3.5 min-h-[56px] text-sm font-semibold bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] active:opacity-90 transition-opacity"
         >
-          Get Free Estimate
+          Free Estimate
           <ArrowRight className="h-4 w-4" />
         </StartFunnelButton>
       </div>

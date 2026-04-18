@@ -10,7 +10,6 @@ import {
   Mail,
   FileText,
   DollarSign,
-  CheckCircle,
   Clock,
   AlertCircle,
   RefreshCw,
@@ -104,7 +103,7 @@ export function ProjectUpdates({ leadId, className }: ProjectUpdatesProps) {
         if (!response.ok) throw new Error('Failed to fetch activities')
         const data = await response.json()
         setActivities((data.activities || []).slice(0, 10))
-      } catch (err) {
+      } catch {
         setError('Unable to load updates')
         setActivities([])
       } finally {
@@ -182,14 +181,14 @@ export function ProjectUpdates({ leadId, className }: ProjectUpdatesProps) {
           </div>
         ) : error ? (
           <div className="flex flex-col items-center justify-center py-6 text-center">
-            <AlertCircle className="h-8 w-8 text-slate-600 mb-2" />
+            <AlertCircle className="h-8 w-8 text-slate-400 mb-2" />
             <p className="text-sm text-slate-400">{error}</p>
           </div>
         ) : activities.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-6 text-center">
-            <Clock className="h-8 w-8 text-slate-600 mb-2" />
+            <Clock className="h-8 w-8 text-slate-400 mb-2" />
             <p className="text-sm text-slate-400">No updates yet</p>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-400 mt-1">
               Updates will appear here as your project progresses
             </p>
           </div>
@@ -220,7 +219,7 @@ export function ProjectUpdates({ leadId, className }: ProjectUpdatesProps) {
                     <p className="text-sm text-slate-200">
                       {getCustomerMessage(activity)}
                     </p>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-slate-400 mt-0.5">
                       {getRelativeTime(activity.created_at)}
                     </p>
                   </div>

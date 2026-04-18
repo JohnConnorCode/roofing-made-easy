@@ -1,38 +1,78 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireLeadOwnership } from '@/lib/api/auth'
+import { checkRateLimit, getClientIP, rateLimitResponse } from '@/lib/rate-limit'
+import { logger } from '@/lib/logger'
+import { z } from 'zod'
 import { v4 as uuidv4 } from 'uuid'
+
+/** Allowed MIME types for photo uploads */
+const ALLOWED_MIME_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+] as const
+
+/** Map of MIME types to safe file extensions (prevents extension spoofing) */
+const MIME_TO_EXTENSION: Record<string, string> = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/heic': 'heic',
+  'image/heif': 'heif',
+}
+
+/** Zod schema for the signed-url request body */
+const signedUrlSchema = z.object({
+  leadId: z.string().uuid('leadId must be a valid UUID'),
+  filename: z.string().min(1, 'Filename is required').max(255),
+  contentType: z.enum(
+    ALLOWED_MIME_TYPES as unknown as [string, ...string[]],
+    { error: 'Invalid file type. Allowed: JPEG, PNG, WebP, HEIC' }
+  ),
+})
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { leadId, filename, contentType } = body
+    // Rate limit signed URL generation
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(clientIP, 'leadCreation')
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult)
+    }
 
-    if (!leadId || !filename || !contentType) {
+    // Parse and validate request body with Zod
+    let body: unknown
+    try {
+      body = await request.json()
+    } catch {
       return NextResponse.json(
-        { error: 'leadId, filename, and contentType are required' },
+        { error: 'Invalid JSON body' },
         { status: 400 }
       )
     }
+
+    const parsed = signedUrlSchema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'Invalid request', details: parsed.error.flatten() },
+        { status: 400 }
+      )
+    }
+
+    const { leadId, filename, contentType } = parsed.data
 
     // Verify user owns this lead or is admin
     const { error: authError } = await requireLeadOwnership(leadId)
     if (authError) return authError
 
-    // Validate content type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif']
-    if (!allowedTypes.includes(contentType)) {
-      return NextResponse.json(
-        { error: 'Invalid file type. Allowed: JPEG, PNG, WebP, HEIC' },
-        { status: 400 }
-      )
-    }
-
     const supabase = await createClient()
 
-    // Generate unique storage path
-    const fileExtension = filename.split('.').pop() || 'jpg'
-    const storagePath = `${leadId}/${uuidv4()}.${fileExtension}`
+    // Derive safe file extension from validated MIME type (not from user-provided filename)
+    const safeExtension = MIME_TO_EXTENSION[contentType] || 'jpg'
+    const storagePath = `${leadId}/${uuidv4()}.${safeExtension}`
 
     // Create signed upload URL
     const { data: signedUrl, error: signedUrlError } = await supabase.storage
@@ -40,11 +80,15 @@ export async function POST(request: NextRequest) {
       .createSignedUploadUrl(storagePath)
 
     if (signedUrlError) {
+      logger.error('[Upload] Failed to create signed URL', { leadId, error: String(signedUrlError) })
       return NextResponse.json(
         { error: 'Failed to create upload URL' },
         { status: 500 }
       )
     }
+
+    // Sanitize original filename for the DB record (strip path components)
+    const sanitizedFilename = filename.replace(/[/\\]/g, '_').slice(0, 255)
 
     // Create upload record
     const { data: upload, error: uploadError } = await supabase
@@ -52,7 +96,7 @@ export async function POST(request: NextRequest) {
       .insert({
         lead_id: leadId,
         storage_path: storagePath,
-        original_filename: filename,
+        original_filename: sanitizedFilename,
         content_type: contentType,
         status: 'pending',
       } as never)
@@ -60,6 +104,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (uploadError || !upload) {
+      logger.error('[Upload] Failed to create upload record', { leadId, error: String(uploadError) })
       return NextResponse.json(
         { error: 'Failed to create upload record' },
         { status: 500 }
@@ -72,7 +117,10 @@ export async function POST(request: NextRequest) {
       token: signedUrl.token,
       storagePath,
     })
-  } catch {
+  } catch (error) {
+    logger.error('[Upload] Unexpected error in signed-url', {
+      error: error instanceof Error ? error.message : String(error),
+    })
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

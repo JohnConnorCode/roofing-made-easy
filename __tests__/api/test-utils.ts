@@ -535,9 +535,9 @@ export function createMockSupabaseClientForApiTests() {
 }
 
 function createMockQueryBuilder(table: string) {
-  let filters: Array<{ column: string; value: unknown; operator: string }> = []
-  let selectQuery = '*'
-  let orderBy: Array<{ column: string; ascending: boolean }> = []
+  const filters: Array<{ column: string; value: unknown; operator: string }> = []
+  let _selectQuery = '*'
+  const orderBy: Array<{ column: string; ascending: boolean }> = []
   let insertData: unknown = null
   let updateData: unknown = null
   let isDelete = false
@@ -546,7 +546,7 @@ function createMockQueryBuilder(table: string) {
 
   const builder = {
     select: (query?: string) => {
-      selectQuery = query || '*'
+      _selectQuery = query || '*'
       return builder
     },
     insert: (data: unknown) => {
@@ -569,7 +569,7 @@ function createMockQueryBuilder(table: string) {
       filters.push({ column, value, operator: 'neq' })
       return builder
     },
-    or: (query: string) => {
+    or: (_query: string) => {
       // Simple or parsing for testing
       return builder
     },
@@ -689,7 +689,7 @@ function handleUpdate(
   table: string,
   filters: Array<{ column: string; value: unknown; operator: string }>,
   data: unknown,
-  isSingle: boolean
+  _isSingle: boolean
 ): { data: unknown; error: unknown } {
   const idFilter = filters.find((f) => f.column === 'id')
   const id = idFilter?.value as string

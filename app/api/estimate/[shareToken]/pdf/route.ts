@@ -62,10 +62,18 @@ export async function GET(
       .eq('share_token', shareToken)
       .single()
 
-    const lead = leadData as LeadWithRelations | null
+    const lead = leadData as (LeadWithRelations & { share_token_expires_at?: string | null }) | null
 
     if (leadError || !lead) {
       return NextResponse.json({ error: 'Estimate not found' }, { status: 404 })
+    }
+
+    // Check if share token has expired
+    if (lead.share_token_expires_at && new Date(lead.share_token_expires_at) < new Date()) {
+      return NextResponse.json(
+        { error: 'This estimate link has expired' },
+        { status: 410 }
+      )
     }
 
     // Fetch latest estimate

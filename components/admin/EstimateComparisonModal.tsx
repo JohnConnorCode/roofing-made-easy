@@ -78,7 +78,7 @@ export function EstimateComparisonModal({
         className: 'text-red-600 bg-red-50',
       }
     }
-    return { icon: Minus, label: 'Same', className: 'text-slate-600 bg-slate-50' }
+    return { icon: Minus, label: 'Same', className: 'text-slate-400 bg-slate-50' }
   }
 
   const formatJobType = (type: string | undefined) => {
@@ -114,7 +114,7 @@ export function EstimateComparisonModal({
               'py-3 px-4 text-center',
               highlightDiff && !allSame && value !== '-'
                 ? 'font-semibold'
-                : 'text-slate-600'
+                : 'text-slate-400'
             )}
           >
             {value}
@@ -148,7 +148,7 @@ export function EstimateComparisonModal({
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+            className="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-400"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -169,7 +169,7 @@ export function EstimateComparisonModal({
                   key={estimate.id}
                   className="rounded-lg border border-slate-200 p-4"
                 >
-                  <div className="mb-2 text-sm text-slate-500">
+                  <div className="mb-2 text-sm text-slate-400">
                     {contact?.first_name} {contact?.last_name}
                   </div>
                   <div className="mb-2 text-2xl font-bold text-slate-900">
@@ -204,7 +204,7 @@ export function EstimateComparisonModal({
           {/* Difference Banner */}
           {priceDiff > 0 && (
             <div className="mb-6 rounded-lg bg-gold-light/20 p-4 text-center">
-              <span className="text-sm text-slate-600">
+              <span className="text-sm text-slate-400">
                 Price difference:{' '}
                 <span className="font-semibold text-slate-900">
                   {formatCurrency(priceDiff)}

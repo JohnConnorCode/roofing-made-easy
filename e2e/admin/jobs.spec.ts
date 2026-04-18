@@ -101,7 +101,7 @@ test.describe('Jobs Management', () => {
       await page.waitForResponse(/\/api\/admin\/jobs/)
 
       // Find the kanban toggle button (second button in the view mode toggle group)
-      const viewToggle = page.locator('button').filter({
+      const _viewToggle = page.locator('button').filter({
         has: page.locator('[class*="lucide-kanban"]').or(
           page.locator('svg')
         )

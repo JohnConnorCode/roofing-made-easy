@@ -142,7 +142,7 @@ export async function POST(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ jobId: string }> }
+  _ctx: { params: Promise<{ jobId: string }> }
 ) {
   try {
     const { user, profile, error: authError } = await getUserWithProfile()

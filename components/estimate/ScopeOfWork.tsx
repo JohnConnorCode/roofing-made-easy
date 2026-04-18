@@ -36,7 +36,7 @@ export function ScopeOfWork({ jobType }: ScopeOfWorkProps) {
                 {item.included ? (
                   <CheckCircle2 className="h-5 w-5 text-[#3d7a5a]" />
                 ) : (
-                  <Circle className="h-5 w-5 text-slate-500" />
+                  <Circle className="h-5 w-5 text-slate-400" />
                 )}
               </div>
               <div className="space-y-1">

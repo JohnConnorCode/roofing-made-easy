@@ -54,8 +54,8 @@ export default function CommunicationsPage() {
       {/* Header */}
       <FadeInSection delay={0} animation="fade-in">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Communications</h1>
-        <p className="text-slate-500">Manage email templates, SMS templates, and estimate content</p>
+        <h1 className="text-2xl font-bold text-slate-50">Communications</h1>
+        <p className="text-slate-400">Manage email templates, SMS templates, and estimate content</p>
       </div>
       </FadeInSection>
 
@@ -83,7 +83,7 @@ export default function CommunicationsPage() {
 
       {/* Tabs */}
       <FadeInSection delay={100} animation="slide-up">
-      <div className="border-b border-slate-200 -mx-4 px-4 md:mx-0 md:px-0">
+      <div className="border-b border-white/5 -mx-4 px-4 md:mx-0 md:px-0">
         <nav className="flex gap-1 -mb-px overflow-x-auto scrollbar-hide" role="tablist">
           {TABS.map((tab) => {
             const Icon = tab.icon
@@ -99,7 +99,7 @@ export default function CommunicationsPage() {
                 className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
                   isActive
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                    : 'border-transparent text-slate-400 hover:text-slate-50 hover:border-slate-300'
                 }`}
               >
                 <Icon className="h-4 w-4 flex-shrink-0" />
@@ -109,7 +109,7 @@ export default function CommunicationsPage() {
                   <span className={`ml-0.5 sm:ml-1 px-1.5 py-0.5 text-xs rounded-full ${
                     isActive
                       ? 'bg-blue-100 text-blue-700'
-                      : 'bg-slate-100 text-slate-500'
+                      : 'bg-slate-900/60 text-slate-400'
                   }`}>
                     {count}
                   </span>

@@ -113,7 +113,7 @@ export const LEAD_STATUSES: StatusConfig[] = [
   {
     value: 'archived',
     label: 'Archived',
-    badge: 'bg-slate-100 text-slate-500 border-slate-200',
+    badge: 'bg-slate-100 text-slate-400 border-slate-200',
     dot: 'bg-slate-300',
     border: 'border-slate-300',
     bg: 'bg-slate-50',
@@ -141,9 +141,9 @@ export const URGENCY_OPTIONS: UrgencyConfig[] = [
   { value: 'emergency', label: 'Emergency', badge: 'bg-red-100 text-red-700' },
   { value: 'asap', label: 'ASAP', badge: 'bg-amber-100 text-amber-700' },
   { value: 'within_month', label: 'This Month', badge: 'bg-blue-100 text-blue-700' },
-  { value: 'within_3_months', label: 'Within 3 Mo', badge: 'bg-slate-100 text-slate-600' },
-  { value: 'flexible', label: 'Flexible', badge: 'bg-slate-100 text-slate-600' },
-  { value: 'just_exploring', label: 'Exploring', badge: 'bg-slate-100 text-slate-500' },
+  { value: 'within_3_months', label: 'Within 3 Mo', badge: 'bg-slate-100 text-slate-400' },
+  { value: 'flexible', label: 'Flexible', badge: 'bg-slate-100 text-slate-400' },
+  { value: 'just_exploring', label: 'Exploring', badge: 'bg-slate-100 text-slate-400' },
 ]
 
 export const URGENCY_MAP = Object.fromEntries(
@@ -162,10 +162,10 @@ export interface JobTypeConfig {
 export const JOB_TYPE_OPTIONS: JobTypeConfig[] = [
   { value: 'full_replacement', label: 'Full Replace', badge: 'bg-green-100 text-green-700' },
   { value: 'repair', label: 'Repair', badge: 'bg-amber-100 text-amber-700' },
-  { value: 'inspection', label: 'Inspection', badge: 'bg-slate-100 text-slate-600' },
-  { value: 'maintenance', label: 'Maintenance', badge: 'bg-slate-100 text-slate-600' },
+  { value: 'inspection', label: 'Inspection', badge: 'bg-slate-100 text-slate-400' },
+  { value: 'maintenance', label: 'Maintenance', badge: 'bg-slate-100 text-slate-400' },
   { value: 'gutter', label: 'Gutter', badge: 'bg-blue-100 text-blue-700' },
-  { value: 'other', label: 'Other', badge: 'bg-slate-100 text-slate-500' },
+  { value: 'other', label: 'Other', badge: 'bg-slate-100 text-slate-400' },
 ]
 
 export const JOB_TYPE_MAP = Object.fromEntries(

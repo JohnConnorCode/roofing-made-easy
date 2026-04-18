@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select } from '@/components/ui/select'
 import {
@@ -80,7 +80,7 @@ export function VelocityAnalytics() {
   const [error, setError] = useState<string | null>(null)
   const [period, setPeriod] = useState('90')
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true)
     setError(null)
     try {
@@ -93,11 +93,11 @@ export function VelocityAnalytics() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [period])
 
   useEffect(() => {
     fetchData()
-  }, [period])
+  }, [fetchData])
 
   if (isLoading) {
     return (
@@ -111,7 +111,7 @@ export function VelocityAnalytics() {
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <AlertTriangle className="h-10 w-10 text-gold" />
-        <p className="mt-3 text-slate-600">{error}</p>
+        <p className="mt-3 text-slate-400">{error}</p>
         <Button
           variant="outline"
           size="sm"
@@ -151,7 +151,7 @@ export function VelocityAnalytics() {
                 <Gauge className="h-5 w-5 text-gold" />
               </div>
               <div>
-                <div className="text-sm text-slate-500">Avg Deal Velocity</div>
+                <div className="text-sm text-slate-400">Avg Deal Velocity</div>
                 <div className="text-2xl font-bold text-slate-900">
                   {data.dealVelocity.avgDaysToClose} days
                 </div>
@@ -167,7 +167,7 @@ export function VelocityAnalytics() {
                 <Target className="h-5 w-5 text-green-600" />
               </div>
               <div>
-                <div className="text-sm text-slate-500">Deals Analyzed</div>
+                <div className="text-sm text-slate-400">Deals Analyzed</div>
                 <div className="text-2xl font-bold text-slate-900">
                   {data.dealVelocity.dealsAnalyzed}
                 </div>
@@ -183,7 +183,7 @@ export function VelocityAnalytics() {
                 <TrendingUp className="h-5 w-5 text-blue-600" />
               </div>
               <div>
-                <div className="text-sm text-slate-500">Top Conversion</div>
+                <div className="text-sm text-slate-400">Top Conversion</div>
                 <div className="text-2xl font-bold text-slate-900">
                   {Math.max(...data.conversions.map((c) => c.percentage), 0)}%
                 </div>
@@ -199,7 +199,7 @@ export function VelocityAnalytics() {
                 <Clock className="h-5 w-5 text-purple-600" />
               </div>
               <div>
-                <div className="text-sm text-slate-500">Slowest Stage</div>
+                <div className="text-sm text-slate-400">Slowest Stage</div>
                 <div className="text-2xl font-bold text-slate-900">
                   {data.stageVelocity.length > 0
                     ? STAGE_LABELS[
@@ -242,13 +242,13 @@ export function VelocityAnalytics() {
                     </span>
                   </div>
                 </div>
-                <div className="w-20 text-right text-xs text-slate-500">
+                <div className="w-20 text-right text-xs text-slate-400">
                   {stage.totalLeads} leads
                 </div>
               </div>
             ))}
             {data.stageVelocity.length === 0 && (
-              <p className="text-center py-4 text-slate-500">
+              <p className="text-center py-4 text-slate-400">
                 No stage history data available for this period
               </p>
             )}
@@ -276,7 +276,7 @@ export function VelocityAnalytics() {
                   {STAGE_LABELS[conversion.toStage] || conversion.toStage}
                 </span>
                 <div className="ml-auto flex items-center gap-3">
-                  <span className="text-sm text-slate-500">{conversion.count} leads</span>
+                  <span className="text-sm text-slate-400">{conversion.count} leads</span>
                   <span
                     className={`rounded-full px-2 py-0.5 text-sm font-medium ${
                       conversion.percentage >= 70
@@ -292,7 +292,7 @@ export function VelocityAnalytics() {
               </div>
             ))}
             {data.conversions.length === 0 && (
-              <p className="text-center py-4 text-slate-500">
+              <p className="text-center py-4 text-slate-400">
                 No conversion data available for this period
               </p>
             )}
@@ -309,7 +309,7 @@ export function VelocityAnalytics() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b text-left text-sm text-slate-500">
+                <tr className="border-b text-left text-sm text-slate-400">
                   <th className="pb-3 pr-4">Month</th>
                   <th className="pb-3 pr-4 text-right">Total</th>
                   <th className="pb-3 pr-4 text-right">Won</th>
@@ -327,7 +327,7 @@ export function VelocityAnalytics() {
                         year: 'numeric',
                       })}
                     </td>
-                    <td className="py-3 pr-4 text-right text-slate-600">
+                    <td className="py-3 pr-4 text-right text-slate-400">
                       {cohort.total}
                     </td>
                     <td className="py-3 pr-4 text-right text-green-600">
@@ -346,7 +346,7 @@ export function VelocityAnalytics() {
                             ? 'bg-green-100 text-green-700'
                             : cohort.conversionRate >= 15
                             ? 'bg-amber-100 text-amber-700'
-                            : 'bg-slate-100 text-slate-600'
+                            : 'bg-slate-100 text-slate-400'
                         }`}
                       >
                         {cohort.conversionRate}%
@@ -356,7 +356,7 @@ export function VelocityAnalytics() {
                 ))}
                 {data.cohorts.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="py-4 text-center text-slate-500">
+                    <td colSpan={6} className="py-4 text-center text-slate-400">
                       No cohort data available for this period
                     </td>
                   </tr>

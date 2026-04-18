@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { formatDate } from '@/lib/utils'
 import {
   Search,
   Plus,
@@ -102,7 +101,7 @@ const TRIGGER_COLORS: Record<WorkflowTrigger, string> = {
   payment_received: 'bg-emerald-100 text-emerald-700',
   job_completed: 'bg-teal-100 text-teal-700',
   review_request: 'bg-rose-100 text-rose-700',
-  manual: 'bg-slate-100 text-slate-700',
+  manual: 'bg-white/10 text-slate-200',
 }
 
 const CHANNEL_ICONS: Record<MessageChannel, React.ComponentType<{ className?: string }>> = {
@@ -365,8 +364,8 @@ export default function WorkflowsPage() {
       <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Automation Workflows</h1>
-          <p className="text-slate-500">Automate communications based on events</p>
+          <h1 className="text-2xl font-bold text-slate-50">Automation Workflows</h1>
+          <p className="text-slate-400">Automate communications based on events</p>
         </div>
         <Button
           size="sm"
@@ -399,28 +398,28 @@ export default function WorkflowsPage() {
       {/* Summary Cards */}
       <FadeInSection delay={100} animation="slide-up">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-slate-900">{total}</div>
-            <div className="text-sm text-slate-500">Total Workflows</div>
+            <div className="text-2xl font-bold text-slate-50">{total}</div>
+            <div className="text-sm text-slate-400">Total Workflows</div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-green-600">{activeCount}</div>
-            <div className="text-sm text-slate-500">Active</div>
+            <div className="text-sm text-slate-400">Active</div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-slate-400">{inactiveCount}</div>
-            <div className="text-sm text-slate-500">Inactive</div>
+            <div className="text-sm text-slate-400">Inactive</div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-blue-600">{Object.keys(countsByTrigger).length}</div>
-            <div className="text-sm text-slate-500">Trigger Types</div>
+            <div className="text-sm text-slate-400">Trigger Types</div>
           </CardContent>
         </Card>
       </div>
@@ -428,7 +427,7 @@ export default function WorkflowsPage() {
 
       {/* Filters */}
       <FadeInSection delay={200} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center">
             <div className="relative flex-1">
@@ -437,20 +436,20 @@ export default function WorkflowsPage() {
                 placeholder="Search workflows..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-white border-slate-300 text-slate-900"
+                className="pl-10"
               />
             </div>
             <Select
               options={TRIGGER_OPTIONS}
               value={triggerFilter}
               onChange={setTriggerFilter}
-              className="md:w-44 bg-white border-slate-300 text-slate-900"
+              className="md:w-44"
             />
             <Select
               options={STATUS_OPTIONS}
               value={statusFilter}
               onChange={setStatusFilter}
-              className="md:w-32 bg-white border-slate-300 text-slate-900"
+              className="md:w-32"
             />
           </div>
         </CardContent>
@@ -459,9 +458,9 @@ export default function WorkflowsPage() {
 
       {/* Workflows List */}
       <FadeInSection delay={300} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardHeader>
-          <CardTitle className="text-slate-900">
+          <CardTitle className="text-slate-50">
             {workflows.length} Workflow{workflows.length !== 1 ? 's' : ''}
           </CardTitle>
         </CardHeader>
@@ -469,7 +468,7 @@ export default function WorkflowsPage() {
           {isLoading ? (
             <div className="space-y-3">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="rounded-lg border border-slate-200 p-4">
+                <div key={i} className="rounded-lg border border-white/5 p-4">
                   <div className="flex items-start gap-3">
                     <Skeleton className="h-5 w-5 mt-1 rounded-full" />
                     <div className="flex-1">
@@ -492,7 +491,7 @@ export default function WorkflowsPage() {
           ) : workflows.length === 0 ? (
             <div className="text-center py-8">
               <Zap className="h-12 w-12 mx-auto text-slate-300 mb-3" />
-              <p className="text-slate-600">No workflows found</p>
+              <p className="text-slate-400">No workflows found</p>
               <p className="text-sm text-slate-400">Create a workflow to automate communications</p>
             </div>
           ) : (
@@ -506,12 +505,12 @@ export default function WorkflowsPage() {
                     key={workflow.id}
                     className={`rounded-lg border ${
                       workflow.is_active
-                        ? 'border-slate-200 bg-white'
-                        : 'border-slate-100 bg-slate-50'
+                        ? 'border-white/5 bg-white'
+                        : 'border-slate-100 bg-slate-900/40'
                     }`}
                   >
                     <div
-                      className="p-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                      className="p-4 cursor-pointer hover:bg-slate-900/40 transition-colors"
                       onClick={() => toggleExpanded(workflow.id)}
                     >
                       <div className="flex items-start gap-3">
@@ -527,14 +526,14 @@ export default function WorkflowsPage() {
                         {/* Content */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <span className={`font-medium ${workflow.is_active ? 'text-slate-900' : 'text-slate-500'}`}>
+                            <span className={`font-medium ${workflow.is_active ? 'text-slate-50' : 'text-slate-400'}`}>
                               {workflow.name}
                             </span>
                             <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${TRIGGER_COLORS[workflow.trigger_event]}`}>
                               {TRIGGER_LABELS[workflow.trigger_event]}
                             </span>
                             {ChannelIcon && (
-                              <span className="flex items-center gap-1 text-xs text-slate-500">
+                              <span className="flex items-center gap-1 text-xs text-slate-400">
                                 <ChannelIcon className="h-3 w-3" />
                                 {workflow.channel}
                               </span>
@@ -542,12 +541,12 @@ export default function WorkflowsPage() {
                           </div>
 
                           {workflow.description && (
-                            <p className="text-sm text-slate-500 mt-1 line-clamp-1">
+                            <p className="text-sm text-slate-400 mt-1 line-clamp-1">
                               {workflow.description}
                             </p>
                           )}
 
-                          <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
+                          <div className="flex items-center gap-4 mt-2 text-sm text-slate-400">
                             <span className="flex items-center gap-1">
                               <Clock className="h-3 w-3" />
                               {formatDelay(workflow.delay_minutes)}
@@ -576,15 +575,15 @@ export default function WorkflowsPage() {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
                           <div>
                             <span className="text-slate-400">Max sends per lead</span>
-                            <div className="font-medium text-slate-900">{workflow.max_sends_per_lead}</div>
+                            <div className="font-medium text-slate-50">{workflow.max_sends_per_lead}</div>
                           </div>
                           <div>
                             <span className="text-slate-400">Cooldown</span>
-                            <div className="font-medium text-slate-900">{workflow.cooldown_hours}h</div>
+                            <div className="font-medium text-slate-50">{workflow.cooldown_hours}h</div>
                           </div>
                           <div>
                             <span className="text-slate-400">Business hours</span>
-                            <div className="font-medium text-slate-900">
+                            <div className="font-medium text-slate-50">
                               {workflow.respect_business_hours
                                 ? `${workflow.business_hours_start} - ${workflow.business_hours_end}`
                                 : 'Any time'
@@ -593,7 +592,7 @@ export default function WorkflowsPage() {
                           </div>
                           <div>
                             <span className="text-slate-400">Business days</span>
-                            <div className="font-medium text-slate-900">
+                            <div className="font-medium text-slate-50">
                               {workflow.business_days.map(d => DAY_LABELS[d]).join(', ')}
                             </div>
                           </div>
@@ -652,16 +651,16 @@ export default function WorkflowsPage() {
       {/* Create/Edit Workflow Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-label={editingWorkflow ? 'Edit Workflow' : 'Create Workflow'}>
             <div className="p-6">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">
+              <h2 className="text-xl font-bold text-slate-50 mb-4">
                 {editingWorkflow ? 'Edit Workflow' : 'Create Workflow'}
               </h2>
 
               <div className="space-y-4">
                 {/* Basic info */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Name <span className="text-red-500">*</span>
                   </label>
                   <Input
@@ -672,7 +671,7 @@ export default function WorkflowsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Description
                   </label>
                   <Input
@@ -685,7 +684,7 @@ export default function WorkflowsPage() {
                 {/* Trigger and Template */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-300 mb-1">
                       Trigger Event <span className="text-red-500">*</span>
                     </label>
                     <Select
@@ -695,7 +694,7 @@ export default function WorkflowsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-300 mb-1">
                       Template <span className="text-red-500">*</span>
                     </label>
                     <Select
@@ -711,7 +710,7 @@ export default function WorkflowsPage() {
 
                 {/* Delay */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Delay After Trigger
                   </label>
                   <div className="flex gap-2">
@@ -740,7 +739,7 @@ export default function WorkflowsPage() {
 
                 {/* Channel override */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-300 mb-1">
                     Channel Override
                   </label>
                   <Select
@@ -755,10 +754,10 @@ export default function WorkflowsPage() {
                 </div>
 
                 {/* Advanced settings */}
-                <div className="border-t border-slate-200 pt-4 mt-4">
+                <div className="border-t border-white/5 pt-4 mt-4">
                   <button
                     type="button"
-                    className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-4"
+                    className="flex items-center gap-2 text-sm font-medium text-slate-300 mb-4"
                     onClick={() => setShowAdvancedSettings(!showAdvancedSettings)}
                   >
                     <Settings className="h-4 w-4" />
@@ -770,7 +769,7 @@ export default function WorkflowsPage() {
                   <>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-slate-300 mb-1">
                         Priority (0-100)
                       </label>
                       <Input
@@ -782,7 +781,7 @@ export default function WorkflowsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-slate-300 mb-1">
                         Max Sends Per Lead
                       </label>
                       <Input
@@ -794,7 +793,7 @@ export default function WorkflowsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-slate-300 mb-1">
                         Cooldown (hours)
                       </label>
                       <Input
@@ -809,7 +808,7 @@ export default function WorkflowsPage() {
 
                   {/* Business hours */}
                   <div className="mt-4">
-                    <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
+                    <label className="flex items-center gap-2 text-sm font-medium text-slate-300 mb-2">
                       <input
                         type="checkbox"
                         checked={formRespectBusinessHours}
@@ -823,7 +822,7 @@ export default function WorkflowsPage() {
                       <div className="ml-6 space-y-3">
                         <div className="flex gap-4">
                           <div>
-                            <label className="block text-xs text-slate-500 mb-1">Start</label>
+                            <label className="block text-xs text-slate-400 mb-1">Start</label>
                             <Input
                               type="time"
                               value={formBusinessStart}
@@ -832,7 +831,7 @@ export default function WorkflowsPage() {
                             />
                           </div>
                           <div>
-                            <label className="block text-xs text-slate-500 mb-1">End</label>
+                            <label className="block text-xs text-slate-400 mb-1">End</label>
                             <Input
                               type="time"
                               value={formBusinessEnd}
@@ -842,7 +841,7 @@ export default function WorkflowsPage() {
                           </div>
                         </div>
                         <div>
-                          <label className="block text-xs text-slate-500 mb-2">Business Days</label>
+                          <label className="block text-xs text-slate-400 mb-2">Business Days</label>
                           <div className="flex gap-2">
                             {[1, 2, 3, 4, 5, 6, 7].map(day => (
                               <button
@@ -851,7 +850,7 @@ export default function WorkflowsPage() {
                                 className={`w-10 h-10 rounded-full text-sm font-medium transition-colors ${
                                   formBusinessDays.includes(day)
                                     ? 'bg-gold text-white'
-                                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                    : 'bg-slate-900/60 text-slate-400 hover:bg-slate-900/60'
                                 }`}
                                 onClick={() => {
                                   if (formBusinessDays.includes(day)) {

@@ -79,8 +79,8 @@ export default function EstimateAccuracyPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Estimate Accuracy</h1>
-            <p className="text-slate-500">Estimate vs actual cost variance analysis</p>
+            <h1 className="text-2xl font-bold text-slate-50">Estimate Accuracy</h1>
+            <p className="text-slate-400">Estimate vs actual cost variance analysis</p>
           </div>
           <Button
             variant="outline"
@@ -94,10 +94,10 @@ export default function EstimateAccuracyPage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>
               Try Again
             </Button>
@@ -110,12 +110,12 @@ export default function EstimateAccuracyPage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Jobs Analyzed</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Jobs Analyzed</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.jobsAnalyzed || 0}
                     </p>
                   </div>
@@ -126,11 +126,11 @@ export default function EstimateAccuracyPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Avg Price Variance</p>
+                    <p className="text-sm text-slate-400">Avg Price Variance</p>
                     <p className={`text-2xl font-bold ${varianceColor(data?.summary.avgPriceVariancePct || 0)}`}>
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${(data?.summary.avgPriceVariancePct || 0) > 0 ? '+' : ''}${data?.summary.avgPriceVariancePct || 0}%`}
                     </p>
@@ -142,12 +142,12 @@ export default function EstimateAccuracyPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Over-Estimates</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Over-Estimates</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.overEstimateCount || 0}
                     </p>
                   </div>
@@ -159,12 +159,12 @@ export default function EstimateAccuracyPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Under-Estimates</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Under-Estimates</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.underEstimateCount || 0}
                     </p>
                   </div>
@@ -181,7 +181,7 @@ export default function EstimateAccuracyPage() {
           <FadeInSection delay={200} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2">
             {/* Variance Distribution */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="h-5 w-5 text-cyan-600" />
@@ -205,7 +205,7 @@ export default function EstimateAccuracyPage() {
             </Card>
 
             {/* Monthly Trend */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-blue-600" />
@@ -233,7 +233,7 @@ export default function EstimateAccuracyPage() {
 
           {/* Job Breakdown Table */}
           <FadeInSection delay={300} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5 text-indigo-600" />
@@ -247,7 +247,7 @@ export default function EstimateAccuracyPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Job #</th>
                         <th className="pb-3 pr-4 text-right">Contract</th>
                         <th className="pb-3 pr-4 text-right">Estimated</th>
@@ -258,10 +258,10 @@ export default function EstimateAccuracyPage() {
                     </thead>
                     <tbody>
                       {data.jobs.map(j => (
-                        <tr key={j.id} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{j.jobNumber}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{formatCurrency(j.contractAmount)}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{formatCurrency(j.estimatedAmount)}</td>
+                        <tr key={j.id} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{j.jobNumber}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{formatCurrency(j.contractAmount)}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{formatCurrency(j.estimatedAmount)}</td>
                           <td className="py-3 pr-4 text-right">
                             <span className={`font-medium ${varianceColor(j.variancePct)}`}>
                               {j.variancePct > 0 ? '+' : ''}{j.variancePct}%

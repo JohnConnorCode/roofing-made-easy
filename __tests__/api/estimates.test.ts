@@ -100,8 +100,8 @@ function resetEstimatesStore() {
 }
 
 function createMockQueryBuilder(table: string) {
-  let filters: Array<{ column: string; value: unknown; operator: string }> = []
-  let selectQuery = '*'
+  const filters: Array<{ column: string; value: unknown; operator: string }> = []
+  let _selectQuery = '*'
   let orderBy: { column: string; ascending: boolean } | null = null
   let rangeStart = 0
   let rangeEnd = 19
@@ -110,7 +110,7 @@ function createMockQueryBuilder(table: string) {
 
   const builder = {
     select: (query?: string, options?: { count?: 'exact'; head?: boolean }) => {
-      selectQuery = query || '*'
+      _selectQuery = query || '*'
       if (options?.count === 'exact') countOption = true
       if (options?.head) headOnly = true
       return builder

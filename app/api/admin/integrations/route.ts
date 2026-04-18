@@ -35,7 +35,7 @@ export async function GET() {
   const credentialStatus = await getAllCredentialStatus()
 
   // Get additional info from database
-  let dbCredentials: Record<string, {
+  const dbCredentials: Record<string, {
     key_hint?: string
     last_tested_at?: string
     last_test_success?: boolean

@@ -143,10 +143,10 @@ export function GlobalSearch() {
                 onChange={(e) => handleInputChange(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Search leads, jobs, invoices, customers..."
-                className="flex-1 outline-none text-sm text-slate-900 placeholder:text-slate-400"
+                className="flex-1 outline-none text-sm text-slate-900 placeholder:text-slate-500"
               />
               {query && (
-                <button onClick={() => { setQuery(''); setResults([]) }} className="text-slate-400 hover:text-slate-600">
+                <button onClick={() => { setQuery(''); setResults([]) }} className="text-slate-400 hover:text-slate-400">
                   <X className="h-4 w-4" />
                 </button>
               )}
@@ -156,13 +156,13 @@ export function GlobalSearch() {
             {(results.length > 0 || isLoading) && (
               <div className="max-h-80 overflow-y-auto py-2">
                 {isLoading && results.length === 0 && (
-                  <p className="px-4 py-3 text-sm text-slate-500">Searching...</p>
+                  <p className="px-4 py-3 text-sm text-slate-400">Searching...</p>
                 )}
                 {Object.entries(grouped).map(([type, items]) => {
                   const config = TYPE_CONFIG[type as keyof typeof TYPE_CONFIG]
                   return (
                     <div key={type}>
-                      <p className="px-4 py-1.5 text-xs font-medium text-slate-500 uppercase tracking-wider">
+                      <p className="px-4 py-1.5 text-xs font-medium text-slate-400 uppercase tracking-wider">
                         {config.label}s
                       </p>
                       {items.map((result) => {
@@ -181,7 +181,7 @@ export function GlobalSearch() {
                             </div>
                             <div className="min-w-0 flex-1">
                               <p className="text-sm font-medium text-slate-900 truncate">{result.title}</p>
-                              <p className="text-xs text-slate-500 truncate">{result.subtitle}</p>
+                              <p className="text-xs text-slate-400 truncate">{result.subtitle}</p>
                             </div>
                           </button>
                         )
@@ -195,7 +195,7 @@ export function GlobalSearch() {
             {/* Empty state */}
             {query.length >= 2 && !isLoading && results.length === 0 && (
               <div className="px-4 py-6 text-center">
-                <p className="text-sm text-slate-500">No results for &quot;{query}&quot;</p>
+                <p className="text-sm text-slate-400">No results for &quot;{query}&quot;</p>
               </div>
             )}
 

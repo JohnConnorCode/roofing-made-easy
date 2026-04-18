@@ -78,10 +78,10 @@ export function ResourceLibrary({ category, limit }: ResourceLibraryProps) {
                   <div>
                     <CardTitle className="text-base text-slate-100">{resource.title}</CardTitle>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs text-slate-500 bg-slate-800 px-2 py-0.5 rounded">
+                      <span className="text-xs text-slate-400 bg-slate-800 px-2 py-0.5 rounded">
                         {resource.type.charAt(0).toUpperCase() + resource.type.slice(1)}
                       </span>
-                      <span className="text-xs text-slate-500">
+                      <span className="text-xs text-slate-400">
                         {CATEGORY_LABELS[resource.category]}
                       </span>
                     </div>
@@ -90,9 +90,9 @@ export function ResourceLibrary({ category, limit }: ResourceLibraryProps) {
                 </div>
                 <div className="shrink-0 ml-4">
                   {isExpanded ? (
-                    <ChevronUp className="h-5 w-5 text-slate-500" />
+                    <ChevronUp className="h-5 w-5 text-slate-400" />
                   ) : (
-                    <ChevronDown className="h-5 w-5 text-slate-500" />
+                    <ChevronDown className="h-5 w-5 text-slate-400" />
                   )}
                 </div>
               </div>
@@ -110,6 +110,7 @@ export function ResourceLibrary({ category, limit }: ResourceLibraryProps) {
                         >
                           <input
                             type="checkbox"
+                            aria-label={item}
                             className="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-800 text-gold-light focus:ring-gold-light/20"
                           />
                           <span className="text-sm text-slate-300 group-hover:text-slate-200">

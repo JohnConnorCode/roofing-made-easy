@@ -98,8 +98,8 @@ export default function FinancingPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Financing Performance</h1>
-            <p className="text-slate-500">Application pipeline, lender stats, and conversion impact</p>
+            <h1 className="text-2xl font-bold text-slate-50">Financing Performance</h1>
+            <p className="text-slate-400">Application pipeline, lender stats, and conversion impact</p>
           </div>
           <Button
             variant="outline"
@@ -113,10 +113,10 @@ export default function FinancingPage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>
               Try Again
             </Button>
@@ -129,12 +129,12 @@ export default function FinancingPage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Total Applications</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Total Applications</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.summary.totalApplications || 0}
                     </p>
                   </div>
@@ -145,11 +145,11 @@ export default function FinancingPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Approval Rate</p>
+                    <p className="text-sm text-slate-400">Approval Rate</p>
                     <p className={`text-2xl font-bold ${
                       (data?.summary.approvalRate || 0) >= 60 ? 'text-green-600' : 'text-amber-600'
                     }`}>
@@ -163,12 +163,12 @@ export default function FinancingPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Avg Approved Amount</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Avg Approved Amount</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : formatCurrency(data?.summary.avgApprovedAmount || 0)}
                     </p>
                   </div>
@@ -179,13 +179,13 @@ export default function FinancingPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Win Rate Lift</p>
+                    <p className="text-sm text-slate-400">Win Rate Lift</p>
                     <p className={`text-2xl font-bold ${
-                      (data?.conversionImpact.liftPct || 0) > 0 ? 'text-green-600' : 'text-slate-900'
+                      (data?.conversionImpact.liftPct || 0) > 0 ? 'text-green-600' : 'text-slate-50'
                     }`}>
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.conversionImpact.liftPct != null
                         ? `${data.conversionImpact.liftPct > 0 ? '+' : ''}${data.conversionImpact.liftPct}%`
@@ -216,7 +216,7 @@ export default function FinancingPage() {
 
           {/* Pipeline */}
           <FadeInSection delay={300} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Landmark className="h-5 w-5 text-emerald-600" />
@@ -266,7 +266,7 @@ export default function FinancingPage() {
 
           {/* By Lender Table */}
           <FadeInSection delay={500} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Landmark className="h-5 w-5 text-blue-600" />
@@ -280,7 +280,7 @@ export default function FinancingPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Lender</th>
                         <th className="pb-3 pr-4 text-right">Apps</th>
                         <th className="pb-3 pr-4 text-right">Approved</th>
@@ -292,10 +292,10 @@ export default function FinancingPage() {
                     </thead>
                     <tbody>
                       {data.byLender.map(l => (
-                        <tr key={l.lenderName} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{l.lenderName}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{l.count}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{l.approvedCount}</td>
+                        <tr key={l.lenderName} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{l.lenderName}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{l.count}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{l.approvedCount}</td>
                           <td className="py-3 pr-4 text-right">
                             <span className={`font-medium ${
                               l.approvalRate >= 60 ? 'text-green-600' : l.approvalRate >= 40 ? 'text-amber-600' : 'text-red-600'
@@ -303,9 +303,9 @@ export default function FinancingPage() {
                               {l.approvalRate}%
                             </span>
                           </td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{formatCurrency(l.avgApprovedAmount)}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{l.avgRate != null ? `${l.avgRate}%` : 'N/A'}</td>
-                          <td className="py-3 text-right text-slate-600">{l.avgTermMonths != null ? `${l.avgTermMonths}mo` : 'N/A'}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{formatCurrency(l.avgApprovedAmount)}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{l.avgRate != null ? `${l.avgRate}%` : 'N/A'}</td>
+                          <td className="py-3 text-right text-slate-400">{l.avgTermMonths != null ? `${l.avgTermMonths}mo` : 'N/A'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -321,7 +321,7 @@ export default function FinancingPage() {
 
           {/* By Credit Range */}
           <FadeInSection delay={600} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-indigo-600" />
@@ -335,7 +335,7 @@ export default function FinancingPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Credit Range</th>
                         <th className="pb-3 pr-4 text-right">Applications</th>
                         <th className="pb-3 pr-4 text-right">Approved</th>
@@ -344,14 +344,14 @@ export default function FinancingPage() {
                     </thead>
                     <tbody>
                       {data.byCreditRange.map(cr => (
-                        <tr key={cr.creditRange} className="border-b last:border-0 hover:bg-slate-50">
+                        <tr key={cr.creditRange} className="border-b last:border-0 hover:bg-slate-900/40">
                           <td className={`py-3 pr-4 font-medium ${
-                            creditRangeColors[cr.creditRange.toLowerCase()] || 'text-slate-700'
+                            creditRangeColors[cr.creditRange.toLowerCase()] || 'text-slate-300'
                           }`}>
                             {cr.creditRange}
                           </td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{cr.count}</td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{cr.approvedCount}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{cr.count}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{cr.approvedCount}</td>
                           <td className="py-3 text-right">
                             <span className={`font-medium ${
                               cr.approvalRate >= 60 ? 'text-green-600' : cr.approvalRate >= 40 ? 'text-amber-600' : 'text-red-600'
@@ -374,7 +374,7 @@ export default function FinancingPage() {
 
           {/* Pending Applications */}
           <FadeInSection delay={700} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Clock className="h-5 w-5 text-amber-600" />
@@ -388,7 +388,7 @@ export default function FinancingPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Lender</th>
                         <th className="pb-3 pr-4">Status</th>
                         <th className="pb-3 pr-4 text-right">Requested</th>
@@ -397,17 +397,17 @@ export default function FinancingPage() {
                     </thead>
                     <tbody>
                       {data.pendingApplications.map(a => (
-                        <tr key={a.id} className="border-b last:border-0 hover:bg-slate-50">
-                          <td className="py-3 pr-4 font-medium text-slate-700">{a.lenderName}</td>
+                        <tr key={a.id} className="border-b last:border-0 hover:bg-slate-900/40">
+                          <td className="py-3 pr-4 font-medium text-slate-300">{a.lenderName}</td>
                           <td className="py-3 pr-4">
                             <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
                               {titleCase(a.status)}
                             </span>
                           </td>
-                          <td className="py-3 pr-4 text-right text-slate-600">{formatCurrency(a.requestedAmount)}</td>
+                          <td className="py-3 pr-4 text-right text-slate-400">{formatCurrency(a.requestedAmount)}</td>
                           <td className="py-3 text-right">
                             <span className={`font-medium ${
-                              a.daysPending > 30 ? 'text-red-600' : a.daysPending > 14 ? 'text-amber-600' : 'text-slate-600'
+                              a.daysPending > 30 ? 'text-red-600' : a.daysPending > 14 ? 'text-amber-600' : 'text-slate-400'
                             }`}>
                               {a.daysPending}
                             </span>

@@ -140,7 +140,7 @@ function PaymentForm({
         </Button>
       </div>
 
-      <p className="text-xs text-slate-500 text-center">
+      <p className="text-xs text-slate-400 text-center">
         Your payment is secured by Stripe. We never store your card details.
       </p>
     </form>
@@ -206,7 +206,7 @@ function PaymentModal({
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         <div className="bg-white rounded-lg p-6 max-w-md mx-4" role="dialog" aria-modal="true">
-          <div className="flex items-center gap-3 text-slate-500">
+          <div className="flex items-center gap-3 text-slate-400">
             <AlertTriangle className="h-5 w-5" />
             <p>Payment service is not available at this time.</p>
           </div>
@@ -233,7 +233,7 @@ function PaymentModal({
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg"
+            className="p-2 text-slate-400 hover:text-slate-400 hover:bg-slate-100 rounded-lg"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -245,7 +245,7 @@ function PaymentModal({
           {/* Amount display */}
           <div className="mb-6 p-4 rounded-lg bg-slate-50 border border-slate-200">
             <div className="flex items-center justify-between">
-              <span className="text-slate-600">Amount Due</span>
+              <span className="text-slate-400">Amount Due</span>
               <span className="text-2xl font-bold text-slate-900">
                 {formatCurrency(invoice.balance_due)}
               </span>
@@ -294,20 +294,20 @@ function PaymentModal({
 
 export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps) {
   const [showPaymentModal, setShowPaymentModal] = useState(false)
-  const [paymentSuccess, setPaymentSuccess] = useState(false)
+  const [paymentSuccess, setPaymentSuccess] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return new URLSearchParams(window.location.search).get('payment') === 'success'
+  })
 
   const canPay = invoice.balance_due > 0 && !['paid', 'cancelled', 'refunded'].includes(invoice.status)
 
-  // Check for payment success from redirect
+  // Handle payment success redirect cleanup
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    if (params.get('payment') === 'success') {
-      setPaymentSuccess(true)
+    if (paymentSuccess) {
       onPaymentComplete?.()
-      // Clean up URL
       window.history.replaceState({}, '', window.location.pathname)
     }
-  }, [onPaymentComplete])
+  }, [paymentSuccess, onPaymentComplete])
 
   function formatDate(dateStr: string | null): string {
     if (!dateStr) return 'Upon receipt'
@@ -374,7 +374,7 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
         {/* Bill To */}
         <div className="grid grid-cols-2 gap-8">
           <div>
-            <h3 className="text-sm font-medium text-slate-500 uppercase mb-2">Bill To</h3>
+            <h3 className="text-sm font-medium text-slate-400 uppercase mb-2">Bill To</h3>
             <div className="text-slate-200">
               {invoice.bill_to_name && <p className="font-medium">{invoice.bill_to_name}</p>}
               {invoice.bill_to_email && <p>{invoice.bill_to_email}</p>}
@@ -387,15 +387,15 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
           <div className="text-right">
             <div className="space-y-1">
               <div className="flex justify-between">
-                <span className="text-slate-500">Invoice Date:</span>
+                <span className="text-slate-400">Invoice Date:</span>
                 <span className="font-medium text-slate-200">{formatDate(invoice.issue_date)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Due Date:</span>
+                <span className="text-slate-400">Due Date:</span>
                 <span className="font-medium text-slate-200">{formatDate(invoice.due_date)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Type:</span>
+                <span className="text-slate-400">Type:</span>
                 <span className="font-medium text-slate-200 capitalize">{invoice.payment_type.replace('_', ' ')}</span>
               </div>
             </div>
@@ -442,18 +442,18 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
         <div className="bg-slate-800 px-6 py-4">
           <div className="max-w-xs ml-auto space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-slate-500">Subtotal</span>
+              <span className="text-slate-400">Subtotal</span>
               <span className="text-slate-200">{formatCurrency(invoice.subtotal)}</span>
             </div>
             {invoice.discount_amount > 0 && (
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Discount ({invoice.discount_percent}%)</span>
+                <span className="text-slate-400">Discount ({invoice.discount_percent}%)</span>
                 <span className="text-green-400">-{formatCurrency(invoice.discount_amount)}</span>
               </div>
             )}
             {invoice.tax_amount > 0 && (
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Tax ({(invoice.tax_rate * 100).toFixed(2)}%)</span>
+                <span className="text-slate-400">Tax ({(invoice.tax_rate * 100).toFixed(2)}%)</span>
                 <span className="text-slate-200">{formatCurrency(invoice.tax_amount)}</span>
               </div>
             )}
@@ -463,7 +463,7 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
             </div>
             {invoice.amount_paid > 0 && (
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Amount Paid</span>
+                <span className="text-slate-400">Amount Paid</span>
                 <span className="text-green-400">-{formatCurrency(invoice.amount_paid)}</span>
               </div>
             )}
@@ -480,7 +480,7 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
       {/* Notes */}
       {invoice.notes && (
         <div className="bg-slate-800/50 rounded-lg border border-slate-700 p-6 mb-6">
-          <h3 className="text-sm font-medium text-slate-500 uppercase mb-2">Notes</h3>
+          <h3 className="text-sm font-medium text-slate-400 uppercase mb-2">Notes</h3>
           <p className="text-slate-300 whitespace-pre-wrap">{invoice.notes}</p>
         </div>
       )}
@@ -488,7 +488,7 @@ export function InvoiceViewer({ invoice, onPaymentComplete }: InvoiceViewerProps
       {/* Terms */}
       {invoice.terms && (
         <div className="bg-slate-800 rounded-lg border border-slate-700 p-6 mb-6">
-          <h3 className="text-sm font-medium text-slate-500 uppercase mb-2">Terms & Conditions</h3>
+          <h3 className="text-sm font-medium text-slate-400 uppercase mb-2">Terms & Conditions</h3>
           <p className="text-slate-400 text-sm whitespace-pre-wrap">{invoice.terms}</p>
         </div>
       )}

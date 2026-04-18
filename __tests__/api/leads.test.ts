@@ -73,19 +73,19 @@ function createMockLead(overrides: Partial<Record<string, unknown>> = {}) {
 
 // Mock Supabase client
 function createMockQueryBuilder(table: string) {
-  let filters: Array<{ column: string; value: unknown; operator: string }> = []
+  const filters: Array<{ column: string; value: unknown; operator: string }> = []
   let insertData: unknown = null
   let updateData: unknown = null
-  let selectedColumns = '*'
+  let _selectedColumns = '*'
   let isSingle = false
-  let orderColumn: string | null = null
+  let _orderColumn: string | null = null
   let rangeStart = 0
   let rangeEnd = 49
   let inFilter: { column: string; values: unknown[] } | null = null
 
   const builder = {
-    select: (columns?: string, opts?: { count?: string }) => {
-      selectedColumns = columns || '*'
+    select: (columns?: string, _opts?: { count?: string }) => {
+      _selectedColumns = columns || '*'
       return builder
     },
     insert: (data: unknown) => {
@@ -104,8 +104,8 @@ function createMockQueryBuilder(table: string) {
       inFilter = { column, values }
       return builder
     },
-    order: (column: string, opts?: { ascending?: boolean }) => {
-      orderColumn = column
+    order: (column: string, _opts?: { ascending?: boolean }) => {
+      _orderColumn = column
       return builder
     },
     range: (start: number, end: number) => {

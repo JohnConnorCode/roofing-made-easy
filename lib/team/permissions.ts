@@ -86,7 +86,6 @@ export interface PermissionAuthResult {
  */
 export function getEffectivePermissions(profile: UserProfile | null, user?: User): Permissions {
   const role = profile?.role ||
-    (user?.user_metadata?.role as UserRole) ||
     (user?.app_metadata?.role as UserRole) ||
     'crew'
 
@@ -124,16 +123,15 @@ export function hasPermission(
 export function getUserRole(profile: UserProfile | null, user?: User): UserRole {
   if (profile?.role) return profile.role
 
-  const metadataRole =
-    (user?.user_metadata?.role as UserRole) ||
-    (user?.app_metadata?.role as UserRole)
+  // Only check app_metadata (server-controlled, not client-modifiable)
+  const metadataRole = user?.app_metadata?.role as UserRole
 
   if (metadataRole && ['admin', 'manager', 'sales', 'crew_lead', 'crew'].includes(metadataRole)) {
     return metadataRole
   }
 
-  // Check for legacy is_admin flag
-  if (user?.user_metadata?.is_admin === true || user?.app_metadata?.is_admin === true) {
+  // Check for legacy is_admin flag (app_metadata only)
+  if (user?.app_metadata?.is_admin === true) {
     return 'admin'
   }
 

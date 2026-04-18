@@ -23,7 +23,7 @@ const ALL_NOTIFICATION_TYPES: NotificationType[] = [
   'system_alert',
 ]
 
-const ALL_PRIORITIES: NotificationPriority[] = ['low', 'normal', 'high', 'urgent']
+const _ALL_PRIORITIES: NotificationPriority[] = ['low', 'normal', 'high', 'urgent']
 
 function formatStatusTransition(oldStatus: string, newStatus: string): string {
   return `Status changed from "${oldStatus.replace(/_/g, ' ')}" to "${newStatus.replace(/_/g, ' ')}"`

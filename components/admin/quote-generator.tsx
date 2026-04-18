@@ -65,7 +65,6 @@ interface QuoteGeneratorProps {
 
 export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
   const printRef = useRef<HTMLDivElement>(null)
-  const [isEditing, setIsEditing] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
 
   // Generate default quote data from lead
@@ -93,7 +92,7 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
     { description: 'Cleanup and final inspection', total: 0 }
   )
 
-  const [quote, setQuote] = useState<QuoteData>({
+  const [quote] = useState<QuoteData>({
     quoteNumber: `Q-${Date.now().toString().slice(-8)}`,
     date: new Date().toLocaleDateString('en-US'),
     validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US'),
@@ -186,42 +185,42 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
             </div>
             <div>
               <h1 className="text-xl font-bold text-slate-900">{BUSINESS_CONFIG.name}</h1>
-              <p className="text-sm text-slate-500">Licensed & Insured Contractor</p>
+              <p className="text-sm text-slate-400">Licensed & Insured Contractor</p>
             </div>
           </div>
           <div className="text-right">
             <h2 className="text-2xl font-bold text-slate-900">QUOTE</h2>
-            <p className="text-sm text-slate-500">#{quote.quoteNumber}</p>
+            <p className="text-sm text-slate-400">#{quote.quoteNumber}</p>
           </div>
         </div>
 
         {/* Quote Details */}
         <div className="grid md:grid-cols-2 gap-8 mb-8">
           <div>
-            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Quote For
             </h3>
             <p className="font-semibold text-slate-900">{quote.customerName}</p>
-            <p className="text-slate-600">{quote.customerAddress}</p>
-            <p className="text-slate-600">
+            <p className="text-slate-400">{quote.customerAddress}</p>
+            <p className="text-slate-400">
               {quote.customerCity}, {quote.customerState} {quote.customerZip}
             </p>
             {quote.customerPhone && (
-              <p className="text-slate-600 mt-2">{quote.customerPhone}</p>
+              <p className="text-slate-400 mt-2">{quote.customerPhone}</p>
             )}
             {quote.customerEmail && (
-              <p className="text-slate-600">{quote.customerEmail}</p>
+              <p className="text-slate-400">{quote.customerEmail}</p>
             )}
           </div>
           <div className="text-right">
             <div className="mb-2">
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Date:{' '}
               </span>
               <span className="text-slate-900">{quote.date}</span>
             </div>
             <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Valid Until:{' '}
               </span>
               <span className="text-slate-900">{quote.validUntil}</span>
@@ -231,7 +230,7 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
 
         {/* Project Description */}
         <div className="mb-6">
-          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
             Project Description
           </h3>
           <p className="text-slate-700 capitalize">{quote.projectDescription}</p>
@@ -241,10 +240,10 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
         <table className="w-full mb-6">
           <thead>
             <tr className="border-b-2 border-slate-200">
-              <th className="text-left py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <th className="text-left py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Description
               </th>
-              <th className="text-right py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <th className="text-right py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 Amount
               </th>
             </tr>
@@ -272,12 +271,12 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
         <div className="flex justify-end mb-8">
           <div className="w-64">
             <div className="flex justify-between py-2 border-b border-slate-100">
-              <span className="text-slate-600">Subtotal</span>
+              <span className="text-slate-400">Subtotal</span>
               <span className="font-medium">{formatCurrency(quote.subtotal)}</span>
             </div>
             {quote.tax && quote.tax > 0 && (
               <div className="flex justify-between py-2 border-b border-slate-100">
-                <span className="text-slate-600">Tax</span>
+                <span className="text-slate-400">Tax</span>
                 <span className="font-medium">{formatCurrency(quote.tax)}</span>
               </div>
             )}
@@ -291,38 +290,38 @@ export function QuoteGenerator({ leadData }: QuoteGeneratorProps) {
         {/* Notes */}
         {quote.notes && (
           <div className="mb-6 p-4 bg-slate-50 rounded-lg">
-            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Notes
             </h3>
-            <p className="text-sm text-slate-600">{quote.notes}</p>
+            <p className="text-sm text-slate-400">{quote.notes}</p>
           </div>
         )}
 
         {/* Terms */}
         {quote.terms && (
           <div className="mb-6">
-            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               Terms & Conditions
             </h3>
-            <p className="text-sm text-slate-600">{quote.terms}</p>
+            <p className="text-sm text-slate-400">{quote.terms}</p>
           </div>
         )}
 
         {/* Signature Area */}
         <div className="grid md:grid-cols-2 gap-8 mt-12 pt-8 border-t border-slate-200">
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">
               Customer Acceptance
             </p>
             <div className="border-b border-slate-300 mb-2 h-8" />
-            <p className="text-sm text-slate-500">Signature & Date</p>
+            <p className="text-sm text-slate-400">Signature & Date</p>
           </div>
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-4">
               {BUSINESS_CONFIG.name}
             </p>
             <div className="border-b border-slate-300 mb-2 h-8" />
-            <p className="text-sm text-slate-500">Authorized Representative</p>
+            <p className="text-sm text-slate-400">Authorized Representative</p>
           </div>
         </div>
 

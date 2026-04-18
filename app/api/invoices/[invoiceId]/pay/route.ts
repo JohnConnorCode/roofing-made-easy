@@ -77,9 +77,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     }
 
     // Verify the authenticated user owns this invoice (admin or linked customer)
-    const isAdmin =
-      user!.user_metadata?.role === 'admin' ||
-      user!.app_metadata?.role === 'admin'
+    const isAdmin = user!.app_metadata?.role === 'admin'
 
     if (!isAdmin) {
       // Check if the user is linked to this invoice's customer

@@ -20,7 +20,7 @@ import {
   getEmptyVariables,
 } from '@/lib/estimation/variables'
 import type { RoofSlope, RoofSketch } from '@/lib/supabase/types'
-import { sampleVariables, complexVariables, emptyVariables } from '../fixtures/estimation'
+import { sampleVariables, complexVariables } from '../fixtures/estimation'
 
 describe('getPitchMultiplier', () => {
   it('returns 1.0 for flat roof (0/12)', () => {

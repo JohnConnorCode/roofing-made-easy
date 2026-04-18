@@ -37,7 +37,7 @@ test.describe('Notifications', () => {
       await bell.click()
 
       // Dropdown should appear with "Notifications" header
-      const dropdown = page.locator('text=Notifications').locator('..').locator('..')
+      const _dropdown = page.locator('text=Notifications').locator('..').locator('..')
       const dropdownHeader = page.locator('h3:has-text("Notifications")')
 
       await expect(dropdownHeader).toBeVisible({ timeout: 5000 })

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -41,11 +41,7 @@ export default function CustomerInvoicesPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchInvoices()
-  }, [])
-
-  async function fetchInvoices() {
+  const fetchInvoices = useCallback(async () => {
     try {
       setLoading(true)
       const res = await fetch('/api/customer/invoices')
@@ -58,7 +54,11 @@ export default function CustomerInvoicesPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [trackEngagement])
+
+  useEffect(() => {
+    fetchInvoices()
+  }, [fetchInvoices])
 
   function formatDate(dateStr: string | null): string {
     if (!dateStr) return 'Upon receipt'
@@ -204,9 +204,9 @@ export default function CustomerInvoicesPage() {
       {/* Empty State */}
       {invoices.length === 0 && (
         <div className="text-center py-12 bg-slate-800/50 rounded-lg border border-dashed border-slate-700">
-          <FileText className="mx-auto h-12 w-12 text-slate-600 mb-3" />
+          <FileText className="mx-auto h-12 w-12 text-slate-400 mb-3" />
           <p className="text-slate-300 mb-2">No invoices yet</p>
-          <p className="text-sm text-slate-500">Invoices will appear here once your project begins</p>
+          <p className="text-sm text-slate-400">Invoices will appear here once your project begins</p>
         </div>
       )}
     </div>

@@ -124,11 +124,11 @@ export default function BenefitCalculator({
         </CardHeader>
         <CardContent>
           <div className="rounded-xl border border-dashed border-slate-600 bg-[#0c0f14] p-8 text-center">
-            <Calculator className="mx-auto h-10 w-10 text-slate-600 mb-4" />
+            <Calculator className="mx-auto h-10 w-10 text-slate-400 mb-4" />
             <p className="text-slate-300 font-medium mb-2">
               See how much assistance could cover
             </p>
-            <p className="text-sm text-slate-500 max-w-sm mx-auto">
+            <p className="text-sm text-slate-400 max-w-sm mx-auto">
               Complete your eligibility filters and get an estimate to see a
               breakdown of how programs can reduce your out-of-pocket cost.
             </p>

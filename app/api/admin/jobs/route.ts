@@ -86,7 +86,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      query = query.or(`job_number.ilike.%${search}%,property_address.ilike.%${search}%,notes.ilike.%${search}%`)
+      const sanitizedSearch = search.replace(/[%_'"\\]/g, '').trim()
+      if (sanitizedSearch) {
+        query = query.or(`job_number.ilike.%${sanitizedSearch}%,property_address.ilike.%${sanitizedSearch}%,notes.ilike.%${sanitizedSearch}%`)
+      }
     }
 
     const { data: jobs, error, count } = await query

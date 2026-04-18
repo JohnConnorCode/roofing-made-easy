@@ -130,12 +130,6 @@ export async function GET(request: NextRequest) {
       deviceMap.get(device)!.add(ev.session_id)
     }
 
-    const devices = Array.from(deviceMap.entries()).map(([device, sessions]) => ({
-      device,
-      sessions: sessions.size,
-      percentage: uniqueSessions > 0 ? Math.round((sessions.size / uniqueSessions) * 100) : 0,
-    }))
-
     // Daily trends (sessions and conversions per day)
     const dailyMap = new Map<string, { sessions: Set<string>; conversions: number }>()
     for (const ev of rows) {

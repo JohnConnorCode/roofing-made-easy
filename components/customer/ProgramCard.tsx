@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/lib/utils'
-import { ExternalLink, Phone, CheckCircle, XCircle, HelpCircle, ChevronDown, ChevronUp, Clock, Zap, BarChart3 } from 'lucide-react'
+import { ExternalLink, Phone, CheckCircle, XCircle, HelpCircle, ChevronDown, ChevronUp, Clock, BarChart3 } from 'lucide-react'
 import type { AssistanceProgramData } from '@/lib/data/assistance-programs'
 import { PROGRAM_TYPE_LABELS, APPLICATION_STATUS_LABELS } from '@/lib/data/assistance-programs'
 import type { ApplicationStatus } from '@/lib/supabase/types'
@@ -89,7 +89,7 @@ export function ProgramCard({
                 <XCircle className="h-5 w-5 text-red-400" />
               )}
               {eligibilityStatus === undefined && (
-                <HelpCircle className="h-5 w-5 text-slate-500" />
+                <HelpCircle className="h-5 w-5 text-slate-400" />
               )}
             </div>
           </div>
@@ -121,7 +121,7 @@ export function ProgramCard({
                   </span>
                 )}
                 {program.state && (
-                  <span className="text-xs text-slate-500">{program.state}</span>
+                  <span className="text-xs text-slate-400">{program.state}</span>
                 )}
               </div>
             </div>
@@ -152,7 +152,7 @@ export function ProgramCard({
                   Apply
                 </Button>
               )}
-              <ChevronDown className="h-4 w-4 text-slate-500" />
+              <ChevronDown className="h-4 w-4 text-slate-400" />
             </div>
           </div>
         </CardContent>
@@ -184,7 +184,7 @@ export function ProgramCard({
             </div>
             <CardTitle className="text-lg text-slate-100">{program.name}</CardTitle>
             {program.programCode && (
-              <p className="text-xs text-slate-500 font-mono">{program.programCode}</p>
+              <p className="text-xs text-slate-400 font-mono">{program.programCode}</p>
             )}
           </div>
           <div className="flex items-center gap-2">
@@ -196,7 +196,7 @@ export function ProgramCard({
             {expandable && (
               <button
                 onClick={() => setExpanded(false)}
-                className="text-slate-500 hover:text-slate-300 p-1"
+                className="text-slate-400 hover:text-slate-300 p-1"
               >
                 <ChevronUp className="h-4 w-4" />
               </button>
@@ -210,7 +210,7 @@ export function ProgramCard({
 
         {/* Benefits */}
         <div className="rounded-lg bg-slate-deep border border-slate-700 p-3">
-          <p className="text-xs text-slate-500 mb-1">Benefits</p>
+          <p className="text-xs text-slate-400 mb-1">Benefits</p>
           <p className="text-sm text-slate-300">{program.benefits}</p>
           {program.maxBenefitAmount && (
             <p className="text-lg font-semibold text-gold-light mt-2">
@@ -270,7 +270,7 @@ export function ProgramCard({
         {/* Required documents */}
         {program.requiredDocuments.length > 0 && (
           <div>
-            <p className="text-xs text-slate-500 mb-2">Required Documents</p>
+            <p className="text-xs text-slate-400 mb-2">Required Documents</p>
             <ul className="text-sm text-slate-400 space-y-1">
               {program.requiredDocuments.slice(0, 4).map((doc, index) => (
                 <li key={index} className="flex items-start gap-2">
@@ -279,7 +279,7 @@ export function ProgramCard({
                 </li>
               ))}
               {program.requiredDocuments.length > 4 && (
-                <li className="text-slate-500 italic">
+                <li className="text-slate-400 italic">
                   +{program.requiredDocuments.length - 4} more...
                 </li>
               )}
@@ -324,12 +324,13 @@ export function ProgramCard({
         {/* Status update */}
         {applicationStatus && onStatusChange && (
           <div className="flex items-center gap-3 pt-2 border-t border-slate-700">
-            <span className="text-xs text-slate-500">Update status:</span>
+            <label htmlFor={`status-${program.name.replace(/\s+/g, '-').toLowerCase()}`} className="text-xs text-slate-400">Update status:</label>
             <select
+              id={`status-${program.name.replace(/\s+/g, '-').toLowerCase()}`}
               value={applicationStatus}
               onChange={(e) => onStatusChange(e.target.value as ApplicationStatus)}
               onClick={(e) => e.stopPropagation()}
-              className="flex-1 rounded-md border border-slate-600 bg-slate-800 px-2 py-1.5 text-xs text-slate-200 focus:border-gold-light focus:outline-none"
+              className="flex-1 rounded-md border border-slate-600 bg-slate-800 px-2 py-1.5 text-xs text-slate-200 focus:border-gold-light focus:outline-none focus:ring-2 focus:ring-[#c9a25c]/30"
             >
               {Object.entries(APPLICATION_STATUS_LABELS).map(([value, info]) => (
                 <option key={value} value={value}>{info.label}</option>

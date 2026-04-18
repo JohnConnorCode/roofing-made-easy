@@ -18,7 +18,7 @@ interface CTASectionProps {
 export function CTASection({
   title,
   description,
-  primaryLabel = 'Get Free Estimate',
+  primaryLabel = 'Get My Free Estimate',
   primaryHref = '/',
   showPhone = true,
   variant = 'default'
@@ -77,7 +77,7 @@ interface CTACardProps {
 export function CTACard({
   title,
   description,
-  buttonLabel = 'Get Free Estimate',
+  buttonLabel = 'Free Estimate',
   buttonHref = '/'
 }: CTACardProps) {
   return (

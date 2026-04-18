@@ -20,6 +20,7 @@ const ENV_VARS: EnvVar[] = [
 
   // AI - Required for AI features
   { name: 'OPENAI_API_KEY', required: false, description: 'OpenAI API key for AI features' },
+  { name: 'ANTHROPIC_API_KEY', required: false, description: 'Anthropic API key for AI features' },
 
   // Google - Required for address autocomplete
   { name: 'NEXT_PUBLIC_GOOGLE_PLACES_API_KEY', required: false, description: 'Google Places API key' },

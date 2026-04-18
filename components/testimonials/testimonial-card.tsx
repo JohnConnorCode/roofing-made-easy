@@ -23,7 +23,7 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
             className={`h-4 w-4 ${
               i < testimonial.rating
                 ? 'text-[#c9a25c] fill-current'
-                : 'text-slate-600'
+                : 'text-slate-400'
             }`}
           />
         ))}
@@ -31,13 +31,13 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
 
       {/* Text */}
       <p className="text-slate-300 leading-relaxed flex-1 mb-6">
-        "{testimonial.text}"
+        &ldquo;{testimonial.text}&rdquo;
       </p>
 
       {/* Author */}
       <div className="border-t border-slate-700 pt-4">
         <p className="font-semibold text-slate-100">{testimonial.name}</p>
-        <p className="text-sm text-slate-500">{testimonial.location}</p>
+        <p className="text-sm text-slate-400">{testimonial.location}</p>
         <p className="text-xs text-[#c9a25c] mt-1">{testimonial.projectType}</p>
       </div>
     </div>

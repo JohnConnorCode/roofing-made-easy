@@ -151,7 +151,7 @@ export default function EstimatesPage() {
   const getStatusBadgeClass = (status: string) => {
     switch (status) {
       case 'draft':
-        return 'bg-slate-100 text-slate-700'
+        return 'bg-white/10 text-slate-200'
       case 'sent':
         return 'bg-blue-100 text-blue-700'
       case 'accepted':
@@ -159,7 +159,7 @@ export default function EstimatesPage() {
       case 'expired':
         return 'bg-red-100 text-red-700'
       default:
-        return 'bg-slate-100 text-slate-700'
+        return 'bg-white/10 text-slate-200'
     }
   }
 
@@ -176,7 +176,7 @@ export default function EstimatesPage() {
     children: React.ReactNode
   }) => (
     <TableHead
-      className="cursor-pointer hover:text-slate-900 select-none"
+      className="cursor-pointer hover:text-slate-50 select-none"
       onClick={() => handleSort(field)}
     >
       <div className="flex items-center gap-1">
@@ -197,8 +197,8 @@ export default function EstimatesPage() {
       <FadeInSection delay={0} animation="fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Estimates</h1>
-          <p className="text-slate-500">View and manage all generated estimates</p>
+          <h1 className="text-2xl font-bold text-slate-50">Estimates</h1>
+          <p className="text-slate-400">View and manage all generated estimates</p>
         </div>
         <div className="flex items-center gap-2">
           {selectedEstimates.size >= 2 && (
@@ -217,33 +217,33 @@ export default function EstimatesPage() {
       <FadeInSection delay={100} animation="slide-up">
       {data?.aggregates && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
-              <div className="text-sm text-slate-500">Total Estimates</div>
-              <div className="text-2xl font-bold text-slate-900">
+              <div className="text-sm text-slate-400">Total Estimates</div>
+              <div className="text-2xl font-bold text-slate-50">
                 {data.aggregates.total}
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
-              <div className="text-sm text-slate-500">Total Value</div>
-              <div className="text-2xl font-bold text-slate-900">
+              <div className="text-sm text-slate-400">Total Value</div>
+              <div className="text-2xl font-bold text-slate-50">
                 {formatCurrency(data.aggregates.totalValue)}
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
-              <div className="text-sm text-slate-500">Accepted</div>
+              <div className="text-sm text-slate-400">Accepted</div>
               <div className="text-2xl font-bold text-green-600">
                 {data.aggregates.byStatus.accepted}
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardContent className="p-4">
-              <div className="text-sm text-slate-500">Pending</div>
+              <div className="text-sm text-slate-400">Pending</div>
               <div className="text-2xl font-bold text-blue-600">
                 {data.aggregates.byStatus.sent}
               </div>
@@ -255,7 +255,7 @@ export default function EstimatesPage() {
 
       {/* Filters */}
       <FadeInSection delay={200} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardContent className="p-4">
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="relative flex-1">
@@ -264,14 +264,14 @@ export default function EstimatesPage() {
                 placeholder="Search by name or address..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-white border-slate-300 text-slate-900"
+                className="pl-10"
               />
             </div>
             <Select
               options={STATUS_OPTIONS}
               value={status}
               onChange={setStatus}
-              className="md:w-48 bg-white border-slate-300 text-slate-900"
+              className="md:w-48"
             />
           </div>
         </CardContent>
@@ -280,13 +280,13 @@ export default function EstimatesPage() {
 
       {/* Estimates table */}
       <FadeInSection delay={300} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardHeader>
-          <CardTitle className="text-slate-900">
+          <CardTitle className="text-slate-50">
             {data?.pagination.total || 0} Estimate
             {data?.pagination.total !== 1 ? 's' : ''}
             {selectedEstimates.size > 0 && (
-              <span className="ml-2 text-sm font-normal text-slate-500">
+              <span className="ml-2 text-sm font-normal text-slate-400">
                 ({selectedEstimates.size} selected for comparison)
               </span>
             )}
@@ -298,7 +298,7 @@ export default function EstimatesPage() {
           ) : error ? (
             <div className="flex flex-col items-center justify-center py-8">
               <AlertTriangle className="h-10 w-10 text-gold" />
-              <p className="mt-3 text-slate-600">{error}</p>
+              <p className="mt-3 text-slate-400">{error}</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -312,7 +312,7 @@ export default function EstimatesPage() {
           ) : !data?.estimates.length ? (
             <div className="flex flex-col items-center justify-center py-8">
               <FileText className="h-10 w-10 text-slate-300" />
-              <p className="mt-3 text-slate-600">No estimates found</p>
+              <p className="mt-3 text-slate-400">No estimates found</p>
               <p className="text-sm text-slate-400">
                 {search || status
                   ? 'Try adjusting your filters.'
@@ -365,7 +365,7 @@ export default function EstimatesPage() {
                               : 'Unknown'}
                           </Link>
                           {contact?.email && (
-                            <div className="text-sm text-slate-500">
+                            <div className="text-sm text-slate-400">
                               {contact.email}
                             </div>
                           )}
@@ -376,7 +376,7 @@ export default function EstimatesPage() {
                               <div className="text-sm">
                                 {property.street_address}
                               </div>
-                              <div className="text-sm text-slate-500">
+                              <div className="text-sm text-slate-400">
                                 {property.city}, {property.state} {property.zip_code}
                               </div>
                             </div>
@@ -389,7 +389,7 @@ export default function EstimatesPage() {
                           <div className="font-medium">
                             {formatCurrency(estimate.price_likely)}
                           </div>
-                          <div className="text-xs text-slate-500">
+                          <div className="text-xs text-slate-400">
                             {formatCurrency(estimate.price_low)} -{' '}
                             {formatCurrency(estimate.price_high)}
                           </div>
@@ -419,7 +419,7 @@ export default function EstimatesPage() {
               {/* Pagination */}
               {data.pagination.totalPages > 1 && (
                 <div className="mt-4 flex items-center justify-between">
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-slate-400">
                     Showing{' '}
                     {(data.pagination.page - 1) * data.pagination.limit + 1}-
                     {Math.min(

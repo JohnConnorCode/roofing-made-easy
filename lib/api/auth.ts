@@ -51,11 +51,9 @@ export async function requireAdmin(): Promise<AuthResult> {
     }
   }
 
-  // Check admin role in user metadata or app_metadata
+  // Check admin role — only use app_metadata (server-controlled, not client-modifiable)
   const isAdmin =
-    user.user_metadata?.role === 'admin' ||
     user.app_metadata?.role === 'admin' ||
-    user.user_metadata?.is_admin === true ||
     user.app_metadata?.is_admin === true
 
   if (!isAdmin) {
@@ -137,9 +135,8 @@ export async function requireLeadOwnership(leadId: string): Promise<CustomerAuth
   }
 
   // Check if admin (admins have access to all leads)
-  const isAdmin =
-    user.user_metadata?.role === 'admin' ||
-    user.app_metadata?.role === 'admin'
+  // Only check app_metadata (server-controlled, not client-modifiable)
+  const isAdmin = user.app_metadata?.role === 'admin'
 
   if (isAdmin) {
     return { user, customerId: null, error: null }

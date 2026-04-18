@@ -1,15 +1,12 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 import {
-  ImageIcon,
   X,
   ChevronLeft,
   ChevronRight,
-  ZoomIn,
   Download,
-  Tag,
   AlertTriangle,
   Camera,
   Eye,
@@ -52,7 +49,6 @@ interface PhotoGalleryProps {
 
 export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: PhotoGalleryProps) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [filter, setFilter] = useState<PhotoCategory | 'all'>('all')
   const [isUpdating, setIsUpdating] = useState(false)
@@ -76,6 +72,36 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
     }
   }, [updateSuccess, updateError])
 
+  const getPhotoUrl = useCallback((path: string) => {
+    return `${supabaseUrl}/storage/v1/object/public/photos/${path}`
+  }, [supabaseUrl])
+
+  const filteredPhotos = filter === 'all'
+    ? localPhotos
+    : localPhotos.filter(p => p.category === filter)
+
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index)
+  }
+
+  const closeLightbox = useCallback(() => {
+    setLightboxIndex(null)
+  }, [])
+
+  const goToPrevious = useCallback(() => {
+    setLightboxIndex(prev => {
+      if (prev === null) return null
+      return (prev - 1 + filteredPhotos.length) % filteredPhotos.length
+    })
+  }, [filteredPhotos.length])
+
+  const goToNext = useCallback(() => {
+    setLightboxIndex(prev => {
+      if (prev === null) return null
+      return (prev + 1) % filteredPhotos.length
+    })
+  }, [filteredPhotos.length])
+
   // Keyboard navigation for lightbox
   useEffect(() => {
     if (lightboxIndex === null) return
@@ -88,11 +114,10 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [lightboxIndex])
+  }, [lightboxIndex, closeLightbox, goToPrevious, goToNext])
 
   const handleCategoryChange = async (photoId: string, newCategory: PhotoCategory) => {
     const previousPhotos = [...localPhotos]
-    const previousCategory = localPhotos.find(p => p.id === photoId)?.category
 
     // Optimistic update
     setLocalPhotos(prev =>
@@ -130,32 +155,6 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
     }
   }
 
-  const getPhotoUrl = useCallback((path: string) => {
-    return `${supabaseUrl}/storage/v1/object/public/photos/${path}`
-  }, [supabaseUrl])
-
-  const filteredPhotos = filter === 'all'
-    ? localPhotos
-    : localPhotos.filter(p => p.category === filter)
-
-  const openLightbox = (index: number) => {
-    setLightboxIndex(index)
-  }
-
-  const closeLightbox = () => {
-    setLightboxIndex(null)
-  }
-
-  const goToPrevious = () => {
-    if (lightboxIndex === null) return
-    setLightboxIndex((lightboxIndex - 1 + filteredPhotos.length) % filteredPhotos.length)
-  }
-
-  const goToNext = () => {
-    if (lightboxIndex === null) return
-    setLightboxIndex((lightboxIndex + 1) % filteredPhotos.length)
-  }
-
   const getCategoryConfig = (category?: string) => {
     return PHOTO_CATEGORIES.find(c => c.value === category) || PHOTO_CATEGORIES[0]
   }
@@ -164,7 +163,7 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
         <Camera className="h-12 w-12 text-slate-300 mb-4" />
-        <p className="text-slate-600 font-medium">No photos uploaded</p>
+        <p className="text-slate-400 font-medium">No photos uploaded</p>
         <p className="text-sm text-slate-400">Photos from the customer will appear here</p>
       </div>
     )
@@ -198,7 +197,7 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
               filter === 'all'
                 ? 'bg-slate-900 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
             }`}
           >
             All ({localPhotos.length})
@@ -213,7 +212,7 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                   filter === cat.value
                     ? cat.color
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
                 }`}
               >
                 {cat.label} ({count})
@@ -227,7 +226,7 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
           <button
             onClick={() => setViewMode('grid')}
             className={`p-1.5 rounded ${
-              viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
+              viewMode === 'grid' ? 'bg-white shadow-sm' : 'text-slate-400 hover:text-slate-700'
             }`}
           >
             <Grid3X3 className="h-4 w-4" />
@@ -235,7 +234,7 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
           <button
             onClick={() => setViewMode('list')}
             className={`p-1.5 rounded ${
-              viewMode === 'list' ? 'bg-white shadow-sm' : 'text-slate-500 hover:text-slate-700'
+              viewMode === 'list' ? 'bg-white shadow-sm' : 'text-slate-400 hover:text-slate-700'
             }`}
           >
             <List className="h-4 w-4" />
@@ -257,10 +256,12 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
                 className="group relative aspect-square overflow-hidden rounded-lg bg-slate-100 cursor-pointer"
                 onClick={() => openLightbox(index)}
               >
-                <img
+                <Image
                   src={photoUrl}
-                  alt={photo.original_filename || 'Photo'}
-                  className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  alt={photo.original_filename || 'Uploaded photo'}
+                  fill
+                  className="object-cover transition-transform group-hover:scale-105"
+                  unoptimized
                 />
 
                 {/* Overlay on hover */}
@@ -303,11 +304,13 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
                 onClick={() => openLightbox(index)}
               >
                 {/* Thumbnail */}
-                <div className="w-20 h-20 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0">
-                  <img
+                <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0">
+                  <Image
                     src={photoUrl}
-                    alt={photo.original_filename || 'Photo'}
-                    className="h-full w-full object-cover"
+                    alt={photo.original_filename || 'Uploaded photo'}
+                    fill
+                    className="object-cover"
+                    unoptimized
                   />
                 </div>
 
@@ -325,7 +328,7 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
                     {photo.original_filename || 'Unnamed photo'}
                   </p>
                   {photo.description && (
-                    <p className="text-xs text-slate-500 truncate">{photo.description}</p>
+                    <p className="text-xs text-slate-400 truncate">{photo.description}</p>
                   )}
                   {hasIssues && (
                     <div className="flex items-center gap-1 mt-1 text-xs text-amber-600">
@@ -342,7 +345,7 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
                       e.stopPropagation()
                       window.open(photoUrl, '_blank')
                     }}
-                    className="p-2 rounded-lg hover:bg-slate-100 text-slate-500"
+                    className="p-2 rounded-lg hover:bg-slate-100 text-slate-400"
                     title="Download"
                   >
                     <Download className="h-4 w-4" />
@@ -352,7 +355,7 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
                       e.stopPropagation()
                       openLightbox(index)
                     }}
-                    className="p-2 rounded-lg hover:bg-slate-100 text-slate-500"
+                    className="p-2 rounded-lg hover:bg-slate-100 text-slate-400"
                     title="View"
                   >
                     <Eye className="h-4 w-4" />
@@ -406,11 +409,17 @@ export function PhotoGallery({ photos, supabaseUrl, leadId, onUpdatePhoto }: Pho
           <div
             className="max-w-[90vw] max-h-[85vh] relative"
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Photo lightbox"
           >
-            <img
+            <Image
               src={getPhotoUrl(filteredPhotos[lightboxIndex].storage_path)}
-              alt={filteredPhotos[lightboxIndex].original_filename || 'Photo'}
+              alt={filteredPhotos[lightboxIndex].original_filename || 'Uploaded photo'}
+              width={1200}
+              height={900}
               className="max-w-full max-h-[85vh] object-contain"
+              unoptimized
             />
 
             {/* Photo Info */}

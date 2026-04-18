@@ -12,8 +12,6 @@ import {
 import type { EstimateLineItem } from '@/lib/supabase/types'
 import {
   sampleVariables,
-  simpleVariables,
-  complexVariables,
   sampleEstimateLineItem,
 } from '../fixtures/estimation'
 
@@ -32,8 +30,8 @@ vi.mock('openai', () => ({
 
 // We need to dynamically import after mocking
 const loadSuggestLineItems = async () => {
-  const module = await import('@/lib/ai/line-item-suggestions')
-  return module
+  const mod = await import('@/lib/ai/line-item-suggestions')
+  return mod
 }
 
 describe('generateRuleBasedSuggestions', () => {
@@ -44,8 +42,8 @@ describe('generateRuleBasedSuggestions', () => {
   beforeEach(async () => {
     // Clear environment to ensure rule-based fallback
     delete process.env.OPENAI_API_KEY
-    const module = await loadSuggestLineItems()
-    suggestLineItems = module.suggestLineItems
+    const mod = await loadSuggestLineItems()
+    suggestLineItems = mod.suggestLineItems
   })
 
   describe('replacement job recommendations', () => {

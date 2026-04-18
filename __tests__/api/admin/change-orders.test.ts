@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import type { ChangeOrder, ChangeOrderStatus } from '@/lib/jobs/billing-types'
+import type { ChangeOrderStatus } from '@/lib/jobs/billing-types'
 
 // Simulates the atomic approval logic from the API
 function simulateApproval(

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { InvoiceViewer } from '@/components/customer/InvoiceViewer'
 import { ArrowLeft } from 'lucide-react'
@@ -44,11 +44,7 @@ export default function CustomerInvoiceDetailPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchInvoice()
-  }, [params.invoiceId])
-
-  async function fetchInvoice() {
+  const fetchInvoice = useCallback(async () => {
     try {
       setLoading(true)
       const res = await fetch(`/api/customer/invoices/${params.invoiceId}`)
@@ -66,7 +62,11 @@ export default function CustomerInvoiceDetailPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.invoiceId, trackEngagement])
+
+  useEffect(() => {
+    fetchInvoice()
+  }, [fetchInvoice])
 
   if (loading) {
     return (

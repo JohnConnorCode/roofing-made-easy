@@ -74,7 +74,7 @@ function CustomerRegisterForm() {
     }
 
     fetchLeadData()
-  }, [leadId])
+  }, [leadId, shareToken])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target
@@ -172,7 +172,7 @@ function CustomerRegisterForm() {
       if (authData.session) {
         router.push('/portal')
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred. Please try again.')
     } finally {
       setIsLoading(false)
@@ -309,7 +309,7 @@ function CustomerRegisterForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-300"
+                  className="absolute right-3 top-[38px] text-slate-400 hover:text-slate-300"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -370,7 +370,7 @@ function CustomerRegisterForm() {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-400">
                 Already have an account?{' '}
                 <Link
                   href={leadId ? `/customer/login?leadId=${leadId}` : '/customer/login'}

@@ -55,7 +55,7 @@ function CustomerLoginForm() {
         showToast('Welcome back!', 'success')
         router.push(redirectTo)
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred. Please try again.')
     } finally {
       setIsLoading(false)
@@ -116,7 +116,7 @@ function CustomerLoginForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-[38px] text-slate-500 hover:text-slate-300"
+                  className="absolute right-3 top-[38px] text-slate-400 hover:text-slate-300"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -147,7 +147,7 @@ function CustomerLoginForm() {
             </div>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-400">
                 Don&apos;t have an account?{' '}
                 <Link
                   href={leadId ? `/customer/register?leadId=${leadId}` : '/customer/register'}
@@ -161,7 +161,7 @@ function CustomerLoginForm() {
             <div className="mt-4 text-center">
               <Link
                 href="/login"
-                className="text-xs text-slate-500 hover:text-slate-400"
+                className="text-xs text-slate-400 hover:text-slate-400"
               >
                 Looking for admin login?
               </Link>

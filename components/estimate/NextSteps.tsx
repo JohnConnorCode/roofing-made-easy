@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { NEXT_STEPS, ESTIMATE_CTA_MESSAGE, COMPANY_INFO, PAYMENT_TERMS, FINANCING_OPTIONS } from '@/lib/data/estimate-content'
+import { NEXT_STEPS, ESTIMATE_CTA_MESSAGE, PAYMENT_TERMS, FINANCING_OPTIONS } from '@/lib/data/estimate-content'
 import { Calendar, Phone, MessageCircle, ExternalLink, FileText, Calculator, Handshake, DollarSign } from 'lucide-react'
 
 interface NextStepsProps {

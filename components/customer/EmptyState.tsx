@@ -60,7 +60,7 @@ export function EmptyState({
         )}>
           <Icon className={cn(
             'h-7 w-7',
-            isEncouraging ? 'text-gold-light' : 'text-slate-500'
+            isEncouraging ? 'text-gold-light' : 'text-slate-400'
           )} />
         </div>
         <h3 className="text-lg font-medium text-slate-200 mb-2">{title}</h3>

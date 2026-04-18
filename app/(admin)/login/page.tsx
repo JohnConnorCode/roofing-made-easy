@@ -4,7 +4,6 @@ import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Loader2, Eye, EyeOff } from 'lucide-react'
 import { AdminLogo } from '@/components/ui/admin-logo'
 
@@ -46,7 +45,7 @@ function LoginForm() {
 
       router.push(redirectTo)
       router.refresh()
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred. Please try again.')
     } finally {
       setIsLoading(false)
@@ -95,7 +94,7 @@ function LoginForm() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition-colors"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -136,7 +135,7 @@ export default function LoginPage() {
         <div className="bg-slate-deep border border-slate-700 rounded-2xl shadow-xl p-8">
           <div className="text-center mb-6">
             <h2 className="text-xl font-semibold text-slate-100">Sign in to your account</h2>
-            <p className="text-sm text-slate-500 mt-1">Enter your credentials to access the dashboard</p>
+            <p className="text-sm text-slate-400 mt-1">Enter your credentials to access the dashboard</p>
           </div>
           <Suspense fallback={<LoginFormFallback />}>
             <LoginForm />
@@ -144,7 +143,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <p className="mt-8 text-center text-sm text-slate-500 animate-slide-up delay-200">
+      <p className="mt-8 text-center text-sm text-slate-400 animate-slide-up delay-200">
         Having trouble?{' '}
         <a href="mailto:support@smartroofpricing.com" className="text-gold-light hover:text-gold-light/90 hover:underline transition-colors">
           Contact support

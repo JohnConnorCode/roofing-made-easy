@@ -175,10 +175,9 @@ export async function POST(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ leadId: string }> }
+  _ctx: { params: Promise<{ leadId: string }> }
 ) {
   try {
-    const { leadId } = await params
     const body = await request.json()
     const parsed = updateSlopeSchema.safeParse(body)
 
@@ -237,7 +236,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ leadId: string }> }
+  _ctx: { params: Promise<{ leadId: string }> }
 ) {
   try {
     const { searchParams } = new URL(request.url)

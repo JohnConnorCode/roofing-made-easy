@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
@@ -75,7 +75,7 @@ export default function JobsPage() {
       setJobs(data.jobs || [])
       setTotal(data.total || 0)
       setSummary(data.summary || {})
-    } catch (err) {
+    } catch {
       setError('Unable to load jobs. Please try again.')
     } finally {
       setIsLoading(false)
@@ -95,15 +95,15 @@ export default function JobsPage() {
       <FadeInSection delay={0} animation="fade-in">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Jobs</h1>
-          <p className="text-slate-500">Manage active projects and job assignments</p>
+          <h1 className="text-2xl font-bold text-slate-50">Jobs</h1>
+          <p className="text-slate-400">Manage active projects and job assignments</p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex bg-slate-100 p-1 rounded-lg">
+          <div className="flex bg-slate-950/40 border border-white/5 p-1 rounded-lg backdrop-blur">
             <button
               onClick={() => setViewMode('table')}
               className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                viewMode === 'table' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                viewMode === 'table' ? 'bg-white/10 text-slate-50 shadow-sm' : 'text-slate-400 hover:text-slate-50'
               }`}
             >
               <List className="h-4 w-4" />
@@ -111,7 +111,7 @@ export default function JobsPage() {
             <button
               onClick={() => setViewMode('kanban')}
               className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                viewMode === 'kanban' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                viewMode === 'kanban' ? 'bg-white/10 text-slate-50 shadow-sm' : 'text-slate-400 hover:text-slate-50'
               }`}
             >
               <Kanban className="h-4 w-4" />
@@ -124,12 +124,12 @@ export default function JobsPage() {
       {/* Summary Cards */}
       <FadeInSection delay={100} animation="slide-up">
       <div className="grid gap-4 md:grid-cols-4">
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-500">Active Jobs</p>
-                <p className="text-2xl font-bold text-slate-900">{activeJobCount}</p>
+                <p className="text-sm text-slate-400">Active Jobs</p>
+                <p className="text-2xl font-bold text-slate-50">{activeJobCount}</p>
               </div>
               <div className="rounded-lg bg-indigo-100 p-2">
                 <Hammer className="h-5 w-5 text-indigo-600" />
@@ -137,12 +137,12 @@ export default function JobsPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-500">Pending Start</p>
-                <p className="text-2xl font-bold text-slate-900">{summary.pending_start || 0}</p>
+                <p className="text-sm text-slate-400">Pending Start</p>
+                <p className="text-2xl font-bold text-slate-50">{summary.pending_start || 0}</p>
               </div>
               <div className="rounded-lg bg-amber-100 p-2">
                 <Calendar className="h-5 w-5 text-amber-600" />
@@ -150,12 +150,12 @@ export default function JobsPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-500">Completed</p>
-                <p className="text-2xl font-bold text-slate-900">{summary.completed || 0}</p>
+                <p className="text-sm text-slate-400">Completed</p>
+                <p className="text-2xl font-bold text-slate-50">{summary.completed || 0}</p>
               </div>
               <div className="rounded-lg bg-green-100 p-2">
                 <Hammer className="h-5 w-5 text-green-600" />
@@ -163,11 +163,11 @@ export default function JobsPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-500">Total Value</p>
+                <p className="text-sm text-slate-400">Total Value</p>
                 <p className="text-2xl font-bold text-green-600">{formatCurrency(totalValue)}</p>
               </div>
               <div className="rounded-lg bg-emerald-100 p-2">
@@ -181,7 +181,7 @@ export default function JobsPage() {
 
       {/* Filters */}
       <FadeInSection delay={200} animation="slide-up">
-      <Card className="bg-white border-slate-200">
+      <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
         <CardContent className="p-4">
           <div className="flex flex-wrap gap-3">
             <div className="flex-1 min-w-[200px]">
@@ -206,10 +206,10 @@ export default function JobsPage() {
 
       {/* Error State */}
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchJobs}>
               Try Again
             </Button>
@@ -220,7 +220,7 @@ export default function JobsPage() {
       {/* Content */}
       <FadeInSection delay={300} animation="slide-up">
       {!error && viewMode === 'table' && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="p-0">
             {isLoading ? (
               <div className="p-6">
@@ -229,14 +229,14 @@ export default function JobsPage() {
             ) : jobs.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12">
                 <Hammer className="h-10 w-10 text-slate-300" />
-                <p className="mt-3 text-slate-600">No jobs found</p>
+                <p className="mt-3 text-slate-400">No jobs found</p>
               </div>
             ) : (
               <>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="px-4 py-3">Job #</th>
                         <th className="px-4 py-3">Status</th>
                         <th className="px-4 py-3">Location</th>
@@ -247,13 +247,13 @@ export default function JobsPage() {
                     </thead>
                     <tbody>
                       {jobs.map((job) => (
-                        <tr key={job.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors">
+                        <tr key={job.id} className="border-b last:border-0 hover:bg-slate-900/40 transition-colors">
                           <td className="px-4 py-3">
                             <Link href={`/jobs/${job.id}`} className="font-medium text-gold hover:underline">
                               {job.job_number}
                             </Link>
                             {job.lead?.contacts?.[0] && (
-                              <p className="text-xs text-slate-500">
+                              <p className="text-xs text-slate-400">
                                 {job.lead.contacts[0].first_name} {job.lead.contacts[0].last_name}
                               </p>
                             )}
@@ -263,7 +263,7 @@ export default function JobsPage() {
                               {JOB_STATUS_LABELS[job.status]}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-sm text-slate-600">
+                          <td className="px-4 py-3 text-sm text-slate-400">
                             {job.property_city && job.property_state
                               ? `${job.property_city}, ${job.property_state}`
                               : job.property_address || 'N/A'}
@@ -278,10 +278,10 @@ export default function JobsPage() {
                               <span className="text-slate-400">Unassigned</span>
                             )}
                           </td>
-                          <td className="px-4 py-3 text-sm text-slate-600">
+                          <td className="px-4 py-3 text-sm text-slate-400">
                             {job.scheduled_start ? formatDate(job.scheduled_start) : 'Not scheduled'}
                           </td>
-                          <td className="px-4 py-3 text-sm font-medium text-slate-900">
+                          <td className="px-4 py-3 text-sm font-medium text-slate-50">
                             {formatCurrency(job.contract_amount)}
                           </td>
                         </tr>
@@ -293,7 +293,7 @@ export default function JobsPage() {
                 {/* Pagination */}
                 {total > limit && (
                   <div className="flex items-center justify-between px-4 py-3 border-t">
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-slate-400">
                       Showing {offset + 1}-{Math.min(offset + limit, total)} of {total}
                     </p>
                     <div className="flex gap-2">
@@ -333,8 +333,8 @@ export default function JobsPage() {
               return (
                 <div key={status} className="w-72 shrink-0">
                   <div className="mb-3 flex items-center justify-between">
-                    <h3 className="text-sm font-medium text-slate-700">{JOB_STATUS_LABELS[status]}</h3>
-                    <span className="text-xs text-slate-500 bg-slate-100 rounded-full px-2 py-0.5">
+                    <h3 className="text-sm font-medium text-slate-300">{JOB_STATUS_LABELS[status]}</h3>
+                    <span className="text-xs text-slate-400 bg-slate-900/60 rounded-full px-2 py-0.5">
                       {columnJobs.length}
                     </span>
                   </div>
@@ -342,17 +342,17 @@ export default function JobsPage() {
                     {isLoading ? (
                       <Skeleton className="h-24 w-full rounded-lg" />
                     ) : columnJobs.length === 0 ? (
-                      <div className="rounded-lg border-2 border-dashed border-slate-200 p-4 text-center text-sm text-slate-400">
+                      <div className="rounded-lg border-2 border-dashed border-white/5 p-4 text-center text-sm text-slate-400">
                         No jobs
                       </div>
                     ) : (
                       columnJobs.map((job) => (
                         <Link key={job.id} href={`/jobs/${job.id}`}>
-                          <Card className="bg-white border-slate-200 hover:shadow-md transition-shadow cursor-pointer">
+                          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl hover:shadow-md transition-shadow cursor-pointer">
                             <CardContent className="p-3">
-                              <p className="text-sm font-medium text-slate-900">{job.job_number}</p>
+                              <p className="text-sm font-medium text-slate-50">{job.job_number}</p>
                               {job.lead?.contacts?.[0] && (
-                                <p className="text-xs text-slate-500 mt-0.5">
+                                <p className="text-xs text-slate-400 mt-0.5">
                                   {job.lead.contacts[0].first_name} {job.lead.contacts[0].last_name}
                                 </p>
                               )}

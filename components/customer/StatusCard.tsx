@@ -75,14 +75,14 @@ export function StatusCard({
             </div>
           </div>
           {href && (
-            <ChevronRight className="h-5 w-5 text-slate-500" />
+            <ChevronRight className="h-5 w-5 text-slate-400" />
           )}
         </div>
       </CardHeader>
       <CardContent>
         <p className="text-sm text-slate-400 mb-2">{description}</p>
         {contextMessage && (
-          <p className="text-xs text-slate-500 italic mb-2">{contextMessage}</p>
+          <p className="text-xs text-slate-400 italic mb-2">{contextMessage}</p>
         )}
         {badge && (
           <span className={cn(

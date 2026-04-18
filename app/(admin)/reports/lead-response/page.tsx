@@ -101,8 +101,8 @@ export default function LeadResponsePage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Lead Response</h1>
-            <p className="text-slate-500">Speed-to-lead metrics and follow-up performance</p>
+            <h1 className="text-2xl font-bold text-slate-50">Lead Response</h1>
+            <p className="text-slate-400">Speed-to-lead metrics and follow-up performance</p>
           </div>
           <div className="flex items-center gap-2">
             {[7, 14, 30, 60, 90].map(d => (
@@ -128,10 +128,10 @@ export default function LeadResponsePage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>
               Try Again
             </Button>
@@ -144,11 +144,11 @@ export default function LeadResponsePage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Avg Response Time</p>
+                    <p className="text-sm text-slate-400">Avg Response Time</p>
                     <p className={`text-2xl font-bold ${
                       data?.speedToLead.avgMinutes === null ? 'text-slate-400'
                         : (data?.speedToLead.avgMinutes ?? 0) <= 15 ? 'text-green-600'
@@ -165,11 +165,11 @@ export default function LeadResponsePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Under 5 Minutes</p>
+                    <p className="text-sm text-slate-400">Under 5 Minutes</p>
                     <p className="text-2xl font-bold text-green-600">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${data?.speedToLead.pctUnder5Min || 0}%`}
                     </p>
@@ -181,11 +181,11 @@ export default function LeadResponsePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Stale Leads</p>
+                    <p className="text-sm text-slate-400">Stale Leads</p>
                     <p className={`text-2xl font-bold ${
                       (data?.staleLeadCount || 0) > 0 ? 'text-red-600' : 'text-green-600'
                     }`}>
@@ -203,12 +203,12 @@ export default function LeadResponsePage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Total Activities</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Total Activities</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.activityVolume.total.toLocaleString() || 0}
                     </p>
                   </div>
@@ -224,7 +224,7 @@ export default function LeadResponsePage() {
           <FadeInSection delay={200} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2">
             {/* Response by Source */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-blue-600" />
@@ -236,7 +236,7 @@ export default function LeadResponsePage() {
                   <SkeletonReportContent />
                 ) : data?.responseBySource && data.responseBySource.length > 0 ? (
                   <div className="space-y-1">
-                    <div className="grid grid-cols-5 text-xs font-medium text-slate-500 pb-2 border-b border-slate-100">
+                    <div className="grid grid-cols-5 text-xs font-medium text-slate-400 pb-2 border-b border-slate-100">
                       <span>Source</span>
                       <span className="text-right">Leads</span>
                       <span className="text-right">Avg Time</span>
@@ -245,8 +245,8 @@ export default function LeadResponsePage() {
                     </div>
                     {data.responseBySource.map(source => (
                       <div key={source.source} className="grid grid-cols-5 py-1.5 text-sm">
-                        <span className="font-medium text-slate-700 truncate">{source.source}</span>
-                        <span className="text-right text-slate-600">{source.leads}</span>
+                        <span className="font-medium text-slate-300 truncate">{source.source}</span>
+                        <span className="text-right text-slate-400">{source.leads}</span>
                         <span className={`text-right font-medium ${
                           source.avgResponseMinutes === null ? 'text-slate-400'
                             : source.avgResponseMinutes <= 15 ? 'text-green-600'
@@ -255,8 +255,8 @@ export default function LeadResponsePage() {
                         }`}>
                           {formatResponseTime(source.avgResponseMinutes)}
                         </span>
-                        <span className="text-right text-slate-600">{source.conversionRate}%</span>
-                        <span className="text-right text-slate-600">{formatCurrency(source.pipelineValue)}</span>
+                        <span className="text-right text-slate-400">{source.conversionRate}%</span>
+                        <span className="text-right text-slate-400">{formatCurrency(source.pipelineValue)}</span>
                       </div>
                     ))}
                   </div>
@@ -267,7 +267,7 @@ export default function LeadResponsePage() {
             </Card>
 
             {/* Activity Breakdown */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Phone className="h-5 w-5 text-green-600" />
@@ -287,13 +287,13 @@ export default function LeadResponsePage() {
                         const pct = Math.round((count / total) * 100)
                         return (
                           <div key={type} className="flex items-center gap-3">
-                            <Icon className="h-5 w-5 text-slate-500" />
+                            <Icon className="h-5 w-5 text-slate-400" />
                             <div className="flex-1">
                               <div className="flex justify-between text-sm mb-1">
-                                <span className="font-medium text-slate-700 capitalize">{type}</span>
-                                <span className="text-slate-500">{count} ({pct}%)</span>
+                                <span className="font-medium text-slate-300 capitalize">{type}</span>
+                                <span className="text-slate-400">{count} ({pct}%)</span>
                               </div>
-                              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                              <div className="h-2 bg-slate-900/60 rounded-full overflow-hidden">
                                 <div
                                   className="h-full bg-blue-500 rounded-full transition-all duration-500"
                                   style={{ width: `${pct}%` }}
@@ -314,7 +314,7 @@ export default function LeadResponsePage() {
 
           {/* Daily Response Time Trend */}
           <FadeInSection delay={300} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-blue-600" />
@@ -373,7 +373,7 @@ export default function LeadResponsePage() {
 
           {/* Stale Leads Table */}
           <FadeInSection delay={400} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-600" />
@@ -387,7 +387,7 @@ export default function LeadResponsePage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b text-left text-sm text-slate-500">
+                      <tr className="border-b text-left text-sm text-slate-400">
                         <th className="pb-3 pr-4">Name</th>
                         <th className="pb-3 pr-4">Status</th>
                         <th className="pb-3 pr-4">Days Since Activity</th>
@@ -396,14 +396,14 @@ export default function LeadResponsePage() {
                     </thead>
                     <tbody>
                       {data.staleLeads.map(lead => (
-                        <tr key={lead.id} className="border-b last:border-0 hover:bg-slate-50">
+                        <tr key={lead.id} className="border-b last:border-0 hover:bg-slate-900/40">
                           <td className="py-3 pr-4">
                             <Link href={`/leads/${lead.id}`} className="font-medium text-blue-600 hover:underline">
                               {lead.name || 'Unknown'}
                             </Link>
                           </td>
                           <td className="py-3 pr-4">
-                            <span className="inline-flex rounded-full px-2 py-1 text-xs font-medium bg-slate-100 text-slate-700">
+                            <span className="inline-flex rounded-full px-2 py-1 text-xs font-medium bg-white/10 text-slate-200">
                               {lead.status.replace(/_/g, ' ')}
                             </span>
                           </td>

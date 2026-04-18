@@ -35,6 +35,7 @@ export default function EstimateError({
             <Phone className="h-5 w-5" />
             Call Us: {getPhoneDisplay()}
           </a>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- Error boundary needs hard navigation */}
           <a
             href="/"
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-transparent px-6 py-3 font-semibold text-slate-400 transition-colors hover:bg-slate-800"

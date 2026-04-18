@@ -72,7 +72,7 @@ test.describe('Admin Customer Management', () => {
 
       if (await table.isVisible()) {
         // Look for value or leads column
-        const statsCol = table.locator('th:has-text("Value")').or(
+        const _statsCol = table.locator('th:has-text("Value")').or(
           table.locator('th:has-text("Leads")').or(
             table.locator('th:has-text("Total")')
           )

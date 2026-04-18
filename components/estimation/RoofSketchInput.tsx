@@ -176,7 +176,7 @@ export function RoofSketchInput({
               <p className="text-2xl font-bold text-[#c9a25c]">
                 {estimatedSquares} Squares
               </p>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-400">
                 ({estimatedSqFt.toLocaleString()} sq ft @ {measurements.pitch}/12 pitch)
               </p>
             </div>
@@ -284,7 +284,7 @@ export function RoofSketchInput({
                     updateMeasurement('gutterLf', parseFloat(e.target.value) || 0)
                   }
                 />
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-400 mt-1">
                   Leave empty for auto-calc
                 </p>
               </div>

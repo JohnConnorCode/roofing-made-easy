@@ -531,7 +531,7 @@ export default function SettingsPage() {
                     <Input
                       value={settings.company.name}
                       onChange={(e) => updateCompany('name', e.target.value)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                   </div>
                   <div>
@@ -539,7 +539,7 @@ export default function SettingsPage() {
                     <Input
                       value={settings.company.legalName || ''}
                       onChange={(e) => updateCompany('legalName', e.target.value)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                   </div>
                 </div>
@@ -548,7 +548,7 @@ export default function SettingsPage() {
                   <Input
                     value={settings.company.tagline || ''}
                     onChange={(e) => updateCompany('tagline', e.target.value)}
-                    className="bg-white border-white/10 text-slate-50"
+                    className="bg-slate-900/60"
                   />
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
@@ -557,7 +557,7 @@ export default function SettingsPage() {
                     <Input
                       value={settings.company.phone || ''}
                       onChange={(e) => updateCompany('phone', e.target.value)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                   </div>
                   <div>
@@ -566,7 +566,7 @@ export default function SettingsPage() {
                       type="email"
                       value={settings.company.email || ''}
                       onChange={(e) => updateCompany('email', e.target.value)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                   </div>
                 </div>
@@ -577,7 +577,7 @@ export default function SettingsPage() {
                     placeholder="https://www.example.com"
                     value={settings.company.website || ''}
                     onChange={(e) => updateCompany('website', e.target.value)}
-                    className="bg-white border-white/10 text-slate-50"
+                    className="bg-slate-900/60"
                   />
                 </div>
               </CardContent>
@@ -597,7 +597,7 @@ export default function SettingsPage() {
                   <Input
                     value={settings.address.street || ''}
                     onChange={(e) => updateAddress('street', e.target.value)}
-                    className="bg-white border-white/10 text-slate-50"
+                    className="bg-slate-900/60"
                   />
                 </div>
                 <div className="grid gap-4 md:grid-cols-3">
@@ -606,7 +606,7 @@ export default function SettingsPage() {
                     <Input
                       value={settings.address.city || ''}
                       onChange={(e) => updateAddress('city', e.target.value)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                   </div>
                   <div>
@@ -614,7 +614,7 @@ export default function SettingsPage() {
                     <Input
                       value={settings.address.state || ''}
                       onChange={(e) => updateAddress('state', e.target.value)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                   </div>
                   <div>
@@ -622,7 +622,7 @@ export default function SettingsPage() {
                     <Input
                       value={settings.address.zip || ''}
                       onChange={(e) => updateAddress('zip', e.target.value)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                   </div>
                 </div>
@@ -662,7 +662,7 @@ export default function SettingsPage() {
                           const v = e.target.value
                           updateTrust('googleRating', v === '' ? null : Number(v))
                         }}
-                        className="bg-white border-white/10 text-slate-50"
+                        className="bg-slate-900/60"
                       />
                     </div>
                     <div>
@@ -678,7 +678,7 @@ export default function SettingsPage() {
                           const v = e.target.value
                           updateTrust('googleReviewCount', v === '' ? null : Number(v))
                         }}
-                        className="bg-white border-white/10 text-slate-50"
+                        className="bg-slate-900/60"
                       />
                     </div>
                   </div>
@@ -711,7 +711,7 @@ export default function SettingsPage() {
                         onChange={(e) =>
                           updateCredentials('stateContractorLicense', e.target.value || null)
                         }
-                        className="bg-white border-white/10 text-slate-50"
+                        className="bg-slate-900/60"
                       />
                     </div>
                   </div>
@@ -777,7 +777,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.weekdaysOpen || ''}
                         onChange={(e) => updateHours('weekdaysOpen', e.target.value)}
-                        className="bg-white border-white/10 text-slate-50"
+                        className="bg-slate-900/60"
                       />
                     </div>
                     <div>
@@ -786,7 +786,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.weekdaysClose || ''}
                         onChange={(e) => updateHours('weekdaysClose', e.target.value)}
-                        className="bg-white border-white/10 text-slate-50"
+                        className="bg-slate-900/60"
                       />
                     </div>
                   </div>
@@ -800,7 +800,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.saturdayOpen || ''}
                         onChange={(e) => updateHours('saturdayOpen', e.target.value)}
-                        className="bg-white border-white/10 text-slate-50"
+                        className="bg-slate-900/60"
                       />
                     </div>
                     <div>
@@ -809,7 +809,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.saturdayClose || ''}
                         onChange={(e) => updateHours('saturdayClose', e.target.value)}
-                        className="bg-white border-white/10 text-slate-50"
+                        className="bg-slate-900/60"
                       />
                     </div>
                   </div>
@@ -823,7 +823,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.sundayOpen || ''}
                         onChange={(e) => updateHours('sundayOpen', e.target.value)}
-                        className="bg-white border-white/10 text-slate-50"
+                        className="bg-slate-900/60"
                       />
                     </div>
                     <div>
@@ -832,7 +832,7 @@ export default function SettingsPage() {
                         type="time"
                         value={settings.hours.sundayClose || ''}
                         onChange={(e) => updateHours('sundayClose', e.target.value)}
-                        className="bg-white border-white/10 text-slate-50"
+                        className="bg-slate-900/60"
                       />
                     </div>
                   </div>
@@ -867,7 +867,7 @@ export default function SettingsPage() {
                       max="100"
                       value={settings.pricing.overheadPercent || 0}
                       onChange={(e) => updatePricing('overheadPercent', parseFloat(e.target.value) || 0)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                     <p className="text-xs text-slate-400 mt-1">Added to base material + labor cost</p>
                   </div>
@@ -879,7 +879,7 @@ export default function SettingsPage() {
                       max="100"
                       value={settings.pricing.profitMarginPercent || 0}
                       onChange={(e) => updatePricing('profitMarginPercent', parseFloat(e.target.value) || 0)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                     <p className="text-xs text-slate-400 mt-1">Applied after overhead</p>
                   </div>
@@ -892,7 +892,7 @@ export default function SettingsPage() {
                       step="0.1"
                       value={settings.pricing.taxRate || 0}
                       onChange={(e) => updatePricing('taxRate', parseFloat(e.target.value) || 0)}
-                      className="bg-white border-white/10 text-slate-50"
+                      className="bg-slate-900/60"
                     />
                     <p className="text-xs text-slate-400 mt-1">Sales tax for materials</p>
                   </div>

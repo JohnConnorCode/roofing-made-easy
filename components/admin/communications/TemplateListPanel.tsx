@@ -248,7 +248,7 @@ export function TemplateListPanel({ lockedType, onError, onSuccess, onTotalChang
               onChange={setCategoryFilter}
               className="md:w-36 bg-white border-slate-300 text-slate-900"
             />
-            <label className="flex items-center gap-2 text-sm text-slate-600 whitespace-nowrap">
+            <label className="flex items-center gap-2 text-sm text-slate-400 whitespace-nowrap">
               <Checkbox
                 checked={showSystemOnly}
                 onChange={(e) => setShowSystemOnly(e.target.checked)}
@@ -281,7 +281,7 @@ export function TemplateListPanel({ lockedType, onError, onSuccess, onTotalChang
           ) : templates.length === 0 ? (
             <div className="text-center py-8">
               <FileText className="h-12 w-12 mx-auto text-slate-300 mb-3" />
-              <p className="text-slate-600">No {lockedType} templates found</p>
+              <p className="text-slate-400">No {lockedType} templates found</p>
               <p className="text-sm text-slate-400 mt-1">Create a template to get started</p>
             </div>
           ) : (
@@ -300,7 +300,7 @@ export function TemplateListPanel({ lockedType, onError, onSuccess, onTotalChang
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-medium text-slate-900">{template.name}</span>
                         {template.is_system && (
-                          <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-xs flex items-center gap-1">
+                          <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-400 text-xs flex items-center gap-1">
                             <Lock className="h-3 w-3" />
                             System
                           </span>
@@ -323,16 +323,16 @@ export function TemplateListPanel({ lockedType, onError, onSuccess, onTotalChang
                       </div>
 
                       {template.description && (
-                        <p className="text-sm text-slate-500 mt-1 line-clamp-1">{template.description}</p>
+                        <p className="text-sm text-slate-400 mt-1 line-clamp-1">{template.description}</p>
                       )}
 
                       {lockedType === 'email' && template.subject && (
-                        <p className="text-sm text-slate-600 mt-1">
+                        <p className="text-sm text-slate-400 mt-1">
                           <span className="text-slate-400">Subject:</span> {template.subject}
                         </p>
                       )}
 
-                      <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
+                      <div className="flex items-center gap-4 mt-2 text-sm text-slate-400">
                         {template.usage_count > 0 && (
                           <span>Used {template.usage_count} time{template.usage_count !== 1 ? 's' : ''}</span>
                         )}
@@ -476,7 +476,7 @@ export function TemplateListPanel({ lockedType, onError, onSuccess, onTotalChang
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="mt-4 flex items-center justify-between">
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-400">
                 Showing {offset + 1}-{Math.min(offset + LIMIT, total)} of {total}
               </p>
               <div className="flex gap-2">

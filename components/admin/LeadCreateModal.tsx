@@ -188,7 +188,7 @@ export function LeadCreateModal({ isOpen, onClose }: LeadCreateModalProps) {
           <h2 id="lead-create-title" className="text-xl font-semibold text-slate-900">Create New Lead</h2>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg"
+            className="p-2 text-slate-400 hover:text-slate-400 hover:bg-slate-100 rounded-lg"
           >
             <X className="h-5 w-5" />
           </button>
@@ -212,7 +212,7 @@ export function LeadCreateModal({ isOpen, onClose }: LeadCreateModalProps) {
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">First Name *</label>
+                  <label className="block text-xs text-slate-400 mb-1">First Name *</label>
                   <Input
                     name="firstName"
                     value={formData.firstName}
@@ -222,7 +222,7 @@ export function LeadCreateModal({ isOpen, onClose }: LeadCreateModalProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Last Name</label>
+                  <label className="block text-xs text-slate-400 mb-1">Last Name</label>
                   <Input
                     name="lastName"
                     value={formData.lastName}
@@ -233,7 +233,7 @@ export function LeadCreateModal({ isOpen, onClose }: LeadCreateModalProps) {
               </div>
               <div className="grid grid-cols-2 gap-3 mt-3">
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Phone *</label>
+                  <label className="block text-xs text-slate-400 mb-1">Phone *</label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <Input
@@ -248,7 +248,7 @@ export function LeadCreateModal({ isOpen, onClose }: LeadCreateModalProps) {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Email</label>
+                  <label className="block text-xs text-slate-400 mb-1">Email</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <Input
@@ -315,7 +315,7 @@ export function LeadCreateModal({ isOpen, onClose }: LeadCreateModalProps) {
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Source</label>
+                  <label className="block text-xs text-slate-400 mb-1">Source</label>
                   <select
                     name="source"
                     value={formData.source}
@@ -328,7 +328,7 @@ export function LeadCreateModal({ isOpen, onClose }: LeadCreateModalProps) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Job Type</label>
+                  <label className="block text-xs text-slate-400 mb-1">Job Type</label>
                   <select
                     name="jobType"
                     value={formData.jobType}
@@ -343,7 +343,7 @@ export function LeadCreateModal({ isOpen, onClose }: LeadCreateModalProps) {
                 </div>
               </div>
               <div className="mt-3">
-                <label className="block text-xs text-slate-500 mb-1">Urgency</label>
+                <label className="block text-xs text-slate-400 mb-1">Urgency</label>
                 <select
                   name="urgency"
                   value={formData.urgency}
@@ -357,7 +357,7 @@ export function LeadCreateModal({ isOpen, onClose }: LeadCreateModalProps) {
                 </select>
               </div>
               <div className="mt-3">
-                <label className="block text-xs text-slate-500 mb-1">Notes</label>
+                <label className="block text-xs text-slate-400 mb-1">Notes</label>
                 <textarea
                   name="notes"
                   value={formData.notes}

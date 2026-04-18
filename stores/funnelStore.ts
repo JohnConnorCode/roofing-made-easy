@@ -233,7 +233,7 @@ const initialState: FunnelState = {
 
 export const useFunnelStore = create<FunnelState & FunnelActions>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       ...initialState,
 
       // Navigation

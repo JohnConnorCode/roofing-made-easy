@@ -102,6 +102,8 @@ export default function CustomerLayoutClient({
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="p-2 text-slate-300"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -114,7 +116,7 @@ export default function CustomerLayoutClient({
           {/* Property selector */}
           {linkedLeads.length > 0 && (
             <div className="border-b border-slate-800 p-4">
-              <p className="mb-2 text-xs text-slate-500 uppercase tracking-wider">Property</p>
+              <p className="mb-2 text-xs text-slate-400 uppercase tracking-wider">Property</p>
               <button
                 onClick={() => setIsPropertyDropdownOpen(!isPropertyDropdownOpen)}
                 className="flex w-full items-center justify-between rounded-lg bg-slate-deep px-4 py-3 text-slate-100"
@@ -124,7 +126,7 @@ export default function CustomerLayoutClient({
                   <span className="truncate">{propertyName}</span>
                 </span>
                 <ChevronDown className={cn(
-                  'h-4 w-4 text-slate-500 transition-transform',
+                  'h-4 w-4 text-slate-400 transition-transform',
                   isPropertyDropdownOpen && 'rotate-180'
                 )} />
               </button>
@@ -146,7 +148,7 @@ export default function CustomerLayoutClient({
                     >
                       {lead.nickname || lead.lead?.property?.street_address || 'Property'}
                       {lead.is_primary && (
-                        <span className="ml-2 text-xs text-slate-500">(Primary)</span>
+                        <span className="ml-2 text-xs text-slate-400">(Primary)</span>
                       )}
                     </button>
                   ))}
@@ -197,7 +199,7 @@ export default function CustomerLayoutClient({
             {/* Property selector */}
             {linkedLeads.length > 0 && (
               <div className="border-b border-slate-800 p-4">
-                <p className="mb-2 text-xs text-slate-500 uppercase tracking-wider">Property</p>
+                <p className="mb-2 text-xs text-slate-400 uppercase tracking-wider">Property</p>
                 <button
                   onClick={() => setIsPropertyDropdownOpen(!isPropertyDropdownOpen)}
                   className="flex w-full items-center justify-between rounded-lg bg-slate-deep px-3 py-2 text-sm text-slate-100 hover:bg-[#242938]"
@@ -207,7 +209,7 @@ export default function CustomerLayoutClient({
                     <span className="truncate">{propertyName}</span>
                   </span>
                   <ChevronDown className={cn(
-                    'h-4 w-4 text-slate-500 transition-transform shrink-0',
+                    'h-4 w-4 text-slate-400 transition-transform shrink-0',
                     isPropertyDropdownOpen && 'rotate-180'
                   )} />
                 </button>
@@ -231,7 +233,7 @@ export default function CustomerLayoutClient({
                           {lead.nickname || lead.lead?.property?.street_address || 'Property'}
                         </span>
                         {lead.is_primary && (
-                          <span className="text-xs text-slate-500">Primary</span>
+                          <span className="text-xs text-slate-400">Primary</span>
                         )}
                       </button>
                     ))}
@@ -268,7 +270,7 @@ export default function CustomerLayoutClient({
                   <p className="text-sm font-medium text-slate-200">
                     {customer.first_name} {customer.last_name}
                   </p>
-                  <p className="text-xs text-slate-500 truncate">{customer.email}</p>
+                  <p className="text-xs text-slate-400 truncate">{customer.email}</p>
                 </div>
               )}
               <Button

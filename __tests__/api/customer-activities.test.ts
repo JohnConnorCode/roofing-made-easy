@@ -108,7 +108,7 @@ describe('Customer Activities API', () => {
     })
 
     it('transforms quote_sent message', () => {
-      const activity = {
+      const _activity = {
         activity_type: 'quote_sent',
         content: {},
       }
@@ -129,7 +129,7 @@ describe('Customer Activities API', () => {
     })
 
     it('falls back to generic message for unknown types', () => {
-      const activity = {
+      const _activity = {
         activity_type: 'unknown_type',
         content: {},
       }

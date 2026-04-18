@@ -6,13 +6,15 @@
  *
  * Tasks:
  * 1. Process scheduled messages
- * 2. Cleanup abandoned uploads
+ * 2. Send calendar reminders
+ * 3. Cleanup abandoned uploads
+ * 4. Auto-publish scheduled blog posts
  *
  * Security: Uses CRON_SECRET to authenticate requests
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { sendEmail } from '@/lib/communication/send-email'
 import { sendSMS } from '@/lib/communication/send-sms'
 import { emailWrapper } from '@/lib/email/templates'
@@ -20,6 +22,7 @@ import { notifyUser } from '@/lib/notifications'
 import { sendConsultationReminderEmail } from '@/lib/email/notifications'
 import { sendConsultationReminder as sendConsultationReminderSms } from '@/lib/sms/twilio'
 import { logger } from '@/lib/logger'
+import { safeCompare } from '@/lib/utils'
 
 const CRON_SECRET = process.env.CRON_SECRET
 const ABANDONED_UPLOAD_HOURS = 24
@@ -40,14 +43,14 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  // Verify cron secret
-  const authHeader = request.headers.get('authorization')
-  if (authHeader !== `Bearer ${CRON_SECRET}`) {
+  // Verify cron secret using constant-time comparison
+  const authHeader = request.headers.get('authorization') || ''
+  if (!safeCompare(authHeader, `Bearer ${CRON_SECRET}`)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const results: TaskResult[] = []
-  const supabase = await createClient()
+  const supabase = await createAdminClient()
 
   // Task 1: Process Scheduled Messages
   try {
@@ -100,6 +103,23 @@ export async function GET(request: NextRequest) {
     })
   }
 
+  // Task 4: Auto-publish scheduled blog posts
+  try {
+    const publishResult = await publishScheduledBlogPosts(supabase)
+    results.push({
+      task: 'publish_blog_posts',
+      success: true,
+      details: publishResult,
+    })
+  } catch (error) {
+    results.push({
+      task: 'publish_blog_posts',
+      success: false,
+      details: {},
+      error: error instanceof Error ? error.message : 'Unknown error',
+    })
+  }
+
   const allSuccessful = results.every(r => r.success)
 
   return NextResponse.json({
@@ -137,7 +157,7 @@ interface ScheduledMessage {
 }
 
 async function processScheduledMessages(
-  supabase: Awaited<ReturnType<typeof createClient>>
+  supabase: Awaited<ReturnType<typeof createAdminClient>>
 ): Promise<{ processed: number; sent: number; failed: number }> {
   const now = new Date().toISOString()
   const results = { processed: 0, sent: 0, failed: 0 }
@@ -246,7 +266,7 @@ async function processScheduledMessages(
 }
 
 async function sendCalendarReminders(
-  supabase: Awaited<ReturnType<typeof createClient>>
+  supabase: Awaited<ReturnType<typeof createAdminClient>>
 ): Promise<{ checked: number; sent: number }> {
   const now = new Date()
   const in24h = new Date(now.getTime() + 24 * 60 * 60 * 1000)
@@ -314,7 +334,7 @@ async function sendCalendarReminders(
 }
 
 async function cleanupAbandonedUploads(
-  supabase: Awaited<ReturnType<typeof createClient>>
+  supabase: Awaited<ReturnType<typeof createAdminClient>>
 ): Promise<{ deletedUploads: number; deletedFiles: number }> {
   const cutoffTime = new Date()
   cutoffTime.setHours(cutoffTime.getHours() - ABANDONED_UPLOAD_HOURS)
@@ -362,6 +382,80 @@ async function cleanupAbandonedUploads(
   if (!deleteError) {
     results.deletedUploads = uploadIds.length
   }
+
+  return results
+}
+
+async function publishScheduledBlogPosts(
+  supabase: Awaited<ReturnType<typeof createAdminClient>>
+): Promise<{ published: number; slugs: string[] }> {
+  const now = new Date().toISOString()
+  const results = { published: 0, slugs: [] as string[] }
+
+  // Find posts scheduled to publish now or earlier
+  const { data: posts, error } = await supabase
+    .from('blog_posts')
+    .select('id, slug')
+    .eq('status', 'scheduled')
+    .lte('publish_at', now)
+    .limit(50)
+
+  if (error) {
+    throw new Error(`Failed to fetch scheduled posts: ${error.message}`)
+  }
+
+  if (!posts || posts.length === 0) {
+    return results
+  }
+
+  const ids = posts.map(p => (p as { id: string }).id)
+  const slugs = posts.map(p => (p as { slug: string }).slug)
+
+  // Publish all matching posts
+  const { error: updateError } = await supabase
+    .from('blog_posts')
+    .update({ status: 'published', published_at: now } as never)
+    .in('id', ids)
+
+  if (updateError) {
+    throw new Error(`Failed to publish posts: ${updateError.message}`)
+  }
+
+  results.published = ids.length
+  results.slugs = slugs
+
+  // Ping IndexNow and trigger ISR revalidation
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
+  const indexNowKey = process.env.INDEXNOW_KEY
+
+  const postPublishTasks: Promise<unknown>[] = []
+
+  if (indexNowKey && slugs.length > 0) {
+    const urls = slugs.map(s => `${BASE_URL}/blog/${s}`)
+    postPublishTasks.push(
+      fetch('https://api.indexnow.org/IndexNow', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          host: new URL(BASE_URL).hostname,
+          key: indexNowKey,
+          keyLocation: `${BASE_URL}/${indexNowKey}.txt`,
+          urlList: urls,
+        }),
+      }).catch(err => logger.error('[Cron] IndexNow ping failed', { error: String(err) }))
+    )
+  }
+
+  if (CRON_SECRET && slugs.length > 0) {
+    postPublishTasks.push(
+      fetch(`${BASE_URL}/api/revalidate`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${CRON_SECRET}` },
+      }).catch(err => logger.error('[Cron] Revalidation failed', { error: String(err) }))
+    )
+  }
+
+  await Promise.allSettled(postPublishTasks)
 
   return results
 }

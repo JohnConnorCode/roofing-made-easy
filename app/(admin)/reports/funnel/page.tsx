@@ -129,8 +129,8 @@ export default function FunnelAnalyticsPage() {
       <FadeInSection delay={0} animation="fade-in">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Funnel Analytics</h1>
-            <p className="text-slate-500">Track visitor journeys, drop-off rates, and conversion performance</p>
+            <h1 className="text-2xl font-bold text-slate-50">Funnel Analytics</h1>
+            <p className="text-slate-400">Track visitor journeys, drop-off rates, and conversion performance</p>
           </div>
           <div className="flex items-center gap-2">
             {[7, 14, 30, 60, 90].map(d => (
@@ -156,10 +156,10 @@ export default function FunnelAnalyticsPage() {
       </FadeInSection>
 
       {error && (
-        <Card className="bg-white border-slate-200">
+        <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <AlertTriangle className="h-12 w-12 text-amber-500" />
-            <p className="mt-4 text-slate-600">{error}</p>
+            <p className="mt-4 text-slate-400">{error}</p>
             <Button variant="outline" size="sm" className="mt-4" onClick={fetchData}>
               Try Again
             </Button>
@@ -172,12 +172,12 @@ export default function FunnelAnalyticsPage() {
           {/* KPI Cards */}
           <FadeInSection delay={100} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Sessions</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Sessions</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.overview.totalSessions.toLocaleString() || 0}
                     </p>
                   </div>
@@ -188,12 +188,12 @@ export default function FunnelAnalyticsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Leads</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Leads</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.overview.leadsCreated.toLocaleString() || 0}
                     </p>
                   </div>
@@ -204,12 +204,12 @@ export default function FunnelAnalyticsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Estimates</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Estimates</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.overview.estimatesGenerated.toLocaleString() || 0}
                     </p>
                   </div>
@@ -220,12 +220,12 @@ export default function FunnelAnalyticsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Registrations</p>
-                    <p className="text-2xl font-bold text-slate-900">
+                    <p className="text-sm text-slate-400">Registrations</p>
+                    <p className="text-2xl font-bold text-slate-50">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : data?.overview.registrations.toLocaleString() || 0}
                     </p>
                   </div>
@@ -236,11 +236,11 @@ export default function FunnelAnalyticsPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-500">Conversion Rate</p>
+                    <p className="text-sm text-slate-400">Conversion Rate</p>
                     <p className="text-2xl font-bold text-green-600">
                       {isLoading ? <Skeleton className="h-8 w-20 inline-block" /> : `${data?.overview.overallConversionRate || 0}%`}
                     </p>
@@ -256,7 +256,7 @@ export default function FunnelAnalyticsPage() {
 
           {/* Funnel Visualization */}
           <FadeInSection delay={200} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5 text-purple-600" />
@@ -280,7 +280,7 @@ export default function FunnelAnalyticsPage() {
           <FadeInSection delay={300} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2">
             {/* Time Per Step */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-blue-600" />
@@ -294,8 +294,8 @@ export default function FunnelAnalyticsPage() {
                   <div className="space-y-3">
                     {data?.timePerStep.map(step => (
                       <div key={step.step} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
-                        <span className="text-sm font-medium text-slate-700">{step.step}</span>
-                        <span className="text-sm font-semibold text-slate-900">{formatDuration(step.avgMs)}</span>
+                        <span className="text-sm font-medium text-slate-300">{step.step}</span>
+                        <span className="text-sm font-semibold text-slate-50">{formatDuration(step.avgMs)}</span>
                       </div>
                     ))}
                   </div>
@@ -304,7 +304,7 @@ export default function FunnelAnalyticsPage() {
             </Card>
 
             {/* Source Attribution */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-green-600" />
@@ -316,7 +316,7 @@ export default function FunnelAnalyticsPage() {
                   <SkeletonReportContent />
                 ) : data?.sources && data.sources.length > 0 ? (
                   <div className="space-y-1">
-                    <div className="grid grid-cols-6 text-xs font-medium text-slate-500 pb-2 border-b border-slate-100">
+                    <div className="grid grid-cols-6 text-xs font-medium text-slate-400 pb-2 border-b border-slate-100">
                       <span>Source</span>
                       <span className="text-right">Sessions</span>
                       <span className="text-right">Conversions</span>
@@ -328,12 +328,12 @@ export default function FunnelAnalyticsPage() {
                       const rev = data.sourceRevenue?.find(sr => sr.source === source.source)
                       return (
                         <div key={source.source} className="grid grid-cols-6 py-1.5 text-sm">
-                          <span className="font-medium text-slate-700 truncate">{source.source}</span>
-                          <span className="text-right text-slate-600">{source.sessions}</span>
-                          <span className="text-right text-slate-600">{source.conversions}</span>
+                          <span className="font-medium text-slate-300 truncate">{source.source}</span>
+                          <span className="text-right text-slate-400">{source.sessions}</span>
+                          <span className="text-right text-slate-400">{source.conversions}</span>
                           <span className="text-right font-medium text-green-600">{source.conversionRate}%</span>
-                          <span className="text-right text-slate-600">{rev?.won || 0}</span>
-                          <span className="text-right font-medium text-slate-900">{formatCurrency(rev?.pipelineValue || 0)}</span>
+                          <span className="text-right text-slate-400">{rev?.won || 0}</span>
+                          <span className="text-right font-medium text-slate-50">{formatCurrency(rev?.pipelineValue || 0)}</span>
                         </div>
                       )
                     })}
@@ -349,10 +349,10 @@ export default function FunnelAnalyticsPage() {
           <FadeInSection delay={400} animation="slide-up">
           <div className="grid gap-4 md:grid-cols-2">
             {/* Device Breakdown */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Monitor className="h-5 w-5 text-slate-600" />
+                  <Monitor className="h-5 w-5 text-slate-400" />
                   Device Breakdown
                 </CardTitle>
               </CardHeader>
@@ -365,16 +365,16 @@ export default function FunnelAnalyticsPage() {
                       const DeviceIcon = DEVICE_ICONS[device.device] || Monitor
                       return (
                         <div key={device.device} className="flex items-center gap-3">
-                          <DeviceIcon className="h-5 w-5 text-slate-500" />
+                          <DeviceIcon className="h-5 w-5 text-slate-400" />
                           <div className="flex-1">
                             <div className="flex justify-between text-sm mb-1">
-                              <span className="font-medium text-slate-700 capitalize">{device.device}</span>
+                              <span className="font-medium text-slate-300 capitalize">{device.device}</span>
                               <div className="flex items-center gap-3">
-                                <span className="text-slate-500">{device.sessions} ({device.percentage}%)</span>
+                                <span className="text-slate-400">{device.sessions} ({device.percentage}%)</span>
                                 <span className="text-green-600 font-medium">{device.conversionRate || 0}% conv</span>
                               </div>
                             </div>
-                            <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div className="h-2 bg-slate-900/60 rounded-full overflow-hidden">
                               <div
                                 className="h-full bg-blue-500 rounded-full transition-all duration-500"
                                 style={{ width: `${device.percentage}%` }}
@@ -392,7 +392,7 @@ export default function FunnelAnalyticsPage() {
             </Card>
 
             {/* CTA Clicks */}
-            <Card className="bg-white border-slate-200">
+            <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <MousePointer className="h-5 w-5 text-amber-600" />
@@ -408,8 +408,8 @@ export default function FunnelAnalyticsPage() {
                       .sort(([, a], [, b]) => b - a)
                       .map(([name, count]) => (
                         <div key={name} className="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0">
-                          <span className="text-sm text-slate-700">{name.replace(/_/g, ' ')}</span>
-                          <span className="text-sm font-semibold text-slate-900">{count}</span>
+                          <span className="text-sm text-slate-300">{name.replace(/_/g, ' ')}</span>
+                          <span className="text-sm font-semibold text-slate-50">{count}</span>
                         </div>
                       ))}
                   </div>
@@ -423,7 +423,7 @@ export default function FunnelAnalyticsPage() {
 
           {/* Daily Trends */}
           <FadeInSection delay={500} animation="slide-up">
-          <Card className="bg-white border-slate-200">
+          <Card className="border-white/5 bg-slate-950/40 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-blue-600" />

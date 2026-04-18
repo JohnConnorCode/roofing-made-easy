@@ -21,16 +21,11 @@ import {
 import type { EstimateMacro, MacroLineItemWithLineItem } from '@/lib/supabase/types'
 import {
   sampleVariables,
-  simpleVariables,
   emptyVariables,
   sampleLineItem,
   tearOffLineItem,
-  underlaymentLineItem,
-  dripEdgeLineItem,
   replacementLineItems,
-  defaultGeoPricing,
   highCostGeoPricing,
-  lowCostGeoPricing,
 } from '../fixtures/estimation'
 
 describe('DetailedPricingEngine', () => {
@@ -563,7 +558,7 @@ describe('DetailedPricingEngine', () => {
             notes: null,
             created_at: '2024-01-01T00:00:00Z',
             updated_at: '2024-01-01T00:00:00Z',
-            line_item: null as any, // Missing line item
+            line_item: undefined, // Missing line item
           },
         ],
       }

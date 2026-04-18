@@ -5,7 +5,7 @@
  * Lists types of contractors (educational content) rather than fake company names.
  */
 
-import { ContractorType, getContractorTypesForCity } from '@/lib/data/ms-competitors'
+import { getContractorTypesForCity } from '@/lib/data/ms-competitors'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
 interface ItemListSchemaProps {
@@ -68,17 +68,3 @@ export function ItemListSchema({
   )
 }
 
-// Legacy interface for backward compatibility
-interface LegacyItemListSchemaProps {
-  cityName: string
-  stateCode: string
-  competitors: Array<{
-    id: string
-    name: string
-    description: string
-    services: string[]
-    yearsInBusiness?: number
-    serviceArea: string
-  }>
-  baseUrl?: string
-}

@@ -13,13 +13,14 @@ interface CountUpProps {
 export function CountUp({ end, suffix = '', duration = 2000, className }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null)
   const prefersReducedMotion = useReducedMotion()
-  const [value, setValue] = useState(prefersReducedMotion ? end : 0)
+  const [value, setValue] = useState(0)
   const hasAnimated = useRef(false)
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      setValue(end)
-      return
+      // Use requestAnimationFrame to avoid synchronous setState in effect
+      const id = requestAnimationFrame(() => setValue(end))
+      return () => cancelAnimationFrame(id)
     }
 
     const el = ref.current

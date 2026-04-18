@@ -187,7 +187,7 @@ export function NotificationBell() {
                         {notification.title}
                       </p>
                       {notification.message && (
-                        <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{notification.message}</p>
+                        <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">{notification.message}</p>
                       )}
                       <p className="text-[10px] text-slate-400 mt-1">{formatDate(notification.created_at)}</p>
                     </div>
@@ -195,16 +195,18 @@ export function NotificationBell() {
                       {!notification.read_at && (
                         <button
                           onClick={() => markAsRead(notification.id)}
-                          className="p-1 text-slate-400 hover:text-green-600 transition-colors"
+                          className="p-2.5 -m-1 text-slate-400 hover:text-green-600 transition-colors"
                           title="Mark as read"
+                          aria-label="Mark as read"
                         >
                           <Check className="h-3.5 w-3.5" />
                         </button>
                       )}
                       <button
                         onClick={() => dismiss(notification.id)}
-                        className="p-1 text-slate-400 hover:text-red-500 transition-colors"
+                        className="p-2.5 -m-1 text-slate-400 hover:text-red-500 transition-colors"
                         title="Dismiss"
+                        aria-label="Dismiss"
                       >
                         <X className="h-3.5 w-3.5" />
                       </button>

@@ -21,7 +21,7 @@ export const integrationStatusStyles = {
   // Status badges
   badge: {
     configured: 'bg-gold-light/20 text-gold-muted',
-    notConfigured: 'bg-slate-100 text-slate-600',
+    notConfigured: 'bg-slate-100 text-slate-400',
     envConfigured: 'bg-blue-100 text-blue-700',
     dbConfigured: 'bg-gold-light/20 text-gold-muted',
   },
@@ -73,7 +73,7 @@ export function getSourceBadgeClasses(configuredVia: 'db' | 'env' | 'none'): str
     case 'db':
       return `${baseClasses} ${integrationStatusStyles.badge.dbConfigured}`
     case 'env':
-      return `${baseClasses} bg-slate-100 text-slate-600`
+      return `${baseClasses} bg-slate-100 text-slate-400`
     default:
       return `${baseClasses} ${integrationStatusStyles.badge.notConfigured}`
   }

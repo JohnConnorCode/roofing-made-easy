@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { GeographicPricing } from '@/lib/supabase/types'
-import { Save, Plus, Trash2, MapPin, RefreshCw, Loader2 } from 'lucide-react'
+import { Save, Plus, Trash2, MapPin, RefreshCw } from 'lucide-react'
 import { useConfirmDialog } from '@/components/ui/confirm-dialog'
 import { AdminPageTransition, FadeInSection } from '@/components/admin/page-transition'
 
@@ -38,11 +38,7 @@ export default function GeographicPricingPage() {
     is_active: true,
   })
 
-  useEffect(() => {
-    fetchRegions()
-  }, [])
-
-  async function fetchRegions() {
+  const fetchRegions = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await fetch('/api/geographic-pricing')
@@ -50,12 +46,16 @@ export default function GeographicPricingPage() {
 
       const data = await response.json()
       setRegions(data.regions || [])
-    } catch (error) {
+    } catch {
       showToast('Failed to load geographic pricing', 'error')
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [showToast])
+
+  useEffect(() => {
+    fetchRegions()
+  }, [fetchRegions])
 
   const handleUpdate = async (region: GeographicPricing) => {
     setIsSaving(true)
@@ -78,7 +78,7 @@ export default function GeographicPricingPage() {
 
       showToast('Region updated', 'success')
       setEditingId(null)
-    } catch (error) {
+    } catch {
       showToast('Failed to update region', 'error')
     } finally {
       setIsSaving(false)
@@ -114,7 +114,7 @@ export default function GeographicPricingPage() {
         is_active: true,
       })
       fetchRegions()
-    } catch (error) {
+    } catch {
       showToast('Failed to add region', 'error')
     } finally {
       setIsSaving(false)
@@ -164,10 +164,10 @@ export default function GeographicPricingPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">
+          <h1 className="text-2xl font-bold text-slate-50">
             Geographic Pricing
           </h1>
-          <p className="text-slate-500">
+          <p className="text-slate-400">
             Configure regional price multipliers by state, county, or ZIP code
           </p>
         </div>
@@ -199,7 +199,7 @@ export default function GeographicPricingPage() {
           <CardContent>
             <div className="grid gap-4 md:grid-cols-6">
               <div>
-                <label className="text-sm text-slate-600 block mb-1">State</label>
+                <label className="text-sm text-slate-400 block mb-1">State</label>
                 <select
                   value={newRegion.state || ''}
                   onChange={(e) =>
@@ -216,7 +216,7 @@ export default function GeographicPricingPage() {
                 </select>
               </div>
               <div className="md:col-span-2">
-                <label className="text-sm text-slate-600 block mb-1">
+                <label className="text-sm text-slate-400 block mb-1">
                   Region Name
                 </label>
                 <Input
@@ -231,7 +231,7 @@ export default function GeographicPricingPage() {
                 />
               </div>
               <div>
-                <label className="text-sm text-slate-600 block mb-1">
+                <label className="text-sm text-slate-400 block mb-1">
                   Material ×
                 </label>
                 <Input
@@ -249,7 +249,7 @@ export default function GeographicPricingPage() {
                 />
               </div>
               <div>
-                <label className="text-sm text-slate-600 block mb-1">
+                <label className="text-sm text-slate-400 block mb-1">
                   Labor ×
                 </label>
                 <Input
@@ -267,7 +267,7 @@ export default function GeographicPricingPage() {
                 />
               </div>
               <div>
-                <label className="text-sm text-slate-600 block mb-1">
+                <label className="text-sm text-slate-400 block mb-1">
                   Equipment ×
                 </label>
                 <Input
@@ -307,22 +307,22 @@ export default function GeographicPricingPage() {
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardContent className="pt-6">
-            <p className="text-sm text-slate-500">Total Regions</p>
-            <p className="text-2xl font-bold text-slate-900">{regions.length}</p>
+            <p className="text-sm text-slate-400">Total Regions</p>
+            <p className="text-2xl font-bold text-slate-50">{regions.length}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-sm text-slate-500">States Covered</p>
-            <p className="text-2xl font-bold text-slate-900">
+            <p className="text-sm text-slate-400">States Covered</p>
+            <p className="text-2xl font-bold text-slate-50">
               {Object.keys(regionsByState).length}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-sm text-slate-500">Avg Material ×</p>
-            <p className="text-2xl font-bold text-slate-900">
+            <p className="text-sm text-slate-400">Avg Material ×</p>
+            <p className="text-2xl font-bold text-slate-50">
               {regions.length > 0
                 ? (
                     regions.reduce((sum, r) => sum + r.material_multiplier, 0) /
@@ -334,8 +334,8 @@ export default function GeographicPricingPage() {
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-sm text-slate-500">Avg Labor ×</p>
-            <p className="text-2xl font-bold text-slate-900">
+            <p className="text-sm text-slate-400">Avg Labor ×</p>
+            <p className="text-2xl font-bold text-slate-50">
               {regions.length > 0
                 ? (
                     regions.reduce((sum, r) => sum + r.labor_multiplier, 0) /
@@ -360,7 +360,7 @@ export default function GeographicPricingPage() {
         <Card>
           <CardContent className="py-12 text-center">
             <MapPin className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-600">No geographic pricing regions configured</p>
+            <p className="text-slate-400">No geographic pricing regions configured</p>
             <p className="text-sm text-slate-400 mb-4">
               Add regions to apply location-based pricing multipliers
             </p>
@@ -377,7 +377,7 @@ export default function GeographicPricingPage() {
               <Card key={state}>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-slate-500" />
+                    <MapPin className="h-4 w-4 text-slate-400" />
                     {state}
                     <span className="text-sm font-normal text-slate-400">
                       ({stateRegions.length} region{stateRegions.length !== 1 ? 's' : ''})
@@ -388,7 +388,7 @@ export default function GeographicPricingPage() {
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b border-slate-200 bg-slate-50 text-sm text-slate-600">
+                        <tr className="border-b border-white/5 bg-slate-900/40 text-sm text-slate-400">
                           <th className="py-2 px-4 text-left font-medium">Region</th>
                           <th className="py-2 px-4 text-center font-medium">Material ×</th>
                           <th className="py-2 px-4 text-center font-medium">Labor ×</th>
@@ -405,7 +405,7 @@ export default function GeographicPricingPage() {
                           return (
                             <tr
                               key={region.id}
-                              className="border-b border-slate-100 hover:bg-slate-50"
+                              className="border-b border-slate-100 hover:bg-slate-900/40"
                             >
                               <td className="py-3 px-4">
                                 {isEditing ? (
@@ -514,7 +514,7 @@ export default function GeographicPricingPage() {
                                 )}
                               </td>
                               <td className="py-3 px-4">
-                                <span className="text-sm text-slate-600">
+                                <span className="text-sm text-slate-400">
                                   {region.zip_codes?.length
                                     ? region.zip_codes.slice(0, 3).join(', ') +
                                       (region.zip_codes.length > 3
@@ -524,7 +524,7 @@ export default function GeographicPricingPage() {
                                 </span>
                               </td>
                               <td className="py-3 px-4">
-                                <span className="text-sm text-slate-600">
+                                <span className="text-sm text-slate-400">
                                   {region.county || '-'}
                                 </span>
                               </td>
