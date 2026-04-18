@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
+import NextImage from 'next/image'
 import { cn } from '@/lib/utils'
 import type { RoofMaterial, RoofPitch, TimelineUrgency } from '@/lib/supabase/types'
 import { v4 as uuidv4 } from 'uuid'
@@ -23,7 +23,6 @@ import {
   AlertTriangle,
   Clock,
   Upload,
-  Image,
   X,
   Loader2,
   Droplets,
@@ -215,11 +214,11 @@ export default function DetailsPage() {
           }),
         })
         if (!response.ok) {
-          showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
+          showToast("That didn2019t save cleanly on our end. Keep going 2014 you can check your info on the final step.", 'info')
         }
       } catch (err) {
         console.error('Failed to save details data:', err)
-        showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
+        showToast("That didn2019t save cleanly on our end. Keep going 2014 you can check your info on the final step.", 'info')
       }
 
       trackFunnelStep(2, 'details_completed')
@@ -246,8 +245,8 @@ export default function DetailsPage() {
 
   return (
     <StepContainer
-      title="Tell us about your roof"
-      description="Just select your roof type below. Add more details if you'd like a more accurate estimate."
+      title="A little about the roof"
+      description="Pick your material. The rest is optional — more detail tightens the estimate."
       onNext={handleNext}
       onBack={handleBack}
       isNextDisabled={!roofMaterial || uploadingCount > 0}
@@ -255,11 +254,13 @@ export default function DetailsPage() {
     >
       <div className="space-y-6">
         {/* Required: Roof Material */}
-        <div>
-          <h3 className="mb-3 text-sm font-medium text-slate-400 uppercase tracking-wide">
-            Roof Type <span className="text-red-400">*</span>
-          </h3>
-          <div className="grid gap-2 grid-cols-2 sm:grid-cols-4 lg:grid-cols-7">
+        <fieldset>
+          <legend className="mb-3 text-sm font-medium text-slate-400 uppercase tracking-wide">
+            Roof Type
+            <span className="text-[#c9a25c] ml-0.5" aria-hidden="true">*</span>
+            <span className="sr-only"> (required)</span>
+          </legend>
+          <div className="grid gap-2 grid-cols-2 sm:grid-cols-4 lg:grid-cols-7" role="radiogroup" aria-label="Roof type">
             {ROOF_MATERIALS.map((material) => (
               <OptionCard
                 key={material.value}
@@ -271,7 +272,7 @@ export default function DetailsPage() {
               />
             ))}
           </div>
-        </div>
+        </fieldset>
 
         {/* Optional Details Badge */}
         {optionalDataCount > 0 && (
@@ -285,8 +286,8 @@ export default function DetailsPage() {
 
         {/* Optional: Roof Specifications */}
         <CollapsibleSection
-          title="Roof Specifications"
-          description="Size, age, pitch, and features"
+          title="Roof specs"
+          description="Size, age, pitch, anything unusual"
           icon={<Ruler className="h-5 w-5" />}
           badge="Better estimate"
         >
@@ -327,7 +328,8 @@ export default function DetailsPage() {
                 onChange={(value) => setRoofDetails({ roofPitch: value as RoofPitch })}
               />
             </div>
-            <div className="flex flex-wrap gap-4">
+            <fieldset className="flex flex-wrap gap-4">
+              <legend className="sr-only">Roof features</legend>
               <Checkbox
                 label="Skylights"
                 checked={hasSkylights}
@@ -343,18 +345,19 @@ export default function DetailsPage() {
                 checked={hasSolarPanels}
                 onChange={(e) => setRoofDetails({ hasSolarPanels: e.target.checked })}
               />
-            </div>
+            </fieldset>
           </div>
         </CollapsibleSection>
 
         {/* Optional: Issues */}
         <CollapsibleSection
-          title="Current Issues"
-          description="Any visible problems or damage"
+          title="What's going on"
+          description="Anything you've noticed — leaks, missing shingles, storm stuff"
           icon={<AlertTriangle className="h-5 w-5" />}
         >
-          <div className="space-y-4">
-            <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+          <fieldset className="space-y-4">
+            <legend className="sr-only">Current roof issues</legend>
+            <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" role="group" aria-label="Select current issues">
               {ISSUES.map((issue) => (
                 <MultiSelectCard
                   key={issue.value}
@@ -375,13 +378,13 @@ export default function DetailsPage() {
                 rows={2}
               />
             )}
-          </div>
+          </fieldset>
         </CollapsibleSection>
 
         {/* Optional: Photos */}
         <CollapsibleSection
           title="Photos"
-          description="Upload roof photos for better accuracy"
+          description="Drop in a few shots — we'll read material, damage, and sq ft from them"
           icon={<Camera className="h-5 w-5" />}
           badge="Recommended"
         >
@@ -406,7 +409,7 @@ export default function DetailsPage() {
                 disabled={photos.length >= MAX_PHOTOS}
               />
               <div className="flex flex-col items-center gap-3">
-                <Upload className="h-8 w-8 text-slate-500" />
+                <Upload className="h-8 w-8 text-slate-400" />
                 <div className="text-sm text-slate-400">
                   Drag photos here or{' '}
                   <button
@@ -417,7 +420,7 @@ export default function DetailsPage() {
                     browse
                   </button>
                 </div>
-                <p className="text-xs text-slate-500">{photos.length}/{MAX_PHOTOS} photos</p>
+                <p className="text-xs text-slate-400">{photos.length}/{MAX_PHOTOS} photos</p>
               </div>
             </div>
 
@@ -425,7 +428,7 @@ export default function DetailsPage() {
               <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
                 {photos.map((photo) => (
                   <div key={photo.id} className="group relative aspect-square overflow-hidden rounded-lg bg-slate-800">
-                    <img src={photo.previewUrl} alt="Roof" className="h-full w-full object-cover" />
+                    <NextImage src={photo.previewUrl} alt="Uploaded roof photo" fill className="object-cover" unoptimized />
                     {photo.status === 'uploading' && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/50">
                         <Loader2 className="h-6 w-6 animate-spin text-white" />
@@ -475,12 +478,13 @@ export default function DetailsPage() {
 
         {/* Optional: Timeline */}
         <CollapsibleSection
-          title="Timeline & Urgency"
-          description="When do you need this done?"
+          title="Timeline"
+          description="Emergency? Just exploring? Somewhere in between?"
           icon={<Clock className="h-5 w-5" />}
         >
-          <div className="space-y-4">
-            <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+          <fieldset className="space-y-4">
+            <legend className="sr-only">Timeline and urgency</legend>
+            <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6" role="radiogroup" aria-label="Timeline urgency">
               {TIMELINE_OPTIONS.map((option) => (
                 <OptionCard
                   key={option.value}
@@ -516,7 +520,7 @@ export default function DetailsPage() {
                 </div>
               )}
             </div>
-          </div>
+          </fieldset>
         </CollapsibleSection>
       </div>
     </StepContainer>

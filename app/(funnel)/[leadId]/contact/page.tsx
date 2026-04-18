@@ -139,11 +139,11 @@ export default function ContactPage() {
           }),
         })
         if (!saveResponse.ok) {
-          showToast('Your contact info may not have saved. You can continue, but please double-check your info later.', 'info')
+          showToast("Your contact didn2019t save cleanly, but keep going 2014 we2019ll catch it on the final step.", 'info')
         }
       } catch (err) {
         console.error('Failed to save contact data:', err)
-        showToast('Your contact info may not have saved. You can continue, but please double-check your info later.', 'info')
+        showToast("Your contact didn2019t save cleanly, but keep going 2014 we2019ll catch it on the final step.", 'info')
       }
 
       // Generate estimate - BLOCK if this fails since the next page needs it
@@ -155,7 +155,7 @@ export default function ContactPage() {
         })
         if (!estimateResponse.ok) {
           setEstimateFailed(true)
-          showToast('We couldn\'t generate your estimate. Please try again.', 'error')
+          showToast("The estimate didn't come through that time — give it one more try.", 'error')
           setIsLoading(false)
           return
         }
@@ -174,7 +174,7 @@ export default function ContactPage() {
       } catch (err) {
         console.error('Failed to generate estimate:', err)
         setEstimateFailed(true)
-        showToast('We couldn\'t generate your estimate. Please try again.', 'error')
+        showToast("The estimate didn't come through that time — give it one more try.", 'error')
         setIsLoading(false)
         return
       }
@@ -208,8 +208,8 @@ export default function ContactPage() {
 
   return (
     <StepContainer
-      title="Almost there!"
-      description="Enter your contact info to get your personalized estimate."
+      title="Almost there."
+      description="Where should we send the estimate? No calls unless you ask for one."
       onNext={handleNext}
       onBack={handleBack}
       isNextDisabled={!isValid}
@@ -334,8 +334,8 @@ export default function ContactPage() {
 
         {/* Optional preferences - collapsible */}
         <CollapsibleSection
-          title="Communication Preferences"
-          description="How would you like us to contact you?"
+          title="How to reach you"
+          description="Pick what you prefer — we'll stick to it"
           icon={<Settings className="h-5 w-5" />}
         >
           <div className="space-y-4">

@@ -251,11 +251,11 @@ export default function PropertyPage() {
           }),
         })
         if (!response.ok) {
-          showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
+          showToast("That didn2019t save cleanly on our end. Keep going 2014 you can check your info on the final step.", 'info')
         }
       } catch (err) {
         console.error('Failed to save property data:', err)
-        showToast('Your data may not have saved. You can continue, but please double-check your info later.', 'info')
+        showToast("That didn2019t save cleanly on our end. Keep going 2014 you can check your info on the final step.", 'info')
       }
 
       trackFunnelStep(1, 'property_completed')
@@ -276,8 +276,8 @@ export default function PropertyPage() {
 
   return (
     <StepContainer
-      title="Let's get started"
-      description="Tell us where the property is and what you need done."
+      title="Where's the roof?"
+      description="Address first, then a quick job type. Takes about 30 seconds."
       onNext={handleNext}
       isNextDisabled={!isValid}
       isLoading={isLoading}
@@ -285,12 +285,13 @@ export default function PropertyPage() {
     >
       <div className="space-y-8" ref={formRef}>
         {/* Address Section */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-medium text-slate-200">Property Address</h3>
+        <fieldset className="space-y-4">
+          <legend className="text-lg font-medium text-slate-200">Property Address</legend>
 
           <div data-error={!!errors.streetAddress}>
             <Input
               label="Street Address"
+              showRequired
               placeholder="123 Main St"
               value={formData.streetAddress}
               onChange={(e) => updateField('streetAddress', e.target.value)}
@@ -303,6 +304,7 @@ export default function PropertyPage() {
             <div data-error={!!errors.city}>
               <Input
                 label="City"
+                showRequired
                 placeholder="City"
                 value={formData.city}
                 onChange={(e) => updateField('city', e.target.value)}
@@ -314,6 +316,7 @@ export default function PropertyPage() {
             <div data-error={!!errors.state}>
               <Select
                 label="State"
+                showRequired
                 options={US_STATES}
                 value={formData.state}
                 onChange={(value) => updateField('state', value)}
@@ -324,6 +327,7 @@ export default function PropertyPage() {
             <div data-error={!!errors.zipCode}>
               <Input
                 label="ZIP Code"
+                showRequired
                 placeholder="12345"
                 value={formData.zipCode}
                 onChange={(e) => updateField('zipCode', e.target.value)}
@@ -333,16 +337,20 @@ export default function PropertyPage() {
               />
             </div>
           </div>
-        </div>
+        </fieldset>
 
         {/* Job Type Section */}
-        <div className="space-y-4" data-error={!!errors.jobType}>
-          <h3 className="text-lg font-medium text-slate-200">What do you need?</h3>
+        <fieldset className="space-y-4" data-error={!!errors.jobType}>
+          <legend className="text-lg font-medium text-slate-200">
+            What do you need?
+            <span className="text-[#c9a25c] ml-0.5" aria-hidden="true">*</span>
+            <span className="sr-only"> (required)</span>
+          </legend>
           {errors.jobType && (
-            <p className="text-sm text-red-400">{errors.jobType}</p>
+            <p className="text-sm text-red-400" role="alert">{errors.jobType}</p>
           )}
 
-          <div className="grid gap-2 grid-cols-2 sm:grid-cols-4">
+          <div className="grid gap-2 grid-cols-2 sm:grid-cols-4" role="radiogroup" aria-label="Job type">
             {JOB_TYPES.map((type) => (
               <OptionCard
                 key={type.value}
@@ -368,7 +376,7 @@ export default function PropertyPage() {
               />
             </div>
           )}
-        </div>
+        </fieldset>
       </div>
     </StepContainer>
   )

@@ -31,13 +31,13 @@ export function useStartFunnel() {
         trackConversion('lead_created', { lead_id: data.lead.id })
         router.push(`/${data.lead.id}/property`)
       } else {
-        let msg = 'Unable to start your estimate. Please try again.'
+        let msg = 'Something went sideways on our end. One more try?'
         let serverDetail: string | undefined
         try {
           const body = (await response.json()) as { error?: string; message?: string; retryAfter?: number; detail?: string }
           if (response.status === 429) {
             const wait = typeof body.retryAfter === 'number' ? Math.max(1, body.retryAfter) : 30
-            msg = `Please wait ${wait}s and try again.`
+            msg = `Give it about ${wait} seconds and try again.`
           } else if (body.message) {
             msg = body.message
           } else if (body.error) {
@@ -57,7 +57,7 @@ export function useStartFunnel() {
         setIsCreating(false)
       }
     } catch {
-      const msg = 'Connection error. Please check your internet and try again.'
+      const msg = "Looks like your connection dropped. We'll be here when it's back."
       setError(msg)
       showToast(msg, 'error')
       setIsCreating(false)
