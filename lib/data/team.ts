@@ -62,9 +62,9 @@ export const teamMembers: TeamMember[] = [
 ]
 
 export const companyInfo: CompanyInfo = {
-  name: 'Smart Roof Pricing',
+  name: 'Farrell Roofing',
   founded: 2010,
-  description: 'Smart Roof Pricing was built by Farrell Roofing, a family-owned company that has been protecting homes and families for over a decade. We created this tool because we believe every homeowner deserves to know what their roof should cost before talking to a single contractor.',
+  description: 'Farrell Roofing is a family-owned company that has been protecting homes and families for over a decade. We created this tool because we believe every homeowner deserves to know what their roof should cost before talking to a single contractor.',
   mission: 'To give every homeowner honest, transparent, and accurate roofing estimates. We believe you deserve to know exactly what you\'re paying for and why, powered by real data from real projects.',
   values: [
     {

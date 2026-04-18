@@ -14,10 +14,12 @@ interface ImageEntry {
   }>
 }
 
+export const revalidate = 3600
+
 export async function GET() {
   const cities = getAllCities()
   const counties = getAllCounties()
-  const blogPosts = getAllBlogPosts()
+  const blogPosts = await getAllBlogPosts()
   const services = getAllServices()
 
   const imageEntries: ImageEntry[] = []
@@ -93,7 +95,7 @@ export async function GET() {
     images: [
       {
         url: `${BASE_URL}/images/og-default.jpg`,
-        title: 'Smart Roof Pricing - Northeast Mississippi Roofing Experts',
+        title: 'Farrell Roofing - Northeast Mississippi Roofing Experts',
         caption: 'Professional roofing services in Tupelo and Northeast Mississippi',
         geoLocation: 'Tupelo, Mississippi, USA',
       },

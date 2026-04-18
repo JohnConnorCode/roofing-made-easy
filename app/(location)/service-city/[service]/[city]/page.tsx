@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: ServiceCityPageProps): Promis
 
   if (!city || !service) return { title: 'Page Not Found' }
 
-  const title = `${service.serviceName} in ${city.name}, MS | Smart Roof Pricing`
+  const title = `${service.serviceName} in ${city.name}, MS | Farrell Roofing`
   const description = `Professional ${service.serviceName.toLowerCase()} services in ${city.name}, Mississippi. ${service.serviceDescription} Free estimates available.`
 
   return generateServiceCityMeta({
@@ -187,7 +187,7 @@ export default async function ServiceCityPage({ params }: ServiceCityPageProps) 
                 href="/"
                 className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all"
               >
-                Get Free Estimate
+                Get My Free Estimate
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
@@ -334,7 +334,7 @@ export default async function ServiceCityPage({ params }: ServiceCityPageProps) 
               href="/"
               className="inline-flex items-center justify-center bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all"
             >
-              Get Your Free Estimate
+              Get My Free Estimate
             </Link>
             <Link
               href={`/${city.slug}-roofing`}

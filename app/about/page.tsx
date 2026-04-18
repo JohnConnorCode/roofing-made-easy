@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { teamMembers, companyInfo, isRealTeamData } from '@/lib/data/team'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
+import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 import {
   Award,
   Shield,
@@ -51,7 +52,11 @@ export const metadata: Metadata = {
   },
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const config = await getBusinessConfigFromDB()
+  const brandName = config.name
+  const description = companyInfo.description.replace(/Farrell Roofing/g, brandName)
+
   const breadcrumbs = [
     { name: 'Home', url: BASE_URL },
     { name: 'About', url: `${BASE_URL}/about` },
@@ -78,16 +83,16 @@ export default function AboutPage() {
                 About
               </p>
               <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
-                {companyInfo.name}, a family roofing business.
+                {brandName}, a family roofing business.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-xl">
-                {companyInfo.description}
+                {description}
               </p>
             </div>
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden animate-slide-up delay-200 border border-slate-900">
               <Image
                 src="/images/about/team-work.jpg"
-                alt={`${companyInfo.name} team at work`}
+                alt={`${brandName} team at work`}
                 fill
                 className="object-cover"
                 priority
@@ -217,7 +222,7 @@ export default function AboutPage() {
             Ready to Work With Us?
           </h2>
           <p className="mt-4 text-lg text-slate-400">
-            Get a free estimate and see why thousands of homeowners trust Smart Roof Pricing.
+            Get a free estimate and see what honest roofing pricing looks like in {config.serviceArea.region}.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/">

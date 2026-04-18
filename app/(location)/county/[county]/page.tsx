@@ -157,7 +157,7 @@ export default async function CountyPage({ params }: CountyPageProps) {
                 href="/"
                 className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all btn-press"
               >
-                Get Free Estimate
+                Get My Free Estimate
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
@@ -243,14 +243,14 @@ export default async function CountyPage({ params }: CountyPageProps) {
             Ready for Your Free Estimate?
           </h2>
           <p className="text-gray-300 mb-8 max-w-xl mx-auto">
-            Contact Smart Roof Pricing today for professional roofing services anywhere in {county.name}.
+            Contact Farrell Roofing today for professional roofing services anywhere in {county.name}.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/"
               className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all btn-press"
             >
-              Get Free Estimate
+              Get My Free Estimate
               <ArrowRight className="w-5 h-5" />
             </Link>
             <a

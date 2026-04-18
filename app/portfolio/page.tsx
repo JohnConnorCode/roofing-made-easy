@@ -14,13 +14,13 @@ import { SiteHeader, SiteFooter } from '@/components/layout'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
-  title: 'Our Work | Roofing Projects Portfolio | Smart Roof Pricing',
+  title: 'Our Work | Roofing Projects Portfolio | Farrell Roofing',
   description: 'View our completed roofing projects in Tupelo and Northeast Mississippi. See real examples of roof replacements, repairs, and storm damage restoration.',
   openGraph: {
-    title: 'Roofing Portfolio | Smart Roof Pricing',
+    title: 'Roofing Portfolio | Farrell Roofing',
     description: 'Browse our completed roofing projects across Northeast Mississippi.',
     url: `${BASE_URL}/portfolio`,
-    siteName: 'Smart Roof Pricing',
+    siteName: 'Farrell Roofing',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/api/og?type=service&title=Our%20Work&subtitle=Roofing%20Projects%20Portfolio`,
         width: 1200,
         height: 630,
-        alt: 'Smart Roof Pricing Projects Portfolio',
+        alt: 'Farrell Roofing Projects Portfolio',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Roofing Portfolio | Smart Roof Pricing',
+    title: 'Roofing Portfolio | Farrell Roofing',
     description: 'Browse our completed roofing projects across Northeast Mississippi.',
   },
   alternates: {
@@ -48,31 +48,34 @@ export const metadata: Metadata = {
 export default function PortfolioPage() {
   if (!isRealPortfolioData) {
     return (
-      <div className="min-h-screen bg-gradient-dark">
+      <div className="min-h-screen bg-[#0c0f14]">
         <SiteHeader />
 
-        <section className="py-24 md:py-32">
-          <div className="mx-auto max-w-2xl px-4 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#c9a25c]/15 border border-[#c9a25c]/30 mx-auto mb-6">
-              <Home className="h-8 w-8 text-[#c9a25c]" />
-            </div>
-            <h1 className="text-3xl font-bold text-slate-100 md:text-4xl">
-              Portfolio Coming Soon
-            </h1>
-            <p className="mt-4 text-lg text-slate-400 leading-relaxed">
-              We&apos;re putting together a showcase of our completed roofing projects across Northeast Mississippi. Check back soon to see our work.
-            </p>
-            <div className="mt-8">
-              <Link href="/">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
-                  rightIcon={<ArrowRight className="h-5 w-5" />}
-                >
-                  Get My Free Estimate
-                </Button>
-              </Link>
+        <section className="py-24 md:py-32 bg-[#0c0f14]">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="max-w-3xl">
+              <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
+                Our Work
+              </p>
+              <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
+                Roofs we&rsquo;ve put on.
+              </h1>
+              <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
+                We&rsquo;re putting together a showcase of recent completions.
+                Check back soon, or see the tool in action while you&rsquo;re here.
+              </p>
+              <div className="mt-10 animate-slide-up delay-200">
+                <Link href="/">
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
+                    rightIcon={<ArrowRight className="h-5 w-5" />}
+                  >
+                    Get my free estimate
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>

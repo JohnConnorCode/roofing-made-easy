@@ -7,16 +7,16 @@ import { BUSINESS_CONFIG, getPhoneDisplay } from '@/lib/config/business'
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Smart Roof Pricing',
-  description: 'Privacy Policy for Smart Roof Pricing, operated by Farrell Roofing LLC. Learn how we collect, use, and protect your information when using our roofing estimate services.',
+  title: 'Privacy Policy | Farrell Roofing',
+  description: 'Privacy Policy for Farrell Roofing, operated by Farrell Roofing LLC. Learn how we collect, use, and protect your information when using our roofing estimate services.',
   alternates: {
     canonical: `${BASE_URL}/privacy`,
   },
   openGraph: {
-    title: 'Privacy Policy | Smart Roof Pricing',
-    description: 'How Smart Roof Pricing collects, uses, and protects your personal information.',
+    title: 'Privacy Policy | Farrell Roofing',
+    description: 'How Farrell Roofing collects, uses, and protects your personal information.',
     url: `${BASE_URL}/privacy`,
-    siteName: 'Smart Roof Pricing',
+    siteName: 'Farrell Roofing',
     locale: 'en_US',
     type: 'website',
   },
@@ -172,6 +172,12 @@ export default function PrivacyPage() {
               <li>By using the <Link href="/contact" className="text-[#c9a25c] hover:underline">contact form</Link> on our website</li>
             </ul>
           </div>
+
+          <section className="mt-16 border-t border-slate-800 pt-12 text-center">
+            <h2 className="text-2xl font-bold text-white mb-4">Ready to Get Started?</h2>
+            <p className="text-slate-400 mb-6">Get your free, instant roof estimate in minutes.</p>
+            <Link href="/" className="inline-block px-8 py-3 bg-gradient-to-r from-[#c9a25c] to-[#d4b876] text-[#0c0f14] font-semibold rounded-lg hover:opacity-90 transition-opacity">Free Estimate</Link>
+          </section>
         </div>
       </div>
 

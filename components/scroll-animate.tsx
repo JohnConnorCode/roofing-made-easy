@@ -26,6 +26,14 @@ export function ScrollAnimate({
     const element = ref.current
     if (!element) return
 
+    // If the element is already in view at mount, show immediately.
+    const rect = element.getBoundingClientRect()
+    const inView = rect.top < window.innerHeight && rect.bottom > 0
+    if (inView) {
+      setIsVisible(true)
+      if (once) return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -41,7 +49,16 @@ export function ScrollAnimate({
     )
 
     observer.observe(element)
-    return () => observer.disconnect()
+
+    // Safety net: if the observer hasn't fired within 2s (user is in an
+    // automation tool, prefers-reduced-motion edge case, or a weird browser
+    // quirk), reveal anyway so content is never permanently hidden.
+    const safetyTimer = setTimeout(() => setIsVisible(true), 2000)
+
+    return () => {
+      observer.disconnect()
+      clearTimeout(safetyTimer)
+    }
   }, [threshold, once])
 
   const animationClass = {
@@ -96,6 +113,14 @@ export function ScrollStagger({
     const element = ref.current
     if (!element) return
 
+    // If the element is already in view at mount, show immediately.
+    const rect = element.getBoundingClientRect()
+    const inView = rect.top < window.innerHeight && rect.bottom > 0
+    if (inView) {
+      setIsVisible(true)
+      if (once) return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -111,7 +136,16 @@ export function ScrollStagger({
     )
 
     observer.observe(element)
-    return () => observer.disconnect()
+
+    // Safety net: if the observer hasn't fired within 2s (user is in an
+    // automation tool, prefers-reduced-motion edge case, or a weird browser
+    // quirk), reveal anyway so content is never permanently hidden.
+    const safetyTimer = setTimeout(() => setIsVisible(true), 2000)
+
+    return () => {
+      observer.disconnect()
+      clearTimeout(safetyTimer)
+    }
   }, [threshold, once])
 
   return (
