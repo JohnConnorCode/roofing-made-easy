@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { logActivity } from '@/lib/team/activity-logger'
+import { detectTeamSchedulingConflicts, formatConflictMessage } from '@/lib/scheduling/conflicts'
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
@@ -77,6 +78,38 @@ export async function POST(request: NextRequest) {
         },
         { status: 409 }
       )
+    }
+
+    // Conflict gate: admin can pass ?force=true to create anyway (e.g., split
+    // crew, same-day handoff, deliberate double-booking they already vetted).
+    if (data.assigned_team_id && data.scheduled_start && data.scheduled_end) {
+      const force = new URL(request.url).searchParams.get('force') === 'true'
+      if (!force) {
+        const conflictResult = await detectTeamSchedulingConflicts(supabase, {
+          teamId: data.assigned_team_id,
+          scheduledStart: data.scheduled_start,
+          scheduledEnd: data.scheduled_end,
+        })
+        if (conflictResult.hasConflict) {
+          return NextResponse.json(
+            {
+              error: 'Scheduling conflict',
+              message: formatConflictMessage(conflictResult.conflicts),
+              conflicts: conflictResult.conflicts,
+              hint: 'Retry the request with ?force=true to override.',
+            },
+            { status: 409 }
+          )
+        }
+      } else {
+        logger.info('[create-from-lead] Schedule conflict override used', {
+          leadId: data.lead_id,
+          userId: user.id,
+          teamId: data.assigned_team_id,
+          scheduledStart: data.scheduled_start,
+          scheduledEnd: data.scheduled_end,
+        })
+      }
     }
 
     // Get customer ID from customer_leads if linked

@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { logActivity } from '@/lib/team/activity-logger'
+import { detectTeamCalendarConflicts, formatConflictMessage } from '@/lib/scheduling/conflicts'
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
@@ -124,6 +125,37 @@ export async function POST(request: NextRequest) {
 
     const supabase = await createClient()
     const data = parsed.data
+
+    // Conflict gate — timestamp-granular for calendar events (hours matter
+    // for inspections / site visits). Bypass with ?force=true.
+    if (data.assigned_team_id) {
+      const force = new URL(request.url).searchParams.get('force') === 'true'
+      if (!force) {
+        const conflictResult = await detectTeamCalendarConflicts(supabase, {
+          teamId: data.assigned_team_id,
+          startAt: data.start_at,
+          endAt: data.end_at,
+        })
+        if (conflictResult.hasConflict) {
+          return NextResponse.json(
+            {
+              error: 'Scheduling conflict',
+              message: formatConflictMessage(conflictResult.conflicts),
+              conflicts: conflictResult.conflicts,
+              hint: 'Retry the request with ?force=true to override.',
+            },
+            { status: 409 }
+          )
+        }
+      } else {
+        logger.info('[calendar POST] Schedule conflict override used', {
+          userId: user.id,
+          teamId: data.assigned_team_id,
+          startAt: data.start_at,
+          endAt: data.end_at,
+        })
+      }
+    }
 
     const { data: event, error: createError } = await supabase
       .from('calendar_events')

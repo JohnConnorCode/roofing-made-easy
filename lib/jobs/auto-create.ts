@@ -13,12 +13,18 @@
  */
 
 import { logger } from '@/lib/logger'
+import { createInvoice } from '@/lib/invoices/create'
+import { sendInvoiceEmail } from '@/lib/invoices/send'
 import type { SupabaseClient } from '@supabase/supabase-js'
 
 // Percent of contract collected up-front. Industry standard for roofing is
 // 30–50%. Most contractors configure this per-job; we default to 50% and
 // let admin override on the job record before sending the deposit invoice.
 const DEFAULT_DEPOSIT_PERCENT = 0.5
+
+// How many days the customer has to pay the deposit before the invoice shows
+// as past due. 7 days keeps urgency up without feeling pushy.
+const DEPOSIT_DUE_DAYS = 7
 
 export interface AutoCreateJobInput {
   leadId: string
@@ -107,6 +113,60 @@ export async function autoCreateJobFromAcceptance(
       contractAmount: input.contractAmount,
       depositAmount,
     })
+
+    // Auto-create + send the deposit invoice so the customer can pay without
+    // waiting for an admin to do it manually. If either step fails we still
+    // return success on the job — admin will see the job exists without an
+    // invoice and can create one manually.
+    try {
+      const dueDate = new Date()
+      dueDate.setDate(dueDate.getDate() + DEPOSIT_DUE_DAYS)
+
+      const invoiceResult = await createInvoice(supabase, {
+        leadId: input.leadId,
+        customerId: leadRecord.customer_id,
+        estimateId: input.estimateId,
+        jobId: jobRow.id,
+        paymentType: 'deposit',
+        dueDate: dueDate.toISOString().split('T')[0],
+        status: 'sent',
+        lineItems: [
+          {
+            description: `Project deposit (${Math.round(DEFAULT_DEPOSIT_PERCENT * 100)}% of contract)`,
+            quantity: 1,
+            unitPrice: depositAmount,
+            isTaxable: false,
+          },
+        ],
+      })
+
+      if (invoiceResult.invoice) {
+        logger.info('[auto-create-job] Deposit invoice created', {
+          jobId: jobRow.id,
+          invoiceId: invoiceResult.invoice.id,
+          invoiceNumber: invoiceResult.invoice.invoice_number,
+        })
+
+        // Fire-and-forget the customer email. Logged on failure; not awaited
+        // because job creation must succeed even if email infra is down.
+        sendInvoiceEmail(supabase, invoiceResult.invoice.id).catch((err) => {
+          logger.error('[auto-create-job] Deposit invoice email failed', {
+            invoiceId: invoiceResult.invoice?.id,
+            error: err instanceof Error ? err.message : 'Unknown',
+          })
+        })
+      } else {
+        logger.error('[auto-create-job] Failed to create deposit invoice', {
+          jobId: jobRow.id,
+          reason: invoiceResult.error,
+        })
+      }
+    } catch (invoiceErr) {
+      logger.error('[auto-create-job] Deposit invoice flow threw', {
+        jobId: jobRow.id,
+        error: invoiceErr instanceof Error ? invoiceErr.message : 'Unknown',
+      })
+    }
 
     return { created: true, jobId: jobRow.id }
   } catch (err) {

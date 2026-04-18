@@ -9,11 +9,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getUserWithProfile, hasPermission } from '@/lib/team/permissions'
 import { logActivity } from '@/lib/team/activity-logger'
+import { detectTeamSchedulingConflicts, formatConflictMessage } from '@/lib/scheduling/conflicts'
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
 const updateJobSchema = z.object({
   status: z.enum([
+    'pending_deposit',
     'pending_start', 'materials_ordered', 'scheduled', 'in_progress',
     'inspection_pending', 'punch_list', 'completed', 'warranty_active', 'closed',
   ]).optional(),
@@ -111,10 +113,10 @@ export async function PATCH(
 
     const supabase = await createClient()
 
-    // Get current job for logging
+    // Get current job — status for logging, schedule/team for conflict check.
     const { data: currentJob } = await supabase
       .from('jobs')
-      .select('status, job_number')
+      .select('status, job_number, scheduled_start, scheduled_end, assigned_team_id')
       .eq('id', jobId)
       .single()
 
@@ -122,8 +124,62 @@ export async function PATCH(
       return NextResponse.json({ error: 'Job not found' }, { status: 404 })
     }
 
-    const updateData: Record<string, unknown> = {}
+    const currentJobData = currentJob as {
+      status: string
+      job_number: string
+      scheduled_start: string | null
+      scheduled_end: string | null
+      assigned_team_id: string | null
+    }
+
     const data = parsed.data
+
+    // Conflict gate — run only when team or schedule actually changes. Admins
+    // can bypass with ?force=true (logged below) when they know about the
+    // overlap and want to proceed anyway (e.g., a crew of 6 split across two
+    // small repair jobs same day).
+    const scheduleChanged =
+      data.scheduled_start !== undefined || data.scheduled_end !== undefined
+    const teamChanged = data.assigned_team_id !== undefined
+
+    if (scheduleChanged || teamChanged) {
+      const finalTeamId = teamChanged ? data.assigned_team_id : currentJobData.assigned_team_id
+      const finalStart = data.scheduled_start !== undefined ? data.scheduled_start : currentJobData.scheduled_start
+      const finalEnd = data.scheduled_end !== undefined ? data.scheduled_end : currentJobData.scheduled_end
+
+      const force = new URL(request.url).searchParams.get('force') === 'true'
+
+      if (finalTeamId && finalStart && finalEnd && !force) {
+        const conflictResult = await detectTeamSchedulingConflicts(supabase, {
+          teamId: finalTeamId,
+          scheduledStart: finalStart,
+          scheduledEnd: finalEnd,
+          excludeJobId: jobId,
+        })
+
+        if (conflictResult.hasConflict) {
+          return NextResponse.json(
+            {
+              error: 'Scheduling conflict',
+              message: formatConflictMessage(conflictResult.conflicts),
+              conflicts: conflictResult.conflicts,
+              hint: 'Retry the request with ?force=true to override.',
+            },
+            { status: 409 }
+          )
+        }
+      } else if (force) {
+        logger.info('[jobs PATCH] Schedule conflict override used', {
+          jobId,
+          userId: user.id,
+          teamId: finalTeamId,
+          scheduledStart: finalStart,
+          scheduledEnd: finalEnd,
+        })
+      }
+    }
+
+    const updateData: Record<string, unknown> = {}
 
     if (data.status !== undefined) updateData.status = data.status
     if (data.scheduled_start !== undefined) updateData.scheduled_start = data.scheduled_start
