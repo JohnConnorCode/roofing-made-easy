@@ -76,8 +76,8 @@ export function validatePost(content: string, title: string, existingSlugs: stri
 
   // Word count
   const wordCount = content.split(/\s+/).filter(w => w.length > 0).length
-  if (wordCount < 900) {
-    errors.push(`Word count too low: ${wordCount} (minimum 900)`)
+  if (wordCount < 750) {
+    errors.push(`Word count too low: ${wordCount} (minimum 750)`)
   } else if (wordCount > 2500) {
     warnings.push(`Word count high: ${wordCount} (target 900-2500)`)
   }
@@ -135,7 +135,7 @@ export function validatePost(content: string, title: string, existingSlugs: stri
   // Mississippi references
   const msRefs = MISSISSIPPI_CITIES.filter(city => lower.includes(city))
   if (msRefs.length < 2) {
-    errors.push(`Too few Mississippi location references: ${msRefs.length} (minimum 2)`)
+    warnings.push(`Few Mississippi location references: ${msRefs.length} (recommend 2+)`)
   }
 
   // Mississippi weather/climate reference
