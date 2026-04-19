@@ -228,9 +228,12 @@ async function generateOne(
   const topic = pickTopic(topics, specificId)
   if (!topic) return false
 
-  // Check if slug already exists in DB
+  // Check if slug already exists in DB — mark published so batch moves on
   if (existingSlugs.includes(topic.slug)) {
-    console.log(`Slug "${topic.slug}" already exists in DB. Skipping.`)
+    console.log(`Slug "${topic.slug}" already exists in DB. Marking published and skipping.`)
+    topic.status = 'published' as const
+    topic.publishedSlug = topic.slug
+    if (!dryRun) writeJson(CONTENT_PLAN_PATH, topics)
     return false
   }
 
