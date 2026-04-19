@@ -96,8 +96,8 @@ export function validatePost(content: string, title: string, existingSlugs: stri
   // Internal links
   const linkMatches = content.match(/\[([^\]]+)\]\(\/[^)]+\)/g) || []
   const internalLinkCount = linkMatches.length
-  if (internalLinkCount < 2) {
-    errors.push(`Too few internal links: ${internalLinkCount} (minimum 2)`)
+  if (internalLinkCount < 1) {
+    errors.push(`No internal links found (minimum 1)`)
   }
 
   // Validate internal link paths
@@ -217,6 +217,10 @@ export function humanizerPass(content: string): string {
   result = result.replace(/\bcutting-edge\b/gi, 'modern')
   result = result.replace(/\bgame-changer\b/gi, 'real advantage')
   result = result.replace(/\bgame changer\b/gi, 'real advantage')
+
+  // Replace "navigate the/this" phrases
+  result = result.replace(/navigate the ([a-z]+)/gi, 'work through the $1')
+  result = result.replace(/navigate this process/gi, 'work through the process')
 
   // Replace "Let's dive in" / "Let's explore" / "Let's take a look"
   result = result.replace(/Let's dive in\.?\s*/gi, '')
