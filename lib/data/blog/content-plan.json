@@ -32,12 +32,12 @@
     ],
     "outline": "Clay tile overview → MS heat/humidity performance → cost breakdown → weight considerations → installation requirements → maintenance",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/pricing/roof-replacement-cost"
     ],
-    "publishedSlug": null
+    "publishedSlug": "clay-tile-roofing-mississippi-guide"
   },
   {
     "id": "topic-003",
@@ -52,7 +52,7 @@
     ],
     "outline": "What are Class 4 shingles → UL 2218 rating → MS storm stats → insurance discounts → top brands → cost vs standard → ROI calculation",
     "priority": 1,
-    "status": "skipped",
+    "status": "planned",
     "internalLinks": [
       "/services/roof-replacement",
       "/blog/mississippi-storm-damage-insurance-coverage"
@@ -72,12 +72,12 @@
     ],
     "outline": "What are cool roofs → how reflectivity works → MS cooling season length → coating types → cost and ROI → application process → rebates",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/pricing"
     ],
-    "publishedSlug": null
+    "publishedSlug": "cool-roof-coatings-mississippi-energy-savings"
   },
   {
     "id": "topic-005",
@@ -315,7 +315,7 @@
     ],
     "outline": "MS tornado stats by region → immediate safety steps → damage documentation → tarp/emergency cover → insurance filing timeline → contractor selection → FEMA assistance → rebuilding stronger",
     "priority": 1,
-    "status": "skipped",
+    "status": "planned",
     "internalLinks": [
       "/services/emergency-repair",
       "/blog/mississippi-storm-damage-insurance-coverage"
@@ -375,7 +375,7 @@
     ],
     "outline": "Immediate (24hrs) → 48-hour window → 1-week milestones → insurance filing deadlines → MS statute of limitations → contractor scheduling tips → documentation checklist",
     "priority": 1,
-    "status": "skipped",
+    "status": "planned",
     "internalLinks": [
       "/services/roof-inspection",
       "/blog/mississippi-storm-damage-insurance-coverage"
@@ -395,7 +395,7 @@
     ],
     "outline": "MS hurricane season dates → pre-season inspection checklist → weak point identification → reinforcement options → insurance review → emergency kit → evacuation prep → post-storm plan",
     "priority": 1,
-    "status": "skipped",
+    "status": "planned",
     "internalLinks": [
       "/services/roof-inspection",
       "/services/roof-maintenance"
@@ -1176,7 +1176,7 @@
     ],
     "outline": "Before the visit → documentation to have ready → be present during inspection → questions to ask → what adjusters look for → disagreeing with assessment → public adjuster option → MS-specific tips",
     "priority": 1,
-    "status": "skipped",
+    "status": "planned",
     "internalLinks": [
       "/blog/mississippi-storm-damage-insurance-coverage",
       "/services/roof-inspection"
@@ -1296,7 +1296,7 @@
     ],
     "outline": "DO: document immediately → DON'T: make permanent repairs first → DO: get independent inspection → DON'T: sign assignment of benefits blindly → DO: read your policy → DON'T: accept first offer → MS-specific advice",
     "priority": 1,
-    "status": "skipped",
+    "status": "planned",
     "internalLinks": [
       "/blog/mississippi-storm-damage-insurance-coverage",
       "/blog/insurance-adjuster-meeting-preparation-roof"
@@ -1936,12 +1936,12 @@
     ],
     "outline": "Pre-purchase roof inspection → what inspectors check → red flags in seller disclosure → negotiating repairs → age assessment → insurance requirements → maintenance plan for new owners → MS-specific concerns",
     "priority": 1,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-inspection",
       "/blog/signs-you-need-new-roof"
     ],
-    "publishedSlug": null
+    "publishedSlug": "first-time-homebuyer-roof-guide-mississippi"
   },
   {
     "id": "topic-098",
@@ -2016,12 +2016,12 @@
     ],
     "outline": "Scope of work details → materials specified → timeline → payment schedule → warranty terms → liability and insurance → permit responsibility → change order process → dispute resolution → MS-specific legal requirements",
     "priority": 1,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/about",
       "/blog/questions-to-ask-roofing-contractor-mississippi"
     ],
-    "publishedSlug": null
+    "publishedSlug": "roofing-contract-what-to-check-mississippi"
   },
   {
     "id": "topic-102",
@@ -2136,12 +2136,12 @@
     ],
     "outline": "Why MS attics grow mold → roof leak vs condensation → ventilation failure → bathroom exhaust issues → signs of attic mold → health risks → remediation process → preventing recurrence → insurance coverage",
     "priority": 1,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-inspection",
       "/blog/attic-ventilation-mississippi-guide"
     ],
-    "publishedSlug": null
+    "publishedSlug": "attic-mold-mississippi-roof-connection"
   },
   {
     "id": "topic-108",
@@ -2156,12 +2156,12 @@
     ],
     "outline": "Average costs in MS → what's included → drone inspection premium → certification inspections → insurance inspections → free vs paid → what you get from paid inspection → when free is enough → choosing an inspector",
     "priority": 1,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-inspection",
       "/blog/annual-roof-inspection-checklist-mississippi"
     ],
-    "publishedSlug": null
+    "publishedSlug": "mississippi-roof-inspection-cost-what-to-expect"
   },
   {
     "id": "topic-109",
@@ -2476,12 +2476,12 @@
     ],
     "outline": "Brand overview → product lines compared → warranty comparison → MS dealer/installer network → algae resistance → wind ratings → price ranges → certified contractor programs → which fits your budget",
     "priority": 1,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/blog/architectural-shingles-vs-3-tab-mississippi"
     ],
-    "publishedSlug": null
+    "publishedSlug": "gaf-vs-certainteed-vs-owens-corning-mississippi"
   },
   {
     "id": "topic-125",
@@ -2496,11 +2496,11 @@
     ],
     "outline": "MS tornado frequency and paths → EF-scale and roof damage → most vulnerable roof features → impact-resistant options → roof-to-wall connections → safe rooms and roof integration → rebuilding after tornado → insurance and tornado damage",
     "priority": 1,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/blog/mississippi-tornado-roof-damage-recovery",
       "/blog/impact-resistant-shingles-mississippi-storms"
     ],
-    "publishedSlug": null
+    "publishedSlug": "mississippi-tornado-alley-roofing"
   }
 ]

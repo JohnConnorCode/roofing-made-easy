@@ -9,6 +9,7 @@ import { FAQAccordion } from '@/components/faq/faq-accordion'
 import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
 import { ScrollAnimate } from '@/components/scroll-animate'
 import { getMaterialBySlug, getAllMaterials } from '@/lib/data/roofing-materials'
+import { MarkdownContent } from '@/components/shared/markdown-content'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
@@ -267,34 +268,7 @@ export default async function MaterialGuidePage({ params }: Props) {
                     <h2 className="text-2xl md:text-3xl font-bold text-slate-50 font-display tracking-tight mb-5">
                       {section.heading}
                     </h2>
-                    <div className="space-y-4">
-                      {section.body.split('\n\n').map((para, pi) => {
-                        if (para.startsWith('**') && para.includes('**:')) {
-                          // Bold-lead paragraph style
-                          const lines = para.split('\n').filter(Boolean)
-                          return (
-                            <div key={pi} className="space-y-2">
-                              {lines.map((line, li) => {
-                                const match = line.match(/^\*\*(.+?)\*\*:(.+)$/)
-                                if (match) {
-                                  return (
-                                    <p key={li} className="text-base text-slate-300 leading-relaxed">
-                                      <strong className="text-slate-100 font-semibold">{match[1]}</strong>:{match[2]}
-                                    </p>
-                                  )
-                                }
-                                return <p key={li} className="text-base text-slate-300 leading-relaxed">{line}</p>
-                              })}
-                            </div>
-                          )
-                        }
-                        return (
-                          <p key={pi} className="text-base text-slate-300 leading-relaxed">
-                            {para.replace(/\*\*/g, '')}
-                          </p>
-                        )
-                      })}
-                    </div>
+                    <MarkdownContent content={section.body} />
                   </article>
                 </ScrollAnimate>
               ))}
@@ -309,13 +283,7 @@ export default async function MaterialGuidePage({ params }: Props) {
                     <h2 className="text-2xl font-bold text-slate-50 font-display tracking-tight mb-4">
                       How {material.name.toLowerCase()} performs here
                     </h2>
-                    <div className="space-y-3">
-                      {material.msContext.split('\n\n').map((para, i) => (
-                        <p key={i} className="text-base text-slate-300 leading-relaxed">
-                          {para.replace(/\*\*/g, '')}
-                        </p>
-                      ))}
-                    </div>
+                    <MarkdownContent content={material.msContext} />
                   </div>
                 </article>
               </ScrollAnimate>

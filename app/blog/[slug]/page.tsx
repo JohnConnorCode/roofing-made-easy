@@ -14,6 +14,7 @@ import {
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { BlogPostingSchema } from '@/components/seo/blog-schema'
 import { Breadcrumbs } from '@/components/location/breadcrumbs'
+import { MarkdownContent } from '@/components/shared/markdown-content'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -73,12 +74,15 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
   const post = await getBlogPostBySlug(slug)
-  const allPosts = await getAllBlogPosts()
-  const relatedPosts = allPosts.filter((p) => p.slug !== slug).slice(0, 3)
 
   if (!post) {
     notFound()
   }
+
+  const allPosts = await getAllBlogPosts()
+  const sameCat = allPosts.filter(p => p.slug !== slug && p.category === post.category)
+  const otherPosts = allPosts.filter(p => p.slug !== slug && p.category !== post.category)
+  const relatedPosts = [...sameCat, ...otherPosts].slice(0, 3)
 
   // Estimate word count for schema
   const wordCount = post.content.split(/\s+/).length
@@ -153,57 +157,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </header>
 
           {/* Content */}
-          <div className="prose prose-invert prose-lg max-w-none">
-            <div
-              className="text-slate-300 leading-relaxed space-y-6"
-              style={{ whiteSpace: 'pre-wrap' }}
-            >
-              {post.content.split('\n').map((paragraph, index) => {
-                if (paragraph.startsWith('## ')) {
-                  return (
-                    <h3 key={index} className="text-2xl font-bold text-slate-100 mt-8 mb-4">
-                      {paragraph.replace('## ', '')}
-                    </h3>
-                  )
-                }
-                if (paragraph.startsWith('# ')) {
-                  return (
-                    <h2 key={index} className="text-3xl font-bold text-slate-100 mt-8 mb-4">
-                      {paragraph.replace('# ', '')}
-                    </h2>
-                  )
-                }
-                if (paragraph.startsWith('**') && paragraph.endsWith('**')) {
-                  return (
-                    <p key={index} className="font-semibold text-slate-100">
-                      {paragraph.replace(/\*\*/g, '')}
-                    </p>
-                  )
-                }
-                if (paragraph.startsWith('- [ ]')) {
-                  return (
-                    <li key={index} className="text-slate-300 ml-4 list-none flex items-center gap-2">
-                      <span className="w-4 h-4 border border-slate-500 rounded" />
-                      {paragraph.replace('- [ ] ', '')}
-                    </li>
-                  )
-                }
-                if (paragraph.startsWith('- ')) {
-                  return (
-                    <li key={index} className="text-slate-300 ml-4">
-                      {paragraph.replace('- ', '')}
-                    </li>
-                  )
-                }
-                if (paragraph.trim() === '') return null
-                return (
-                  <p key={index} className="text-slate-300">
-                    {paragraph}
-                  </p>
-                )
-              })}
-            </div>
-          </div>
+          <MarkdownContent
+            content={post.content}
+            className="text-slate-300 leading-relaxed"
+          />
 
           {/* Tags */}
           <div className="mt-12 pt-8 border-t border-slate-700">

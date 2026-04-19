@@ -211,15 +211,16 @@ export function humanizerPass(content: string): string {
   // Replace "At the end of the day," with ""
   result = result.replace(/At the end of the day,?\s*/gi, '')
 
-  // Replace common AI adjectives
-  result = result.replace(/\brobust\b/gi, 'solid')
-  result = result.replace(/\bcomprehensive\b/gi, 'thorough')
+  // Replace common AI adjectives (catch word variants like robustness, leveraging, etc.)
+  result = result.replace(/\brobust\w*/gi, 'solid')
+  result = result.replace(/\bcomprehensiv\w*/gi, 'thorough')
   result = result.replace(/\bcutting-edge\b/gi, 'modern')
   result = result.replace(/\bgame-changer\b/gi, 'real advantage')
   result = result.replace(/\bgame changer\b/gi, 'real advantage')
+  result = result.replace(/\bleverag\w*/gi, 'use')
 
-  // Replace "navigate the/this" phrases
-  result = result.replace(/navigate the ([a-z]+)/gi, 'work through the $1')
+  // Replace "navigate the/this" phrases — \S+ handles numbers, mixed-case, etc.
+  result = result.replace(/navigate the \S+/gi, (match) => match.replace(/navigate the /i, 'work through the '))
   result = result.replace(/navigate this process/gi, 'work through the process')
 
   // Replace "Let's dive in" / "Let's explore" / "Let's take a look"
