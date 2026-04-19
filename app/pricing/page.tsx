@@ -421,13 +421,13 @@ export default function PricingPage() {
 
           <div className="mt-8 text-center">
             <p className="text-sm text-slate-400 mb-4">
-              Not sure which material is right for your home? Read our in-depth comparison.
+              Not sure which material is right for your home? See our full material comparison guide.
             </p>
             <Link
-              href="/blog/asphalt-vs-metal-roofing"
+              href="/roofing-materials"
               className="inline-flex items-center gap-2 text-[#c9a25c] hover:underline text-sm font-medium"
             >
-              Asphalt vs Metal Roofing: Full Comparison
+              Compare all roofing materials
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

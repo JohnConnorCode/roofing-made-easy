@@ -40,7 +40,7 @@ export function HeroSection({ onGetStarted, isCreating, error }: HeroSectionProp
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(12,15,20,0.45)_80%)]" />
       </div>
 
-      <div className="relative mx-auto w-full max-w-6xl px-4 py-16 md:py-24">
+      <div className="relative mx-auto w-full max-w-6xl px-4 pt-16 pb-28 md:pt-24 md:pb-36">
         <div className="max-w-4xl">
           {/* Local eyebrow — grounds the brand in its region */}
           <p className="inline-flex items-center gap-2 rounded-full border border-[#c9a25c]/30 bg-[#c9a25c]/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#e6c588] animate-hero-subtitle">
@@ -103,7 +103,7 @@ export function HeroSection({ onGetStarted, isCreating, error }: HeroSectionProp
           )}
 
           {/* Trust strip — immediate, honest signals */}
-          <ul className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-4 max-w-2xl animate-hero-subtitle delay-300">
+          <ul className="mt-10 flex flex-wrap items-center gap-x-10 gap-y-3 animate-hero-subtitle delay-300">
             <li className="flex items-center gap-2.5 text-sm text-slate-300">
               <Clock className="h-4 w-4 text-[#c9a25c] flex-shrink-0" />
               <span>2 minutes, no account</span>

@@ -28,6 +28,7 @@ export interface Service {
     pros: string
     cons: string
     bestFor: string
+    guideSlug?: string
   }[]
   commonFaqs: { question: string; answer: string }[]
   warranty: { manufacturer: string; workmanship: string }
@@ -307,6 +308,7 @@ What separates a good replacement from a mediocre one is what happens below the 
         pros: 'Wide color range, proven Mississippi performance, insurance-favorable, most contractors trained on them, mid-range cost',
         cons: 'Petroleum-based so heat-sensitive in Mississippi summers, granule loss accelerates after 20 years, not the top wind rating',
         bestFor: 'Standard residential replacement, most budgets, matching existing neighborhood aesthetics',
+        guideSlug: 'asphalt-shingles',
       },
       {
         name: 'Impact-Resistant (Class 4) Shingles',
@@ -315,6 +317,7 @@ What separates a good replacement from a mediocre one is what happens below the 
         pros: 'Up to 20-30% insurance discount on qualifying MS policies, Class 4 wind and impact rating, longer warranty than standard architectural',
         cons: 'Higher upfront cost, fewer color options than standard lines',
         bestFor: 'Homes in high-hail or high-wind zones, anyone replacing after storm damage, reducing insurance premiums long-term',
+        guideSlug: 'impact-resistant-shingles',
       },
       {
         name: 'Standing Seam Metal',
@@ -323,6 +326,7 @@ What separates a good replacement from a mediocre one is what happens below the 
         pros: 'Longest residential lifespan, excellent wind resistance (140+ mph), low maintenance, good for low-slope sections, reflects radiant heat',
         cons: 'Highest upfront cost, requires specialized installer, expansion-contraction noise possible, some HOAs restrict',
         bestFor: 'Long-term ownership (15+ years), high-wind exposure, energy-efficient homes, anyone who wants to never replace again',
+        guideSlug: 'metal-roofing',
       },
       {
         name: 'Metal Shingles (Steel)',
@@ -331,6 +335,7 @@ What separates a good replacement from a mediocre one is what happens below the 
         pros: "Metal longevity with a shingle-like appearance, impact-rated, lighter than tile or slate, doesn't require steep-slope specialist",
         cons: 'More expensive than asphalt, fewer experienced local installers, premium upcharge vs. standing seam',
         bestFor: 'Homeowners wanting metal durability with traditional aesthetics; neighborhoods where standing seam would look out of place',
+        guideSlug: 'metal-roofing',
       },
       {
         name: 'Luxury / Designer Shingles',
@@ -339,6 +344,7 @@ What separates a good replacement from a mediocre one is what happens below the 
         pros: 'Best appearance of any asphalt option, thicker construction improves impact resistance, long warranty periods, replicates slate or shake look',
         cons: 'Premium price for a product still asphalt-based, limited additional performance over standard Class 4',
         bestFor: 'Higher-end homes where curb appeal and long warranty matter; properties where aesthetics drive the material decision',
+        guideSlug: 'asphalt-shingles',
       },
     ],
     commonFaqs: [

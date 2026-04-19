@@ -150,6 +150,28 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* Materials Guide callout */}
+      <section className="py-12 bg-[#161a23] border-t border-slate-800">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 rounded-2xl border border-[#c9a25c]/20 bg-[#c9a25c]/5 px-6 py-6">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#c9a25c] mb-1">Material decisions matter</p>
+              <h3 className="text-lg font-bold text-slate-100">Not sure which roofing material is right for your home?</h3>
+              <p className="mt-1 text-sm text-slate-400 max-w-xl">
+                Compare asphalt, metal, impact-resistant, and more — lifespan, cost, storm ratings, and how each performs in Mississippi weather.
+              </p>
+            </div>
+            <Link
+              href="/roofing-materials"
+              className="flex-shrink-0 inline-flex items-center gap-2 bg-[#c9a25c] hover:bg-[#d4b06c] text-[#0c0f14] font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors"
+            >
+              Compare roofing materials
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Why Choose Us */}
       <section className="py-16 md:py-24 bg-[#161a23]">
         <div className="mx-auto max-w-6xl px-4">

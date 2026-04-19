@@ -248,6 +248,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
                     <th className="text-left py-3 px-4 text-xs font-medium uppercase tracking-[0.15em] text-slate-500">Lifespan</th>
                     <th className="text-left py-3 px-4 text-xs font-medium uppercase tracking-[0.15em] text-slate-500">Installed Cost</th>
                     <th className="text-left py-3 px-4 text-xs font-medium uppercase tracking-[0.15em] text-slate-500 hidden lg:table-cell">Best For</th>
+                    <th className="py-3 px-4" />
                   </tr>
                 </thead>
                 <tbody>
@@ -261,6 +262,13 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
                         <td className="py-4 px-4 text-slate-300">{opt.lifespan}</td>
                         <td className="py-4 px-4 text-[#e6c588] font-medium tabular-nums">{opt.priceRange}</td>
                         <td className="py-4 px-4 text-slate-400 hidden lg:table-cell text-xs max-w-[200px]">{opt.bestFor}</td>
+                        <td className="py-4 px-4">
+                          {opt.guideSlug && (
+                            <Link href={`/roofing-materials/${opt.guideSlug}`} className="text-xs text-[#c9a25c] hover:text-[#e6c588] transition-colors whitespace-nowrap flex items-center gap-1">
+                              Guide <ArrowRight className="h-3 w-3" />
+                            </Link>
+                          )}
+                        </td>
                       </tr>
                     </ScrollAnimate>
                   ))}
@@ -287,10 +295,23 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
                         <p className="text-slate-300 mt-0.5 line-clamp-2">{opt.bestFor}</p>
                       </div>
                     </div>
-                    <p className="text-xs text-[#c9a25c]">{opt.pros.split(',')[0]}</p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs text-[#c9a25c]">{opt.pros.split(',')[0]}</p>
+                      {opt.guideSlug && (
+                        <Link href={`/roofing-materials/${opt.guideSlug}`} className="text-xs text-[#c9a25c] hover:text-[#e6c588] transition-colors flex items-center gap-1">
+                          Guide <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 </ScrollAnimate>
               ))}
+            </div>
+
+            <div className="mt-5 text-sm">
+              <Link href="/roofing-materials" className="text-slate-500 hover:text-[#c9a25c] transition-colors flex items-center gap-1 w-fit">
+                Compare all roofing materials in depth <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
           </div>
         </section>
