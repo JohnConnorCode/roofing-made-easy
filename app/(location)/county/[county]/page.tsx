@@ -236,6 +236,33 @@ export default async function CountyPage({ params }: CountyPageProps) {
         </div>
       </section>
 
+      {/* Resources strip */}
+      <section className="py-12 md:py-16 bg-[#0c0f14] border-t border-slate-900">
+        <div className="mx-auto max-w-5xl px-4">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#c9a25c] text-center">
+            More for {county.name} homeowners
+          </p>
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {[
+              { href: '/roofing-materials', label: 'Roofing materials guide' },
+              { href: '/pricing/roof-replacement-cost', label: 'Replacement pricing guide' },
+              { href: '/insurance-help', label: 'Insurance claim help' },
+              { href: '/financing', label: 'Financing options' },
+              { href: '/assistance-programs', label: 'Assistance programs' },
+            ].map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className="group flex items-center justify-between rounded-xl border border-slate-800/70 bg-slate-900/30 px-4 py-3 transition-colors hover:border-[#c9a25c]/40"
+              >
+                <span className="text-sm text-slate-200 font-medium">{label}</span>
+                <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#c9a25c] transition-colors" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="py-24 md:py-32 bg-[#0c0f14] border-t border-slate-900">
         <div className="mx-auto max-w-3xl px-4 text-center">

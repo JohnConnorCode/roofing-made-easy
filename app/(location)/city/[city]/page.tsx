@@ -203,7 +203,14 @@ export default async function CityPage({ params }: CityPageProps) {
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#c9a25c] text-center">
             More for {city.name} homeowners
           </p>
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <Link
+              href="/roofing-materials"
+              className="group flex items-center justify-between rounded-xl border border-slate-800/70 bg-slate-900/30 px-4 py-3 transition-colors hover:border-[#c9a25c]/40"
+            >
+              <span className="text-sm text-slate-200 font-medium">Roofing materials guide</span>
+              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#c9a25c] transition-colors" />
+            </Link>
             <Link
               href="/pricing/roof-replacement-cost"
               className="group flex items-center justify-between rounded-xl border border-slate-800/70 bg-slate-900/30 px-4 py-3 transition-colors hover:border-[#c9a25c]/40"
