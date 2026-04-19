@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart, User, Gift } from 'lucide-react'
+import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart, User, Gift, HardHat } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 import { useContact } from '@/lib/hooks/use-contact'
 import { useBusinessConfig, useHoursText } from '@/lib/config/business-provider'
@@ -20,6 +20,7 @@ const navLinks = [
 ]
 
 const resourceLinks = [
+  { href: '/roofing-materials', label: 'Roofing Materials', icon: HardHat, description: 'Compare materials & costs' },
   { href: '/financing', label: 'Financing Options', icon: CreditCard, description: 'Affordable payment plans' },
   { href: '/insurance-help', label: 'Insurance Help', icon: FileText, description: 'Claim filing guidance' },
   { href: '/assistance-programs', label: 'Assistance Programs', icon: HandHeart, description: 'Grants & financial aid' },

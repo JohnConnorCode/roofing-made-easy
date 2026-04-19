@@ -4,6 +4,7 @@ import { getAllServices } from '@/lib/data/services'
 import { getAllBlogPosts } from '@/lib/data/blog'
 import { getAllServiceSlugs } from '@/lib/data/ms-services'
 import { isRealPortfolioData } from '@/lib/data/portfolio'
+import { getAllMaterials } from '@/lib/data/roofing-materials'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
@@ -18,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const services = getAllServices()
   const blogPosts = await getAllBlogPosts()
   const msServiceSlugs = getAllServiceSlugs()
+  const materials = getAllMaterials()
 
   // Static pages with priority ordering
   const staticPages: MetadataRoute.Sitemap = [
@@ -99,6 +101,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'yearly',
       priority: 0.2,
     },
+  ]
+
+  // Roofing materials pages - high priority for SEO
+  const materialsDate = new Date('2026-04-18')
+  const materialPages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/roofing-materials`,
+      lastModified: materialsDate,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    ...materials.map(m => ({
+      url: `${baseUrl}/roofing-materials/${m.slug}`,
+      lastModified: materialsDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
   ]
 
   // Pricing pages - high priority for SEO
@@ -187,6 +206,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticPages,
+    ...materialPages,
     ...pricingPages,
     ...cityPages,
     ...countyPages,

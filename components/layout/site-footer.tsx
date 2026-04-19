@@ -18,6 +18,7 @@ const services = [
   { href: '/services/emergency-repair', label: 'Storm Damage' },
   { href: '/services/gutters', label: 'Gutters' },
   { href: '/services/roof-maintenance', label: 'Maintenance' },
+  { href: '/roofing-materials', label: 'Materials Guide' },
 ]
 
 const company = [
