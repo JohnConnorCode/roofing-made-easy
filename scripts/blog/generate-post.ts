@@ -292,7 +292,7 @@ async function generateOne(
     slug: topic.slug,
     title: topic.title,
     excerpt: extractExcerpt(content),
-    content: `\n# ${topic.title}\n\n${content}\n    `,
+    content: content.trim(),
     category: topic.category,
     author: 'Mike Farrell',
     read_time: calculateReadTime(content),
