@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 
 const SLIDES = [
@@ -12,9 +12,11 @@ const SLIDES = [
 ]
 
 const INTERVAL_MS = 7000
+const PARALLAX_FACTOR = 0.35
 
 export function HeroSlider() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const layerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -23,8 +25,38 @@ export function HeroSlider() {
     return () => clearInterval(timer)
   }, [])
 
+  useEffect(() => {
+    const prefersReducedMotion = typeof window !== 'undefined'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
+
+    let rafId = 0
+    const update = () => {
+      const el = layerRef.current
+      if (el) {
+        const y = window.scrollY * PARALLAX_FACTOR
+        el.style.transform = `translate3d(0, ${y}px, 0)`
+      }
+      rafId = 0
+    }
+    const onScroll = () => {
+      if (rafId) return
+      rafId = window.requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (rafId) window.cancelAnimationFrame(rafId)
+    }
+  }, [])
+
   return (
-    <div className="absolute inset-0">
+    <div
+      ref={layerRef}
+      className="absolute inset-0 will-change-transform"
+      style={{ transform: 'translate3d(0, 0, 0)' }}
+    >
       {SLIDES.map((slide, i) => (
         <div
           key={slide.src}
@@ -37,7 +69,7 @@ export function HeroSlider() {
             src={slide.src}
             alt={slide.alt}
             fill
-            className="object-cover"
+            className="object-cover scale-110"
             priority={i === 0}
             loading={i === 0 ? undefined : 'lazy'}
             fetchPriority={i === 0 ? 'high' : 'auto'}

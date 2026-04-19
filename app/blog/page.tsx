@@ -9,6 +9,7 @@ import {
   BookOpen,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { PageHero } from '@/components/shared/page-hero'
 import { CollectionPageSchema, BreadcrumbSchema } from '@/components/seo/list-schema'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 
@@ -83,26 +84,14 @@ export default async function BlogPage() {
 
       <SiteHeader />
 
-      {/* Hero */}
-      <section className="py-24 md:py-32 bg-[#0c0f14]">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
-              <BookOpen className="h-3.5 w-3.5" />
-              Blog
-            </p>
-            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
-              Straight talk
-              <br />
-              about roofs.
-            </h1>
-            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
-              Guides, pricing context, and decisions homeowners actually face
-              &mdash; written by roofers, not marketers.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        image="/images/work/metal-conversion.webp"
+        alt="Residential metal roof installation in Northeast Mississippi — Smart Roof Pricing blog"
+        eyebrow="Blog"
+        eyebrowIcon={<BookOpen className="h-3.5 w-3.5" />}
+        title={<>Straight talk<br />about roofs.</>}
+        subtitle="Guides, pricing context, and decisions homeowners actually face — written by roofers, not marketers."
+      />
 
       {/* Categories */}
       <section className="py-6 bg-[#0c0f14] border-y border-slate-800">

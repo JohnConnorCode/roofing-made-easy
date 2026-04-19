@@ -4,6 +4,7 @@ import { SiteHeader, SiteFooter } from '@/components/layout'
 import { Breadcrumbs } from '@/components/location/breadcrumbs'
 import { FAQAccordion } from '@/components/faq/faq-accordion'
 import { CTASection } from '@/components/shared/cta-section'
+import { PageHero } from '@/components/shared/page-hero'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 import {
   ArrowRight,
@@ -156,42 +157,35 @@ export default function PricingPage() {
       {/* ================================================================= */}
       {/* Hero Section */}
       {/* ================================================================= */}
-      <section className="py-24 md:py-32 bg-[#0c0f14]">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c]">
-              <DollarSign className="h-3.5 w-3.5" />
-              Pricing &middot; Updated 2026
-            </p>
-            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display">
-              What does a roof
-              <br />
-              actually cost?
-            </h1>
-            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl">
-              A complete guide to roofing prices in {BUSINESS_CONFIG.serviceArea.region}.
-              Whether you&rsquo;re planning a full{' '}
-              <Link href="/services/roof-replacement" className="text-[#c9a25c] hover:underline">
-                replacement
-              </Link>
-              , a quick{' '}
-              <Link href="/services/roof-repair" className="text-[#c9a25c] hover:underline">
-                repair
-              </Link>
-              , or just want to know what fair pricing looks like &mdash; the numbers and factors are here.
-            </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/"
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] font-semibold px-8 py-4 rounded-lg transition-all hover:shadow-lg hover:shadow-[#c9a25c]/20"
-              >
-                Get my free estimate
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        image="/images/work/detail-architectural.webp"
+        alt="Architectural shingle detail on a completed Northeast Mississippi roof"
+        eyebrow="Pricing · Updated 2026"
+        eyebrowIcon={<DollarSign className="h-3.5 w-3.5" />}
+        title={<>What does a roof<br />actually cost?</>}
+        subtitle={
+          <>
+            A complete guide to roofing prices in {BUSINESS_CONFIG.serviceArea.region}.
+            Whether you&rsquo;re planning a full{' '}
+            <Link href="/services/roof-replacement" className="text-[#c9a25c] hover:underline">
+              replacement
+            </Link>
+            , a quick{' '}
+            <Link href="/services/roof-repair" className="text-[#c9a25c] hover:underline">
+              repair
+            </Link>
+            , or just want to know what fair pricing looks like &mdash; the numbers and factors are here.
+          </>
+        }
+      >
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] font-semibold px-6 py-3.5 rounded-lg transition-all hover:shadow-lg hover:shadow-[#c9a25c]/20"
+        >
+          Get my free estimate
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </PageHero>
 
       {/* ================================================================= */}
       {/* Cost by Service Type */}
@@ -803,7 +797,9 @@ export default function PricingPage() {
       {/* ================================================================= */}
       <CTASection
         title="Get Your Exact Roof Price in 60 Seconds"
-        description="Our free instant estimate tool factors in your roof size, material preferences, location, and condition to give you a personalized price range. No email required, no sales pressure -- just honest pricing."
+        description="A free instant estimate tool built from real Mississippi material and labor rates &mdash; plus the resources to cover it with insurance, financing, or assistance."
+        primaryLabel="Get my free estimate"
+        useFunnel
         variant="default"
       />
 

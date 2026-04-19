@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { teamMembers, companyInfo, isRealTeamData } from '@/lib/data/team'
+import { Breadcrumbs } from '@/components/location/breadcrumbs'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
 import { getBusinessConfigFromDB } from '@/lib/config/business-loader'
 import {
@@ -73,6 +74,8 @@ export default async function AboutPage() {
       <BreadcrumbSchema items={breadcrumbs} />
 
       <SiteHeader />
+
+      <Breadcrumbs items={[{ name: 'About', href: '/about' }]} />
 
       {/* Hero */}
       <section className="py-24 md:py-32 bg-[#0c0f14]">

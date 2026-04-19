@@ -11,6 +11,7 @@ import {
   MessageSquare,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { PageHero } from '@/components/shared/page-hero'
 import { useToast } from '@/components/ui/toast'
 
 const REFERRAL_REWARDS = [
@@ -108,22 +109,15 @@ export default function ReferralContent() {
     <div className="min-h-screen bg-gradient-dark">
       <SiteHeader />
 
-      {/* Hero */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#c9a25c]/20 mb-6">
-              <Gift className="h-8 w-8 text-[#c9a25c]" />
-            </div>
-            <h1 className="text-4xl font-bold text-slate-100 md:text-5xl animate-slide-up">
-              Earn Rewards for Referrals
-            </h1>
-            <p className="mt-6 text-xl text-slate-400 leading-relaxed animate-slide-up delay-100">
-              Know someone who needs a new roof? Share Smart Roof Pricing and earn cash rewards when they complete their project.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        image="/images/work/large-residential.webp"
+        alt="Large residential home with a completed architectural shingle roof in Northeast Mississippi"
+        eyebrow="Referral program"
+        eyebrowIcon={<Gift className="h-3.5 w-3.5" />}
+        title={<>Share it. Earn real cash.</>}
+        subtitle="Know someone who needs a new roof? Share Smart Roof Pricing and earn when they choose us for the work."
+        align="center"
+      />
 
       {/* Rewards Tiers */}
       <section className="py-16 md:py-24 bg-[#0c0f14]">

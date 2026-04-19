@@ -65,8 +65,8 @@ export function WhyHomeowners() {
                 right here.
               </h3>
               <p className="mt-4 text-base text-slate-300 max-w-md">
-                Not a national lead-gen site. Not a sales funnel dressed up as a contractor.
-                A local crew that answers their own phone.
+                A tool for Northeast Mississippi homeowners, built by Farrell
+                Roofing &mdash; the crew that does the work.
               </p>
             </div>
           </ScrollAnimate>

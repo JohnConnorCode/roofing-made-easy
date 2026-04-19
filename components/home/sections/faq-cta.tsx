@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback } from 'react'
-import { Clock, PhoneOff, Shield } from 'lucide-react'
+import { Clock, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FAQAccordion } from '@/components/faq/faq-accordion'
 import { ScrollAnimate } from '@/components/scroll-animate'
@@ -63,8 +63,8 @@ export function FaqCta({ onGetStarted, isCreating }: FaqCtaProps) {
                     Two minutes, no account required
                   </li>
                   <li className="flex items-center gap-3 text-sm text-slate-300">
-                    <PhoneOff className="h-4 w-4 text-[#c9a25c] flex-shrink-0" />
-                    No sales calls, ever
+                    <Shield className="h-4 w-4 text-[#c9a25c] flex-shrink-0" />
+                    Insurance + financing tools
                   </li>
                   <li className="flex items-center gap-3 text-sm text-slate-300">
                     <Shield className="h-4 w-4 text-[#c9a25c] flex-shrink-0" />

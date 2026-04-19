@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
     ],
     openGraph: {
       title: `Know Your Roof Cost in 2 Minutes | ${config.name}`,
-      description: `Stop guessing what your roof costs. Get an instant, accurate estimate. Free, no pressure, no contractors calling.`,
+      description: `Get an instant, honest roof estimate built from real local pricing. Plus guidance on insurance, financing, and assistance to make it happen.`,
       url: BASE_URL,
       siteName: config.name,
       locale: 'en_US',

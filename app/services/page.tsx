@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { services } from '@/lib/data/services'
+import { Breadcrumbs } from '@/components/location/breadcrumbs'
+import { PageHero } from '@/components/shared/page-hero'
 import {
   Home,
   Wrench,
@@ -90,25 +92,15 @@ export default function ServicesPage() {
 
       <SiteHeader />
 
-      {/* Hero */}
-      <section className="py-24 md:py-32 bg-[#0c0f14]">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl">
-            <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
-              Services
-            </p>
-            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
-              From repair to replacement,
-              <br />
-              done right.
-            </h1>
-            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
-              We handle every part of residential roofing &mdash; honest pricing,
-              clean site, and work we stand behind.
-            </p>
-          </div>
-        </div>
-      </section>
+      <Breadcrumbs items={[{ name: 'Services', href: '/services' }]} />
+
+      <PageHero
+        image="/images/work/aerial-wide.webp"
+        alt="Aerial drone view of a completed residential roof in Northeast Mississippi"
+        eyebrow="Services"
+        title={<>From repair to replacement,<br />done right.</>}
+        subtitle="We handle every part of residential roofing — honest pricing, clean site, and work we stand behind."
+      />
 
       {/* Services Grid */}
       <section className="py-16 md:py-24 bg-[#0c0f14]">
@@ -193,7 +185,7 @@ export default function ServicesPage() {
             Ready to Get Started?
           </h2>
           <p className="mt-4 text-lg text-slate-400">
-            Get a free estimate in under 2 minutes. No pressure, just honest pricing.
+            Get a free estimate in under 2 minutes, built from real local pricing.
           </p>
           <div className="mt-8">
             <Link href="/">

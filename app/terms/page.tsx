@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: 'Terms of Service | Farrell Roofing',
     description: 'Terms and conditions for using Farrell Roofing services.',
     url: `${BASE_URL}/terms`,
-    siteName: 'Farrell Roofing',
+    siteName: 'Smart Roof Pricing',
     locale: 'en_US',
     type: 'website',
   },

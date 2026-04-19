@@ -15,8 +15,8 @@ const STEPS = [
     meta: 'Instant',
   },
   {
-    label: 'Take it from here, your way',
-    body: 'Share the PDF with family, hand it to an adjuster, or get in touch when you\u2019re ready. No calls from us until you ask.',
+    label: 'Take it from here',
+    body: 'Share the PDF with family, hand it to an adjuster, or keep going with us \u2014 insurance claim help, financing options, and getting on the schedule.',
     meta: 'On your terms',
   },
 ]

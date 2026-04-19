@@ -10,39 +10,37 @@ import {
   Quote,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { WorkGallery } from '@/components/home/sections/work-gallery'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
 export const metadata: Metadata = {
-  title: 'Our Work | Roofing Projects Portfolio | Farrell Roofing',
-  description: 'View our completed roofing projects in Tupelo and Northeast Mississippi. See real examples of roof replacements, repairs, and storm damage restoration.',
+  title: 'Our Work | Recent Roofs in Northeast Mississippi | Smart Roof Pricing',
+  description: 'Recent roofing completions across Northeast Mississippi by the Farrell Roofing crew, documented from the drone up.',
   openGraph: {
-    title: 'Roofing Portfolio | Farrell Roofing',
-    description: 'Browse our completed roofing projects across Northeast Mississippi.',
+    title: 'Our Work | Smart Roof Pricing',
+    description: 'Recent roofing completions across Northeast Mississippi, documented from the drone up.',
     url: `${BASE_URL}/portfolio`,
-    siteName: 'Farrell Roofing',
+    siteName: 'Smart Roof Pricing',
     locale: 'en_US',
     type: 'website',
     images: [
       {
-        url: `${BASE_URL}/api/og?type=service&title=Our%20Work&subtitle=Roofing%20Projects%20Portfolio`,
+        url: `${BASE_URL}/api/og?type=service&title=Our%20Work&subtitle=Recent%20Roofs%20in%20Northeast%20Mississippi`,
         width: 1200,
         height: 630,
-        alt: 'Farrell Roofing Projects Portfolio',
+        alt: 'Smart Roof Pricing — Our Work',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Roofing Portfolio | Farrell Roofing',
-    description: 'Browse our completed roofing projects across Northeast Mississippi.',
+    title: 'Our Work | Smart Roof Pricing',
+    description: 'Recent roofing completions across Northeast Mississippi, documented from the drone up.',
   },
   alternates: {
     canonical: `${BASE_URL}/portfolio`,
   },
-  ...(!isRealPortfolioData && {
-    robots: { index: false, follow: false },
-  }),
 }
 
 export default function PortfolioPage() {
@@ -51,7 +49,7 @@ export default function PortfolioPage() {
       <div className="min-h-screen bg-[#0c0f14]">
         <SiteHeader />
 
-        <section className="py-24 md:py-32 bg-[#0c0f14]">
+        <section className="py-20 md:py-28 bg-[#0c0f14]">
           <div className="mx-auto max-w-6xl px-4">
             <div className="max-w-3xl">
               <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
@@ -61,21 +59,34 @@ export default function PortfolioPage() {
                 Roofs we&rsquo;ve put on.
               </h1>
               <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
-                We&rsquo;re putting together a showcase of recent completions.
-                Check back soon, or see the tool in action while you&rsquo;re here.
+                Recent completions across Northeast Mississippi by the Farrell Roofing
+                crew, photographed from the drone up. Full project write-ups coming soon.
               </p>
-              <div className="mt-10 animate-slide-up delay-200">
-                <Link href="/">
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
-                    rightIcon={<ArrowRight className="h-5 w-5" />}
-                  >
-                    Get my free estimate
-                  </Button>
-                </Link>
-              </div>
+            </div>
+          </div>
+        </section>
+
+        <WorkGallery />
+
+        <section className="py-16 md:py-20 bg-[#0c0f14] border-t border-slate-900">
+          <div className="mx-auto max-w-3xl px-4 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-50 font-display">
+              Price yours in two minutes.
+            </h2>
+            <p className="mt-3 text-slate-300">
+              Built from the same local pricing we use on every job shown here.
+            </p>
+            <div className="mt-8">
+              <Link href="/">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
+                  rightIcon={<ArrowRight className="h-5 w-5" />}
+                >
+                  Get my free estimate
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

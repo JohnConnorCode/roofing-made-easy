@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
@@ -20,6 +21,7 @@ import {
   HandHeart,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { ResourceTriangle } from '@/components/shared/resource-triangle'
 import { ScrollAnimate, ScrollStagger } from '@/components/scroll-animate'
 import { usePhoneDisplay, usePhoneLink } from '@/lib/config/business-provider'
 import { useAnalytics } from '@/lib/analytics'
@@ -65,8 +67,17 @@ export default function FinancingContent() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="py-24 md:py-32 bg-[#0c0f14]">
-        <div className="mx-auto max-w-6xl px-4">
+      <section className="relative py-24 md:py-32 overflow-hidden">
+        <Image
+          src="/images/guides/roof-financing-home-exterior.jpg"
+          alt="Modern residential home exterior — roof financing options for Mississippi homeowners"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/88 via-[#0c0f14]/78 to-[#0c0f14]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-6xl px-4">
           <div className="max-w-3xl">
             <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
               <Calculator className="h-3.5 w-3.5" />
@@ -609,6 +620,8 @@ export default function FinancingContent() {
           </p>
         </div>
       </section>
+
+      <ResourceTriangle exclude="financing" />
 
       <SiteFooter />
     </div>

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { Breadcrumbs } from '@/components/location/breadcrumbs'
@@ -87,7 +88,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url,
-      siteName: 'Farrell Roofing',
+      siteName: 'Smart Roof Pricing',
       locale: 'en_US',
       type: 'article',
       images: [
@@ -139,8 +140,17 @@ export default function MetalRoofCostPage() {
       />
 
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
-        <div className="mx-auto max-w-6xl px-4">
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <Image
+          src="/images/services/metal-roofing.jpg"
+          alt="Standing seam metal roof on a residential Mississippi home — Smart Roof Pricing"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/85 via-[#0c0f14]/75 to-[#0c0f14]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-6xl px-4">
           <div className="max-w-4xl">
             <p className="text-[#c9a25c] font-semibold text-sm uppercase tracking-wide mb-4">
               2026 Mississippi Pricing Guide
@@ -801,9 +811,9 @@ export default function MetalRoofCostPage() {
       {/* CTA Section */}
       <CTASection
         title="Get Your Metal Roof Price in 60 Seconds"
-        description="Answer a few quick questions about your home and get an instant metal roof estimate. No contractors calling, no pressure -- just honest pricing."
-        primaryLabel="Get Free Metal Roof Estimate"
-        primaryHref="/"
+        description="Answer a few quick questions about your home and get an instant metal roof estimate &mdash; built from real Mississippi material and labor rates."
+        primaryLabel="Get free metal roof estimate"
+        useFunnel
       />
 
       <SiteFooter />

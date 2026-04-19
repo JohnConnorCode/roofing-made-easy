@@ -15,16 +15,16 @@ export const HOMEPAGE_FAQ_ITEMS: FAQItem[] = [
     answer: "We calculate it the same way a local roofer would — using current material costs, regional labor rates, and the specifics of your roof (size, pitch, complexity, tear-off). For an average replacement, the range we give lands close to the final bid. For unusual roofs or big storm damage, we'll tell you directly that an in-person look is worth it.",
   },
   {
-    question: 'Will my information get sold to other contractors?',
-    answer: "No. We don't sell leads, and we're not a directory. You'll get your estimate by email. If you want to talk, you email or call us. You won't get three other contractors blowing up your phone.",
+    question: 'Can this help with an insurance claim?',
+    answer: "Yes. After hail or wind damage, we document the roof with drone photos, match it to the coverage language your adjuster expects, and walk the claim through with you. It's included with any job we take on, and the estimate PDF gives you a starting point even if you're shopping your claim around.",
   },
   {
     question: "What's different from getting quotes the usual way?",
-    answer: "You skip the part where three contractors come to your house and give you three wildly different numbers. You get a grounded range first, so when you do talk to someone, you already know roughly what's fair.",
+    answer: "You skip the part where three contractors come to your house and give you three wildly different numbers. You get a grounded range first — built from real local material and labor rates — plus the tools to navigate insurance, financing, and assistance. When you're ready to talk, you already know what's fair.",
   },
   {
     question: 'Who built this?',
-    answer: "Farrell Roofing, a family roofing business in Northeast Mississippi. We built this tool because we got tired of watching homeowners get quoted all over the map, especially after storms. The pricing methodology here is the same one we use on our own jobs.",
+    answer: "Smart Roof Pricing is a tool built and operated by Farrell Roofing, a family roofing business in Northeast Mississippi. We put it together because homeowners kept getting quotes all over the map after storms — and because the methodology works. The pricing here is the same one we run on our own jobs.",
   },
   {
     question: 'What happens after I get the estimate?',
@@ -39,7 +39,7 @@ export const HOMEPAGE_FAQ_ITEMS: FAQItem[] = [
     answer: "The estimate covers the most common path — tear-off, underlayment, shingles or metal, and labor. If there's deck rot, chimney flashing issues, or structural problems, those come up once we see it in person. We'll tell you honestly what's standard and what's an add-on.",
   },
   {
-    question: "Do you help with insurance claims?",
-    answer: "Yes. After a hail or wind event, we document the damage, meet the adjuster on-site, and make sure the claim reflects what's actually on your roof. That's included — we don't charge for it.",
+    question: "What if I can't pay out of pocket?",
+    answer: "That's what the insurance, assistance, and financing stack is for. Most homeowners don't end up paying sticker — we walk you through what your claim covers, which state or county programs you qualify for, and what a real monthly number looks like on what's left. You don't need a plan before you start — the tool helps you build one.",
   },
 ]

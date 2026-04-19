@@ -1,8 +1,10 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { ResourceTriangle } from '@/components/shared/resource-triangle'
 import {
   HandHeart,
   ArrowRight,
@@ -104,8 +106,17 @@ export default function AssistanceContent() {
       <SiteHeader />
 
       {/* Hero Section */}
-      <section className="py-24 md:py-32 bg-[#0c0f14]">
-        <div className="mx-auto max-w-6xl px-4">
+      <section className="relative py-24 md:py-32 overflow-hidden">
+        <Image
+          src="/images/guides/mississippi-neighborhood-assistance.jpg"
+          alt="Residential neighborhood — homeowner assistance programs for Northeast Mississippi roof repair and replacement"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/88 via-[#0c0f14]/78 to-[#0c0f14]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-6xl px-4">
           <div className="max-w-3xl">
             <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
               <HandHeart className="h-3.5 w-3.5" />
@@ -879,6 +890,8 @@ export default function AssistanceContent() {
           </ScrollAnimate>
         </div>
       </section>
+
+      <ResourceTriangle exclude="assistance" />
 
       <SiteFooter />
     </div>

@@ -5,12 +5,14 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { useContact } from '@/lib/hooks/use-contact'
+import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
 
 interface CTASectionProps {
   title: string
   description: string
   primaryLabel?: string
   primaryHref?: string
+  useFunnel?: boolean
   showPhone?: boolean
   variant?: 'default' | 'gradient' | 'card'
 }
@@ -20,6 +22,7 @@ export function CTASection({
   description,
   primaryLabel = 'Get My Free Estimate',
   primaryHref = '/',
+  useFunnel = false,
   showPhone = true,
   variant = 'default'
 }: CTASectionProps) {
@@ -33,6 +36,8 @@ export function CTASection({
 
   const padding = variant === 'default' ? 'py-16' : 'p-8'
 
+  const primaryClasses = 'inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all btn-press'
+
   return (
     <section className={`${bgClass} ${padding}`}>
       <div className={variant === 'default' ? 'container mx-auto px-4' : ''}>
@@ -44,13 +49,19 @@ export function CTASection({
             {description}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href={primaryHref}
-              className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-light text-ink font-semibold px-8 py-4 rounded-lg transition-all btn-press"
-            >
-              {primaryLabel}
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            {useFunnel ? (
+              <StartFunnelButton className={primaryClasses}>
+                <span className="inline-flex items-center gap-2">
+                  {primaryLabel}
+                  <ArrowRight className="w-5 h-5" />
+                </span>
+              </StartFunnelButton>
+            ) : (
+              <Link href={primaryHref} className={primaryClasses}>
+                {primaryLabel}
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            )}
             {showPhone && (
               <a
                 href={phoneLink}

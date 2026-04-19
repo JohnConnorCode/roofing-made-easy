@@ -3,13 +3,13 @@
 // Site Footer Component with Location Links
 import { useState } from 'react'
 import Link from 'next/link'
-import { Phone, Mail, MapPin, Facebook, Instagram, ChevronDown } from 'lucide-react'
+import { Phone, Mail, MapPin, Facebook, Instagram, ChevronDown, ArrowRight } from 'lucide-react'
 import { getCitiesByPriority } from '@/lib/data/ms-locations'
 import { useContact } from '@/lib/hooks/use-contact'
 import { useBusinessConfig } from '@/lib/config/business-provider'
 import { Logo } from '@/components/ui/logo'
 import { cn } from '@/lib/utils'
-import { isRealPortfolioData } from '@/lib/data/portfolio'
+import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
 
 const services = [
   { href: '/services/roof-replacement', label: 'Roof Replacement' },
@@ -20,7 +20,7 @@ const services = [
   { href: '/services/roof-maintenance', label: 'Maintenance' },
 ]
 
-const allCompanyLinks = [
+const company = [
   { href: '/about', label: 'About Us' },
   { href: '/portfolio', label: 'Our Work' },
   { href: '/blog', label: 'Blog' },
@@ -31,10 +31,6 @@ const allCompanyLinks = [
   { href: '/contact', label: 'Contact' },
   { href: '/portal', label: 'My Account' },
 ]
-
-const company = isRealPortfolioData
-  ? allCompanyLinks
-  : allCompanyLinks.filter(link => link.href !== '/portfolio')
 
 function FooterColumnHeading({ title }: { title: string }) {
   return (
@@ -187,6 +183,26 @@ export function SiteFooter() {
             </div>
           </div>
 
+        </div>
+
+        {/* Final CTA strip */}
+        <div className="border-t border-slate-800/70">
+          <div className="mx-auto max-w-6xl px-4 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#c9a25c]">
+                Ready to price your roof?
+              </p>
+              <p className="mt-1.5 text-base md:text-lg text-slate-200 font-medium">
+                Two minutes, built from real {config.serviceArea.region} pricing.
+              </p>
+            </div>
+            <StartFunnelButton className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] hover:from-[#d4b06c] hover:to-[#c9a25c] text-ink font-semibold px-5 py-3 rounded-lg transition-all text-sm">
+              <span className="inline-flex items-center gap-2">
+                Get my free estimate
+                <ArrowRight className="w-4 h-4" />
+              </span>
+            </StartFunnelButton>
+          </div>
         </div>
 
         {/* Divider above bottom bar */}

@@ -113,8 +113,8 @@ export const DEFAULT_FAQ_ITEMS: FAQItem[] = [
     answer: 'Most homeowners complete the questionnaire in under 2 minutes and receive their estimate instantly. The more details you provide (including photos), the more accurate your estimate will be.',
   },
   {
-    question: 'Will contractors start calling me?',
-    answer: 'No. Unlike other estimate services, we don\'t sell your information to contractors. You\'ll only be contacted if you choose to schedule a consultation with us. No surprise calls, no pressure.',
+    question: 'What happens after I get the estimate?',
+    answer: 'You get a PDF you can keep, share with family, or hand to an insurance adjuster. From there, we can help with the next step — documenting a storm claim, comparing financing, finding assistance programs you may qualify for, or getting on the schedule if you want us to do the work.',
   },
   {
     question: 'What if my roof is unusual or complex?',

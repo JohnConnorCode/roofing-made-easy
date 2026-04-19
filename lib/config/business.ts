@@ -14,9 +14,9 @@ export const BUSINESS_CONFIG = {
   // NOTE: DB `settings.company_name` overrides this at runtime via
   // getBusinessConfigFromDB(). This static value is the fallback for
   // metadata that's generated at build time.
-  name: 'Farrell Roofing',
+  name: 'Smart Roof Pricing',
   legalName: 'Farrell Roofing LLC',
-  tagline: "Honest roofing estimates for Northeast Mississippi",
+  tagline: "Honest roof pricing for Northeast Mississippi, in two minutes.",
   foundedYear: '2010',
 
   // -------------------------------------------------------------------------

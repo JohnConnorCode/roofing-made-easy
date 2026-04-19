@@ -77,7 +77,7 @@ export async function generateMetadata(): Promise<Metadata> {
     referrer: "origin-when-cross-origin",
     openGraph: {
       title: `${name} | Instant Roofing Estimates in ${stateCode}`,
-      description: `Know your roof cost in 2 minutes. Honest roofing estimates for ${city} and ${region}. Free, instant, no contractors calling.`,
+      description: `Know your roof cost in two minutes. Built from real ${region} material and labor pricing, with guidance on insurance, financing, and assistance.`,
       type: "website",
       locale: "en_US",
       url: BASE_URL,

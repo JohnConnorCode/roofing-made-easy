@@ -280,7 +280,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      siteName: 'Farrell Roofing',
+      siteName: 'Smart Roof Pricing',
       images: [
         {
           url: ogImageUrl,

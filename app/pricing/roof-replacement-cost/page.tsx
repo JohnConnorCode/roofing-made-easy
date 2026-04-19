@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { Breadcrumbs } from '@/components/location/breadcrumbs'
@@ -54,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url,
-      siteName: 'Farrell Roofing',
+      siteName: 'Smart Roof Pricing',
       locale: 'en_US',
       type: 'article',
       images: [
@@ -305,8 +306,17 @@ export default function RoofReplacementCostPage() {
       />
 
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
-        <div className="mx-auto max-w-4xl px-4 text-center">
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <Image
+          src="/images/services/roof-replacement.jpg"
+          alt="Completed asphalt shingle roof replacement on a Mississippi home — Smart Roof Pricing"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/85 via-[#0c0f14]/75 to-[#0c0f14]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-4xl px-4 text-center">
           <h1 className="text-4xl font-bold text-slate-100 md:text-5xl lg:text-6xl animate-slide-up">
             How Much Does a Roof Replacement Cost in Mississippi?
           </h1>
@@ -688,10 +698,10 @@ export default function RoofReplacementCostPage() {
       {/* CTA Section */}
       <CTASection
         title="Get Your Exact Replacement Cost in 60 Seconds"
-        description="Answer a few quick questions about your roof and get a personalized cost estimate instantly. No phone calls, no pressure, no obligation."
+        description="Answer a few quick questions about your roof and get a personalized cost estimate instantly &mdash; plus guidance on insurance, financing, and assistance to cover it."
         primaryLabel="Get my free estimate"
-        primaryHref="/"
-        showPhone={true}
+        useFunnel
+        showPhone
       />
 
       <SiteFooter />

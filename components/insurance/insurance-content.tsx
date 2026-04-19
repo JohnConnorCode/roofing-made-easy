@@ -1,8 +1,10 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { ResourceTriangle } from '@/components/shared/resource-triangle'
 import {
   FileText,
   ArrowRight,
@@ -44,8 +46,17 @@ export default function InsuranceContent() {
       <SiteHeader />
 
       {/* Hero Section */}
-      <section className="py-24 md:py-32 bg-[#0c0f14]">
-        <div className="mx-auto max-w-6xl px-4">
+      <section className="relative py-24 md:py-32 overflow-hidden">
+        <Image
+          src="/images/services/storm-damage-repair.jpg"
+          alt="Hail and wind storm damage on a Mississippi residential roof — insurance claim documentation"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/88 via-[#0c0f14]/78 to-[#0c0f14]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-6xl px-4">
           <div className="max-w-3xl">
             <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
               <FileText className="h-3.5 w-3.5" />
@@ -664,6 +675,8 @@ export default function InsuranceContent() {
           </ScrollAnimate>
         </div>
       </section>
+
+      <ResourceTriangle exclude="insurance" />
 
       <SiteFooter />
     </div>

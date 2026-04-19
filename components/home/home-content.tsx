@@ -5,12 +5,11 @@ import { useStartFunnel } from '@/lib/hooks/use-start-funnel'
 import { useSectionTracking } from '@/lib/hooks/use-section-tracking'
 import {
   HeroSection,
-  TrustBar,
   EstimatePreview,
+  ServicesShowcase,
   FundingWaterfall,
   HowItWorks,
   SocialProof,
-  WhyHomeowners,
   FaqCta,
 } from './sections'
 
@@ -34,24 +33,24 @@ export function HomePageContent() {
           <HeroSection onGetStarted={handleHeroCTA} isCreating={isCreating} error={error} />
         </div>
 
-        {/* 2. Honest trust strip */}
-        <div ref={trackSectionRef('trust_bar')}>
-          <TrustBar />
-        </div>
-
-        {/* 3. Try the tool (interactive proof) */}
+        {/* 2. Try the tool (interactive proof) */}
         <div ref={trackSectionRef('estimate_preview')}>
           <EstimatePreview onGetStarted={handlePreviewCTA} isCreating={isCreating} />
         </div>
 
-        {/* 4. Recent work — photo proof of real jobs */}
-        <div ref={trackSectionRef('recent_work')}>
-          <SocialProof />
+        {/* 3. Services — the actual roofing solutions, with imagery + pricing */}
+        <div ref={trackSectionRef('services_showcase')}>
+          <ServicesShowcase />
         </div>
 
-        {/* 5. Why homeowners pick us (bento) */}
-        <div ref={trackSectionRef('why_homeowners')}>
-          <WhyHomeowners />
+        {/* 4. Ways to pay — insurance, assistance, financing */}
+        <div ref={trackSectionRef('funding_waterfall')}>
+          <FundingWaterfall />
+        </div>
+
+        {/* 5. Guides (pricing breakdowns) */}
+        <div ref={trackSectionRef('guides')}>
+          <SocialProof />
         </div>
 
         {/* 6. How it works */}
@@ -59,12 +58,7 @@ export function HomePageContent() {
           <HowItWorks onGetStarted={handleHowItWorksCTA} isCreating={isCreating} />
         </div>
 
-        {/* 7. Ways to pay */}
-        <div ref={trackSectionRef('funding_waterfall')}>
-          <FundingWaterfall />
-        </div>
-
-        {/* 8. FAQ + Final CTA (merged) */}
+        {/* 7. FAQ + Final CTA (merged) */}
         <div ref={trackSectionRef('faq_cta')}>
           <FaqCta onGetStarted={handleFinalCTA} isCreating={isCreating} />
         </div>

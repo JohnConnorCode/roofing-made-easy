@@ -1,6 +1,6 @@
 export { HeroSection } from './hero-section'
-export { TrustBar } from './trust-bar'
 export { EstimatePreview } from './estimate-preview'
+export { ServicesShowcase } from './services-showcase'
 export { FundingWaterfall } from './funding-waterfall'
 export { HowItWorks } from './how-it-works'
 export { SocialProof } from './social-proof'

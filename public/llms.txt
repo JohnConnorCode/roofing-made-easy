@@ -17,7 +17,7 @@ Smart Roof Pricing is a family-owned roofing company based in Tupelo, Mississipp
 
 ## Free Estimate Tool
 
-Our website features an AI-powered instant estimate tool that provides accurate roofing cost estimates in under 2 minutes. No account required, no contractors calling, no pressure. The tool analyzes:
+Our website features an AI-powered instant estimate tool that provides accurate roofing cost estimates in under 2 minutes. Plus guidance on insurance, financing, and assistance programs to help cover the work. The tool analyzes:
 - Property satellite imagery for roof size and complexity
 - Current material costs in your area
 - Local labor rates for Mississippi
@@ -54,12 +54,11 @@ Northeast Mississippi including:
 ## Key Features
 
 - Free instant estimates online
-- No hard sales tactics
-- Never sell customer information
+- Insurance claim documentation and adjuster support
+- Financing options and pre-qualification
+- Assistance program guidance (state, county, nonprofit)
 - Licensed and insured
-- 20+ years of roofing experience
-- Financing options available
-- Insurance claim assistance
+- 15+ years of roofing experience in Northeast Mississippi
 
 ## Materials We Work With
 

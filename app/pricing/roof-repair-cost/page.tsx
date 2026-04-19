@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { Breadcrumbs } from '@/components/location/breadcrumbs'
@@ -99,7 +100,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url,
-      siteName: 'Farrell Roofing',
+      siteName: 'Smart Roof Pricing',
       locale: 'en_US',
       type: 'article',
       images: [
@@ -229,8 +230,17 @@ export default function RoofRepairCostPage() {
       />
 
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-[#161a23]">
-        <div className="mx-auto max-w-6xl px-4">
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <Image
+          src="/images/services/roof-repair.jpg"
+          alt="Roof repair in progress on residential shingles in Mississippi — Smart Roof Pricing"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0c0f14]/85 via-[#0c0f14]/75 to-[#0c0f14]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-6xl px-4">
           <div className="max-w-3xl">
             <p className="text-[#c9a25c] font-semibold text-sm uppercase tracking-wider mb-4">
               2026 Mississippi Pricing Guide
@@ -784,9 +794,9 @@ export default function RoofRepairCostPage() {
       {/* CTA Section */}
       <CTASection
         title="Get Your Repair Estimate in 60 Seconds"
-        description="Answer a few quick questions about your roof and receive an instant price range for your repair. No pressure, no contractor calls unless you want them."
-        primaryLabel="Get Free Repair Estimate"
-        primaryHref="/"
+        description="Answer a few quick questions about your roof and receive an instant price range for your repair &mdash; plus help with insurance documentation if it&rsquo;s storm-related."
+        primaryLabel="Get free repair estimate"
+        useFunnel
         showPhone
       />
 

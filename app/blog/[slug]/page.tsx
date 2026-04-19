@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title: post.title,
       description: post.excerpt,
       url: canonicalUrl,
-      siteName: 'Farrell Roofing',
+      siteName: 'Smart Roof Pricing',
       type: 'article',
       publishedTime: post.publishedAt,
       authors: [post.author],
@@ -221,21 +221,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
 
           {/* CTA */}
-          <div className="mt-12 p-8 bg-gradient-to-br from-[#c9a25c]/20 to-transparent border border-[#c9a25c]/30 rounded-2xl text-center">
-            <h3 className="text-xl font-bold text-slate-100 mb-2">Need Help With Your Roof?</h3>
-            <p className="text-slate-400 mb-6">
-              Get a free, no-obligation estimate for your roofing project.
+          <div className="mt-12 p-8 md:p-10 bg-gradient-to-br from-[#c9a25c]/15 via-transparent to-transparent border border-[#c9a25c]/25 rounded-2xl">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#c9a25c]">
+              Price yours in two minutes
             </p>
-            <Link href="/">
-              <Button
-                variant="primary"
-                size="lg"
-                className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
-                rightIcon={<ArrowRight className="h-4 w-4" />}
+            <h3 className="mt-3 text-2xl md:text-3xl font-bold text-slate-50 font-display leading-tight">
+              Put a real number on your own roof.
+            </h3>
+            <p className="mt-3 text-slate-300 max-w-xl">
+              Same pricing methodology you just read about &mdash; run against
+              the specifics of your home. Free, instant, plus guidance on
+              insurance, financing, and assistance.
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <Link href="/">
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="bg-gradient-to-r from-[#c9a25c] to-[#b5893a] text-[#0c0f14] border-0"
+                  rightIcon={<ArrowRight className="h-4 w-4" />}
+                >
+                  Get my free estimate
+                </Button>
+              </Link>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-[#c9a25c] hover:text-[#e6c588] transition-colors px-3 py-2"
               >
-                Get my free estimate
-              </Button>
-            </Link>
+                Or browse all pricing guides
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
           </div>
         </div>
       </article>

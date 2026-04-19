@@ -197,6 +197,45 @@ export default async function CityPage({ params }: CityPageProps) {
       {/* Nearby Areas / Internal Links */}
       <NearbyAreas city={city} />
 
+      {/* Resources strip */}
+      <section className="py-12 md:py-16 bg-[#0c0f14] border-t border-slate-900">
+        <div className="mx-auto max-w-5xl px-4">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#c9a25c] text-center">
+            More for {city.name} homeowners
+          </p>
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <Link
+              href="/pricing/roof-replacement-cost"
+              className="group flex items-center justify-between rounded-xl border border-slate-800/70 bg-slate-900/30 px-4 py-3 transition-colors hover:border-[#c9a25c]/40"
+            >
+              <span className="text-sm text-slate-200 font-medium">Replacement pricing guide</span>
+              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#c9a25c] transition-colors" />
+            </Link>
+            <Link
+              href="/insurance-help"
+              className="group flex items-center justify-between rounded-xl border border-slate-800/70 bg-slate-900/30 px-4 py-3 transition-colors hover:border-[#c9a25c]/40"
+            >
+              <span className="text-sm text-slate-200 font-medium">Insurance claim help</span>
+              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#c9a25c] transition-colors" />
+            </Link>
+            <Link
+              href="/financing"
+              className="group flex items-center justify-between rounded-xl border border-slate-800/70 bg-slate-900/30 px-4 py-3 transition-colors hover:border-[#c9a25c]/40"
+            >
+              <span className="text-sm text-slate-200 font-medium">Financing options</span>
+              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#c9a25c] transition-colors" />
+            </Link>
+            <Link
+              href="/assistance-programs"
+              className="group flex items-center justify-between rounded-xl border border-slate-800/70 bg-slate-900/30 px-4 py-3 transition-colors hover:border-[#c9a25c]/40"
+            >
+              <span className="text-sm text-slate-200 font-medium">Assistance programs</span>
+              <ArrowRight className="h-4 w-4 text-slate-500 group-hover:text-[#c9a25c] transition-colors" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
       <section className="py-24 md:py-32 bg-[#0c0f14] border-t border-slate-900">
         <div className="mx-auto max-w-3xl px-4 text-center">
@@ -207,7 +246,7 @@ export default async function CityPage({ params }: CityPageProps) {
             Your roof, priced honestly.
           </h2>
           <p className="mt-5 text-base md:text-lg text-slate-300 leading-relaxed max-w-xl mx-auto">
-            Two minutes for a real number. No calls unless you ask.
+            Two minutes for a real number, built from real {city.name} material and labor rates.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
             <Link

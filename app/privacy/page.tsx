@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: 'Privacy Policy | Farrell Roofing',
     description: 'How Farrell Roofing collects, uses, and protects your personal information.',
     url: `${BASE_URL}/privacy`,
-    siteName: 'Farrell Roofing',
+    siteName: 'Smart Roof Pricing',
     locale: 'en_US',
     type: 'website',
   },

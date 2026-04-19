@@ -65,7 +65,7 @@ export async function generateMetadata({
       title,
       description,
       url,
-      siteName: 'Farrell Roofing',
+      siteName: 'Smart Roof Pricing',
       locale: 'en_US',
       type: 'website',
       images: [

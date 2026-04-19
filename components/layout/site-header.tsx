@@ -3,31 +3,27 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart, User } from 'lucide-react'
+import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart, User, Gift } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 import { useContact } from '@/lib/hooks/use-contact'
 import { useBusinessConfig, useHoursText } from '@/lib/config/business-provider'
 import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
-import { isRealPortfolioData } from '@/lib/data/portfolio'
 
-const allNavLinks = [
+const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/service-areas', label: 'Service Areas' },
-  { href: '/portfolio', label: 'Portfolio' },
+  { href: '/portfolio', label: 'Our Work' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' },
 ]
-
-const navLinks = isRealPortfolioData
-  ? allNavLinks
-  : allNavLinks.filter(link => link.href !== '/portfolio')
 
 const resourceLinks = [
   { href: '/financing', label: 'Financing Options', icon: CreditCard, description: 'Affordable payment plans' },
   { href: '/insurance-help', label: 'Insurance Help', icon: FileText, description: 'Claim filing guidance' },
   { href: '/assistance-programs', label: 'Assistance Programs', icon: HandHeart, description: 'Grants & financial aid' },
+  { href: '/referral', label: 'Referral Rewards', icon: Gift, description: 'Earn for every referral' },
 ]
 
 export function SiteHeader() {
@@ -62,26 +58,26 @@ export function SiteHeader() {
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), [])
 
   return (
-    <header className="border-b border-slate-800 bg-ink/90 backdrop-blur-md sticky top-0 z-50 safe-top shadow-[0_1px_0_0_rgba(201,162,92,0.08)]">
+    <header className="border-b border-slate-800/70 bg-ink/90 backdrop-blur-md sticky top-0 z-50 safe-top shadow-[0_1px_0_0_rgba(201,162,92,0.08)]">
       {/* Top Bar */}
-      <div className="bg-slate-deep border-b border-slate-800/50 py-2 hidden md:block">
-        <div className="mx-auto max-w-6xl px-4 flex items-center justify-between text-sm">
+      <div className="border-b border-slate-800/40 py-2 hidden md:block">
+        <div className="mx-auto max-w-6xl px-4 flex items-center justify-between text-[11px] tracking-[0.08em] uppercase">
           <div className="flex items-center gap-6 text-slate-400">
-            <a href={phoneLink} className="flex items-center gap-2 hover:text-gold transition-colors">
-              <Phone className="w-4 h-4" />
-              <span>{phoneDisplay}</span>
+            <a href={phoneLink} className="flex items-center gap-2 hover:text-[#e6c588] transition-colors">
+              <Phone className="w-3.5 h-3.5" />
+              <span className="normal-case tracking-normal text-xs">{phoneDisplay}</span>
             </a>
             <span className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-gold" />
-              <span>{config.address.city}, {config.address.stateCode} &amp; Surrounding Areas</span>
+              <MapPin className="w-3.5 h-3.5 text-[#c9a25c]" />
+              <span className="normal-case tracking-normal text-xs">{config.address.city}, {config.address.stateCode} &amp; Surrounding Areas</span>
             </span>
           </div>
           <div className="flex items-center gap-4 text-slate-400">
-            <span>{hoursText}</span>
-            <span className="h-3.5 w-px bg-slate-700" />
-            <Link href="/portal" className="flex items-center gap-1.5 text-slate-400 hover:text-gold transition-colors">
+            <span className="normal-case tracking-normal text-xs">{hoursText}</span>
+            <span className="h-3 w-px bg-slate-700/70" />
+            <Link href="/portal" className="flex items-center gap-1.5 text-slate-400 hover:text-[#e6c588] transition-colors">
               <User className="w-3.5 h-3.5" />
-              <span>My Account</span>
+              <span className="normal-case tracking-normal text-xs">My Account</span>
             </Link>
           </div>
         </div>
@@ -89,16 +85,16 @@ export function SiteHeader() {
 
       {/* Main Nav */}
       <div className="mx-auto max-w-6xl px-4 py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-6">
           <Logo size="md" />
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-7">
             {navLinks.slice(0, 3).map(link => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-slate-400 hover:text-gold transition-colors nav-link"
+                className="relative text-sm text-slate-300 hover:text-slate-50 transition-colors after:absolute after:inset-x-0 after:-bottom-1.5 after:h-[1px] after:bg-[#c9a25c] after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform"
               >
                 {link.label}
               </Link>
@@ -108,7 +104,7 @@ export function SiteHeader() {
             <div className="relative" ref={resourcesRef}>
               <button
                 onClick={() => setResourcesOpen(!resourcesOpen)}
-                className="text-sm text-slate-400 hover:text-gold transition-colors flex items-center gap-1"
+                className="text-sm text-slate-300 hover:text-slate-50 transition-colors flex items-center gap-1"
                 aria-expanded={resourcesOpen}
                 aria-haspopup="true"
               >
@@ -140,7 +136,7 @@ export function SiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-slate-400 hover:text-gold transition-colors nav-link"
+                className="relative text-sm text-slate-300 hover:text-slate-50 transition-colors after:absolute after:inset-x-0 after:-bottom-1.5 after:h-[1px] after:bg-[#c9a25c] after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform"
               >
                 {link.label}
               </Link>

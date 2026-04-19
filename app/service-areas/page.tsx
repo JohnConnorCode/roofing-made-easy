@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
 import { BUSINESS_CONFIG } from '@/lib/config/business'
+import { PageHero } from '@/components/shared/page-hero'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     title: 'Service Areas | Farrell Roofing',
     description: 'Serving 20+ cities across Northeast Mississippi with quality roofing services.',
     url: `${BASE_URL}/service-areas`,
-    siteName: 'Farrell Roofing',
+    siteName: 'Smart Roof Pricing',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -60,43 +61,31 @@ export default function ServiceAreasPage() {
     <div className="min-h-screen bg-gradient-dark">
       <SiteHeader />
 
-      {/* Hero */}
-      <section className="py-24 md:py-32 bg-[#0c0f14]">
-        <div className="mx-auto max-w-6xl px-4">
-          <div className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
-              <MapPin className="h-3.5 w-3.5" />
-              Service Areas
-            </p>
-            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
-              Northeast Mississippi,
-              <br />
-              roof by roof.
-            </h1>
-            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
-              Serving Tupelo and {allCities.length - 1}+ communities across Northeast Mississippi.
-            </p>
-
-            {/* Trust Badges */}
-            <div className="flex flex-wrap gap-6 mt-10">
-              {BUSINESS_CONFIG.reviews.googleRating && (
-                <div className="flex items-center gap-2 text-slate-300">
-                  <Star className="w-5 h-5 text-[#c9a25c] fill-[#c9a25c]" />
-                  <span>{BUSINESS_CONFIG.reviews.googleRating} Rating</span>
-                </div>
-              )}
-              <div className="flex items-center gap-2 text-slate-300">
-                <Shield className="w-5 h-5 text-[#c9a25c]" />
-                <span>Licensed & Insured</span>
-              </div>
-              <div className="flex items-center gap-2 text-slate-300">
-                <MapPin className="w-5 h-5 text-[#c9a25c]" />
-                <span>{allCounties.length} Counties</span>
-              </div>
+      <PageHero
+        image="/images/work/estate-roof.webp"
+        alt="Aerial view of an estate-sized home with a completed architectural shingle roof in Northeast Mississippi"
+        eyebrow="Service Areas"
+        eyebrowIcon={<MapPin className="h-3.5 w-3.5" />}
+        title={<>Northeast Mississippi,<br />roof by roof.</>}
+        subtitle={`Based in Tupelo, serving ${allCities.length - 1}+ communities across ${allCounties.length} counties — a 75-mile radius we've worked for over a decade. Local pricing, local crews, local knowledge of what Mississippi weather does to a roof.`}
+      >
+        <div className="flex flex-wrap gap-6">
+          {BUSINESS_CONFIG.reviews.googleRating && (
+            <div className="flex items-center gap-2 text-slate-200">
+              <Star className="w-5 h-5 text-[#c9a25c] fill-[#c9a25c]" />
+              <span>{BUSINESS_CONFIG.reviews.googleRating} Rating</span>
             </div>
+          )}
+          <div className="flex items-center gap-2 text-slate-200">
+            <Shield className="w-5 h-5 text-[#c9a25c]" />
+            <span>Licensed &amp; Insured</span>
+          </div>
+          <div className="flex items-center gap-2 text-slate-200">
+            <MapPin className="w-5 h-5 text-[#c9a25c]" />
+            <span>{allCounties.length} Counties</span>
           </div>
         </div>
-      </section>
+      </PageHero>
 
       {/* Service Areas Map Placeholder */}
       <section className="py-12 bg-[#0c0f14] border-y border-slate-800">

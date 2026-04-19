@@ -148,7 +148,7 @@ export async function ServiceSchema({
   const config = await getBusinessConfigFromDB()
   const resolvedDescription =
     description ??
-    `Get an instant, accurate roofing estimate for your ${config.serviceArea.region} home. No contractors calling, no pressure. Just honest pricing for roof repair or replacement.`
+    `Get an instant, accurate roofing estimate for your ${config.serviceArea.region} home, built from real local material and labor rates. With guidance on insurance, financing, and assistance.`
   const resolvedProvider = provider ?? config.name
 
   const schema = {

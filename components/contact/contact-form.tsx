@@ -16,6 +16,7 @@ import {
   CheckCircle,
 } from 'lucide-react'
 import { SiteHeader, SiteFooter } from '@/components/layout'
+import { PageHero } from '@/components/shared/page-hero'
 import { useBusinessConfig, useContact } from '@/lib/config/business-provider'
 import { useAnalytics } from '@/lib/analytics'
 
@@ -81,33 +82,13 @@ export function ContactPageContent() {
       <SiteHeader />
 
       <main id="main-content">
-      {/* Hero */}
-      <section className="py-24 md:py-32 bg-[#0c0f14] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-15">
-          <Image
-            src="/images/contact/office.jpg"
-            alt=""
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0c0f14] via-[#0c0f14]/85 to-[#0c0f14]/40" />
-        </div>
-        <div className="mx-auto max-w-6xl px-4 relative z-10">
-          <div className="max-w-3xl">
-            <p className="text-xs font-medium uppercase tracking-widest text-[#c9a25c] animate-slide-up">
-              Contact
-            </p>
-            <h1 className="mt-4 text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] font-bold tracking-tight text-slate-50 font-display animate-slide-up delay-75">
-              Reach out. We&rsquo;ll respond.
-            </h1>
-            <p className="mt-6 text-lg md:text-xl text-slate-300 leading-relaxed animate-slide-up delay-150 max-w-2xl">
-              Questions, a quote, or just want to talk through options &mdash;
-              either way, you&rsquo;ll hear back within 24 hours.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        image="/images/contact/office.jpg"
+        alt="Smart Roof Pricing office exterior — Northeast Mississippi"
+        eyebrow="Contact"
+        title={<>Reach out.<br />We&rsquo;ll respond.</>}
+        subtitle="Questions, a quote, or just want to talk through options — either way, you'll hear back within 24 hours."
+      />
 
       {/* Contact Info + Form */}
       <section className="py-16 md:py-24 bg-[#0c0f14]">
