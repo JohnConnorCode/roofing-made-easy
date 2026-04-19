@@ -7,6 +7,7 @@ import { ScrollAnimate } from '@/components/scroll-animate'
 import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
 import { Breadcrumbs } from '@/components/location/breadcrumbs'
 import { getAllMaterials, MATERIAL_COMPARISON } from '@/lib/data/roofing-materials'
+import { FAQSchema } from '@/components/seo/json-ld'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.smartroofpricing.com'
 
@@ -45,11 +46,23 @@ const DECISION_QUESTIONS = [
   },
 ]
 
+const FAQ_SCHEMA_ITEMS = DECISION_QUESTIONS.flatMap(q =>
+  q.options.map(o => ({
+    question: q.question,
+    answer: `${o.label}: ${o.recommendation} is recommended. ${o.why}`,
+  }))
+).concat([
+  { question: 'Which roofing material lasts longest in Mississippi?', answer: 'Standing seam metal roofing lasts 40-70 years in Mississippi — longer than any other residential option. Asphalt shingles last 25-30 years, while clay tile can last 50+ years but suits a narrower range of architectural styles.' },
+  { question: 'What roofing material qualifies for insurance discounts in Mississippi?', answer: 'Class 4 impact-resistant shingles qualify for the largest insurance discounts from most Mississippi carriers — typically 20-30% off the dwelling premium. Metal roofing also qualifies in many cases. Check with your insurer for specific discount amounts before choosing.' },
+  { question: 'What is the most affordable roofing material in Mississippi?', answer: 'Standard 3-tab or architectural asphalt shingles are the most affordable option at $4.50–$6.50 per square foot installed. They offer a solid 25-30 year lifespan, though impact-resistant upgrades are often worth the modest price difference given Mississippi\'s hail frequency.' },
+])
+
 export default function RoofingMaterialsPage() {
   const materials = getAllMaterials()
 
   return (
     <div className="min-h-screen bg-[#0c0f14]">
+      <FAQSchema items={FAQ_SCHEMA_ITEMS} />
       <SiteHeader />
       <Breadcrumbs items={[{ name: 'Roofing Materials', href: '/roofing-materials' }]} />
 

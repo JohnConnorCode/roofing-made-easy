@@ -144,7 +144,7 @@ On wind: the minimum specification for a Northeast Mississippi home is Class H (
       },
       {
         q: 'Can asphalt shingles be installed over existing shingles?',
-        a: "Most building codes allow one layer of shingles over an existing layer. The reason to avoid it: you can't inspect the deck condition, you're adding weight that stresses the structure, and the irregular surface underneath causes the new shingles to not seat flat. When issues develop under the new layer, you pay to remove both layers. A full tear-off costs $1-2/sq ft more upfront and is almost always the correct choice for a long-term replacement.",
+        a: "Most building codes allow one layer of shingles over an existing layer. The reason to avoid it: you can't inspect the deck condition, you're adding weight that stresses the structure, and the irregular surface underneath causes the new shingles to not seat flat. When issues develop under the new layer, you pay to remove both layers. A full [tear-off replacement](/services/roof-replacement) costs $1-2/sq ft more upfront and is almost always the correct choice for a long-term replacement.",
       },
       {
         q: "What's the difference between a 25-year and a 30-year shingle warranty?",
@@ -152,7 +152,7 @@ On wind: the minimum specification for a Northeast Mississippi home is Class H (
       },
       {
         q: 'Will new shingles raise or lower my home insurance premium?',
-        a: "A new roof typically has a modest positive effect on insurance premiums — most carriers give some credit for a recently replaced roof (under 10 years old). The bigger premium impact comes from material choice: Class 4 impact-resistant shingles qualify for explicit discount programs from most major carriers in Mississippi, with discounts ranging from 10-30% of the roof coverage component. The discount calculation varies by carrier and policy — ask your agent specifically about impact-resistant shingle credits before finalizing your material choice.",
+        a: "A new roof typically has a modest positive effect on insurance premiums — most carriers give some credit for a recently replaced roof (under 10 years old). The bigger premium impact comes from material choice: [Class 4 impact-resistant shingles](/roofing-materials/impact-resistant-shingles) qualify for explicit discount programs from most major carriers in Mississippi, with discounts ranging from 10-30% of the roof coverage component. The discount calculation varies by carrier and policy — ask your agent specifically about impact-resistant shingle credits before finalizing your material choice.",
       },
     ],
   },
@@ -279,7 +279,7 @@ The caveat: the energy savings depend heavily on whether the attic is properly i
       },
       {
         q: 'Will metal roofing increase my home value?',
-        a: "Yes, typically. A standing seam metal roof is perceived as a premium upgrade by buyers in the residential market, and its presence on a listing typically reduces buyer concerns about roof condition and upcoming capital expenditures. The value increase is rarely dollar-for-dollar with the installation cost premium over asphalt, but buyers do factor it positively — particularly in markets where storm damage claims are common.",
+        a: "Yes, typically. A standing seam metal roof is perceived as a premium upgrade by buyers in the residential market, and its presence on a listing typically reduces buyer concerns about roof condition and upcoming capital expenditures. The value increase is rarely dollar-for-dollar with the installation cost premium over [asphalt shingles](/roofing-materials/asphalt-shingles), but buyers do factor it positively — particularly in markets where storm damage claims are common.",
       },
       {
         q: 'How do I find a qualified metal roofing contractor?',

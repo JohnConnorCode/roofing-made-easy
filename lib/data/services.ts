@@ -358,7 +358,7 @@ What separates a good replacement from a mediocre one is what happens below the 
       },
       {
         question: 'Does a new roof increase my home value?',
-        answer: "Yes — reliably. A new roof is one of the few home improvements that comes close to full cost recovery at resale. Buyers and their inspectors focus heavily on roof condition; a replacement flag on an inspection report depresses offers and kills deals. Beyond resale, a new roof typically reduces your homeowner's insurance premium and may qualify you for significant discounts, especially if you install impact-resistant Class 4 shingles.",
+        answer: "Yes — reliably. A new roof is one of the few home improvements that comes close to full cost recovery at resale. Buyers and their inspectors focus heavily on roof condition; a replacement flag on an [inspection report](/services/roof-inspection) depresses offers and kills deals. Beyond resale, a new roof typically reduces your homeowner's insurance premium and may qualify you for significant discounts, especially if you install [impact-resistant Class 4 shingles](/roofing-materials/impact-resistant-shingles).",
       },
       {
         question: 'What happens if it rains during my roof replacement?',
@@ -374,7 +374,7 @@ What separates a good replacement from a mediocre one is what happens below the 
       },
       {
         question: 'How do I know if I need replacement vs. repair?',
-        answer: "General rule: if your roof is under 15 years old with isolated damage, repair makes sense. If it's over 18-20 years old, has widespread granule loss, or you've had 3+ separate repairs in recent years, replacement is the better investment. We'll tell you honestly which situation you're in at inspection — we don't push replacements on roofs that still have repair life left.",
+        answer: "General rule: if your roof is under 15 years old with isolated damage, [repair makes sense](/services/roof-repair). If it's over 18-20 years old, has widespread granule loss, or you've had 3+ separate repairs in recent years, replacement is the better investment. We'll tell you honestly which situation you're in at [inspection](/services/roof-inspection) — we don't push replacements on roofs that still have repair life left.",
       },
     ],
     warranty: {
@@ -453,7 +453,7 @@ The honest question with any repair is whether the roof is worth repairing. If t
       },
       {
         question: "Will my homeowner's insurance cover roof repair?",
-        answer: "Insurance covers sudden and accidental damage — wind, hail, impact — not gradual wear and tear. If your repair is needed because of a storm event, we document the damage before any work and provide the report format adjusters need. If the roof has been deteriorating for years, insurance won't cover it. Check whether your policy has a cosmetic damage exclusion or settles on ACV vs. RCV — that matters significantly if you file a claim.",
+        answer: "Insurance covers sudden and accidental damage — wind, hail, impact — not gradual wear and tear. If your repair is needed because of a storm event, we document the damage before any work and provide the report format adjusters need. If the roof has been deteriorating for years, insurance won't cover it. Check whether your policy has a cosmetic damage exclusion or settles on ACV vs. RCV — that matters significantly if you file a claim. See our [insurance claim help guide](/insurance-help) for the full process.",
       },
       {
         question: 'Can I do a roof repair myself?',
@@ -461,7 +461,7 @@ The honest question with any repair is whether the roof is worth repairing. If t
       },
       {
         question: 'My roof is 20 years old — is repair still worth it?',
-        answer: "Depends on scope. If the repair is isolated — one valley flashing, one pipe boot, a half-dozen shingles — and the rest of the roof is in reasonable shape, a repair buys 2-5 more years at low cost. If you're looking at multiple failing areas or widespread granule loss, you're patching a system on its way out. The most useful thing we can do is give you an honest condition assessment so you can make a real decision — not just fix the immediate problem without context.",
+        answer: "Depends on scope. If the repair is isolated — one valley flashing, one pipe boot, a half-dozen shingles — and the rest of the roof is in reasonable shape, a repair buys 2-5 more years at low cost. If you're looking at multiple failing areas or widespread granule loss, you're patching a system on its way out. The most useful thing we can do is give you an honest condition assessment so you can make a real decision — not just fix the immediate problem without context. A [full roof inspection](/services/roof-inspection) is the right starting point.",
       },
     ],
     warranty: {
@@ -538,7 +538,7 @@ The three moments when an inspection pays for itself most clearly: before buying
       },
       {
         question: 'Can an inspection support an insurance claim?',
-        answer: "Yes — and timing matters. Insurance policies require claims to be filed promptly after a loss event, typically within 1-2 years. If you had a significant storm and haven't had your roof assessed, an inspection can document damage that's still present and generate the written report an adjuster needs. We provide documentation in the format that works for claims: dated photos, condition descriptions, and a scope of visible damage.",
+        answer: "Yes — and timing matters. Insurance policies require claims to be filed promptly after a loss event, typically within 1-2 years. If you had a significant storm and haven't had your roof assessed, an inspection can document damage that's still present and generate the written report an adjuster needs. We provide documentation in the format that works for claims: dated photos, condition descriptions, and a scope of visible damage. See our full [insurance claim help guide](/insurance-help) for what to expect.",
       },
       {
         question: 'Do I need an inspection before buying a home?',

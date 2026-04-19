@@ -15,6 +15,7 @@ import { SiteHeader, SiteFooter } from '@/components/layout'
 import { BlogPostingSchema } from '@/components/seo/blog-schema'
 import { Breadcrumbs } from '@/components/location/breadcrumbs'
 import { MarkdownContent } from '@/components/shared/markdown-content'
+import { ShareStrip } from '@/components/blog/share-strip'
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -162,8 +163,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             className="text-slate-300 leading-relaxed"
           />
 
-          {/* Tags */}
-          <div className="mt-12 pt-8 border-t border-slate-700">
+          {/* Tags + Share */}
+          <div className="mt-12 pt-8 border-t border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             <div className="flex items-center gap-2 flex-wrap">
               <Tag className="h-4 w-4 text-slate-400" />
               {post.tags.map((tag) => (
@@ -175,6 +176,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </span>
               ))}
             </div>
+            <ShareStrip title={post.title} slug={post.slug} />
           </div>
 
           {/* CTA */}

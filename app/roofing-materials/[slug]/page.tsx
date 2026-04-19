@@ -358,13 +358,17 @@ export default async function MaterialGuidePage({ params }: Props) {
               ))}
             </div>
 
-            <div className="mt-6 flex items-center gap-4 text-sm text-slate-500">
+            <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-slate-500">
               <Link href="/roofing-materials" className="hover:text-[#c9a25c] transition-colors flex items-center gap-1">
                 <ArrowLeft className="h-3.5 w-3.5" /> All materials
               </Link>
               <span>·</span>
-              <Link href="/services" className="hover:text-[#c9a25c] transition-colors flex items-center gap-1">
-                Roofing services <ArrowRight className="h-3.5 w-3.5" />
+              <Link href="/services/roof-replacement" className="hover:text-[#c9a25c] transition-colors flex items-center gap-1">
+                Roof replacement <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+              <span>·</span>
+              <Link href="/services/roof-repair" className="hover:text-[#c9a25c] transition-colors flex items-center gap-1">
+                Roof repair <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>

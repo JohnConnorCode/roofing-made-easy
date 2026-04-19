@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { MarkdownContent } from '@/components/shared/markdown-content'
 
 export interface FAQItem {
   question: string
@@ -84,8 +85,11 @@ function FAQAccordionItem({ question, answer, isOpen, onToggle }: FAQAccordionIt
         role="region"
         aria-hidden={!isOpen}
       >
-        <div className="px-6 pb-4 text-slate-400 leading-relaxed">
-          {answer}
+        <div className="px-6 pb-4">
+          <MarkdownContent
+            content={answer}
+            className="text-slate-400 leading-relaxed [&_p]:mb-2 [&_p:last-child]:mb-0 [&_a]:text-[#c9a25c] [&_strong]:text-slate-300"
+          />
         </div>
       </div>
     </div>
