@@ -63,6 +63,7 @@ const VALID_INTERNAL_PATHS = [
   '/pricing',
   '/pricing/roof-replacement-cost',
   '/pricing/metal-roof-cost',
+  '/roofing-materials',
   '/about',
   '/service-areas',
   '/blog/',
@@ -75,10 +76,10 @@ export function validatePost(content: string, title: string, existingSlugs: stri
 
   // Word count
   const wordCount = content.split(/\s+/).filter(w => w.length > 0).length
-  if (wordCount < 1500) {
-    errors.push(`Word count too low: ${wordCount} (minimum 1500)`)
+  if (wordCount < 900) {
+    errors.push(`Word count too low: ${wordCount} (minimum 900)`)
   } else if (wordCount > 2500) {
-    warnings.push(`Word count high: ${wordCount} (target 1500-2500)`)
+    warnings.push(`Word count high: ${wordCount} (target 900-2500)`)
   }
 
   // H2 sections
@@ -209,6 +210,13 @@ export function humanizerPass(content: string): string {
 
   // Replace "At the end of the day," with ""
   result = result.replace(/At the end of the day,?\s*/gi, '')
+
+  // Replace common AI adjectives
+  result = result.replace(/\brobust\b/gi, 'solid')
+  result = result.replace(/\bcomprehensive\b/gi, 'thorough')
+  result = result.replace(/\bcutting-edge\b/gi, 'modern')
+  result = result.replace(/\bgame-changer\b/gi, 'real advantage')
+  result = result.replace(/\bgame changer\b/gi, 'real advantage')
 
   // Replace "Let's dive in" / "Let's explore" / "Let's take a look"
   result = result.replace(/Let's dive in\.?\s*/gi, '')

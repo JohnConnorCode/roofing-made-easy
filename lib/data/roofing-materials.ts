@@ -421,6 +421,279 @@ Mississippi's insurance market has evolved around this reality. Most major carri
       },
     ],
   },
+  {
+    slug: 'synthetic-shingles',
+    name: 'Synthetic Shingles',
+    image: '/images/work/estate-roof.webp',
+    eyebrow: 'Premium look, engineered performance',
+    summary: `Synthetic roofing shingles — made from polymer, rubber, or composite materials — are engineered to replicate the visual texture of slate or cedar shake without the structural demands or maintenance burden of the real thing. In Northeast Mississippi, they occupy a growing niche between standard asphalt and premium metal: more expensive than architectural shingles but built to outlast them by 10-20 years, with impact resistance that natural materials can't match. For homeowners who want a distinctive roof without the weight load, cost, or upkeep of natural slate or wood, synthetic shingles are worth serious consideration.`,
+    stats: {
+      lifespan: '40-50 years',
+      cost: '$8.00 – $14.00/sq ft installed',
+      warranty: '40-50 year limited manufacturer',
+      wind: '110-130+ mph (Class F-G)',
+      fire: 'Class A',
+    },
+    pros: [
+      'Replicates the look of slate or cedar shake at a fraction of the cost and weight',
+      'Class 4 impact rating available — qualifies for insurance premium discounts',
+      'Lighter than real slate — no structural reinforcement required on most homes',
+      'Highly resistant to cracking, fading, and UV degradation compared to wood',
+      'Class A fire rating standard across all reputable product lines',
+      'Low maintenance — won\'t split, warp, or rot like natural wood',
+      'Installs with standard roofing tools and techniques',
+    ],
+    cons: [
+      'Higher upfront cost than asphalt — 1.5-2× the installed price per square foot',
+      'Fewer local contractors have hands-on experience with synthetic products',
+      'Quality varies widely between manufacturers — low-end products underperform',
+      'Not universally available — lead times longer than standard shingles',
+      'Real slate or shake may be preferred in historic districts where authenticity matters',
+    ],
+    bestFor: [
+      'Homeowners wanting the aesthetic of slate or shake without the weight or maintenance',
+      'High-wind zones where Class 4 impact ratings deliver insurance benefits',
+      'Long-term owners prioritizing 40+ year service life over lowest upfront cost',
+      'Homes with roof structures not rated for real slate\'s 800-1,500 lb/square weight',
+    ],
+    notIdealFor: [
+      'Budget-constrained replacements where asphalt shingles meet the need',
+      'Historic preservation projects requiring authentic natural materials',
+      'Homeowners planning to sell within 5-7 years (harder to recoup premium cost)',
+    ],
+    sections: [
+      {
+        heading: 'What synthetic shingles are made of',
+        body: `Most synthetic shingles are manufactured from one of three base materials: **virgin polymer** (high-density polyethylene or polypropylene), **recycled rubber and plastic** composites, or **fiber-reinforced polymer** blends. Premium products layer in UV stabilizers, colorfast pigments, and mineral granules to improve weathering performance and hold their appearance over decades.\n\nThe manufacturing process uses molds cast from actual slate tiles or cedar shake profiles, which is why high-quality synthetic products are visually convincing at normal viewing distances. The texture depth, color variation, and shadow lines closely replicate the real thing — important if curb appeal or neighborhood consistency matters to you.\n\nNot all synthetics are equal. Tier-1 products from manufacturers like DaVinci Roofscapes, Brava, and CertainTeed carry 50-year warranties and proven track records. Cheaper imported alternatives use lower-grade polymers that can chalk, fade, and crack within 15 years. Specifying the manufacturer — not just "synthetic shingles" — matters when getting quotes.`,
+      },
+      {
+        heading: 'Impact resistance and storm performance',
+        body: `Mississippi sits in one of the most storm-active corridors in the country. Severe hail, straight-line winds, and tornadoes are recurring events across Northeast Mississippi and the Gulf Coast region. This is where synthetic shingles have a measurable advantage over both standard asphalt and natural materials.\n\nMany synthetic products carry a **Class 4 impact rating** from UL 2218 testing — the highest available classification. Class 4 shingles can withstand a 2-inch steel ball dropped from 20 feet, which approximates the impact energy of golf-ball-sized hail. Standard architectural asphalt shingles typically test at Class 2 or 3. Natural slate is brittle and can fracture under severe hail. Cedar shake splits.\n\nInsurance carriers in Mississippi often provide **5-25% premium discounts** on homeowner policies for Class 4 certified roofing products. Depending on your current premium and roof size, that discount can offset a meaningful portion of the cost difference between synthetic and standard asphalt over a 10-15 year window. Ask your insurance agent for your specific discount percentage before getting quotes.`,
+      },
+      {
+        heading: 'Weight and structural requirements',
+        body: `One of the most practical advantages of synthetic shingles over real slate is weight. Natural slate runs **800-1,500 pounds per roofing square** (100 sq ft). Most Mississippi homes built in the past 50 years are designed for asphalt shingles, which weigh 200-350 pounds per square. Installing real slate on a standard-framed home requires structural reinforcement — often at considerable cost.\n\n**Synthetic shingles weigh 150-300 pounds per square** — within the design envelope of standard residential construction. No structural engineering review is typically required, and no rafter reinforcement is needed on code-compliant homes. This is a key reason why synthetic shingles can go on almost any house that could take asphalt, while real slate cannot.\n\nConcrete tile, for comparison, runs 900-1,200 pounds per square — similar to slate. If you\'re considering tile aesthetics, synthetic is almost always the more practical path unless your home was specifically built or reinforced for heavy materials.`,
+      },
+      {
+        heading: 'Maintenance requirements',
+        body: `Synthetic shingles require minimal maintenance compared to the materials they mimic. Cedar shake needs periodic cleaning to prevent moss and algae growth, re-staining or re-sealing every 5-7 years, and replacement of split or damaged shakes as they age. Real slate needs periodic inspection for cracked or slipped tiles, careful treatment of the copper flashing typically used with it, and slate-experienced installers for any repairs — a specialty trade that\'s increasingly difficult to find in rural Mississippi.\n\nSynthetics don\'t split, rot, or require refinishing. They\'re typically algae-resistant because of embedded antimicrobial treatments. Inspection every 3-5 years and keeping gutters clear of debris is generally sufficient. Damaged panels — while rare — can be replaced individually without disturbing surrounding material.\n\nMoss and algae can still develop on synthetic surfaces in Mississippi\'s humid climate, particularly on north-facing slopes with heavy shade. Annual cleaning or zinc strip installation at the ridge will prevent biological growth from gaining a foothold.`,
+      },
+      {
+        heading: 'Cost breakdown and ROI',
+        body: `Synthetic shingles installed in Northeast Mississippi typically run **$8-14 per square foot**, depending on product tier, roof complexity, and contractor markup. On a 2,000 sq ft ranch home with 20-22 squares of roofing area, that\'s roughly $16,000-30,000 installed — compared to $9,000-14,000 for a standard architectural asphalt replacement.\n\nThe cost premium buys you longer service life, better storm resistance, and lower maintenance costs over the roof\'s lifetime. On a 40-50 year timeline with no re-roofing required and modest insurance savings, the total cost of ownership can be competitive with two cycles of standard asphalt.\n\nThe calculation changes if you\'re planning to sell within 5-10 years. Appraisers and buyers often don\'t differentiate between synthetic and standard asphalt well enough to recover the full premium in resale value. If this is a long-term home, the math favors synthetic more strongly.`,
+      },
+      {
+        heading: 'Finding qualified installers',
+        body: `Synthetic shingles install much like architectural asphalt — same tools, similar techniques, standard starter strip and cap. Any experienced roofing contractor can install them. However, some products have manufacturer-specific installation requirements around starter strips, overlap dimensions, and fastener patterns that differ from asphalt. Cutting the material also requires a proper blade to avoid cracking at the cut edge.\n\nWhen getting quotes, ask whether the contractor has installed the specific product before. For higher-end lines like DaVinci or Brava, ask if they\'re a factory-certified installer — manufacturer certification indicates training and familiarity with the product\'s requirements. Certified installers also typically have access to extended workmanship warranties beyond the standard contractor guarantee.\n\nAt Smart Roof Pricing, we\'ll walk you through which products and installers are appropriate for your specific home, budget, and long-term goals — without defaulting to the most expensive option if it doesn\'t fit your situation.`,
+      },
+    ],
+    msContext: `Mississippi\'s climate creates specific demands that synthetic shingles handle well. The combination of high humidity, heavy UV load, and frequent severe weather events — including the tornado season from March through May and hurricane season extending through November — rewards materials that don\'t degrade from moisture cycling or fracture under impact.\n\nAlgae and moss are more aggressive in Mississippi than in drier climates. Synthetic shingles with embedded algae inhibitors perform well here. The UV intensity in North Mississippi through the summer months causes photodegradation in lower-quality polymers; premium products with UV stabilizers retain their color and structural integrity much longer under Southern sun.\n\nFor homeowners in high-risk wind zones — particularly those in tornado corridors across Lee, Union, and Prentiss Counties — the Class 4 impact rating is worth pricing. The insurance discount available through MWUA-participating carriers can make a meaningful dent in the cost premium over the policy period.`,
+    faqs: [
+      {
+        q: 'Do synthetic shingles qualify for insurance discounts in Mississippi?',
+        a: 'Many do, but the specific discount depends on your insurance carrier and whether the product carries a Class 4 UL 2218 impact rating. Verify with your agent which products qualify before committing to a specific brand. Most major carriers operating in Mississippi recognize Class 4 products from established manufacturers like DaVinci, Brava, and CertainTeed.',
+      },
+      {
+        q: 'How long do synthetic shingles actually last?',
+        a: 'Premium synthetic shingles carry 40-50 year manufacturer warranties, and the material science supports long service life when installed correctly. However, the product category is relatively young — most major synthetic lines have only been on the market for 20-30 years. The warranty is a reasonable proxy for durability, but there\'s less long-term field data than exists for asphalt or metal.',
+      },
+      {
+        q: 'Can I install synthetic shingles over my existing asphalt roof?',
+        a: 'In most cases yes, if the existing roof deck is sound. Most jurisdictions allow one layer of overlay before requiring a full tear-off. However, we generally recommend tear-off so the deck can be inspected and any damaged sheathing replaced. Installing over a deteriorated deck undermines the new material\'s performance and voids most manufacturer warranties.',
+      },
+      {
+        q: 'How do synthetic shingles compare to metal roofing?',
+        a: 'Metal roofing — especially standing seam — typically offers a longer lifespan (40-70 years), better wind resistance, and higher fire ratings. Synthetic shingles offer a more traditional aesthetic at a lower price point. Metal is often the better long-term value; synthetic shingles make sense if you want the look of slate or shake, or if metal\'s cost is out of reach.',
+      },
+      {
+        q: 'Will synthetic shingles look fake or cheap?',
+        a: 'Quality synthetic shingles from Tier-1 manufacturers look convincing at normal viewing distances. The texture molds are cast from real slate and shake samples, producing realistic shadow lines and color variation. Lower-end products with flat, uniform profiles do look artificial. Budget for Tier-1 product if aesthetics matter — the visual difference between premium and budget synthetics is significant.',
+      },
+    ],
+  },
+  {
+    slug: 'clay-tile-roofing',
+    name: 'Clay & Concrete Tile',
+    image: '/images/work/large-residential.webp',
+    eyebrow: 'Exceptional longevity, classic Southern style',
+    summary: `Clay and concrete tile roofing represent the high end of residential durability — with documented lifespans of 50-100+ years, fire immunity, and minimal maintenance needs once properly installed. In Mississippi, tile is most common on upscale custom homes and some historic properties where the Mediterranean or Spanish Colonial aesthetic fits the architecture. It is not appropriate for every home: the weight load (900-1,200 lbs per square) requires verified structural capacity, and the installed cost ($15-30/sq ft) puts it firmly in the premium tier. For homeowners building or renovating a home intended to last generations, tile is a legitimate long-term consideration.`,
+    stats: {
+      lifespan: '50-100+ years (clay); 40-50 years (concrete)',
+      cost: '$15.00 – $30.00/sq ft installed',
+      warranty: '50 years (concrete); lifetime (clay)',
+      wind: '125-150 mph rated; Class F-G',
+      fire: 'Class A (inherent — no coating required)',
+    },
+    pros: [
+      'Exceptional lifespan — clay tile roofs routinely outlast the homes they cover',
+      'Inherently non-combustible — no fire rating coating required, never degrades',
+      'Resists UV degradation, salt air, and insect damage that compromise organic materials',
+      'Thermal mass provides passive cooling benefit in Mississippi summers',
+      'Never requires painting, staining, or surface treatment',
+      'Color is fired into the material and does not fade over decades',
+      'Significant curb appeal for Mediterranean, Spanish Colonial, and Mission-style architecture',
+    ],
+    cons: [
+      'Heavy — 900-1,200 lbs per square requires structural engineering verification',
+      'High installed cost: $15-30/sq ft vs. $4.50-7 for asphalt',
+      'Brittle — individual tiles can crack under point impact (foot traffic, fallen branches)',
+      'Specialized installation — far fewer contractors in Mississippi have genuine tile experience',
+      'Difficult to source repair tiles matching aged installations if a section is damaged',
+      'Not appropriate for low-slope applications below 4:12 without special systems',
+    ],
+    bestFor: [
+      'Custom homes and estate properties where lifetime durability justifies the investment',
+      'Mediterranean, Spanish Colonial, Mission, or Southwest architectural styles',
+      'Homeowners in coastal areas where salt air degrades organic materials faster',
+      'Generational properties where the roof should outlast the current owner',
+    ],
+    notIdealFor: [
+      'Standard residential homes without structural verification for heavy loads',
+      'Budget-constrained projects or homes likely to be sold within 15 years',
+      'Low-slope roofs (below 4:12 pitch)',
+      'Areas where finding experienced tile installers or repair-match tiles is difficult',
+    ],
+    sections: [
+      {
+        heading: 'Clay vs. concrete tile: what\'s the difference',
+        body: `Both clay and concrete tile look similar from a distance, but they differ in composition, weight, lifespan, and cost.\n\n**Clay tile** is kiln-fired from natural clay at extremely high temperatures. The resulting material is dense, non-porous, and essentially inert — it does not absorb water, does not react to chemicals, and does not change properties over time. Clay tiles installed in the 1800s are still functional on surviving buildings. Lifespans of 75-150 years are realistic. Clay is heavier than concrete (900-1,200 lbs per square) and more expensive.\n\n**Concrete tile** is made from portland cement, sand, and water, molded under pressure and colored with mineral pigments. It\'s heavier than clay per tile in some configurations but slightly lighter per square overall in others. Concrete tile has a lifespan of 40-60 years — shorter than clay because it absorbs more moisture over time and the pigment eventually bleaches from UV exposure. It\'s the more common choice because of lower cost and better availability of installers.\n\nFor Mississippi specifically: concrete tile is more practical to source and install. Clay is the gold standard for true longevity but carries a significant premium and thinner contractor availability.`,
+      },
+      {
+        heading: 'Structural requirements in Mississippi',
+        body: `The most important factor in any tile roofing project is structural capacity. **Standard residential roof framing in Mississippi is engineered for asphalt shingles, which weigh 200-350 lbs per square.** Tile runs 900-1,200 lbs per square — three to five times heavier.\n\nBefore any tile installation, a structural engineer must verify that the existing rafters, ridge board, wall plates, and foundation can handle the additional dead load. Undersized rafters will deflect and eventually fail. In some cases, the framing can be reinforced with sister rafters or additional purlins. In others, the framing geometry makes reinforcement impractical.\n\nFor new construction, specifying tile from the design phase allows the structural engineer to size the framing appropriately from the start — the most cost-effective approach. Retrofitting an existing home for tile is more variable; get the structural assessment before committing.\n\nMississippi\'s building codes require compliance with the IBC (International Building Code) for structural loads. Lee County, Tupelo, and surrounding municipalities enforce permit requirements that will trigger structural review during the permitting process for a tile installation.`,
+      },
+      {
+        heading: 'Tile profiles and styles',
+        body: `Tile comes in several distinct profiles that define the roof\'s visual character:\n\n**S-tile (Spanish or Mission)** is the classic undulating profile — one curve up, one curve down — that creates the distinctive wave pattern associated with Mediterranean and Mission architecture. It\'s the most recognizable tile profile and the most common in the southern United States.\n\n**Barrel tile (Roman)** is a half-cylinder profile installed in alternating rows — one row face-down (pan), one row face-up (cap). Barrel tile creates deeper shadow lines than S-tile and a more dramatic visual texture. It\'s the traditional profile of Spanish Colonial and Italian architecture.\n\n**Flat/low-profile tile** mimics a more understated look similar to slate or shake. It installs with a lower profile than barrel or S-tile and suits a wider range of architectural styles, including some contemporary and transitional designs.\n\nColors range from terra cotta (the natural clay color) to glazed finishes in deep reds, buffs, grays, and custom blends. Concrete tile accepts a wider range of pigments. For Mississippi, lighter colors perform slightly better thermally by reflecting more solar radiation.`,
+      },
+      {
+        heading: 'Installation requirements and flashing',
+        body: `Tile installation requires significantly more care than asphalt. Every penetration, valley, hip, ridge, and transition point requires purpose-made metal flashing — typically copper or high-grade stainless steel — because tile cannot be cut and sealed the way asphalt can. Improper flashing is the single most common source of tile roof failure in the field.\n\nThe underlayment system under tile is critical and code-mandated. In Mississippi\'s high-wind and hurricane-exposure zones, a two-ply system — typically 30-lb felt or a modern self-adhering peel-and-stick underlayment — is required under the tile layer. The underlayment does the waterproofing work; the tile is primarily a weather shield that protects the underlayment from UV and physical damage.\n\nProper attachment is also a code consideration. In high-wind zones (which includes coastal Mississippi and areas near the Gulf), tiles must be mechanically fastened to prevent uplift. Some areas require foam adhesive mortar at every hip and ridge tile in addition to mechanical fastening.\n\nFind a contractor with documented tile experience and manufacturer training. The failure modes from improper tile installation are insidious — water infiltration at a bad flashing detail can persist for years before causing visible interior damage.`,
+      },
+      {
+        heading: 'Maintenance and repairs',
+        body: `Properly installed tile roofing requires minimal maintenance — one of its genuine advantages over organic materials. The tile surface itself doesn\'t need treatment, cleaning beyond removing debris accumulation, or periodic coating.\n\nThe primary maintenance needs are:\n\n**Walking on tile** is the most common cause of cracked tiles. Tile is strong in compression but brittle under point loads. Anyone accessing the roof for HVAC, antenna, or solar work needs to step on the mortar ribs or use walking boards, never on the tile body. A single misplaced step can crack a tile, and cracked tiles allow water infiltration through to the underlayment.\n\n**Moss and algae** grow on tile in Mississippi\'s humid climate, particularly on north-facing slopes and shaded sections. Biological growth can hold moisture against the surface and accelerate concrete tile degradation. Annual cleaning and zinc or copper strip installation at the ridge prevents growth from establishing.\n\n**Underlayment lifespan** is the most significant maintenance consideration. The tile may last 80 years, but the underlayment beneath it will need replacement after 30-40 years. Planning for an underlayment replacement (which involves removing and reinstalling the tile, but reusing it) is part of the long-term ownership model for tile roofing.`,
+      },
+      {
+        heading: 'Cost expectations and ROI',
+        body: `Tile roofing installed in Mississippi runs **$15-30 per square foot** depending on tile type, profile, structural work required, and contractor experience. On a 2,200 sq ft home with 22-24 squares of roofing area, budget $33,000-70,000+ installed. This is 3-5× the cost of a standard asphalt replacement.\n\nThe ROI calculation for tile requires a long time horizon. Over 75-100 years, a tile roof may outlast two or three asphalt roof cycles, which at $15,000-25,000 per cycle represents significant cumulative cost. For a family intending to stay in a home for 30+ years, the long-term math can favor tile — though the upfront capital requirement is substantially higher.\n\nResale value impact varies significantly. In markets where tile is the expected finish for a home\'s price point and style (high-end custom homes, Mediterranean-influenced architecture), tile adds clear value. On a standard rancher in a neighborhood of asphalt-roofed homes, buyers are unlikely to pay a full premium for the material.\n\nThe honest framing: tile makes economic sense for homes designed around it, intended for long ownership, or in locations where durability and storm resistance have outsized value. For most Mississippi homeowners replacing a standard residential roof, asphalt or metal is the more practical choice.`,
+      },
+    ],
+    msContext: `Mississippi\'s climate has elements that both favor and challenge tile roofing. On the positive side, Mississippi does not experience the freeze-thaw cycling that causes tile to spall and crack in northern states — clay and concrete tile perform well in freeze-limited climates. The heat, humidity, and UV intensity of Mississippi summers are non-issues for tile, which tolerates both better than organic materials.\n\nThe challenges are wind and biological growth. Hurricane-season exposure along the Gulf Coast and severe thunderstorms statewide create uplift forces that require proper fastening per the local wind design speed (typically 115-130 mph in Northeast Mississippi; higher along the coast). Biological growth from Mississippi\'s humidity requires attention, particularly on concrete tile where moisture retention accelerates pigment fading.\n\nFor coastal Mississippi homeowners — Biloxi, Gulfport, Ocean Springs, Gautier — tile\'s resistance to salt air and hurricane-force wind is a genuine advantage. The MWUA (Mississippi Wind Underwriting Association) wind pool territory requirements make durable, well-attached roofing especially important in coastal zones. Tile installed to wind-design standards offers excellent protection.`,
+    faqs: [
+      {
+        q: 'Does my home\'s structure need to be verified before installing tile?',
+        a: 'Yes — a structural assessment is required before any tile installation. Tile weighs 900-1,200 lbs per square versus 200-350 lbs for asphalt. Standard residential framing in Mississippi is not engineered for tile loads. A structural engineer must confirm the rafters, walls, and foundation can handle the additional weight, or specify the reinforcement required. Do not skip this step.',
+      },
+      {
+        q: 'How long does clay tile actually last?',
+        a: 'Quality clay tile installed correctly can last 75-150 years or longer. The tile itself is essentially permanent — the limiting factor is the underlayment beneath it, which typically needs replacement after 30-40 years. Concrete tile has a shorter practical lifespan of 40-60 years before surface degradation becomes significant.',
+      },
+      {
+        q: 'Is tile appropriate for my Mississippi home?',
+        a: 'Tile is appropriate if your home has (or can be reinforced to have) adequate structural capacity, your architecture suits the profile (Mediterranean, Spanish Colonial, Mission-style, or similar), and your budget supports $15-30/sq ft installed. It\'s a poor fit for standard-framed ranch homes, low-slope roofs, or situations where budget is a primary constraint.',
+      },
+      {
+        q: 'Can broken tile pieces be replaced?',
+        a: 'Individual tiles can be replaced, but matching aged tile for repairs is increasingly difficult as time passes. Color and texture change subtly over decades of weathering. For best results, keep spare tiles from your original installation. If the original run is discontinued, a skilled tile roofer can often find a reasonable match, though it may not be invisible.',
+      },
+      {
+        q: 'What\'s the difference between tile and slate?',
+        a: 'Slate is a natural stone product with the longest residential lifespan of any roofing material (100+ years), but it\'s far heavier, more brittle, and more expensive than concrete tile. Clay tile is also a natural ceramic product but fired, not split, and generally less expensive than natural slate. Synthetic versions of both exist at lower cost and weight — see our synthetic shingles guide for that comparison.',
+      },
+    ],
+  },
+  {
+    slug: 'wood-shake-roofing',
+    name: 'Wood Shake & Cedar Shingles',
+    image: '/images/work/detail-architectural.webp',
+    eyebrow: 'Classic American character — with real maintenance demands',
+    summary: `Wood shake and cedar shingle roofing deliver a warmth and textural depth that no synthetic material fully replicates — the irregular edges, natural color variation, and weathering patina of real wood have defined American residential architecture for centuries. In Mississippi, wood roofing is rarely specified for new installations today because of the climate: the humidity, heat, and abundant biological activity that characterizes the humid subtropical South accelerates the natural degradation of wood. That said, wood shake remains an option for homeowners who specifically want the aesthetic and are prepared for the maintenance it demands. This guide explains what that involves honestly.`,
+    stats: {
+      lifespan: '20-30 years (treated); 15-25 years (untreated in humid climates)',
+      cost: '$7.00 – $12.00/sq ft installed',
+      warranty: '25 years typical; varies by treatment',
+      wind: 'Moderate — Class D-F; varies significantly by installation',
+      fire: 'Class C (treated); Class A with fire-retardant coating (FRSC)',
+    },
+    pros: [
+      'Authentic visual texture and warmth that synthetic materials don\'t fully replicate',
+      'Natural insulating value slightly higher than asphalt',
+      'Biodegradable and made from a renewable resource',
+      'Individual shakes can be replaced without disturbing the whole field',
+      'Ages to a classic silver-gray patina that many homeowners prize',
+      'Works well with Craftsman, Tudor, Cape Cod, and traditional cottage architectural styles',
+    ],
+    cons: [
+      'High maintenance in humid climates: annual cleaning, periodic treatment, algae and moss management',
+      'Shorter lifespan in Mississippi humidity than in drier western climates where it was popularized',
+      'Natural fire hazard unless treated with Class A fire-retardant coating (FRSC)',
+      'Susceptible to fungal rot and insect damage without diligent maintenance',
+      'Higher insurance premiums in some markets due to fire classification',
+      'Fewer experienced installers in Mississippi compared to asphalt or metal',
+    ],
+    bestFor: [
+      'Homeowners prioritizing authentic natural aesthetics over low maintenance',
+      'Craftsman, Tudor, Arts and Crafts, or cottage-style homes where wood shake is architecturally correct',
+      'Areas with lower humidity or significant shade reduction from tree canopy clearance',
+      'Historic restorations where authenticity requires wood',
+    ],
+    notIdealFor: [
+      'High-humidity, high-shade situations that accelerate biological growth',
+      'Homeowners wanting low-maintenance roofing',
+      'Areas with strict fire code requirements (without FRSC treatment)',
+      'Long-term durability as primary objective — other materials last longer in MS climate',
+    ],
+    sections: [
+      {
+        heading: 'Shake vs. shingles: what\'s the distinction',
+        body: `The terms "shake" and "shingle" are often used interchangeably but refer to distinct products:\n\n**Cedar shingles** are sawn on both faces — they taper from thick to thin and have a smoother surface. They install in a more regular, overlapping pattern and produce a flatter, more uniform appearance than shake. Cedar shingles are more commonly used on walls and lower-pitch roofs.\n\n**Cedar shake** is split (hand-split or machine-split) on one or both faces, producing an irregular, textured surface with natural variations in thickness. The rough face faces outward, creating the characteristic shadow depth and rustic texture associated with traditional American roofing. Hand-split-and-resawn shake has one rough split face and one sawn face — a common middle ground between full hand-split and sawn shingles.\n\nFor roofing applications, **hand-split-and-resawn shake** (Grade #1) is the standard specification. It should be Western Red Cedar — the industry-standard species for durability and rot resistance. Avoid lesser species sold as "cedar shake" unless sourced from a reputable manufacturer with documented species verification.`,
+      },
+      {
+        heading: 'Mississippi\'s climate and wood roofing',
+        body: `Western Red Cedar performs best in the Pacific Northwest — cool, moist, moderate-UV climate where the wood dries between rain events and temperatures don\'t drive accelerated biological activity. Mississippi\'s climate is almost the opposite: hot, high humidity, intense UV, and a biological environment that strongly favors fungal and algal growth.\n\n**The honest reality for Mississippi homeowners**: a wood shake roof that would last 30-40 years in Oregon or Montana will likely last 20-25 years in Northeast Mississippi with diligent maintenance — and as few as 12-15 years with minimal maintenance. The humidity keeps the wood perpetually damp, which promotes fungal degradation. The UV intensity bleaches and oxidizes the surface. Moss and algae establish quickly on north-facing slopes and shaded sections.\n\nThis doesn\'t make wood shake impossible in Mississippi, but it changes the calculus significantly. Homeowners considering wood roofing in this climate should enter the decision knowing the maintenance burden is real and the lifespan expectations are lower than what marketing materials from Pacific Northwest manufacturers tend to project.`,
+      },
+      {
+        heading: 'Treatment options and fire ratings',
+        body: `Raw cedar shake carries a **Class C fire rating** under ASTM E108 — meaning it provides some fire resistance but will eventually ignite and support combustion. Many Mississippi municipalities and insurers require Class A roofing materials, which raw shake does not meet.\n\n**Fire-Retardant Cedar Shake (FRSC)** is factory-treated with borate compounds or pressure-impregnated fire retardants that elevate the rating to Class A. FRSC is the only specification that should be used on new installations in most Mississippi jurisdictions. The treatment also provides some resistance to fungal decay, which helps longevity in humid climates.\n\nAlternatively, some homeowners specify **synthetic shake products** — polymer or composite materials that replicate the wood look with Class A fire ratings and better biological resistance. If you want the wood aesthetic without the maintenance burden, synthetic shake from manufacturers like Brava or DaVinci is worth pricing. The cost is similar to real shake but the maintenance requirements are dramatically lower.`,
+      },
+      {
+        heading: 'Maintenance requirements in detail',
+        body: `Wood shake roofing in Mississippi requires more active maintenance than any other roofing material. If you\'re not prepared to invest in this, another material is a better choice.\n\n**Annual cleaning**: Remove accumulated debris, leaves, and biological growth. Pressure washing at low PSI (no more than 1,500 PSI from distance) or hand-washing with a diluted cleaning solution. Aggressive pressure washing damages the surface — use a soft-wash approach.\n\n**Algae and moss control**: Apply a zinc sulfate or copper sulfate solution to prevent biological establishment. Zinc strips at the ridge release zinc oxide with every rain, creating a mild biocide that runs down the slope. Replace strips every 10-15 years.\n\n**Preservative treatment**: Apply a water-repellent wood preservative (containing a mildewcide) every 3-5 years to maintain the wood\'s moisture resistance. Products from TWP (Total Wood Preservative) or Defy are appropriate. This is the single most impactful maintenance action for extending service life.\n\n**Individual replacement**: Replace split, cupped, or severely degraded individual shakes as found during annual inspection. Spot repairs are straightforward for experienced contractors but require sourcing matching material — harder as the roof ages and the original shakes weather to a distinctive gray patina.`,
+      },
+      {
+        heading: 'Installation requirements',
+        body: `Wood shake installation has specific requirements that differ from asphalt installation. A proper installation includes:\n\n**Spaced sheathing (skip sheathing)**: Traditional shake installation uses spaced 1×4 or 1×6 boards spaced 1.5" apart to allow air circulation beneath the shake courses, helping the wood dry after rain. Modern installations often use solid sheathing with a ventilated underlayment system instead.\n\n**Interlayment felt**: 18" wide strips of 30-lb felt are woven between shake courses on solid sheathing installations, providing a redundant water management layer between courses.\n\n**Exposure and pitch requirements**: Shake requires a minimum 4:12 roof pitch for standard exposure. Lower pitches require reduced exposure and special underlayment systems.\n\n**Fastening**: Hot-dipped galvanized or stainless steel nails are required — electro-galvanized and common nails corrode from the tannic acid in cedar and cause premature failure. This is a common installation shortcut that dramatically shortens service life.\n\nThe quality of the installation matters enormously for wood roofing. An improperly installed shake roof fails years ahead of a correctly installed one. Verify that any contractor quoting wood shake uses the proper interlayment, fastener specification, and sheathing system.`,
+      },
+      {
+        heading: 'When wood shake makes sense — and when it doesn\'t',
+        body: `Wood shake makes the most sense in a specific set of conditions:\n\n**It makes sense when**: The architectural style genuinely calls for it (Craftsman bungalows, Arts and Crafts homes, New England-style capes), the homeowner is committed to the maintenance routine, the installation is in a relatively open, sun-exposed location that promotes drying, and the budget supports periodic professional cleaning and treatment.\n\n**It doesn\'t make sense when**: The primary driver is cost (comparable or more expensive than impact-resistant asphalt or synthetic shake), the home has significant tree canopy coverage that keeps the roof shaded and damp, the owner wants a low-maintenance material, or fire code requires Class A roofing that would necessitate FRSC-treated shake anyway (at which point synthetic shake becomes a direct comparison).\n\nFor most Mississippi homeowners replacing an aging wood shake roof, the honest recommendation is to evaluate synthetic shake alternatives seriously before committing to wood again. The aesthetic is close, the fire rating is Class A without treatment, the maintenance burden is minimal, and the lifespan is 40-50 years versus 20-25 in this climate. Contact Smart Roof Pricing and we\'ll walk you through the trade-offs for your specific home and situation.`,
+      },
+    ],
+    msContext: `Wood shake has a long history in Mississippi residential architecture — Craftsman bungalows from the 1910s-1940s, classic Cape Cods, and early postwar housing stock often featured shake or shingle roofing as the original material. When these homes need re-roofing, the question of whether to match the original material or upgrade to a more durable option is legitimate.\n\nThe climate argument against wood shake in Mississippi is strong but not absolute. Homes in North Mississippi with good sun exposure — minimal tree canopy, southern or western roof orientation — and owners committed to annual maintenance can get 25+ years from a properly installed FRSC shake roof. Homes under heavy oak or pecan canopy in high-humidity areas near streams or in low-lying terrain are poor candidates; the biological pressure is too high.\n\nFor the Gulf Coast region — Biloxi through Pascagoula — wood shake is generally not recommended. The combination of salt-air humidity, hurricane-season wind exposure, and intense biological activity creates very unfavorable conditions for wood roofing longevity. The additional insurance scrutiny around non-Class-A materials in MWUA territory makes it doubly impractical.`,
+    faqs: [
+      {
+        q: 'How long will a wood shake roof last in Mississippi?',
+        a: 'With proper maintenance (annual cleaning, periodic preservative treatment, prompt repair of damaged shakes), expect 20-25 years from quality FRSC shake installed correctly. Without consistent maintenance, 12-15 years is realistic. This is significantly shorter than the 30-40 year lifespan often cited in Pacific Northwest roofing literature, because Mississippi\'s climate is more demanding on wood.',
+      },
+      {
+        q: 'Is wood shake appropriate for a home with heavy tree canopy?',
+        a: 'Heavy shade from overhanging trees dramatically accelerates wood shake degradation in Mississippi. Shaded sections stay damp for days after rain, which promotes fungal growth and rot. If significant tree trimming to open the roof to sun and air movement isn\'t practical, another material is a better choice. Synthetic shake handles shade and biological pressure much better than real wood.',
+      },
+      {
+        q: 'What\'s the fire rating on wood shake?',
+        a: 'Untreated cedar shake carries a Class C fire rating. Fire-Retardant Cedar Shake (FRSC) achieves Class A after pressure treatment. Many Mississippi municipalities and insurance policies require Class A roofing. If your jurisdiction requires Class A, you must specify FRSC or use a non-wood material. Verify local code requirements before pricing.',
+      },
+      {
+        q: 'Can I install wood shake over my existing roof?',
+        a: 'Most jurisdictions allow one overlay, but wood shake overlay over existing asphalt is generally not recommended. The organic material traps moisture against the old roof, accelerating biological degradation. A full tear-off to clean sheathing is the proper base for a wood shake installation.',
+      },
+      {
+        q: 'Should I replace my old shake roof with new shake or switch materials?',
+        a: 'For most Mississippi homeowners, switching to a more durable material makes better long-term sense. Impact-resistant asphalt, synthetic shake, or metal roofing will outlast real shake in Mississippi\'s climate with less maintenance and at competitive or lower installed cost. If the wood aesthetic is important, synthetic shake from Brava or DaVinci is worth pricing before committing to real wood again.',
+      },
+    ],
+  },
 ]
 
 export function getMaterialBySlug(slug: string): RoofingMaterial | undefined {
@@ -491,5 +764,35 @@ export const MATERIAL_COMPARISON = [
     maintenance: 'Minimal',
     bestFor: 'Prestige / historic',
     href: '/roofing-materials/metal-roofing',
+  },
+  {
+    name: 'Synthetic Shingles',
+    lifespan: '40-50 yrs',
+    cost: '$8-14',
+    wind: '110-130+ mph',
+    hail: 'Class 4 (most lines)',
+    maintenance: 'Every 3-5 yrs',
+    bestFor: 'Slate/shake look',
+    href: '/roofing-materials/synthetic-shingles',
+  },
+  {
+    name: 'Clay / Concrete Tile',
+    lifespan: '50-100+ yrs',
+    cost: '$15-30',
+    wind: '125-150 mph',
+    hail: 'Moderate (brittle)',
+    maintenance: 'Every 5-10 yrs',
+    bestFor: 'Mediterranean style',
+    href: '/roofing-materials/clay-tile-roofing',
+  },
+  {
+    name: 'Cedar Shake',
+    lifespan: '20-30 yrs (MS)',
+    cost: '$7-12',
+    wind: 'Moderate',
+    hail: 'Low (splits)',
+    maintenance: 'Annual',
+    bestFor: 'Craftsman / cottage',
+    href: '/roofing-materials/wood-shake-roofing',
   },
 ]

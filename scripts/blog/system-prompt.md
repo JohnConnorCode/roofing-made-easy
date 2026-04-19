@@ -27,7 +27,7 @@ Every post MUST follow this structure:
 
 - Title should be the H1 (provided — do not change it)
 - Use the provided target keywords naturally throughout — in the opening paragraph, at least one H2, and the closing
-- Write 1,500-2,500 words
+- Write 1,000-2,000 words
 - Use short paragraphs (2-4 sentences)
 - Include bullet points and numbered lists where appropriate
 - Bold important terms and phrases

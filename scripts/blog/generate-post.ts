@@ -154,7 +154,9 @@ ${relatedPosts.length > 0 ? `**Related Blog Posts to Reference:**\n${relatedPost
 **Existing blog post slugs (do NOT duplicate these topics):**
 ${existingSlugs.slice(0, 20).join(', ')}${existingSlugs.length > 20 ? '...' : ''}
 
-Write the full blog post content in Markdown. Start with the opening paragraph — no H1 title.`
+Write the full blog post content in Markdown. Start with the opening paragraph — no H1 title.
+
+IMPORTANT: Your response MUST be at least 1,000 words. Write thorough, detailed sections — each H2 section should be 150-300 words with multiple paragraphs. Do not summarize — fully explain each topic.`
 }
 
 async function generateContent(openai: OpenAI, systemPrompt: string, userPrompt: string): Promise<string> {
@@ -165,7 +167,7 @@ async function generateContent(openai: OpenAI, systemPrompt: string, userPrompt:
       { role: 'user', content: userPrompt },
     ],
     temperature: 0.7,
-    max_tokens: 4000,
+    max_tokens: 8000,
   })
 
   const content = response.choices[0]?.message?.content
@@ -276,10 +278,8 @@ async function generateOne(
     console.error(`\nFailed validation after ${MAX_RETRIES + 1} attempts. Skipping topic ${topic.id}.`)
 
     if (!dryRun) {
-      const updatedTopics = topics.map(t =>
-        t.id === topic.id ? { ...t, status: 'skipped' as const } : t
-      )
-      writeJson(CONTENT_PLAN_PATH, updatedTopics)
+      topic.status = 'skipped' as const
+      writeJson(CONTENT_PLAN_PATH, topics)
     }
 
     return false
@@ -325,11 +325,11 @@ async function generateOne(
     return false
   }
 
-  // Update content plan
-  const updatedTopics = topics.map(t =>
-    t.id === topic.id ? { ...t, status: 'published' as const, publishedSlug: topic.slug } : t
-  )
-  writeJson(CONTENT_PLAN_PATH, updatedTopics)
+  // Mutate topic in-place so subsequent batch iterations skip it
+  topic.status = 'published' as const
+  topic.publishedSlug = topic.slug
+
+  writeJson(CONTENT_PLAN_PATH, topics)
 
   existingSlugs.push(topic.slug)
   console.log(`\nSaved to DB as draft: /blog/${post.slug}`)
