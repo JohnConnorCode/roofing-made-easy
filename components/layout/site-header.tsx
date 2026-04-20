@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart, User, Gift, HardHat, Star, CloudLightning, Wrench } from 'lucide-react'
+import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart, User, Gift, HardHat, Star, CloudLightning, Wrench, Zap } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 import { useContact } from '@/lib/hooks/use-contact'
 import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
@@ -22,6 +22,7 @@ const resourceLinks = [
   { href: '/insurance-help', label: 'Insurance Help', icon: FileText, description: 'Claim filing guidance' },
   { href: '/financing', label: 'Financing Options', icon: CreditCard, description: 'Affordable payment plans' },
   { href: '/assistance-programs', label: 'Assistance Programs', icon: HandHeart, description: 'Grants & financial aid' },
+  { href: '/energy-efficient-roofing', label: 'Energy Savings', icon: Zap, description: 'Cut cooling costs in MS heat' },
   { href: '/service-areas', label: 'Service Areas', icon: MapPin, description: 'Where we work' },
 ]
 
