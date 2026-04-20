@@ -61,8 +61,8 @@ const TERTIARY: ServiceCard[] = [
     description:
       'Seamless aluminum, copper, or half-round. Installed, sized, and sloped for Mississippi rain.',
     priceRange: '$1k–$5k typical',
-    image: '/images/services/process-install.jpg',
-    alt: 'Gutter installation in progress',
+    image: '/images/services/metal-roofing.jpg',
+    alt: 'Seamless metal gutter installation',
   },
   {
     slug: 'roof-inspection',
@@ -81,8 +81,8 @@ const TERTIARY: ServiceCard[] = [
     description:
       'Annual tune-ups, sealant checks, gutter clear-out. Extends the life of the roof you already have.',
     priceRange: '$200–$500/yr',
-    image: '/images/services/roof-inspection.jpg',
-    alt: 'Roof maintenance and inspection',
+    image: '/images/work/replacement-after.webp',
+    alt: 'Well-maintained residential roof after professional service',
   },
 ]
 

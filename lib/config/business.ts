@@ -24,10 +24,9 @@ export const BUSINESS_CONFIG = {
   // -------------------------------------------------------------------------
   // NOTE: Update these with your real business info
   phone: {
-    raw: '+1-662-555-0123',      // E.164 format for schema
-    display: '(662) 555-0123',   // Display format
-    // Set to true once you have updated with real phone number
-    isReal: false, // CHANGE TO true AFTER setting real phone number
+    raw: '+1-662-523-2401',
+    display: '(662) 523-2401',
+    isReal: true,
   },
 
   email: {
@@ -40,15 +39,14 @@ export const BUSINESS_CONFIG = {
   // -------------------------------------------------------------------------
   // NOTE: Update these with your real business address
   address: {
-    street: '123 Main Street',
-    city: 'Tupelo',
+    street: '',
+    city: 'Fulton',
     state: 'Mississippi',
     stateCode: 'MS',
-    zip: '38801',
+    zip: '38843',
     country: 'United States',
     countryCode: 'US',
-    // Set to true once you have updated with real address
-    isReal: false, // CHANGE TO true AFTER setting real address
+    isReal: true,
   },
 
   // -------------------------------------------------------------------------

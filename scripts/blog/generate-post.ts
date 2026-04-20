@@ -294,7 +294,7 @@ async function generateOne(
     excerpt: extractExcerpt(content),
     content: content.trim(),
     category: topic.category,
-    author: 'Mike Farrell',
+    author: 'Robert Farrell',
     read_time: calculateReadTime(content),
     featured: false,
     tags: extractTags(topic),

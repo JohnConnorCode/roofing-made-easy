@@ -7,6 +7,7 @@ import {
   HeroSection,
   EstimatePreview,
   ServicesShowcase,
+  FounderStrip,
   FundingWaterfall,
   HowItWorks,
   SocialProof,
@@ -43,7 +44,10 @@ export function HomePageContent() {
           <ServicesShowcase />
         </div>
 
-        {/* 4. Ways to pay — insurance, assistance, financing */}
+        {/* 4. Founder credibility strip */}
+        <FounderStrip />
+
+        {/* 5. Ways to pay — insurance, assistance, financing */}
         <div ref={trackSectionRef('funding_waterfall')}>
           <FundingWaterfall />
         </div>
