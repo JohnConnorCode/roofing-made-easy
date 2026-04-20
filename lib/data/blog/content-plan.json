@@ -92,12 +92,12 @@
     ],
     "outline": "Slate overview → MS historic districts (Vicksburg, Natchez, Columbus) → natural vs synthetic slate → repair vs replace → finding qualified installers → cost",
     "priority": 3,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-repair",
       "/services/roof-replacement"
     ],
-    "publishedSlug": null
+    "publishedSlug": "slate-roofing-mississippi-historic-homes"
   },
   {
     "id": "topic-006",
@@ -133,12 +133,12 @@
     ],
     "outline": "Role of underlayment → felt paper pros/cons → synthetic pros/cons → MS heat/moisture performance → cost difference → code requirements → best choice by roof type",
     "priority": 3,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/blog/best-roofing-materials-mississippi-climate"
     ],
-    "publishedSlug": null
+    "publishedSlug": "synthetic-underlayment-vs-felt-mississippi"
   },
   {
     "id": "topic-008",
@@ -173,12 +173,12 @@
     ],
     "outline": "What is EPDM → MS climate performance → installation methods → lifespan → repair options → vs TPO/PVC → cost → best applications",
     "priority": 3,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/blog/tpo-roofing-mississippi-commercial"
     ],
-    "publishedSlug": null
+    "publishedSlug": "epdm-rubber-roofing-mississippi-flat-roofs"
   },
   {
     "id": "topic-010",
@@ -193,12 +193,12 @@
     ],
     "outline": "What are designer shingles → top brands (GAF, CertainTeed, Owens Corning) → profiles and styles → MS weather performance → cost range → HOA compliance → resale impact",
     "priority": 3,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/pricing/roof-replacement-cost"
     ],
-    "publishedSlug": null
+    "publishedSlug": "designer-shingles-mississippi-curb-appeal"
   },
   {
     "id": "topic-011",
@@ -213,12 +213,12 @@
     ],
     "outline": "What is roof decking → OSB pros/cons in humidity → plywood grades → skip sheathing for metal → MS code requirements → replacement signs → cost comparison",
     "priority": 3,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/blog/signs-you-need-new-roof"
     ],
-    "publishedSlug": null
+    "publishedSlug": "roof-decking-types-mississippi"
   },
   {
     "id": "topic-012",
@@ -2396,12 +2396,12 @@
     ],
     "outline": "What to expect (noise, vibration, debris) → protecting interior items → pet considerations → kids and safety → working from home tips → dust management → timeline expectations → night quiet hours → MS heat and AC during work",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/blog/roof-replacement-day-what-to-expect-mississippi",
       "/services/roof-replacement"
     ],
-    "publishedSlug": null
+    "publishedSlug": "roof-replacement-while-living-in-home"
   },
   {
     "id": "topic-121",
@@ -2416,12 +2416,12 @@
     ],
     "outline": "Ponding water → membrane deterioration → seam failure → flashing issues → blistering → punctures → poor drainage → inadequate slope → MS heat impact on flat roofs → repair vs coating vs replacement → cost ranges",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-repair",
       "/blog/tpo-roofing-mississippi-commercial"
     ],
-    "publishedSlug": null
+    "publishedSlug": "flat-roof-problems-mississippi-solutions"
   },
   {
     "id": "topic-122",
@@ -2436,12 +2436,12 @@
     ],
     "outline": "MS winter storm types → freezing rain damage → ice weight on gutters → pipe freezing and roof connection → tree limbs and ice → post-storm inspection → insurance claims for winter damage → prevention steps",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-inspection",
       "/blog/roof-damage-after-ice-storm-mississippi"
     ],
-    "publishedSlug": null
+    "publishedSlug": "winter-storm-roof-damage-mississippi"
   },
   {
     "id": "topic-123",
