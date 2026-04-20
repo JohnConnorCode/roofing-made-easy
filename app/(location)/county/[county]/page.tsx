@@ -242,13 +242,14 @@ export default async function CountyPage({ params }: CountyPageProps) {
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#c9a25c] text-center">
             More for {county.name} homeowners
           </p>
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
+              { href: '/storm-damage', label: 'Storm damage help' },
+              { href: '/roof-maintenance', label: 'Roof maintenance guide' },
               { href: '/roofing-materials', label: 'Roofing materials guide' },
               { href: '/pricing/roof-replacement-cost', label: 'Replacement pricing guide' },
               { href: '/insurance-help', label: 'Insurance claim help' },
               { href: '/financing', label: 'Financing options' },
-              { href: '/assistance-programs', label: 'Assistance programs' },
             ].map(({ href, label }) => (
               <Link
                 key={href}

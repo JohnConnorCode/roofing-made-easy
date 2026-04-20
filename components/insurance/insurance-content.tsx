@@ -676,6 +676,34 @@ export default function InsuranceContent() {
         </div>
       </section>
 
+      {/* Insurance claim guides */}
+      <section className="py-14 bg-[#0c0f14] border-t border-slate-900">
+        <div className="mx-auto max-w-6xl px-4">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#c9a25c] mb-6">Insurance claim guides</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { href: '/blog/hail-damage-roof-mississippi-guide', label: 'Hail Damage Guide', desc: 'Identify damage, document it, and file the right claim.' },
+              { href: '/blog/roof-insurance-claim-timeline-mississippi', label: 'Claim Timeline', desc: 'What happens from filing to final payment.' },
+              { href: '/blog/denied-roof-insurance-claim-mississippi-appeal', label: 'Denied Claim? Appeal It', desc: 'How to challenge a low estimate or denial.' },
+              { href: '/blog/insurance-adjuster-meeting-preparation-roof', label: 'Meeting Your Adjuster', desc: 'How to prepare so you get a fair assessment.' },
+              { href: '/blog/roof-depreciation-insurance-claims-explained', label: 'RCV vs ACV Explained', desc: 'Recoverable depreciation and when you get it.' },
+              { href: '/storm-damage', label: 'Storm Damage Hub', desc: 'Full step-by-step: document, tarp, claim, repair.' },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="group rounded-xl border border-slate-800 bg-[#141925] p-4 hover:border-[#c9a25c]/40 transition-colors"
+              >
+                <div className="text-sm font-semibold text-[#c9a25c] mb-1 group-hover:text-[#e6c588] transition-colors">
+                  {link.label} →
+                </div>
+                <div className="text-xs text-slate-500 leading-relaxed">{link.desc}</div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <ResourceTriangle exclude="insurance" />
 
       <SiteFooter />

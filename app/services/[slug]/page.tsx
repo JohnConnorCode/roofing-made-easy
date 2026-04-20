@@ -402,13 +402,21 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             ))}
           </div>
 
-          <div className="mt-6 flex items-center gap-4 text-sm text-slate-500">
+          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-500">
             <Link href="/services" className="hover:text-[#c9a25c] transition-colors flex items-center gap-1">
               All services <ArrowRight className="h-3.5 w-3.5" />
             </Link>
             <span>·</span>
             <Link href="/roofing-materials" className="hover:text-[#c9a25c] transition-colors flex items-center gap-1">
-              Roofing materials guide <ArrowRight className="h-3.5 w-3.5" />
+              Materials guide <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+            <span>·</span>
+            <Link href="/storm-damage" className="hover:text-[#c9a25c] transition-colors flex items-center gap-1">
+              Storm damage help <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+            <span>·</span>
+            <Link href="/insurance-help" className="hover:text-[#c9a25c] transition-colors flex items-center gap-1">
+              Insurance claims <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
