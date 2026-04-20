@@ -792,6 +792,34 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Cost & budgeting guides */}
+      <section className="py-14 bg-[#161a23] border-t border-slate-800">
+        <div className="mx-auto max-w-6xl px-4">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#c9a25c] mb-6">Cost & budgeting guides</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { href: '/blog/roof-repair-vs-replace-cost-analysis', label: 'Repair vs. Replace: The Real Cost', desc: 'How to know when repair is cheaper than replacement.' },
+              { href: '/blog/hidden-costs-roof-replacement-mississippi', label: '7 Hidden Costs of Replacement', desc: 'What Mississippi homeowners are blindsided by at billing.' },
+              { href: '/blog/best-time-replace-roof-mississippi-seasonal-pricing', label: 'Best Time to Replace Your Roof', desc: 'When Mississippi contractors are cheapest — and why.' },
+              { href: '/blog/financing-options-roof-replacement-mississippi', label: 'Financing Options Explained', desc: 'Every way to pay, from HERO to personal loans.' },
+              { href: '/blog/cheap-roof-replacement-warning-mississippi', label: 'Why the Cheapest Bid Is a Trap', desc: 'What you actually get when you go with the lowest quote.' },
+              { href: '/blog/mississippi-roof-inspection-cost-what-to-expect', label: 'Inspection Cost Breakdown', desc: 'What you pay, what you get, when it\'s free.' },
+            ].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="group rounded-xl border border-slate-800 bg-[#141925] p-4 hover:border-[#c9a25c]/40 transition-colors"
+              >
+                <div className="text-sm font-semibold text-[#c9a25c] mb-1 group-hover:text-[#e6c588] transition-colors">
+                  {link.label} →
+                </div>
+                <div className="text-xs text-slate-500 leading-relaxed">{link.desc}</div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ================================================================= */}
       {/* CTA Section */}
       {/* ================================================================= */}
