@@ -112,13 +112,13 @@
     ],
     "outline": "Standing seam vs exposed fastener → panel profiles → MS wind ratings → color/finish options → cost comparison → 50-year warranty → installation",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/blog/asphalt-vs-metal-roofing",
       "/pricing/metal-roof-cost"
     ],
-    "publishedSlug": null
+    "publishedSlug": "standing-seam-metal-roof-mississippi"
   },
   {
     "id": "topic-007",
@@ -274,12 +274,12 @@
     ],
     "outline": "Why ventilation matters → ridge vent mechanics → box vent mechanics → powered vs passive → MS attic temps → moisture issues → code requirements → cost comparison → hybrid systems",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/blog/attic-ventilation-mississippi-guide"
     ],
-    "publishedSlug": null
+    "publishedSlug": "ridge-vent-vs-box-vent-mississippi"
   },
   {
     "id": "topic-015",
@@ -294,13 +294,13 @@
     ],
     "outline": "How color affects energy → Solar Reflective Index (SRI) → best colors for MS heat → color fade resistance → Kynar vs SMP paint → HOA-friendly options → trending colors",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/blog/asphalt-vs-metal-roofing",
       "/pricing/metal-roof-cost"
     ],
-    "publishedSlug": null
+    "publishedSlug": "metal-roof-colors-mississippi-energy"
   },
   {
     "id": "topic-016",
@@ -435,12 +435,12 @@
     ],
     "outline": "MS thunderstorm frequency → vulnerable roof areas → proactive repairs → tree trimming → gutter maintenance → wind-rated materials → when to upgrade → insurance considerations",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-maintenance",
       "/services/roof-inspection"
     ],
-    "publishedSlug": null
+    "publishedSlug": "thunderstorm-roof-damage-prevention"
   },
   {
     "id": "topic-023",
@@ -495,12 +495,12 @@
     ],
     "outline": "How floods affect roofs (rising water vs driven rain) → structural damage from flooding → mold risks → NFIP vs homeowner's policy → documentation → drying out timeline → when replacement is needed",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-inspection",
       "/blog/mississippi-storm-damage-insurance-coverage"
     ],
-    "publishedSlug": null
+    "publishedSlug": "mississippi-flood-roof-damage-what-to-know"
   },
   {
     "id": "topic-026",
@@ -535,12 +535,12 @@
     ],
     "outline": "Wind uplift explained → ASTM testing standards → MS wind zone map → code requirements by county → best materials for high wind → roof-to-wall connections → retrofit options → cost of upgrading",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/blog/impact-resistant-shingles-mississippi-storms"
     ],
-    "publishedSlug": null
+    "publishedSlug": "wind-uplift-resistance-mississippi-roofing"
   },
   {
     "id": "topic-028",
@@ -575,12 +575,12 @@
     ],
     "outline": "MS severe weather seasons → annual roof prep calendar → spring inspection checklist → summer heat prep → fall storm season → winter prep → emergency contacts → supply list",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-maintenance",
       "/services/roof-inspection"
     ],
-    "publishedSlug": null
+    "publishedSlug": "mississippi-severe-weather-preparedness-roof"
   },
   {
     "id": "topic-030",
@@ -676,12 +676,12 @@
     ],
     "outline": "National ROI data → MS-specific market data → buyer perception → inspection requirements → appraisal impact → material choice and value → curb appeal factor → timing before sale",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/pricing/roof-replacement-cost"
     ],
-    "publishedSlug": null
+    "publishedSlug": "roof-replacement-increase-home-value-mississippi"
   },
   {
     "id": "topic-035",
@@ -696,12 +696,12 @@
     ],
     "outline": "Types of deductibles → percentage vs flat → wind/hail deductible → MS-specific policies → calculating your out-of-pocket → ACV vs RCV → depreciation → strategies to manage costs",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/blog/mississippi-storm-damage-insurance-coverage",
       "/pricing"
     ],
-    "publishedSlug": null
+    "publishedSlug": "roof-insurance-deductible-mississippi-explained"
   },
   {
     "id": "topic-036",
@@ -716,12 +716,12 @@
     ],
     "outline": "Why 3+ estimates matter → what estimates should include → red flags in estimates → comparing apples to apples → warranty comparison → material quality differences → labor cost variation → negotiation tips",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/pricing/roof-replacement-cost",
       "/services/roof-inspection"
     ],
-    "publishedSlug": null
+    "publishedSlug": "get-multiple-roofing-estimates-mississippi"
   },
   {
     "id": "topic-037",
@@ -756,12 +756,12 @@
     ],
     "outline": "Why lowball quotes happen → corner-cutting tactics → material substitution → skipping code requirements → no permits → labor quality → warranty differences → what fair pricing looks like in MS",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/pricing/roof-replacement-cost",
       "/about"
     ],
-    "publishedSlug": null
+    "publishedSlug": "cheap-roof-replacement-warning-mississippi"
   },
   {
     "id": "topic-039",
@@ -816,12 +816,12 @@
     ],
     "outline": "When overlay is allowed → MS code limits → weight concerns → hidden damage risks → warranty implications → cost savings vs long-term costs → inspection beneath → insurance perspective → best practice",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/pricing/roof-replacement-cost"
     ],
-    "publishedSlug": null
+    "publishedSlug": "two-layer-shingles-vs-tear-off-mississippi"
   },
   {
     "id": "topic-042",
@@ -916,12 +916,12 @@
     ],
     "outline": "What flashing does → types (step, counter, valley, chimney, vent) → MS-specific failure points → signs of failure → DIY inspection checklist → repair vs replace → materials (aluminum, copper, galvanized) → cost",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-repair",
       "/blog/signs-you-need-new-roof"
     ],
-    "publishedSlug": null
+    "publishedSlug": "roof-flashing-inspection-repair-guide"
   },
   {
     "id": "topic-047",
@@ -976,12 +976,12 @@
     ],
     "outline": "January-December tasks → spring storm prep → summer heat protection → fall leaf management → winter prep → post-storm checks → annual professional inspection timing → maintenance log template",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-maintenance",
       "/services/roof-inspection"
     ],
-    "publishedSlug": null
+    "publishedSlug": "roof-maintenance-schedule-mississippi"
   },
   {
     "id": "topic-050",
@@ -996,12 +996,12 @@
     ],
     "outline": "Pressure washing risks → soft washing alternative → when it's appropriate → PSI limits by material → cleaning solutions → DIY vs professional → MS mold/mildew context → manufacturer warranty implications",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-maintenance",
       "/blog/moss-algae-prevention-mississippi-roof"
     ],
-    "publishedSlug": null
+    "publishedSlug": "power-washing-roof-mississippi-safe"
   },
   {
     "id": "topic-051",
@@ -1016,12 +1016,12 @@
     ],
     "outline": "How trees damage roofs → safe clearance distances → MS tree species concerns (pine, oak, magnolia) → pruning schedule → DIY vs arborist → storm damage prevention → insurance perspective → cost",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-maintenance",
       "/blog/fallen-tree-roof-damage-mississippi"
     ],
-    "publishedSlug": null
+    "publishedSlug": "overhanging-trees-roof-damage-prevention"
   },
   {
     "id": "topic-052",
@@ -1056,12 +1056,12 @@
     ],
     "outline": "Why chimney flashing fails → MS expansion/contraction cycles → step vs counter flashing → inspection signs → repair vs replace → proper installation method → cricket/saddle installation → cost range",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-repair",
       "/blog/roof-flashing-inspection-repair-guide"
     ],
-    "publishedSlug": null
+    "publishedSlug": "chimney-flashing-repair-mississippi"
   },
   {
     "id": "topic-054",
@@ -1076,12 +1076,12 @@
     ],
     "outline": "What are roof boots → why they fail (MS UV and heat) → lifespan → signs of failure → DIY replacement → professional cost → material options (rubber vs metal) → preventive replacement during re-roof",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-repair",
       "/blog/roof-leak-detection-mississippi-homeowner"
     ],
-    "publishedSlug": null
+    "publishedSlug": "roof-boots-pipe-jacks-replacement"
   },
   {
     "id": "topic-055",
@@ -1156,12 +1156,12 @@
     ],
     "outline": "Manufacturer warranty types → workmanship warranty → what voids warranties → MS-specific warranty concerns (storms, algae) → transferability → filing a claim → what's covered → extended warranties",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/services/roof-replacement",
       "/about"
     ],
-    "publishedSlug": null
+    "publishedSlug": "mississippi-roof-warranty-explained"
   },
   {
     "id": "topic-059",
@@ -1216,12 +1216,12 @@
     ],
     "outline": "What is a supplement → when it's needed → hidden damage discovery → how contractors file supplements → MS adjuster re-inspection → timeline → documentation requirements → success rates",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/blog/mississippi-storm-damage-insurance-coverage",
       "/services/roof-replacement"
     ],
-    "publishedSlug": null
+    "publishedSlug": "supplemental-insurance-claims-roof-mississippi"
   },
   {
     "id": "topic-062",
@@ -1256,12 +1256,12 @@
     ],
     "outline": "What is MWUA → eligible areas → coverage types → vs private insurance → premiums → deductibles → filing claims → mitigation discounts → Fortified Home program → transitioning to private market",
     "priority": 2,
-    "status": "planned",
+    "status": "published",
     "internalLinks": [
       "/blog/mississippi-storm-damage-insurance-coverage",
       "/blog/hurricane-season-roof-preparation-mississippi"
     ],
-    "publishedSlug": null
+    "publishedSlug": "mississippi-wind-pool-roof-insurance"
   },
   {
     "id": "topic-064",

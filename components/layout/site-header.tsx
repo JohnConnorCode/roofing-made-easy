@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart, User, Gift, HardHat, Star } from 'lucide-react'
+import { Menu, X, Phone, MapPin, ChevronDown, CreditCard, FileText, HandHeart, User, Gift, HardHat, Star, CloudLightning, Wrench } from 'lucide-react'
 import { Logo } from '@/components/ui/logo'
 import { useContact } from '@/lib/hooks/use-contact'
 import { StartFunnelButton } from '@/components/funnel/start-funnel-button'
@@ -17,12 +17,12 @@ const navLinks = [
 
 const resourceLinks = [
   { href: '/roofing-materials', label: 'Roofing Materials', icon: HardHat, description: 'Compare materials & costs' },
-  { href: '/financing', label: 'Financing Options', icon: CreditCard, description: 'Affordable payment plans' },
+  { href: '/storm-damage', label: 'Storm Damage', icon: CloudLightning, description: 'After hail, wind, or tornado' },
+  { href: '/roof-maintenance', label: 'Roof Maintenance', icon: Wrench, description: 'Seasonal care & inspections' },
   { href: '/insurance-help', label: 'Insurance Help', icon: FileText, description: 'Claim filing guidance' },
+  { href: '/financing', label: 'Financing Options', icon: CreditCard, description: 'Affordable payment plans' },
   { href: '/assistance-programs', label: 'Assistance Programs', icon: HandHeart, description: 'Grants & financial aid' },
-  { href: '/referral', label: 'Referral Rewards', icon: Gift, description: 'Earn for every referral' },
   { href: '/service-areas', label: 'Service Areas', icon: MapPin, description: 'Where we work' },
-  { href: '/portfolio', label: 'Our Work', icon: Star, description: 'Past projects & photos' },
 ]
 
 export function SiteHeader() {

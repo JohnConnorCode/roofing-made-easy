@@ -38,6 +38,12 @@ interface ContentTopic {
   publishedSlug: string | null
 }
 
+interface PublishedPost {
+  slug: string
+  title: string
+  cluster: string
+}
+
 interface BlogPostInsert {
   slug: string
   title: string
@@ -91,6 +97,25 @@ async function getExistingSlugs(): Promise<string[]> {
   return (data ?? []).map((r: { slug: string }) => r.slug)
 }
 
+async function getPublishedPostsByCluster(allTopics: ContentTopic[]): Promise<PublishedPost[]> {
+  const supabase = getSupabase()
+  const { data, error } = await supabase
+    .from('blog_posts')
+    .select('slug, title')
+    .eq('status', 'published')
+
+  if (error || !data) return []
+
+  // Map slug → cluster via content-plan
+  const clusterMap = new Map(allTopics.map(t => [t.slug, t.cluster]))
+
+  return data.map((r: { slug: string; title: string }) => ({
+    slug: r.slug,
+    title: r.title,
+    cluster: clusterMap.get(r.slug) ?? 'unknown',
+  }))
+}
+
 // ── Helpers ──
 
 function readJson<T>(filePath: string): T {
@@ -128,10 +153,22 @@ function pickTopic(topics: ContentTopic[], specificId?: string): ContentTopic | 
   return planned[0]
 }
 
-function buildPrompt(topic: ContentTopic, existingSlugs: string[]): string {
-  const relatedPosts = topic.internalLinks
-    .filter(link => link.startsWith('/blog/'))
-    .map(link => link.replace('/blog/', ''))
+function buildPrompt(topic: ContentTopic, existingSlugs: string[], liveClusterPosts: PublishedPost[] = []): string {
+  // Static links from content plan (non-blog: services, pricing, etc.)
+  const staticLinks = topic.internalLinks.filter(l => !l.startsWith('/blog/'))
+
+  // Live published posts in same cluster — these are the most relevant cross-links
+  const clusterSiblings = liveClusterPosts
+    .filter(p => p.cluster === topic.cluster && p.slug !== topic.slug)
+    .slice(0, 6)
+
+  // Also include any static blog links from content plan that are actually published
+  const planBlogLinks = topic.internalLinks
+    .filter(l => l.startsWith('/blog/'))
+    .map(l => l.replace('/blog/', ''))
+    .filter(s => existingSlugs.includes(s))
+
+  const allBlogLinks = [...new Set([...clusterSiblings.map(p => p.slug), ...planBlogLinks])]
 
   return `Write a blog post with the following specifications:
 
@@ -146,13 +183,19 @@ ${topic.outline}
 
 **Category:** ${topic.category}
 
-**Required Internal Links (use these in your content naturally):**
-${topic.internalLinks.map(l => `- ${l}`).join('\n')}
+**Required Internal Links — non-blog pages (use ALL of these naturally in the content):**
+${staticLinks.length > 0 ? staticLinks.map(l => `- ${l}`).join('\n') : '- /services/roof-replacement\n- /services/roof-repair'}
 
-${relatedPosts.length > 0 ? `**Related Blog Posts to Reference:**\n${relatedPosts.map(s => `- /blog/${s}`).join('\n')}` : ''}
+**Published blog posts in your cluster — link to at least 2 of these naturally:**
+${allBlogLinks.length > 0
+  ? allBlogLinks.map(s => {
+      const post = liveClusterPosts.find(p => p.slug === s)
+      return `- /blog/${s}${post ? ` — "${post.title}"` : ''}`
+    }).join('\n')
+  : '(no cluster posts published yet)'}
 
 **Existing blog post slugs (do NOT duplicate these topics):**
-${existingSlugs.slice(0, 20).join(', ')}${existingSlugs.length > 20 ? '...' : ''}
+${existingSlugs.slice(0, 25).join(', ')}${existingSlugs.length > 25 ? ` ...and ${existingSlugs.length - 25} more` : ''}
 
 Write the full blog post content in Markdown. Start with the opening paragraph — no H1 title.
 
@@ -222,6 +265,7 @@ async function generateOne(
   systemPrompt: string,
   topics: ContentTopic[],
   existingSlugs: string[],
+  liveClusterPosts: PublishedPost[],
   specificId?: string,
   dryRun = false
 ): Promise<boolean> {
@@ -240,7 +284,12 @@ async function generateOne(
   console.log(`\nGenerating post for: ${topic.title}`)
   console.log(`Topic ID: ${topic.id} | Category: ${topic.category} | Priority: ${topic.priority}`)
 
-  const userPrompt = buildPrompt(topic, existingSlugs)
+  const clusterSiblingCount = liveClusterPosts.filter(p => p.cluster === topic.cluster).length
+  if (clusterSiblingCount > 0) {
+    console.log(`  Cluster context: ${clusterSiblingCount} published ${topic.cluster} posts available for linking`)
+  }
+
+  const userPrompt = buildPrompt(topic, existingSlugs, liveClusterPosts)
 
   let content = ''
   let validation = { valid: false, errors: [] as string[], warnings: [] as string[], stats: { wordCount: 0, h2Count: 0, h3Count: 0, internalLinkCount: 0, boldTermCount: 0 } }
@@ -356,10 +405,20 @@ async function main() {
   const topics: ContentTopic[] = readJson(CONTENT_PLAN_PATH)
   const existingSlugs = await getExistingSlugs()
 
+  const liveClusterPosts = await getPublishedPostsByCluster(topics)
+  console.log(`Live cluster context: ${liveClusterPosts.length} published posts loaded for internal linking\n`)
+
   let generated = 0
   for (let i = 0; i < batchCount; i++) {
-    const success = await generateOne(openai, systemPrompt, topics, existingSlugs, specificId, dryRun)
+    const success = await generateOne(openai, systemPrompt, topics, existingSlugs, liveClusterPosts, specificId, dryRun)
     if (success) generated++
+    // After each success, add the new post to liveClusterPosts so subsequent posts can link to it
+    if (success) {
+      const justGenerated = topics.find(t => t.status === 'published' && !liveClusterPosts.find(p => p.slug === t.slug))
+      if (justGenerated) {
+        liveClusterPosts.push({ slug: justGenerated.slug, title: justGenerated.title, cluster: justGenerated.cluster })
+      }
+    }
     if (!success && specificId) break // Don't retry a specific topic
   }
 
